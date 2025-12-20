@@ -1,13 +1,30 @@
 import Link from "next/link";
+import { Screen } from "@/ui/components/Screen";
+import { Header } from "@/ui/components/Header";
+import { Card } from "@/ui/components/Card";
+import { InfoBox } from "@/ui/components/InfoBox";
 
-export default function Login() {
+export default function LoginPage() {
   return (
-    <main className="min-h-screen p-6">
-      <h1 className="text-2xl font-semibold">Login (placeholder)</h1>
-      <p className="mt-2 max-w-prose">Se implementa Auth real en Sprint 1 (fase siguiente).</p>
-      <div className="mt-6">
-        <Link className="underline" href="/app">Ir al Dashboard</Link>
-      </div>
-    </main>
+    <Screen className="space-y-6">
+      <Header
+        title="Login"
+        subtitle="Placeholder. La autenticación real se implementa en la siguiente fase."
+        right={
+          <Link
+            href="/app"
+            className="rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm hover:bg-fh-surface-2"
+          >
+            Ir al Dashboard
+          </Link>
+        }
+      />
+
+      <Card className="space-y-3">
+        <InfoBox title="Pendiente" variant="warning">
+          Auth real + roles + protección de rutas.
+        </InfoBox>
+      </Card>
+    </Screen>
   );
 }

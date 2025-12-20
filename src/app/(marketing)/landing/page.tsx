@@ -1,15 +1,30 @@
 import Link from "next/link";
+import { Screen } from "@/ui/components/Screen";
+import { Header } from "@/ui/components/Header";
+import { Card } from "@/ui/components/Card";
+import { InfoBox } from "@/ui/components/InfoBox";
 
-export default function Landing() {
+export default function LandingPage() {
   return (
-    <main className="min-h-screen p-6">
-      <h1 className="text-2xl font-semibold">Landing (placeholder)</h1>
-      <p className="mt-2 max-w-prose">
-        En Fase 2 se define el contenido completo (propuesta de valor, pricing, FAQs, etc.).
-      </p>
-      <div className="mt-6">
-        <Link className="underline" href="/login">Ir a Login</Link>
-      </div>
-    </main>
+    <Screen className="space-y-6">
+      <Header
+        title="FinHub"
+        subtitle="Plataforma financiera para migrantes en NL. (Landing placeholder)"
+        right={
+          <Link
+            href="/login"
+            className="rounded-xl border border-fh-border bg-fh-primary px-3 py-2 text-sm text-fh-primaryFg hover:opacity-90"
+          >
+            Ir a Login
+          </Link>
+        }
+      />
+
+      <Card className="space-y-3">
+        <InfoBox title="Fase actual" variant="info">
+          UI System listo. En la siguiente fase se construye Case Engine, Document Vault y flujo de casos.
+        </InfoBox>
+      </Card>
+    </Screen>
   );
 }
