@@ -7,6 +7,16 @@ import { InfoBox } from "@/ui/components/InfoBox";
 import type { DocumentStatus, DocumentType } from "@/features/documents/documentsTypes";
 import { useDocuments } from "@/features/documents/documentsStore";
 import { useCases } from "@/features/cases/casesStore";
+type DocumentRow = {
+  id: string;
+  title?: string | null;
+  status?: string | null;
+  created_at?: string | null;
+  updated_at?: string | null;
+  [key: string]: unknown;
+};
+
+
 const TYPE_OPTIONS: { value: DocumentType; label: string }[] = [
   { value: "id", label: "Identidad" },
   { value: "income", label: "Ingresos" },

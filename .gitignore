@@ -25,3 +25,50 @@ coverage
 # editors
 .idea
 .vscode
+
+# Local env (NO COMMIT)
+.env.local
+.env.*.local
+
+# Temp / backups
+*.bak
+*.old
+*_backup*
+_archive_fix/
+node_modules/
+.next/
+
+# Local env (NO COMMIT)
+.env.local
+.env.*.local
+
+# Temp / backups
+*.bak
+*.old
+*_backup*
+_archive_fix/
+node_modules/
+.next/
+
+# Office temp
+~$*.docx
+~$*.pptx
+~$*.xlsx
+
+
+# Archive fixes
+_archive_fix/
+
+# Local env (NO COMMIT)
+.env.local
+.env.*.local
+
+# Build output
+.next/
+node_modules/
+
+# Temp / backups
+*.bak
+*.old
+*_backup*
+_archive_fix/

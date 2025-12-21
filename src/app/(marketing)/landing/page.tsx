@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { Screen } from "@/ui/components/Screen";
 import { Header } from "@/ui/components/Header";
 import { Card } from "@/ui/components/Card";

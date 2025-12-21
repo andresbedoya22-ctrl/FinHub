@@ -1,4 +1,4 @@
-export type CaseType =
+﻿export type CaseType =
   | "toeslag_huur"
   | "toeslag_zorg"
   | "toeslag_kinderopvang"

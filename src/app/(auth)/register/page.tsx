@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const router = useRouter();
   const supabase = createSupabaseBrowserClient();
 
@@ -17,7 +17,7 @@ export default function LoginPage() {
     <div className="min-h-screen bg-fh-bg">
       <div className="fh-container py-10">
         <div className="mx-auto max-w-md space-y-4">
-          <h1 className="text-2xl font-semibold">Login</h1>
+          <h1 className="text-2xl font-semibold">Crear cuenta</h1>
 
           {msg ? (
             <div className="rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm">
@@ -43,8 +43,8 @@ export default function LoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               type="password"
               className="w-full rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-fh-accent/30"
-              placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
-              autoComplete="current-password"
+              placeholder="mÃ­nimo 8 recomendable"
+              autoComplete="new-password"
             />
           </div>
 
@@ -55,7 +55,7 @@ export default function LoginPage() {
               setLoading(true);
               setMsg(null);
 
-              const { data, error } = await supabase.auth.signInWithPassword({
+              const { data, error } = await supabase.auth.signUp({
                 email: email.trim(),
                 password,
               });
@@ -66,26 +66,26 @@ export default function LoginPage() {
                 return;
               }
 
-              // Cookie que usa el layout del dashboard
+              // Si tienes confirmaciÃ³n de email DESACTIVADA, normalmente llega sesiÃ³n aquÃ­
               if (data.session) {
                 document.cookie = `fh_session=1; path=/; samesite=lax`;
                 router.push("/app/cases");
               } else {
-                setMsg("No se recibiÃ³ sesiÃ³n. Revisa la configuraciÃ³n de autenticaciÃ³n.");
+                setMsg("Cuenta creada. Si Supabase exige confirmar email, revisa tu correo y luego haz login.");
               }
 
               setLoading(false);
             }}
             className="w-full rounded-xl bg-fh-accent px-4 py-2 text-sm font-medium text-white hover:opacity-95 disabled:opacity-50"
           >
-            {loading ? "Entrando..." : "Entrar"}
+            {loading ? "Creando..." : "Crear"}
           </button>
 
           <button
-            onClick={() => router.push("/register")}
+            onClick={() => router.push("/login")}
             className="w-full rounded-xl border border-fh-border bg-fh-surface px-4 py-2 text-sm hover:bg-fh-surface-2"
           >
-            Crear cuenta
+            Volver a login
           </button>
         </div>
       </div>

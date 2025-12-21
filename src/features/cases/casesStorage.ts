@@ -1,4 +1,4 @@
-import type { CasesState } from "./casesTypes";
+﻿import type { CasesState } from "./casesTypes";
 
 const STORAGE_KEY = "fh_cases_state_v1";
 

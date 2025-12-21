@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+
 import type { CaseType } from "@/features/cases/casesTypes";
 import { defaultTitleForCaseType } from "@/features/cases/casesConfig";
 import { useCases } from "@/features/cases/casesStore";
@@ -18,12 +19,30 @@ const OPTIONS: { value: CaseType; label: string }[] = [
 
 export function NewCaseClient() {
   const router = useRouter();
-  const { createCase } = useCases();
+  const createCase = useCases((s) => s.createCase);
 
   const [type, setType] = useState<CaseType>("toeslag_huur");
   const [title, setTitle] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
 
   const placeholder = useMemo(() => defaultTitleForCaseType(type), [type]);
+
+  async function onCreate() {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+    setErr(null);
+
+    try {
+      const id = await createCase(type, title);
+      router.push(`/app/cases/${id}`);
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : "Error desconocido al crear el caso";
+      setErr(msg);
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
 
   return (
     <div className="space-y-4">
@@ -52,14 +71,18 @@ export function NewCaseClient() {
         />
       </div>
 
+      {err ? (
+        <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm">
+          {err}
+        </div>
+      ) : null}
+
       <button
-        onClick={() => {
-          const id = createCase(type, title);
-          router.push(`/app/cases/${id}`);
-        }}
-        className="w-full rounded-xl bg-fh-accent px-4 py-2 text-sm font-medium text-white hover:opacity-95"
+        onClick={() => void onCreate()}
+        disabled={isSubmitting}
+        className="w-full rounded-xl bg-fh-accent px-4 py-2 text-sm font-medium text-white hover:opacity-95 disabled:opacity-60"
       >
-        Crear y abrir
+        {isSubmitting ? "Creando..." : "Crear y abrir"}
       </button>
     </div>
   );

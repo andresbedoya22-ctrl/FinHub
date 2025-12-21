@@ -6,6 +6,16 @@ import reactHooks from "eslint-plugin-react-hooks";
 import next from "@next/eslint-plugin-next";
 
 export default [
+  {
+    ignores: [
+      "**/node_modules/**",
+      "**/.next/**",
+      "**/_archive_fix/**",
+      "**/docs/~$*",
+      "**/*.bak",
+      "**/*.old",
+    ],
+  },
   // Reglas base de JS
   js.configs.recommended,
 

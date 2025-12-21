@@ -1,4 +1,4 @@
-export type DocumentStatus = "pending" | "ready" | "reviewed";
+﻿export type DocumentStatus = "pending" | "ready" | "reviewed";
 
 export type DocumentType =
   | "id"
@@ -13,7 +13,7 @@ export type DocumentEntity = {
   fileName: string;
   type: DocumentType;
   status: DocumentStatus;
-  caseId?: string; // asociación opcional a Case
+  caseId?: string; // asociaciÃ³n opcional a Case
   notes?: string;
   createdAt: string; // ISO
   updatedAt: string; // ISO

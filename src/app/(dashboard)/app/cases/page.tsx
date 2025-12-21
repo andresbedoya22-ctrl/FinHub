@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 
 import { Screen } from "@/ui/components/Screen";
 import { Header } from "@/ui/components/Header";
@@ -12,7 +12,7 @@ export default function CasesPage() {
     <Screen className="space-y-6">
       <Header
         title="Casos"
-        subtitle="Case Engine v1: lista, creación y navegación por pasos (persistencia local)."
+        subtitle="Case Engine v1: lista, creaciÃ³n y navegaciÃ³n por pasos (persistencia local)."
         right={
           <Link
             href="/app/cases/new"

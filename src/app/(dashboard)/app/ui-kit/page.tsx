@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { Screen } from "@/ui/components/Screen";
 import { Header } from "@/ui/components/Header";
 import { Card } from "@/ui/components/Card";
@@ -10,7 +10,7 @@ export default function UiKitPage() {
     <Screen className="space-y-6">
       <Header
         title="UI Kit"
-        subtitle="Referencia visual y de tokens. Todo componente nuevo debe verse aquí con estados."
+        subtitle="Referencia visual y de tokens. Todo componente nuevo debe verse aquÃ­ con estados."
         right={
           <Link
             href="/app"
@@ -35,7 +35,7 @@ export default function UiKitPage() {
         </InfoBox>
 
         <InfoBox title="Control" variant="info">
-          Si esta pantalla se ve bien en móvil y desktop, la base visual está
+          Si esta pantalla se ve bien en mÃ³vil y desktop, la base visual estÃ¡
           estable.
         </InfoBox>
       </Card>

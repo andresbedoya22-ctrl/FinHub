@@ -1,4 +1,4 @@
-import type { DocumentsState } from "./documentsTypes";
+﻿import type { DocumentsState } from "./documentsTypes";
 
 const STORAGE_KEY = "fh_documents_state_v1";
 
