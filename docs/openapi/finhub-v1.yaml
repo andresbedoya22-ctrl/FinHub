@@ -1,0 +1,338 @@
+openapi: 3.0.3
+info:
+  title: FinHub API v1
+  version: 1.0.0
+servers:
+  - url: /api
+
+paths:
+  /cases:
+    post:
+      summary: Create case
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCaseRequest"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Case"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "401":
+          $ref: "#/components/responses/AuthRequired"
+
+  /cases/{id}:
+    get:
+      summary: Get case by id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Case"
+        "401":
+          $ref: "#/components/responses/AuthRequired"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /cases/{id}/steps/{stepKey}:
+    put:
+      summary: Upsert step draft data for a case
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string, format: uuid }
+        - in: path
+          name: stepKey
+          required: true
+          schema:
+            type: string
+            enum: [eligibility, result, checkout, authorization, documents, review, intake, submission, done]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpsertCaseStepDataRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CaseStepData"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "401":
+          $ref: "#/components/responses/AuthRequired"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /cases/{id}/documents:
+    post:
+      summary: Attach a document to a case (metadata link). Binary upload via signed URL (future).
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AttachDocumentToCaseRequest"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Document"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "401":
+          $ref: "#/components/responses/AuthRequired"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /documents/{id}/ocr:
+    post:
+      summary: Start OCR job (v1 contract; implementation in later phase)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "202":
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OcrJob"
+        "401":
+          $ref: "#/components/responses/AuthRequired"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    get:
+      summary: Get OCR job/result
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OcrJob"
+        "401":
+          $ref: "#/components/responses/AuthRequired"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /payments/webhook:
+    post:
+      summary: Stripe webhook
+      responses:
+        "200":
+          description: OK
+
+  /admin/cases:
+    get:
+      summary: Admin review queue
+      parameters:
+        - in: query
+          name: limit
+          schema: { type: integer, minimum: 1, maximum: 200, default: 50 }
+        - in: query
+          name: cursor
+          schema: { type: string }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminCasesPage"
+        "401":
+          $ref: "#/components/responses/AuthRequired"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+
+components:
+  responses:
+    ValidationError:
+      description: Validation error
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ApiError" }
+          examples:
+            example:
+              value: { code: VALIDATION_ERROR, message: "Invalid payload", details: { field: "type" } }
+    AuthRequired:
+      description: Auth required
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ApiError" }
+          examples:
+            example:
+              value: { code: AUTH_REQUIRED, message: "Authentication required" }
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ApiError" }
+          examples:
+            example:
+              value: { code: NOT_FOUND, message: "Resource not found" }
+    RateLimited:
+      description: Rate limited
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ApiError" }
+          examples:
+            example:
+              value: { code: RATE_LIMITED, message: "Too many requests" }
+
+  schemas:
+    ApiError:
+      type: object
+      required: [code, message]
+      properties:
+        code:
+          type: string
+          enum: [VALIDATION_ERROR, AUTH_REQUIRED, PAYMENT_REQUIRED, AUTHORIZATION_REQUIRED, NOT_FOUND, RATE_LIMITED]
+        message: { type: string }
+        details:
+          type: object
+          additionalProperties: true
+
+    CaseType:
+      type: string
+      enum:
+        [toeslag_huur, toeslag_zorg, toeslag_kinderopvang, tax_ib, tax_voorlopige_aanslag, finances_intake, document_review]
+
+    CaseStatus:
+      type: string
+      enum: [created, in_progress, waiting_user, submitted, under_review, completed, cancelled]
+
+    StepKey:
+      type: string
+      enum: [eligibility, result, checkout, authorization, documents, review, intake, submission, done]
+
+    CaseStep:
+      type: object
+      required: [key, label]
+      properties:
+        key: { $ref: "#/components/schemas/StepKey" }
+        label: { type: string }
+
+    Case:
+      type: object
+      required: [id, type, title, status, stepKey, steps, createdAt, updatedAt]
+      properties:
+        id: { type: string, format: uuid }
+        type: { $ref: "#/components/schemas/CaseType" }
+        title: { type: string }
+        status: { $ref: "#/components/schemas/CaseStatus" }
+        stepKey: { $ref: "#/components/schemas/StepKey" }
+        steps:
+          type: array
+          items: { $ref: "#/components/schemas/CaseStep" }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+
+    CreateCaseRequest:
+      type: object
+      required: [type]
+      properties:
+        type: { $ref: "#/components/schemas/CaseType" }
+        title: { type: string, nullable: true }
+
+    CaseStepData:
+      type: object
+      required: [caseId, stepKey, data, updatedAt]
+      properties:
+        caseId: { type: string, format: uuid }
+        stepKey: { $ref: "#/components/schemas/StepKey" }
+        data:
+          type: object
+          additionalProperties: true
+        updatedAt: { type: string, format: date-time }
+
+    UpsertCaseStepDataRequest:
+      type: object
+      required: [data]
+      properties:
+        data:
+          type: object
+          additionalProperties: true
+
+    DocumentType:
+      type: string
+      enum: [id, income, bank, rental, tax, other]
+
+    DocumentStatus:
+      type: string
+      enum: [pending, ready, reviewed]
+
+    Document:
+      type: object
+      required: [id, fileName, type, status, createdAt, updatedAt]
+      properties:
+        id: { type: string, format: uuid }
+        fileName: { type: string }
+        type: { $ref: "#/components/schemas/DocumentType" }
+        status: { $ref: "#/components/schemas/DocumentStatus" }
+        caseId: { type: string, format: uuid, nullable: true }
+        notes: { type: string, nullable: true }
+        storagePath: { type: string, nullable: true }
+        mimeType: { type: string, nullable: true }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+
+    AttachDocumentToCaseRequest:
+      type: object
+      required: [documentId]
+      properties:
+        documentId: { type: string, format: uuid }
+        notes: { type: string, nullable: true }
+
+    OcrJob:
+      type: object
+      required: [documentId, status, createdAt, updatedAt]
+      properties:
+        documentId: { type: string, format: uuid }
+        status: { type: string, enum: [pending, done, failed] }
+        result:
+          type: object
+          nullable: true
+          additionalProperties: true
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+
+    AdminCasesPage:
+      type: object
+      required: [items]
+      properties:
+        items:
+          type: array
+          items: { $ref: "#/components/schemas/Case" }
+        nextCursor: { type: string, nullable: true }
