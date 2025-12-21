@@ -165,8 +165,7 @@ export function CasesProvider({ children }: { children: React.ReactNode }) {
       getCase: (caseId) => state.cases.find((c) => c.id === caseId),
       getDraft: (caseId, stepKey) => state.draftsByCaseId[caseId]?.[stepKey],
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state]);
+      }, [state]);
 
   return <CasesContext.Provider value={api}>{children}</CasesContext.Provider>;
 }
