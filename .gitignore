@@ -72,3 +72,16 @@ node_modules/
 *.old
 *_backup*
 _archive_fix/
+
+# Local env (NO COMMIT)
+.env.local
+.env.*.local
+
+# Temp / backups
+*.bak
+*.bak*
+*_backup*
+_archive_fix/
+docs/~$*.docx
+node_modules/
+.next/
