@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-
 import { useCases } from "@/features/cases/casesStore";
 import { stepsForCaseType, getCurrentAndNextStep } from "@/features/cases/steps";
 import { Card } from "@/ui/components/Card";
@@ -23,14 +22,14 @@ export function CaseOverviewClient({ caseId }: { caseId: string }) {
   }
 
   const steps = stepsForCaseType(String(c.type));
-  const { current, next } = getCurrentAndNextStep(steps, String(c.stepKey));
+  const { current, next } = getCurrentAndNextStep(steps, c.stepKey);
 
   return (
     <div className="space-y-4">
       <div className="text-sm">
         <div className="font-semibold">{c.title}</div>
         <div className="opacity-80">
-          type: {String(c.type)} | status: {String(c.status)} | step: {String(c.stepKey)}
+          type: {String(c.type)} · status: {c.status} · step: {c.stepKey}
         </div>
       </div>
 
