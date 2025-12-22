@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useEffect } from "react";
 import { create } from "zustand";
@@ -40,11 +40,6 @@ type CasesActions = {
   getCase: (id: string) => CaseItem | undefined;
   setStatus: (id: string, status: CaseStatus) => Promise<void>;
   setStepKey: (id: string, stepKey: string) => Promise<void>;
-
-  // drafts locales (StepClient) - se migran a DB en el siguiente bloque
-  getDraft: (caseId: string, stepKey: string) => unknown;
-  setDraft: (caseId: string, stepKey: string, value: unknown) => void;
-  clearDraft: (caseId: string, stepKey: string) => void;
 };
 
 type CasesStore = CasesActions & {
@@ -84,10 +79,6 @@ function setAll(
   });
 }
 
-function draftKey(caseId: string, stepKey: string) {
-  return `fh_case_draft:${caseId}:${stepKey}`;
-}
-
 export const useCases = create<CasesStore>((set, get) => ({
   state: { cases: [], isLoading: false, error: null },
   cases: [],
@@ -97,42 +88,7 @@ export const useCases = create<CasesStore>((set, get) => ({
   getCase: (id: string) => get().state.cases.find((c) => c.id === id),
 
   // Drafts: por ahora local (se cambia a DB en el siguiente bloque Fase 4)
-  getDraft: (caseId: string, stepKey: string) => {
-    if (typeof window === "undefined") return undefined;
-    try {
-      const raw = window.localStorage.getItem(draftKey(caseId, stepKey));
-      if (raw == null) return undefined;
-      try {
-        return JSON.parse(raw);
-      } catch {
-        return raw;
-      }
-    } catch {
-      return undefined;
-    }
-  },
-
-  setDraft: (caseId: string, stepKey: string, value: unknown) => {
-    if (typeof window === "undefined") return;
-    try {
-      const raw =
-        typeof value === "string" ? value : JSON.stringify(value ?? null);
-      window.localStorage.setItem(draftKey(caseId, stepKey), raw);
-    } catch {
-      // no-op
-    }
-  },
-
-  clearDraft: (caseId: string, stepKey: string) => {
-    if (typeof window === "undefined") return;
-    try {
-      window.localStorage.removeItem(draftKey(caseId, stepKey));
-    } catch {
-      // no-op
-    }
-  },
-
-  loadCases: async () => {
+loadCases: async () => {
     const supabase = createSupabaseBrowserClient();
     setAll(set, { isLoading: true, error: null });
 
