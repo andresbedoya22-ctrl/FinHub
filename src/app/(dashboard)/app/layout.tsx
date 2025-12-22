@@ -2,6 +2,7 @@
 import type { ReactNode } from "react";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { createServerClient } from "@supabase/ssr";
 
 import { AppProviders } from "./providers";
 
@@ -24,22 +25,57 @@ function NavLink({ href, label }: { href: string; label: string }) {
   );
 }
 
+async function createSupabaseServerClientReadOnly() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+  const cookieStore = await cookies();
+
+  if (!url || !anonKey) throw new Error("Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY");
+
+  // En Server Components, setAll no debe mutar cookies; el refresh lo hace el middleware/proxy.
+  return createServerClient(url, anonKey, {
+    cookies: {
+      getAll() {
+        return cookieStore.getAll();
+      },
+      setAll() {
+        // no-op
+      },
+    },
+  });
+}
+
 async function logoutAction() {
   "use server";
+
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
   const cookieStore = await cookies();
-  cookieStore.set("fh_session", "", { path: "/", maxAge: 0 });
+
+  if (!url || !anonKey) throw new Error("Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY");
+
+  const supabase = createServerClient(url, anonKey, {
+    cookies: {
+      getAll() {
+        return cookieStore.getAll();
+      },
+      setAll(cookiesToSet) {
+        cookiesToSet.forEach(({ name, value, options }) => {
+          cookieStore.set(name, value, options);
+        });
+      },
+    },
+  });
+
+  await supabase.auth.signOut();
   redirect("/login");
 }
 
-export default async function DashboardLayout({
-  children,
-}: {
-  children: ReactNode;
-}) {
-  const cookieStore = await cookies();
-  const session = cookieStore.get("fh_session")?.value;
+export default async function DashboardLayout({ children }: { children: ReactNode }) {
+  const supabase = await createSupabaseServerClientReadOnly();
+  const { data } = await supabase.auth.getUser();
 
-  if (!session) redirect("/login");
+  if (!data.user) redirect("/login");
 
   return (
     <div className="min-h-screen bg-fh-bg">
