@@ -1,9 +1,10 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 
 import { useCases } from "@/features/cases/casesStore";
+import { normalizeStepKey } from "@/features/cases/steps";
 import { getStepData, upsertStepData } from "@/features/cases/caseStepDataClient";
 
 import { Screen } from "@/ui/components/Screen";
@@ -20,11 +21,6 @@ function safeStringify(value: unknown) {
     return "";
   }
 }
-
-function normalizeStepKey(stepKey: string) {
-  return String(stepKey || "").trim().toLowerCase();
-}
-
 function isTextPayload(v: unknown): v is TextPayload {
   if (!v || typeof v !== "object") return false;
   return "text" in v && typeof (v as Record<string, unknown>).text === "string";
