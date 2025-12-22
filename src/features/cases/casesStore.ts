@@ -1,9 +1,9 @@
-"use client";
+﻿"use client";
 
 import React, { useEffect } from "react";
 import { create } from "zustand";
 import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
-import type { CaseType } from "@/features/cases/casesTypes";
+import type { CaseStatus, CaseType } from "@/features/cases/casesTypes";
 import { defaultTitleForCaseType } from "@/features/cases/casesConfig";
 
 type CaseRow = {
@@ -16,12 +16,11 @@ type CaseRow = {
   [key: string]: unknown;
 };
 
-
 export type CaseItem = {
   id: string;
   title: string;
   type: CaseType | string;
-  status: string;
+  status: CaseStatus | string;
   stepKey: string;
   updatedAt: string;
 };
@@ -39,20 +38,19 @@ type CasesActions = {
 
   // helpers usados por la UI
   getCase: (id: string) => CaseItem | undefined;
-  setStatus: (id: string, status: string) => Promise<void>;
+  setStatus: (id: string, status: CaseStatus) => Promise<void>;
   setStepKey: (id: string, stepKey: string) => Promise<void>;
 
-  // drafts locales (StepClient)
+  // drafts locales (StepClient) - se migran a DB en el siguiente bloque
   getDraft: (caseId: string, stepKey: string) => unknown;
   setDraft: (caseId: string, stepKey: string, value: unknown) => void;
   clearDraft: (caseId: string, stepKey: string) => void;
 };
 
 type CasesStore = CasesActions & {
-  // formato "nuevo"
   state: CasesState;
 
-  // compatibilidad flat (por si algÃºn componente viejo lo usa)
+  // compatibilidad flat
   cases: CaseItem[];
   isLoading: boolean;
   error: string | null;
@@ -62,7 +60,8 @@ function initialStepKeyForType(type: string) {
   if (type.startsWith("toeslag_")) return "eligibility";
   if (type.startsWith("tax_")) return "intake";
   if (type.startsWith("finances_")) return "intake";
-  return "start";
+  // fallback seguro: debe existir en tu StepKey
+  return "intake";
 }
 
 function setAll(
@@ -97,12 +96,12 @@ export const useCases = create<CasesStore>((set, get) => ({
 
   getCase: (id: string) => get().state.cases.find((c) => c.id === id),
 
+  // Drafts: por ahora local (se cambia a DB en el siguiente bloque Fase 4)
   getDraft: (caseId: string, stepKey: string) => {
     if (typeof window === "undefined") return undefined;
     try {
       const raw = window.localStorage.getItem(draftKey(caseId, stepKey));
       if (raw == null) return undefined;
-      // si es JSON vÃ¡lido, lo devuelve parseado; si no, devuelve string
       try {
         return JSON.parse(raw);
       } catch {
@@ -188,7 +187,7 @@ export const useCases = create<CasesStore>((set, get) => ({
       .insert({
         user_id: userData.user.id,
         title: finalTitle,
-        status: "open",
+        status: "created",
         type,
         step_key: stepKey,
       })
@@ -208,7 +207,7 @@ export const useCases = create<CasesStore>((set, get) => ({
     await get().loadCases();
   },
 
-  setStatus: async (id: string, status: string) => {
+  setStatus: async (id: string, status: CaseStatus) => {
     const supabase = createSupabaseBrowserClient();
     const { data: userData, error: userErr } = await supabase.auth.getUser();
     if (userErr) throw new Error(userErr.message);
@@ -246,6 +245,5 @@ export function CasesProvider({ children }: { children: React.ReactNode }) {
     void loadCases();
   }, [loadCases]);
 
-  // sin JSX para que .ts compile
   return React.createElement(React.Fragment, null, children);
 }
