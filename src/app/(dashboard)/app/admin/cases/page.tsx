@@ -26,15 +26,14 @@ export default function AdminCasesPage() {
       try {
         const supabase = createSupabaseBrowserClient();
         const { data, error } = await supabase
-          .from("cases")
-          .select("id,title,type,status,step_key,created_at,updated_at")
+          .from("cases").select("id,title,type,status,step_key,created_at,updated_at")
           .order("updated_at", { ascending: false })
           .limit(200);
 
         if (error) throw new Error(error.message);
-        if (alive) setRows((data ?? []) as any);
-      } catch (e: any) {
-        if (alive) setError(e?.message ?? "Error desconocido");
+        if (alive) setRows((data ?? []) as Row[]);
+      } catch (e: unknown) {
+        if (alive) setError(e instanceof Error ? e.message : "Error desconocido");
       }
     })();
     return () => {
@@ -64,7 +63,7 @@ export default function AdminCasesPage() {
 
   return (
     <Card className="p-4">
-      <div className="mb-3 text-sm font-semibold">Últimos 200 cases (por updated_at)</div>
+      <div className="mb-3 text-sm font-semibold">ÃƒÆ’Ã†â€™Ãƒâ€¦Ã‚Â¡ltimos 200 cases (por updated_at)</div>
 
       <div className="overflow-auto">
         <table className="min-w-full text-sm">

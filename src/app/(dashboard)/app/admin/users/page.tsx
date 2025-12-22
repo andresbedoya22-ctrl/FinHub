@@ -22,15 +22,14 @@ export default function AdminUsersPage() {
       try {
         const supabase = createSupabaseBrowserClient();
         const { data, error } = await supabase
-          .from("profiles")
-          .select("id,email,role,created_at")
+          .from("profiles").select("id,email,role,created_at")
           .order("created_at", { ascending: false })
           .limit(200);
 
         if (error) throw new Error(error.message);
-        if (alive) setRows((data ?? []) as any);
-      } catch (e: any) {
-        if (alive) setError(e?.message ?? "Error desconocido");
+        if (alive) setRows((data ?? []) as Row[]);
+      } catch (e: unknown) {
+        if (alive) setError(e instanceof Error ? e.message : "Error desconocido");
       }
     })();
     return () => {
@@ -60,7 +59,7 @@ export default function AdminUsersPage() {
 
   return (
     <Card className="p-4">
-      <div className="mb-3 text-sm font-semibold">Últimos 200 users</div>
+      <div className="mb-3 text-sm font-semibold">ÃƒÆ’Ã†â€™Ãƒâ€¦Ã‚Â¡ltimos 200 users</div>
 
       <div className="overflow-auto">
         <table className="min-w-full text-sm">
