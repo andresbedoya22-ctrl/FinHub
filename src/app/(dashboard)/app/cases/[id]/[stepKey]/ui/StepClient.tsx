@@ -1,15 +1,17 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 
-import { useCaseDrafts } from "@/features/cases/caseDraftsStore";
 import { useCases } from "@/features/cases/casesStore";
+import { getStepData, upsertStepData } from "@/features/cases/caseStepDataClient";
 
 import { Screen } from "@/ui/components/Screen";
 import { Header } from "@/ui/components/Header";
 import { Card } from "@/ui/components/Card";
 import { InfoBox } from "@/ui/components/InfoBox";
+
+type TextPayload = { text: string };
 
 function safeStringify(value: unknown) {
   try {
@@ -23,38 +25,73 @@ function normalizeStepKey(stepKey: string) {
   return String(stepKey || "").trim().toLowerCase();
 }
 
+function isTextPayload(v: unknown): v is TextPayload {
+  if (!v || typeof v !== "object") return false;
+  return "text" in v && typeof (v as Record<string, unknown>).text === "string";
+}
+
+function extractTextFromPayload(payload: unknown): string {
+  // Convención v1: guardamos { text: string }
+  if (isTextPayload(payload)) return payload.text;
+
+  if (typeof payload === "string") return payload;
+  if (payload && typeof payload === "object") return safeStringify(payload);
+  return "";
+}
+
 export function StepClient({ caseId, stepKey }: { caseId: string; stepKey: string }) {
   const c = useCases((s) => s.getCase(caseId));
   const setStepKey = useCases((s) => s.setStepKey);
 
-  const getDraft = useCaseDrafts((s) => s.getDraft);
-  const setDraft = useCaseDrafts((s) => s.setDraft);
+  const normalizedStep = useMemo(() => normalizeStepKey(stepKey), [stepKey]);
 
-  const normalizedStep = normalizeStepKey(stepKey);
-
-  const initialText = useMemo(() => {
-    const draft = getDraft(caseId, normalizedStep);
-    if (typeof draft === "string") return draft;
-    if (draft && typeof draft === "object") return safeStringify(draft);
-    return "";
-  }, [caseId, normalizedStep, getDraft]);
-
-  const [text, setText] = useState(initialText);
+  // Nota lint: evitamos setState síncrono dentro del effect.
+  const [text, setText] = useState("");
   const [savedAt, setSavedAt] = useState<Date | null>(null);
+  const [isLoadingDraft, setIsLoadingDraft] = useState(true);
+  const [draftError, setDraftError] = useState<string | null>(null);
 
   useEffect(() => {
-    // cuando cambias de step, refresca el textarea
-    setText(initialText);
-  }, [initialText]);
+    let alive = true;
+
+    (async () => {
+      try {
+        const row = await getStepData(caseId, normalizedStep);
+        if (!alive) return;
+
+        const loaded = row ? extractTextFromPayload(row.data) : "";
+        setText(loaded);
+        setDraftError(null);
+        setIsLoadingDraft(false);
+      } catch (e) {
+        if (!alive) return;
+        setDraftError(e instanceof Error ? e.message : "Error loading draft");
+        setIsLoadingDraft(false);
+      }
+    })();
+
+    return () => {
+      alive = false;
+    };
+  }, [caseId, normalizedStep]);
 
   useEffect(() => {
-    // autosave simple (debounce)
+    // autosave (debounce) a DB
+    if (isLoadingDraft) return;
+
     const t = setTimeout(() => {
-      setDraft(caseId, normalizedStep, text);
-      setSavedAt(new Date());
-    }, 350);
+      void (async () => {
+        try {
+          await upsertStepData(caseId, normalizedStep, { text });
+          setSavedAt(new Date());
+        } catch {
+          // no rompemos UX por fallo de red
+        }
+      })();
+    }, 450);
+
     return () => clearTimeout(t);
-  }, [caseId, normalizedStep, text, setDraft]);
+  }, [caseId, normalizedStep, text, isLoadingDraft]);
 
   if (!c) {
     return (
@@ -84,7 +121,15 @@ export function StepClient({ caseId, stepKey }: { caseId: string; stepKey: strin
     <Screen className="space-y-6">
       <Header
         title={`${c.title} · ${normalizedStep}`}
-        subtitle={savedAt ? `Autosave: Guardado` : "Autosave: pendiente"}
+        subtitle={
+          isLoadingDraft
+            ? "Cargando draft..."
+            : draftError
+              ? `Error: ${draftError}`
+              : savedAt
+                ? "Autosave: Guardado"
+                : "Autosave: pendiente"
+        }
         right={
           <Link
             href={`/app/cases/${c.id}`}
@@ -96,8 +141,8 @@ export function StepClient({ caseId, stepKey }: { caseId: string; stepKey: strin
       />
 
       <Card className="space-y-3">
-        <InfoBox title="Draft local" variant="info">
-          Este contenido se guarda en localStorage para simular el autosave del wizard.
+        <InfoBox title="Draft (DB)" variant="info">
+          Este contenido se guarda en Supabase (case_step_data) para simular autosave del wizard.
         </InfoBox>
 
         <textarea
@@ -105,14 +150,18 @@ export function StepClient({ caseId, stepKey }: { caseId: string; stepKey: strin
           onChange={(e) => setText(e.target.value)}
           className="min-h-[260px] w-full rounded-xl border border-fh-border bg-fh-surface p-3 text-sm outline-none focus:ring-2 focus:ring-fh-border"
           placeholder="Escribe notas/datos del step. (Placeholder v1)"
+          disabled={isLoadingDraft}
         />
 
         <div className="flex flex-wrap gap-2">
           <button
-            className="rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm hover:bg-fh-surface-2"
+            className="rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm hover:bg-fh-surface-2 disabled:opacity-50"
+            disabled={isLoadingDraft}
             onClick={() => {
-              setDraft(caseId, normalizedStep, text);
-              setSavedAt(new Date());
+              void (async () => {
+                await upsertStepData(caseId, normalizedStep, { text });
+                setSavedAt(new Date());
+              })();
             }}
           >
             Guardar ahora
@@ -121,8 +170,6 @@ export function StepClient({ caseId, stepKey }: { caseId: string; stepKey: strin
           <button
             className="rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm hover:bg-fh-surface-2"
             onClick={() => {
-              // avanzar un step "naive": solo marca el stepKey en DB como el actual
-              // (la navegación real por steps se hace desde CaseOverview links)
               void setStepKey(caseId, normalizedStep);
             }}
           >
