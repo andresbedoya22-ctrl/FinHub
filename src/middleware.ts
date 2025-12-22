@@ -28,7 +28,8 @@ export async function middleware(request: NextRequest) {
   if (error || !data.user) {
     const redirectUrl = request.nextUrl.clone();
     redirectUrl.pathname = "/login";
-    redirectUrl.searchParams.set("redirectTo", request.nextUrl.pathname);
+const fullPath = `${request.nextUrl.pathname}${request.nextUrl.search || ""}`;
+redirectUrl.searchParams.set("redirectTo", fullPath);
     return NextResponse.redirect(redirectUrl);
   }
 
