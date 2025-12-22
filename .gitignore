@@ -85,3 +85,7 @@ _archive_fix/
 docs/~$*.docx
 node_modules/
 .next/
+
+# Supabase CLI temp (do not commit)
+supabase/.temp/
+
