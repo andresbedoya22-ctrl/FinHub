@@ -59,7 +59,7 @@ export default function AdminUsersPage() {
 
   return (
     <Card className="p-4">
-      <div className="mb-3 text-sm font-semibold">ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¡ltimos 200 users</div>
+      <div className="mb-3 text-sm font-semibold">Ãƒ�? ’Ã…Â¡ltimos 200 users</div>
 
       <div className="overflow-auto">
         <table className="min-w-full text-sm">

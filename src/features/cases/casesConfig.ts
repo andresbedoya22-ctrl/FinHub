@@ -55,7 +55,7 @@ export function defaultTitleForCaseType(type: CaseType): string {
     case "finances_intake":
       return "Finanzas personales (Intake)";
     case "document_review":
-      return "RevisiÃƒÂ³n de documentos";
+      return "Revisión de documentos";
     default:
       return "Case";
   }

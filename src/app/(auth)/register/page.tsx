@@ -33,7 +33,7 @@ export default function RegisterPage() {
 
       if (error) throw error;
 
-      // Si Supabase devuelve sesiÃƒÂ³n directa, la persistimos; si requiere email confirm, mostramos aviso.
+      // Si Supabase devuelve sesión directa, la persistimos; si requiere email confirm, mostramos aviso.
       if (data.session) {
         await supabase.auth.setSession({
           access_token: data.session.access_token,
@@ -43,7 +43,7 @@ export default function RegisterPage() {
         return;
       }
 
-      setOk("Cuenta creada. Revisa tu email para confirmar (si estÃƒÂ¡ habilitado). Luego haz login.");
+      setOk("Cuenta creada. Revisa tu email para confirmar (si está habilitado). Luego haz login.");
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : "Error desconocido");
     } finally {
@@ -78,7 +78,7 @@ export default function RegisterPage() {
             required
           />
           <Input
-            label="ContraseÃƒÂ±a"
+            label="Contraseña"
             type="password"
             autoComplete="new-password"
             value={password}
@@ -92,7 +92,7 @@ export default function RegisterPage() {
         </form>
 
         <div className="text-sm opacity-80">
-          Ã‚Â¿Ya tienes cuenta?{" "}
+          ¿Ya tienes cuenta?{" "}
           <Link className="underline" href="/login">
             Login
           </Link>

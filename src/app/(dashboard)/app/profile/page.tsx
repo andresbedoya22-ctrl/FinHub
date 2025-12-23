@@ -8,13 +8,13 @@ export default function Profile() {
     <Screen className="space-y-6">
       <Header
         title="Perfil"
-        subtitle="Placeholder. En Sprint 1: perfil + idioma preferido + ajustes bÃƒÂ¡sicos."
+        subtitle="Placeholder. En Sprint 1: perfil + idioma preferido + ajustes básicos."
       />
 
       <Card className="space-y-3">
         <InfoBox title="Pendiente (Sprint 1)" variant="info">
-          Preferencia de idioma, datos personales mÃƒÂ­nimos, y estado de cuenta
-          (suscripciÃƒÂ³n / pay-per-case).
+          Preferencia de idioma, datos personales mínimos, y estado de cuenta
+          (suscripción / pay-per-case).
         </InfoBox>
       </Card>
     </Screen>

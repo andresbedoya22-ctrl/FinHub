@@ -16,12 +16,12 @@ export default function DashboardHome() {
       <Card className="space-y-3">
         <p className="text-sm text-fh-muted">
           Objetivo: una base visual consistente (tokens + componentes) para
-          escalar mÃƒÂ³dulos sin deuda de UI.
+          escalar módulos sin deuda de UI.
         </p>
 
         <InfoBox title="Siguiente" variant="info">
-          CrearÃƒÂ¡s flujo real de Ã¢â‚¬Å“casosÃ¢â‚¬Â y Document Vault en fases posteriores.
-          AquÃƒÂ­ solo hay navegaciÃƒÂ³n y componentes base.
+          Crearás flujo real de “casos” y Document Vault en fases posteriores.
+          Aquí solo hay navegación y componentes base.
         </InfoBox>
       </Card>
     </Screen>

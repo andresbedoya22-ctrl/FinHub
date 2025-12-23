@@ -10,7 +10,7 @@ export default function UiKitPage() {
     <Screen className="space-y-6">
       <Header
         title="UI Kit"
-        subtitle="Referencia visual y de tokens. Todo componente nuevo debe verse aquÃƒÂ­ con estados."
+        subtitle="Referencia visual y de tokens. Todo componente nuevo debe verse aquí con estados."
         right={
           <Link
             href="/app"
@@ -35,7 +35,7 @@ export default function UiKitPage() {
         </InfoBox>
 
         <InfoBox title="Control" variant="info">
-          Si esta pantalla se ve bien en mÃƒÂ³vil y desktop, la base visual estÃƒÂ¡
+          Si esta pantalla se ve bien en móvil y desktop, la base visual está
           estable.
         </InfoBox>
       </Card>

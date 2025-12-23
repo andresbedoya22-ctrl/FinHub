@@ -13,7 +13,7 @@ export type DocumentEntity = {
   fileName: string;
   type: DocumentType;
   status: DocumentStatus;
-  caseId?: string; // asociaciÃƒÂ³n opcional a Case
+  caseId?: string; // asociación opcional a Case
   notes?: string;
   createdAt: string; // ISO
   updatedAt: string; // ISO

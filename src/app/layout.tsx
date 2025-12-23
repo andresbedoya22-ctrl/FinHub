@@ -3,7 +3,7 @@ import "@/styles/globals.css";
 
 export const metadata: Metadata = {
   title: "FinHub",
-  description: "FinHub Ã¢â‚¬â€ plataforma financiera para migrantes en NL",
+  description: "FinHub — plataforma financiera para migrantes en NL",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
