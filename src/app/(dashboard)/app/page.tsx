@@ -1,4 +1,4 @@
-﻿import { Screen } from "@/ui/components/Screen";
+import { Screen } from "@/ui/components/Screen";
 import { Header } from "@/ui/components/Header";
 import { Card } from "@/ui/components/Card";
 import { Badge } from "@/ui/components/Badge";
@@ -16,12 +16,12 @@ export default function DashboardHome() {
       <Card className="space-y-3">
         <p className="text-sm text-fh-muted">
           Objetivo: una base visual consistente (tokens + componentes) para
-          escalar mÃ³dulos sin deuda de UI.
+          escalar mÃƒÂ³dulos sin deuda de UI.
         </p>
 
         <InfoBox title="Siguiente" variant="info">
-          CrearÃ¡s flujo real de â€œcasosâ€ y Document Vault en fases posteriores.
-          AquÃ­ solo hay navegaciÃ³n y componentes base.
+          CrearÃƒÂ¡s flujo real de Ã¢â‚¬Å“casosÃ¢â‚¬Â y Document Vault en fases posteriores.
+          AquÃƒÂ­ solo hay navegaciÃƒÂ³n y componentes base.
         </InfoBox>
       </Card>
     </Screen>

@@ -102,7 +102,7 @@ export function DocumentsClient() {
             <input
               value={notes}
               onChange={(e) => setNotesLocal(e.target.value)}
-              placeholder="ej: falta la Ãºltima pÃ¡gina"
+              placeholder="ej: falta la ÃƒÂºltima pÃƒÂ¡gina"
               className="w-full rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-fh-accent/30"
             />
           </div>
@@ -125,12 +125,12 @@ export function DocumentsClient() {
           }}
           className="w-full rounded-xl bg-fh-accent px-4 py-2 text-sm font-medium text-white hover:opacity-95 disabled:opacity-50"
         >
-          AÃ±adir a Vault
+          AÃƒÂ±adir a Vault
         </button>
 
         {casesForSelect.length === 0 ? (
           <InfoBox title="Tip" variant="info">
-            No tienes casos creados. Crea uno en â€œCasosâ€ para poder asignar documentos.
+            No tienes casos creados. Crea uno en Ã¢â‚¬Å“CasosÃ¢â‚¬Â para poder asignar documentos.
           </InfoBox>
         ) : null}
       </Card>
@@ -160,7 +160,7 @@ export function DocumentsClient() {
       {/* List */}
       {filteredDocs.length === 0 ? (
         <Card>
-          <InfoBox title="VacÃ­o" variant="warning">
+          <InfoBox title="VacÃƒÂ­o" variant="warning">
             No hay documentos en el vault con el filtro actual.
           </InfoBox>
         </Card>

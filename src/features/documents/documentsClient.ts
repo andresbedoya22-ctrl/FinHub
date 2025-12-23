@@ -1,4 +1,4 @@
-﻿import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
+import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
 import type { DocumentEntity, DocumentStatus, DocumentType } from "./documentsTypes";
 
 type DocumentRow = {

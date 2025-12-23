@@ -34,7 +34,7 @@ export default function AdminOverviewPage() {
         if (usersAll.error) throw new Error(usersAll.error.message);
         if (docsAll.error) throw new Error(docsAll.error.message);
 
-        // Para contar por status sin RPC: pequeÃƒÂ±o fetch (limit razonable).
+        // Para contar por status sin RPC: pequeÃƒÆ’Ã‚Â±o fetch (limit razonable).
         // Si luego quieres exactitud a escala, lo pasamos a una view/RPC.
         const cases = await supabase.from("cases").select("status").limit(5000);
         if (cases.error) throw new Error(cases.error.message);
@@ -77,7 +77,7 @@ export default function AdminOverviewPage() {
     return (
       <Card>
         <InfoBox title="Cargando" variant="info">
-          Cargando mÃƒÂ©tricas...
+          Cargando mÃƒÆ’Ã‚Â©tricas...
         </InfoBox>
       </Card>
     );
@@ -88,7 +88,7 @@ export default function AdminOverviewPage() {
       <Card className="space-y-1 p-4">
         <div className="text-sm opacity-80">Cases</div>
         <div className="text-2xl font-semibold">{counts.casesTotal}</div>
-        <div className="text-xs opacity-80">open: {counts.casesOpen} Ã‚Â· under_review: {counts.casesUnderReview} Ã‚Â· completed: {counts.casesCompleted}</div>
+        <div className="text-xs opacity-80">open: {counts.casesOpen} Ãƒâ€šÃ‚Â· under_review: {counts.casesUnderReview} Ãƒâ€šÃ‚Â· completed: {counts.casesCompleted}</div>
       </Card>
 
       <Card className="space-y-1 p-4">

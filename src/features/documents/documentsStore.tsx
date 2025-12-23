@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { createContext, useContext, useEffect, useMemo, useReducer } from "react";
 import type { DocumentEntity, DocumentStatus, DocumentType, DocumentsState } from "./documentsTypes";

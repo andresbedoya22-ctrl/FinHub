@@ -1,4 +1,4 @@
-﻿import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
+import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
 
 export type CaseStepDataRow = {
   id: string;
