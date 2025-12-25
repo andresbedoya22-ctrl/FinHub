@@ -1,31 +1,8 @@
-export type CaseType =
-  | "toeslag_huur"
-  | "toeslag_zorg"
-  | "toeslag_kinderopvang"
-  | "tax_ib"
-  | "tax_voorlopige_aanslag"
-  | "finances_intake"
-  | "document_review";
+export type CaseType = | "toeslag_huur" | "toeslag_zorg" | "toeslag_kinderopvang" | "tax_ib" | "tax_voorlopige_aanslag" | "finances_intake" | "document_review";
 
-export type CaseStatus =
-  | "created"
-  | "in_progress"
-  | "waiting_user"
-  | "submitted"
-  | "under_review"
-  | "completed"
-  | "cancelled";
+export type CaseStatus = | "created" | "in_progress" | "waiting_user" | "submitted" | "under_review" | "completed" | "cancelled";
 
-export type StepKey =
-  | "eligibility"
-  | "result"
-  | "checkout"
-  | "authorization"
-  | "documents"
-  | "review"
-  | "intake"
-  | "submission"
-  | "done";
+export type StepKey = | "eligibility" | "result" | "checkout" | "authorization" | "documents" | "review" | "intake" | "submission" | "done";
 
 export type CaseStep = {
   key: StepKey;

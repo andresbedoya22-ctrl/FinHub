@@ -10,7 +10,7 @@ export default function Documents() {
     <Screen className="space-y-6">
       <Header
         title="Documentos"
-        subtitle="Document Vault v1: mock upload + lista + estado + asignación a caso (persistencia local)."
+        subtitle="Document Vault v1: mock upload + lista + estado + asignación a caso."
       />
 
       <Card className="space-y-3">

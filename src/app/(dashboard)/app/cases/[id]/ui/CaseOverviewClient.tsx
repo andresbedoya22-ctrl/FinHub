@@ -1,21 +1,34 @@
 "use client";
 
 import Link from "next/link";
+import { useMemo } from "react";
 import { useCases } from "@/features/cases/casesStore";
 import { stepsForCaseType, getCurrentAndNextStep } from "@/features/cases/steps";
+import { useDocuments } from "@/features/documents/documentsStore";
 import { Card } from "@/ui/components/Card";
 import { InfoBox } from "@/ui/components/InfoBox";
+
+function pill(text: string) {
+  return <span className="rounded-xl border border-fh-border bg-fh-surface px-2 py-1 text-xs">{text}</span>;
+}
 
 export function CaseOverviewClient({ caseId }: { caseId: string }) {
   const c = useCases((s) => s.getCase(caseId));
   const setStatus = useCases((s) => s.setStatus);
   const setStepKey = useCases((s) => s.setStepKey);
 
+  const { state: docsState } = useDocuments();
+
+  const docsForCase = useMemo(() => {
+    const arr = docsState.documents.filter((d) => (d.caseId ?? "") === caseId);
+    return arr.sort((a, b) => (a.updatedAt < b.updatedAt ? 1 : -1));
+  }, [docsState.documents, caseId]);
+
   if (!c) {
     return (
       <Card>
         <InfoBox title="No encontrado" variant="warning">
-          Este case no existe (o fue eliminado).
+          Este caso no existe (o fue eliminado).
         </InfoBox>
       </Card>
     );
@@ -28,9 +41,7 @@ export function CaseOverviewClient({ caseId }: { caseId: string }) {
     <div className="space-y-4">
       <div className="text-sm">
         <div className="font-semibold">{c.title}</div>
-        <div className="opacity-80">
-          type: {String(c.type)} · status: {c.status} · step: {c.stepKey}
-        </div>
+        <div className="opacity-80">type: {String(c.type)} · status: {c.status} · step: {c.stepKey}</div>
       </div>
 
       <div className="flex flex-wrap gap-2">
@@ -62,6 +73,49 @@ export function CaseOverviewClient({ caseId }: { caseId: string }) {
           Marcar "completed"
         </button>
       </div>
+
+      <Card className="space-y-3">
+        <div className="flex items-center justify-between gap-3">
+          <div className="text-sm font-semibold">Documentos vinculados</div>
+          <Link className="underline text-sm" href={`/app/documents?caseId=${c.id}`}>
+            Abrir Vault filtrado
+          </Link>
+        </div>
+
+        <div className="flex flex-wrap gap-2">
+          {pill(`${docsForCase.length} docs`)}
+          {docsForCase.length ? pill("últimos cambios arriba") : null}
+        </div>
+
+        {docsForCase.length === 0 ? (
+          <InfoBox title="Vacío" variant="warning">
+            Este caso aún no tiene documentos asignados.
+          </InfoBox>
+        ) : (
+          <div className="overflow-auto">
+            <table className="min-w-full text-sm">
+              <thead className="text-left opacity-80">
+                <tr>
+                  <th className="py-2 pr-4">Archivo</th>
+                  <th className="py-2 pr-4">Tipo</th>
+                  <th className="py-2 pr-4">Estado</th>
+                  <th className="py-2 pr-0">Actualizado</th>
+                </tr>
+              </thead>
+              <tbody>
+                {docsForCase.slice(0, 10).map((d) => (
+                  <tr key={d.id} className="border-t border-fh-border">
+                    <td className="py-2 pr-4">{d.fileName}</td>
+                    <td className="py-2 pr-4">{d.type}</td>
+                    <td className="py-2 pr-4">{d.status}</td>
+                    <td className="py-2 pr-0">{new Date(d.updatedAt).toLocaleString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </Card>
 
       <Card className="space-y-3">
         <div className="text-sm font-semibold">Pasos</div>

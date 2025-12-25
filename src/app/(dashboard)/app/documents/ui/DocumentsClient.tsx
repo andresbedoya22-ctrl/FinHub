@@ -7,6 +7,8 @@ import { InfoBox } from "@/ui/components/InfoBox";
 import type { DocumentStatus, DocumentType } from "@/features/documents/documentsTypes";
 import { useDocuments } from "@/features/documents/documentsStore";
 import { useCases } from "@/features/cases/casesStore";
+import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
+
 const TYPE_OPTIONS: { value: DocumentType; label: string }[] = [
   { value: "id", label: "Identidad" },
   { value: "income", label: "Ingresos" },
@@ -17,28 +19,26 @@ const TYPE_OPTIONS: { value: DocumentType; label: string }[] = [
 ];
 
 const STATUS_OPTIONS: { value: DocumentStatus; label: string }[] = [
-  { value: "pending", label: "Pending" },
-  { value: "ready", label: "Ready" },
-  { value: "reviewed", label: "Reviewed" },
+  { value: "uploaded", label: "Subido" },
+  { value: "under_review", label: "En revisión" },
+  { value: "approved", label: "Aprobado" },
 ];
 
 function pill(text: string) {
-  return (
-    <span className="rounded-xl border border-fh-border bg-fh-surface px-2 py-1 text-xs">
-      {text}
-    </span>
-  );
+  return <span className="rounded-xl border border-fh-border bg-fh-surface px-2 py-1 text-xs">{text}</span>;
 }
 
 export function DocumentsClient() {
   const { state: docsState, addDocument, deleteDocument, setStatus, setCase, setNotes } = useDocuments();
   const { state: casesState } = useCases();
 
-  const [fileName, setFileName] = useState("");
+  const [file, setFile] = useState<File | null>(null);
   const [type, setType] = useState<DocumentType>("income");
-  const [caseId, setCaseId] = useState<string>(""); // "" = sin asignar
+  const [caseId, setCaseId] = useState<string>("");
   const [notes, setNotesLocal] = useState("");
   const [filterStatus, setFilterStatus] = useState<DocumentStatus | "all">("all");
+  const [busyUpload, setBusyUpload] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
 
   const casesForSelect = useMemo(() => casesState.cases, [casesState.cases]);
 
@@ -47,23 +47,68 @@ export function DocumentsClient() {
     return docsState.documents.filter((d) => d.status === filterStatus);
   }, [docsState.documents, filterStatus]);
 
-  const canAdd = fileName.trim().length >= 3;
+  const canAdd = !!file && file.name.trim().length >= 3;
+
+  async function onAdd() {
+    if (!file) return;
+    setUploadError(null);
+    setBusyUpload(true);
+
+    try {
+      const supabase = createSupabaseBrowserClient();
+      const { data: userData, error: userErr } = await supabase.auth.getUser();
+      if (userErr) throw new Error(userErr.message);
+      if (!userData.user) throw new Error("No authenticated user");
+
+      const safeName = file.name.trim().replace(/[^a-zA-Z0-9._-]/g, "_");
+      const storagePath = `${userData.user.id}/${Date.now()}_${safeName}`; // relativo al bucket
+
+      const up = await supabase.storage.from("vault").upload(storagePath, file, { upsert: false });
+      if (up.error) throw new Error(up.error.message);
+
+      await addDocument({
+        fileName: file.name,
+        type,
+        caseId: caseId || undefined,
+        notes: notes.trim() || undefined,
+        storagePath, // relativo (sin 'vault/')
+      });
+
+      setFile(null);
+      setNotesLocal("");
+      setCaseId("");
+      setType("income");
+
+      const el = document.getElementById("fh-file") as HTMLInputElement | null;
+      if (el) el.value = "";
+    } catch (e: unknown) {
+      setUploadError(e instanceof Error ? e.message : "Error desconocido");
+    } finally {
+      setBusyUpload(false);
+    }
+  }
 
   return (
     <div className="space-y-6">
-      {/* Upload mock */}
       <Card className="space-y-4">
-        <div className="text-sm font-semibold">Subir documento (mock v1)</div>
+        <div className="text-sm font-semibold">Subir documento (real v1)</div>
+
+        {uploadError ? (
+          <InfoBox title="Error" variant="danger">
+            {uploadError}
+          </InfoBox>
+        ) : null}
 
         <div className="grid gap-3 md:grid-cols-2">
           <div className="space-y-1">
-            <label className="text-sm font-medium">Nombre de archivo</label>
+            <label className="text-sm font-medium">Archivo</label>
             <input
-              value={fileName}
-              onChange={(e) => setFileName(e.target.value)}
-              placeholder="ej: jaaropgave_2025.pdf"
+              id="fh-file"
+              type="file"
+              onChange={(e) => setFile(e.target.files?.[0] ?? null)}
               className="w-full rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-fh-accent/30"
             />
+            <div className="text-xs text-fh-muted">Se guarda en Vault privado.</div>
           </div>
 
           <div className="space-y-1">
@@ -109,33 +154,20 @@ export function DocumentsClient() {
         </div>
 
         <button
-          disabled={!canAdd}
-          onClick={() => {
-            if (!canAdd) return;
-            addDocument({
-              fileName: fileName.trim(),
-              type,
-              caseId: caseId || undefined,
-              notes: notes.trim() || undefined,
-            });
-            setFileName("");
-            setNotesLocal("");
-            setCaseId("");
-            setType("income");
-          }}
+          disabled={!canAdd || busyUpload}
+          onClick={onAdd}
           className="w-full rounded-xl bg-fh-accent px-4 py-2 text-sm font-medium text-white hover:opacity-95 disabled:opacity-50"
         >
-          Añadir a Vault
+          {busyUpload ? "Subiendo..." : "Añadir a Vault"}
         </button>
 
         {casesForSelect.length === 0 ? (
           <InfoBox title="Tip" variant="info">
-            No tienes casos creados. Crea uno en “Casos” para poder asignar documentos.
+            No tienes casos creados. Crea uno en "œCasos" para poder asignar documentos.
           </InfoBox>
         ) : null}
       </Card>
 
-      {/* Filters */}
       <Card className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <div className="text-sm font-semibold">Vault</div>
 
@@ -157,7 +189,6 @@ export function DocumentsClient() {
         </div>
       </Card>
 
-      {/* List */}
       {filteredDocs.length === 0 ? (
         <Card>
           <InfoBox title="Vacío" variant="warning">
@@ -176,9 +207,7 @@ export function DocumentsClient() {
                     {pill(d.status)}
                     {d.caseId ? pill("asignado") : pill("sin caso")}
                   </div>
-                  <div className="text-xs text-fh-muted">
-                    Actualizado: {new Date(d.updatedAt).toLocaleString()}
-                  </div>
+                  <div className="text-xs text-fh-muted">Actualizado: {new Date(d.updatedAt).toLocaleString()}</div>
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2">
@@ -232,4 +261,3 @@ export function DocumentsClient() {
     </div>
   );
 }
-
