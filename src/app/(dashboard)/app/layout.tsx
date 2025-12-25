@@ -6,13 +6,7 @@ import { createServerClient } from "@supabase/ssr";
 
 import { AppProviders } from "./providers";
 
-const navItems = [
-  { href: "/app", label: "Inicio" },
-  { href: "/app/cases", label: "Casos" },
-  { href: "/app/documents", label: "Documentos" },
-  { href: "/app/profile", label: "Perfil" },
-  { href: "/app/ui-kit", label: "UI Kit" },
-];
+type Profile = { role: "user" | "admin" };
 
 function NavLink({ href, label }: { href: string; label: string }) {
   return (
@@ -32,7 +26,7 @@ async function createSupabaseServerClientReadOnly() {
 
   if (!url || !anonKey) throw new Error("Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY");
 
-  // En Server Components, setAll no debe mutar cookies; el refresh lo hace el middleware/proxy.
+  // En Server Components, setAll no debe mutar cookies; el refresh lo hace el proxy.
   return createServerClient(url, anonKey, {
     cookies: {
       getAll() {
@@ -76,6 +70,23 @@ export default async function DashboardLayout({ children }: { children: ReactNod
   const { data } = await supabase.auth.getUser();
 
   if (!data.user) redirect("/login");
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", data.user.id)
+    .maybeSingle();
+
+  const isAdmin = (profile as Profile | null)?.role === "admin";
+
+  const navItems = [
+    { href: "/app", label: "Inicio" },
+    { href: "/app/cases", label: "Casos" },
+    { href: "/app/documents", label: "Documentos" },
+    { href: "/app/profile", label: "Perfil" },
+    { href: "/app/ui-kit", label: "UI Kit" },
+    ...(isAdmin ? [{ href: "/app/admin", label: "Admin" }] : []),
+  ];
 
   return (
     <div className="min-h-screen bg-fh-bg">
