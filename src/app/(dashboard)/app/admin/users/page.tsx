@@ -22,7 +22,8 @@ export default function AdminUsersPage() {
       try {
         const supabase = createSupabaseBrowserClient();
         const { data, error } = await supabase
-          .from("profiles").select("id,email,role,created_at")
+          .from("profiles")
+          .select("id,email,role,created_at")
           .order("created_at", { ascending: false })
           .limit(200);
 
@@ -51,7 +52,7 @@ export default function AdminUsersPage() {
     return (
       <Card>
         <InfoBox title="Cargando" variant="info">
-          Cargando users...
+          Cargando usuarios...
         </InfoBox>
       </Card>
     );
@@ -59,7 +60,7 @@ export default function AdminUsersPage() {
 
   return (
     <Card className="p-4">
-      <div className="mb-3 text-sm font-semibold">Ãƒ�? ’Ã…Â¡ltimos 200 users</div>
+      <div className="mb-3 text-sm font-semibold">Últimos 200 usuarios</div>
 
       <div className="overflow-auto">
         <table className="min-w-full text-sm">

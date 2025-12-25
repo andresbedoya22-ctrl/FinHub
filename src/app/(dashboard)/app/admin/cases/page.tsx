@@ -26,7 +26,8 @@ export default function AdminCasesPage() {
       try {
         const supabase = createSupabaseBrowserClient();
         const { data, error } = await supabase
-          .from("cases").select("id,title,type,status,step_key,created_at,updated_at")
+          .from("cases")
+          .select("id,title,type,status,step_key,created_at,updated_at")
           .order("updated_at", { ascending: false })
           .limit(200);
 
@@ -55,7 +56,7 @@ export default function AdminCasesPage() {
     return (
       <Card>
         <InfoBox title="Cargando" variant="info">
-          Cargando cases...
+          Cargando casos...
         </InfoBox>
       </Card>
     );
@@ -63,7 +64,7 @@ export default function AdminCasesPage() {
 
   return (
     <Card className="p-4">
-      <div className="mb-3 text-sm font-semibold">Ãƒ�? ’Ã…Â¡ltimos 200 cases (por updated_at)</div>
+      <div className="mb-3 text-sm font-semibold">Últimos 200 casos (por updated_at)</div>
 
       <div className="overflow-auto">
         <table className="min-w-full text-sm">
