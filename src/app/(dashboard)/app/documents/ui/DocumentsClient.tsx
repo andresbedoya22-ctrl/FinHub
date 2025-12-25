@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useMemo, useState } from "react";
 import { Card } from "@/ui/components/Card";
@@ -20,7 +20,7 @@ const TYPE_OPTIONS: { value: DocumentType; label: string }[] = [
 
 const STATUS_OPTIONS: { value: DocumentStatus; label: string }[] = [
   { value: "uploaded", label: "Subido" },
-  { value: "under_review", label: "En revisión" },
+  { value: "under_review", label: "En revisiÃ³n" },
   { value: "approved", label: "Aprobado" },
 ];
 
@@ -147,7 +147,7 @@ export function DocumentsClient() {
             <input
               value={notes}
               onChange={(e) => setNotesLocal(e.target.value)}
-              placeholder="ej: falta la última página"
+              placeholder="ej: falta la Ãºltima pÃ¡gina"
               className="w-full rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-fh-accent/30"
             />
           </div>
@@ -158,12 +158,12 @@ export function DocumentsClient() {
           onClick={onAdd}
           className="w-full rounded-xl bg-fh-accent px-4 py-2 text-sm font-medium text-white hover:opacity-95 disabled:opacity-50"
         >
-          {busyUpload ? "Subiendo..." : "Añadir a Vault"}
+          {busyUpload ? "Subiendo..." : "AÃ±adir a Vault"}
         </button>
 
         {casesForSelect.length === 0 ? (
           <InfoBox title="Tip" variant="info">
-            No tienes casos creados. Crea uno en "œCasos" para poder asignar documentos.
+            No tienes casos creados. Crea uno en "Å“Casos"Â para poder asignar documentos.
           </InfoBox>
         ) : null}
       </Card>
@@ -191,7 +191,7 @@ export function DocumentsClient() {
 
       {filteredDocs.length === 0 ? (
         <Card>
-          <InfoBox title="Vacío" variant="warning">
+          <InfoBox title="VacÃ­o" variant="warning">
             No hay documentos en el vault con el filtro actual.
           </InfoBox>
         </Card>
