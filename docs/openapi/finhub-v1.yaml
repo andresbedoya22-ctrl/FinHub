@@ -6,6 +6,40 @@ servers:
   - url: /api
 
 paths:
+  /stripe/webhook:
+    post:
+      summary: Stripe webhook (v1)
+      description: Handles Stripe webhooks and updates payment state.
+      tags: [Payments]
+      responses:
+        "200": { description: OK }
+        "400": { description: Bad Request }
+  /payments/checkout:
+    post:
+      summary: Create Stripe Checkout Session (v1)
+      description: Creates a Stripe Checkout Session and registers a payment row.
+      tags: [Payments]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [caseId, productKey]
+              properties:
+                caseId: { type: string }
+                productKey: { type: string, example: case_unlock }
+      responses:
+        "200":
+          description: Checkout URL
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: { type: boolean }
+                  url: { type: string }
+        "401": { description: Unauthorized }
   /auth/login:
     post:
       summary: Login (email/password)
@@ -317,3 +351,5 @@ components:
       properties:
         ok: { type: boolean, enum: [true] }
         url: { type: string }
+
+
