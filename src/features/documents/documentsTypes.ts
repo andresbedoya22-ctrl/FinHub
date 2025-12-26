@@ -1,4 +1,4 @@
-﻿export type DocumentType = "id" | "income" | "bank" | "rental" | "tax" | "other";
+﻿export type DocumentType = "id" | "income" | "bank" | "rental" | "tax" | "other" | "machtigingsregistratie";
 
 /**
  * IMPORTANTE:
@@ -22,3 +22,4 @@ export type DocumentEntity = {
 export type DocumentsState = {
   documents: DocumentEntity[];
 };
+
