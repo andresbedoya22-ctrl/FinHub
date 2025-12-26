@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 import { createSupabaseServerClient } from "@/lib/supabaseServerClient";
 
 export const dynamic = "force-dynamic";
@@ -27,7 +27,7 @@ export async function POST(req: Request) {
     }
 
     const body = (await req.json().catch(() => ({}))) as Body;
-    const bucket = (body.bucket ?? "documents").trim();
+    const bucket = (body.bucket ?? "vault").trim();
     const path = (body.path ?? "").trim();
     const expiresIn = Math.max(60, Math.min(60 * 60, Number(body.expiresIn ?? 300))); // 60s..3600s
 
