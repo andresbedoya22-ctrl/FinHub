@@ -1,22 +1,22 @@
-﻿export type DocumentStatus = "pending" | "ready" | "reviewed";
+﻿export type DocumentType = "id" | "income" | "bank" | "rental" | "tax" | "other";
 
-export type DocumentType =
-  | "id"
-  | "income"
-  | "bank"
-  | "rental"
-  | "tax"
-  | "other";
+/**
+ * IMPORTANTE:
+ * Estos estados deben coincidir con el CHECK constraint en la tabla documents.
+ * Ajusta aquÃ­ solo si cambias el constraint en Supabase.
+ */
+export type DocumentStatus = "uploaded" | "under_review" | "approved" | "rejected";
 
 export type DocumentEntity = {
   id: string;
   fileName: string;
   type: DocumentType;
   status: DocumentStatus;
-  caseId?: string; // asociaciÃ³n opcional a Case
+  caseId?: string;
   notes?: string;
-  createdAt: string; // ISO
-  updatedAt: string; // ISO
+  storagePath?: string; // ruta relativa dentro del bucket "vault"
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type DocumentsState = {

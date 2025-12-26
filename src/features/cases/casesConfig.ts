@@ -1,4 +1,4 @@
-﻿import type { CaseStep, CaseType } from "./casesTypes";
+import type { CaseStep, CaseType } from "./casesTypes";
 
 export function stepsForCaseType(type: CaseType): CaseStep[] {
   const toeslagen: CaseStep[] = [
@@ -55,7 +55,7 @@ export function defaultTitleForCaseType(type: CaseType): string {
     case "finances_intake":
       return "Finanzas personales (Intake)";
     case "document_review":
-      return "RevisiÃ³n de documentos";
+      return "Revisión de documentos";
     default:
       return "Case";
   }

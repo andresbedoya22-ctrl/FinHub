@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { createContext, useContext, useEffect, useMemo, useReducer } from "react";
 import type { DocumentEntity, DocumentStatus, DocumentType, DocumentsState } from "./documentsTypes";
@@ -56,7 +56,7 @@ function reducer(state: DocumentsState, action: Action): DocumentsState {
 
 type DocumentsContextValue = {
   state: DocumentsState;
-  addDocument: (args: { fileName: string; type: DocumentType; caseId?: string; notes?: string }) => Promise<void>;
+  addDocument: (args: { fileName: string; type: DocumentType; caseId?: string; notes?: string; storagePath?: string }) => Promise<void>;
   deleteDocument: (id: string) => Promise<void>;
   setStatus: (id: string, status: DocumentStatus) => Promise<void>;
   setCase: (id: string, caseId?: string) => Promise<void>;
