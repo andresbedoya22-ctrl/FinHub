@@ -1,9 +1,17 @@
-﻿-- Phase 7.1: OCR/Extraction/Review persistence (v1)
+-- Phase 7.1: OCR/Extraction/Review persistence (v1)
 
 -- 0) Extend documents.type to support machtigingsregistratie (keep existing values)
 do $$
 declare r record;
 begin
+  -- If table doesn't exist yet, no-op
+  begin
+    execute 'alter table public.documents drop constraint if exists documents_type_check';
+  exception
+    when undefined_table then
+      return;
+  end;
+
   -- Drop any CHECK constraint on documents that looks like a type-in list (name may vary)
   for r in
     select conname
@@ -15,12 +23,17 @@ begin
     execute format('alter table public.documents drop constraint if exists %I', r.conname);
   end loop;
 
-  alter table public.documents
-    add constraint documents_type_check
-    check (type in ('id','income','bank','rental','tax','other','machtigingsregistratie'));
-exception
-  when undefined_table then
-    null;
+  -- Re-create canonical constraint name (ignore if already exists)
+  begin
+    execute $q$
+      alter table public.documents
+        add constraint documents_type_check
+        check (type in ('id','income','bank','rental','tax','other','machtigingsregistratie'))
+    $q$;
+  exception
+    when duplicate_object then
+      null;
+  end;
 end $$;
 
 create index if not exists idx_documents_type on public.documents(type);

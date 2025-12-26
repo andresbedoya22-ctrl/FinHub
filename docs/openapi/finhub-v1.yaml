@@ -1,355 +1,312 @@
-﻿openapi: 3.0.3
+openapi: 3.0.3
 info:
-  title: FinHub API v1
+  title: FinHub API (v1)
   version: 1.0.0
+  description: |
+    Contracto OpenAPI v1 para FinHub (web-first).
+    Nota: Endpoints /api/debug/* fuera de contrato.
 servers:
   - url: /api
+tags:
+  - name: Auth
+  - name: Documents
+  - name: Payments
+  - name: Admin
 
 paths:
-  /stripe/webhook:
+  /auth/register:
     post:
-      summary: Stripe webhook (v1)
-      description: Handles Stripe webhooks and updates payment state.
-      tags: [Payments]
+      tags: [Auth]
+      summary: Register user
       responses:
-        "200": { description: OK }
-        "400": { description: Bad Request }
-  /payments/checkout:
+        "200":
+          description: OK
+  /auth/login:
     post:
-      summary: Create Stripe Checkout Session (v1)
-      description: Creates a Stripe Checkout Session and registers a payment row.
-      tags: [Payments]
+      tags: [Auth]
+      summary: Login user
+      responses:
+        "200":
+          description: OK
+  /auth/logout:
+    post:
+      tags: [Auth]
+      summary: Logout user
+      responses:
+        "200":
+          description: OK
+
+  /documents:
+    post:
+      tags: [Documents]
+      summary: Create a document (DB row) for current user
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              required: [caseId, productKey]
-              properties:
-                caseId: { type: string }
-                productKey: { type: string, example: case_unlock }
+              $ref: "#/components/schemas/CreateDocumentRequest"
       responses:
         "200":
-          description: Checkout URL
+          description: OK
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  ok: { type: boolean }
-                  url: { type: string }
-        "401": { description: Unauthorized }
-  /auth/login:
-    post:
-      summary: Login (email/password)
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema: { $ref: "#/components/schemas/AuthRequest" }
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema: { $ref: "#/components/schemas/AuthOkResponse" }
-        "400":
-          description: Bad request
-          content:
-            application/json:
-              schema: { $ref: "#/components/schemas/ErrorResponse" }
-        "401":
-          description: Unauthorized
-          content:
-            application/json:
-              schema: { $ref: "#/components/schemas/ErrorResponse" }
-
-  /auth/register:
-    post:
-      summary: Register (email/password)
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema: { $ref: "#/components/schemas/AuthRequest" }
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema: { $ref: "#/components/schemas/AuthOkResponse" }
-        "400":
-          description: Bad request
-          content:
-            application/json:
-              schema: { $ref: "#/components/schemas/ErrorResponse" }
-
-  /auth/logout:
-    post:
-      summary: Logout
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema: { $ref: "#/components/schemas/OkResponse" }
-        "500":
-          description: Server error
-          content:
-            application/json:
-              schema: { $ref: "#/components/schemas/ErrorResponse" }
-
-  /documents:
-    post:
-      summary: Create document metadata (storage object handled separately)
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema: { $ref: "#/components/schemas/CreateDocumentRequest" }
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema: { $ref: "#/components/schemas/CreateDocumentResponse" }
-        "400":
-          description: Bad request
-          content:
-            application/json:
-              schema: { $ref: "#/components/schemas/ErrorResponse" }
-        "401":
-          description: Unauthorized
-          content:
-            application/json:
-              schema: { $ref: "#/components/schemas/ErrorResponse" }
+                $ref: "#/components/schemas/CreateDocumentResponse"
 
   /documents/my:
     get:
-      summary: List my documents
+      tags: [Documents]
+      summary: List documents of current user
       responses:
         "200":
           description: OK
-          content:
-            application/json:
-              schema: { $ref: "#/components/schemas/ListDocumentsResponse" }
-        "400":
-          description: Bad request
-          content:
-            application/json:
-              schema: { $ref: "#/components/schemas/ErrorResponse" }
-        "401":
-          description: Unauthorized
-          content:
-            application/json:
-              schema: { $ref: "#/components/schemas/ErrorResponse" }
 
   /documents/{id}:
+    get:
+      tags: [Documents]
+      summary: Get document by id (RLS-protected)
+      parameters:
+        - $ref: "#/components/parameters/DocumentId"
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not found
     patch:
-      summary: Update document metadata (status/caseId/notes)
+      tags: [Documents]
+      summary: Update document (status/case_id/notes)
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema: { type: string, format: uuid }
-      requestBody:
-        required: false
-        content:
-          application/json:
-            schema: { $ref: "#/components/schemas/PatchDocumentRequest" }
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema: { $ref: "#/components/schemas/OkResponse" }
-        "400":
-          description: Bad request
-          content:
-            application/json:
-              schema: { $ref: "#/components/schemas/ErrorResponse" }
-        "401":
-          description: Unauthorized
-          content:
-            application/json:
-              schema: { $ref: "#/components/schemas/ErrorResponse" }
-        "404":
-          description: Not found
-          content:
-            application/json:
-              schema: { $ref: "#/components/schemas/ErrorResponse" }
-
-    delete:
-      summary: Delete document (also deletes storage object if storagePath exists)
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema: { type: string, format: uuid }
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema: { $ref: "#/components/schemas/OkResponse" }
-        "400":
-          description: Bad request
-          content:
-            application/json:
-              schema: { $ref: "#/components/schemas/ErrorResponse" }
-        "401":
-          description: Unauthorized
-          content:
-            application/json:
-              schema: { $ref: "#/components/schemas/ErrorResponse" }
-        "404":
-          description: Not found
-          content:
-            application/json:
-              schema: { $ref: "#/components/schemas/ErrorResponse" }
-
-  /admin/documents/signed-url:
-    post:
-      summary: Create signed URL for storage object (admin only)
+        - $ref: "#/components/parameters/DocumentId"
       requestBody:
         required: true
         content:
           application/json:
-            schema: { $ref: "#/components/schemas/SignedUrlRequest" }
+            schema:
+              $ref: "#/components/schemas/PatchDocumentRequest"
+      responses:
+        "200":
+          description: OK
+    delete:
+      tags: [Documents]
+      summary: Delete document (DB row) by id
+      parameters:
+        - $ref: "#/components/parameters/DocumentId"
+      responses:
+        "200":
+          description: OK
+
+  /documents/{id}/ocr:
+    post:
+      tags: [Documents]
+      summary: Request OCR (mock v1) and create run + extraction + audit
+      parameters:
+        - $ref: "#/components/parameters/DocumentId"
       responses:
         "200":
           description: OK
           content:
             application/json:
-              schema: { $ref: "#/components/schemas/SignedUrlResponse" }
-        "400":
-          description: Bad request
+              schema:
+                $ref: "#/components/schemas/OcrRequestResponse"
+
+  /documents/{id}/extraction:
+    get:
+      tags: [Documents]
+      summary: Get latest extraction for document id
+      parameters:
+        - $ref: "#/components/parameters/DocumentId"
+      responses:
+        "200":
+          description: OK
           content:
             application/json:
-              schema: { $ref: "#/components/schemas/ErrorResponse" }
-        "401":
-          description: Unauthorized
+              schema:
+                $ref: "#/components/schemas/GetExtractionResponse"
+    patch:
+      tags: [Documents]
+      summary: Update latest extraction (or create if missing) + audit "edited"
+      parameters:
+        - $ref: "#/components/parameters/DocumentId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchExtractionRequest"
+      responses:
+        "200":
+          description: OK
           content:
             application/json:
-              schema: { $ref: "#/components/schemas/ErrorResponse" }
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema: { $ref: "#/components/schemas/ErrorResponse" }
+              schema:
+                $ref: "#/components/schemas/PatchExtractionResponse"
+
+  /documents/{id}/verify:
+    post:
+      tags: [Documents]
+      summary: Mark extraction as user-verified + audit
+      parameters:
+        - $ref: "#/components/parameters/DocumentId"
+      responses:
+        "200":
+          description: OK
+
+  /payments/checkout:
+    post:
+      tags: [Payments]
+      summary: Create Stripe checkout session for current case
+      responses:
+        "200":
+          description: OK
+
+  /payments/status:
+    get:
+      tags: [Payments]
+      summary: Payment status for current user/case
+      responses:
+        "200":
+          description: OK
+
+  /stripe/webhook:
+    post:
+      tags: [Payments]
+      summary: Stripe webhook handler
+      responses:
+        "200":
+          description: OK
+
+  /admin/documents/signed-url:
+    post:
+      tags: [Admin]
+      summary: Create signed URL for Storage object (admin only)
+      responses:
+        "200":
+          description: OK
 
 components:
+  parameters:
+    DocumentId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+
   schemas:
-    OkResponse:
-      type: object
-      required: [ok]
-      properties:
-        ok: { type: boolean, enum: [true] }
-
-    ErrorResponse:
-      type: object
-      required: [ok, error]
-      properties:
-        ok: { type: boolean, enum: [false] }
-        error: { type: string }
-
-    AuthRequest:
-      type: object
-      required: [email, password]
-      properties:
-        email: { type: string }
-        password: { type: string }
-
-    AuthOkResponse:
-      type: object
-      required: [ok, userId]
-      properties:
-        ok: { type: boolean, enum: [true] }
-        userId: { type: string, format: uuid, nullable: true }
-
     DocumentType:
       type: string
-      enum: [id, income, bank, rental, tax, other]
+      enum: [id, income, bank, rental, tax, other, machtigingsregistratie]
 
     DocumentStatus:
       type: string
-      enum: [uploaded, under_review, approved]
+      enum: [uploaded, under_review, approved, rejected]
 
-    Document:
+    DocumentEntity:
       type: object
-      required: [id, fileName, type, status, createdAt, updatedAt]
+      additionalProperties: false
       properties:
-        id: { type: string, format: uuid }
+        id: { type: string }
         fileName: { type: string }
         type: { $ref: "#/components/schemas/DocumentType" }
         status: { $ref: "#/components/schemas/DocumentStatus" }
-        caseId: { type: string, format: uuid, nullable: true }
+        caseId: { type: string, nullable: true }
         notes: { type: string, nullable: true }
-        storagePath:
-          type: string
-          nullable: true
-          description: Path within bucket "vault" (format: "{userId}/...").
-        createdAt: { type: string, format: date-time }
-        updatedAt: { type: string, format: date-time }
+        storagePath: { type: string, nullable: true }
+        createdAt: { type: string }
+        updatedAt: { type: string }
+      required: [id, fileName, type, status, createdAt, updatedAt]
 
     CreateDocumentRequest:
       type: object
-      required: [fileName, type]
+      additionalProperties: false
       properties:
         fileName: { type: string }
         type: { $ref: "#/components/schemas/DocumentType" }
-        caseId: { type: string, format: uuid, nullable: true }
+        caseId: { type: string, nullable: true }
         notes: { type: string, nullable: true }
-        storagePath:
-          type: string
-          nullable: true
-          description: Optional override. If missing, server generates "{userId}/...".
+        storagePath: { type: string, nullable: true }
+      required: [fileName, type]
 
     CreateDocumentResponse:
       type: object
-      required: [ok, doc]
+      additionalProperties: false
       properties:
-        ok: { type: boolean, enum: [true] }
-        doc: { $ref: "#/components/schemas/Document" }
-
-    ListDocumentsResponse:
-      type: object
-      required: [ok, docs]
-      properties:
-        ok: { type: boolean, enum: [true] }
-        docs:
-          type: array
-          items: { $ref: "#/components/schemas/Document" }
+        ok: { type: boolean }
+        doc: { $ref: "#/components/schemas/DocumentEntity" }
+        error: { type: string, nullable: true }
+      required: [ok]
 
     PatchDocumentRequest:
       type: object
+      additionalProperties: false
       properties:
         status: { $ref: "#/components/schemas/DocumentStatus" }
-        caseId: { type: string, format: uuid, nullable: true }
-        notes: { type: string }
+        caseId: { type: string, nullable: true }
+        notes: { type: string, nullable: true }
 
-    SignedUrlRequest:
+    OcrRun:
       type: object
-      required: [path]
+      additionalProperties: true
       properties:
-        bucket:
-          type: string
-          nullable: true
-          description: Defaults to "vault".
-        path:
-          type: string
-          description: Object path inside bucket (format: "{userId}/...").
-        expiresIn:
-          type: integer
-          nullable: true
-          description: Seconds (60..3600). Defaults to 300.
+        id: { type: string }
+        document_id: { type: string }
+        status: { type: string }
+        provider: { type: string }
+        created_at: { type: string }
 
-    SignedUrlResponse:
+    DocumentExtraction:
       type: object
-      required: [ok, url]
+      additionalProperties: true
       properties:
-        ok: { type: boolean, enum: [true] }
-        url: { type: string }
+        id: { type: string }
+        document_id: { type: string }
+        run_id: { type: string, nullable: true }
+        extraction_type: { type: string }
+        schema_version: { type: integer }
+        fields: { type: object }
+        needs_review: { type: boolean }
+        confidence: { type: number, nullable: true }
+        created_at: { type: string }
+        updated_at: { type: string }
 
+    OcrRequestResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        ok: { type: boolean }
+        run: { $ref: "#/components/schemas/OcrRun" }
+        extraction: { $ref: "#/components/schemas/DocumentExtraction" }
+        error: { type: string, nullable: true }
+      required: [ok]
 
+    GetExtractionResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        ok: { type: boolean }
+        extraction: { $ref: "#/components/schemas/DocumentExtraction" }
+        error: { type: string, nullable: true }
+      required: [ok]
+
+    PatchExtractionRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        fields:
+          type: object
+          additionalProperties: true
+        needsReview:
+          type: boolean
+        confidence:
+          type: number
+          nullable: true
+
+    PatchExtractionResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        ok: { type: boolean }
+        extractionId: { type: string }
+        error: { type: string, nullable: true }
+      required: [ok]
