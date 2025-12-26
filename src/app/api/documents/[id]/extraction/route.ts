@@ -1,5 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
+﻿import { NextRequest, NextResponse } from "next/server";
 import { createSupabaseServerClient } from "@/lib/supabaseServerClient";
+import {
+  validateForSaveMachtigingsregistratieFieldsV1,
+  MACHTIGINGSREGISTRATIE_SCHEMA_VERSION,
+} from "@/features/documents/machtigingsregistratieSchema";
 
 export const dynamic = "force-dynamic";
 
@@ -59,10 +63,24 @@ export async function PATCH(req: NextRequest, context: { params: Promise<{ id: s
       body = {};
     }
 
-    // Get latest extraction (create one if missing)
+    const { data: doc, error: docErr } = await supabase.from("documents").select("id,type").eq("id", documentId).maybeSingle();
+    if (docErr) return NextResponse.json({ ok: false, error: docErr.message }, { status: 400 });
+    if (!doc) return NextResponse.json({ ok: false, error: "Document not found" }, { status: 404 });
+
+    let normalizedFields: Record<string, unknown> | undefined = undefined;
+    if (typeof body.fields !== "undefined") {
+      if (doc.type === "machtigingsregistratie") {
+        const v = validateForSaveMachtigingsregistratieFieldsV1(body.fields);
+        if (!v.ok) return NextResponse.json({ ok: false, error: v.error }, { status: 400 });
+        normalizedFields = v.value as unknown as Record<string, unknown>;
+      } else {
+        normalizedFields = body.fields;
+      }
+    }
+
     const { data: existing, error: selErr } = await supabase
       .from("document_extractions")
-      .select("id,fields,needs_review,confidence")
+      .select("id")
       .eq("document_id", documentId)
       .order("created_at", { ascending: false })
       .limit(1);
@@ -70,7 +88,6 @@ export async function PATCH(req: NextRequest, context: { params: Promise<{ id: s
     if (selErr) return NextResponse.json({ ok: false, error: selErr.message }, { status: 400 });
 
     const now = new Date().toISOString();
-
     let extractionId: string | null = (existing ?? [])[0]?.id ?? null;
 
     if (!extractionId) {
@@ -80,9 +97,9 @@ export async function PATCH(req: NextRequest, context: { params: Promise<{ id: s
           document_id: documentId,
           run_id: null,
           user_id: userData.user.id,
-          extraction_type: "machtigingsregistratie",
-          schema_version: 1,
-          fields: body.fields ?? {},
+          extraction_type: doc.type === "machtigingsregistratie" ? "machtigingsregistratie" : doc.type,
+          schema_version: doc.type === "machtigingsregistratie" ? MACHTIGINGSREGISTRATIE_SCHEMA_VERSION : 1,
+          fields: normalizedFields ?? {},
           needs_review: typeof body.needsReview === "boolean" ? body.needsReview : true,
           confidence: typeof body.confidence === "number" ? body.confidence : null,
           created_at: now,
@@ -92,10 +109,11 @@ export async function PATCH(req: NextRequest, context: { params: Promise<{ id: s
         .single();
 
       if (insErr) return NextResponse.json({ ok: false, error: insErr.message }, { status: 400 });
-      extractionId = created.id as string;
+
+      extractionId = (created as unknown as { id: string }).id;
     } else {
       const update: Record<string, unknown> = { updated_at: now };
-      if (body.fields) update.fields = body.fields;
+      if (typeof normalizedFields !== "undefined") update.fields = normalizedFields;
       if (typeof body.needsReview === "boolean") update.needs_review = body.needsReview;
       if (body.confidence === null || typeof body.confidence === "number") update.confidence = body.confidence;
 
@@ -103,14 +121,17 @@ export async function PATCH(req: NextRequest, context: { params: Promise<{ id: s
       if (updErr) return NextResponse.json({ ok: false, error: updErr.message }, { status: 400 });
     }
 
-    // Audit: edited
     await supabase.from("document_reviews").insert({
       document_id: documentId,
       user_id: userData.user.id,
       actor_id: userData.user.id,
       actor_role: "user",
       action: "edited",
-      payload: { edited: true },
+      payload: {
+        edited: true,
+        hasFields: typeof normalizedFields !== "undefined",
+        needsReview: typeof body.needsReview === "boolean" ? body.needsReview : null,
+      },
       created_at: now,
     });
 

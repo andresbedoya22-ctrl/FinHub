@@ -1,5 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
+﻿import { NextRequest, NextResponse } from "next/server";
 import { createSupabaseServerClient } from "@/lib/supabaseServerClient";
+import { emptyMachtigingsregistratieFieldsV1 } from "@/features/documents/machtigingsregistratieSchema";
 
 export const dynamic = "force-dynamic";
 
@@ -28,7 +29,21 @@ export async function POST(_req: NextRequest, context: { params: Promise<{ id: s
     if (docErr) return NextResponse.json({ ok: false, error: docErr.message }, { status: 400 });
     if (!doc) return NextResponse.json({ ok: false, error: "Document not found" }, { status: 404 });
 
+    if (doc.type !== "machtigingsregistratie") {
+      return NextResponse.json({ ok: false, error: "OCR v1 solo soporta type=machtigingsregistratie" }, { status: 400 });
+    }
+
     const now = new Date().toISOString();
+
+    await supabase.from("document_reviews").insert({
+      document_id: documentId,
+      user_id: userData.user.id,
+      actor_id: userData.user.id,
+      actor_role: "user",
+      action: "ocr_requested",
+      payload: { provider: "mock" },
+      created_at: now,
+    });
 
     const { data: run, error: runErr } = await supabase
       .from("document_ocr_runs")
@@ -56,7 +71,7 @@ export async function POST(_req: NextRequest, context: { params: Promise<{ id: s
         user_id: userData.user.id,
         extraction_type: "machtigingsregistratie",
         schema_version: 1,
-        fields: {},
+        fields: emptyMachtigingsregistratieFieldsV1(),
         needs_review: true,
         confidence: null,
         created_at: now,
@@ -67,13 +82,15 @@ export async function POST(_req: NextRequest, context: { params: Promise<{ id: s
 
     if (exErr) return NextResponse.json({ ok: false, error: exErr.message }, { status: 400 });
 
+    const extractionId = (extraction as unknown as { id: string }).id;
+
     await supabase.from("document_reviews").insert({
       document_id: documentId,
       user_id: userData.user.id,
       actor_id: userData.user.id,
       actor_role: "user",
-      action: "ocr_requested",
-      payload: { provider: "mock" },
+      action: "ocr_succeeded",
+      payload: { provider: "mock", runId: run.id, extractionId },
       created_at: now,
     });
 
