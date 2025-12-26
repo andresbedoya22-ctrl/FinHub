@@ -1,4 +1,4 @@
-openapi: 3.0.3
+﻿openapi: 3.0.3
 info:
   title: FinHub API v1
   version: 1.0.0
@@ -291,7 +291,7 @@ components:
 
     DocumentStatus:
       type: string
-      enum: [pending, ready, reviewed]
+      enum: [uploaded, under_review, approved, rejected]
 
     Document:
       type: object
@@ -336,3 +336,4 @@ components:
           type: array
           items: { $ref: "#/components/schemas/Case" }
         nextCursor: { type: string, nullable: true }
+

@@ -1,11 +1,11 @@
-export type DocumentType = "id" | "income" | "bank" | "rental" | "tax" | "other";
+﻿export type DocumentType = "id" | "income" | "bank" | "rental" | "tax" | "other";
 
 /**
  * IMPORTANTE:
  * Estos estados deben coincidir con el CHECK constraint en la tabla documents.
- * Ajusta aquí solo si cambias el constraint en Supabase.
+ * Ajusta aquÃ­ solo si cambias el constraint en Supabase.
  */
-export type DocumentStatus = "uploaded" | "under_review" | "approved";
+export type DocumentStatus = "uploaded" | "under_review" | "approved" | "rejected";
 
 export type DocumentEntity = {
   id: string;

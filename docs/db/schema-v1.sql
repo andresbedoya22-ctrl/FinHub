@@ -1,4 +1,4 @@
--- FinHub schema v1 (Postgres / Supabase target)
+﻿-- FinHub schema v1 (Postgres / Supabase target)
 
 create extension if not exists pgcrypto;
 
@@ -29,7 +29,7 @@ create table if not exists cases (
     'eligibility','result','checkout','authorization','documents','review','intake','submission','done'
   )),
 
-  -- En frontend existe y se persiste; en backend podrías derivarlo, pero aquí lo guardamos por compatibilidad.
+  -- En frontend existe y se persiste; en backend podrÃ­as derivarlo, pero aquÃ­ lo guardamos por compatibilidad.
   steps_json jsonb not null default '[]'::jsonb,
 
   created_at timestamptz not null default now(),
@@ -39,7 +39,7 @@ create table if not exists cases (
 create index if not exists idx_cases_user_created on cases(user_id, created_at desc);
 create index if not exists idx_cases_status on cases(status);
 
--- Normalización de drafts por stepKey (source of truth del draft en backend)
+-- NormalizaciÃ³n de drafts por stepKey (source of truth del draft en backend)
 create table if not exists case_step_data (
   id uuid primary key default gen_random_uuid(),
   case_id uuid not null references cases(id) on delete cascade,
@@ -61,7 +61,7 @@ create table if not exists documents (
 
   file_name text not null,
   type text not null check (type in ('id','income','bank','rental','tax','other')),
-  status text not null check (status in ('pending','ready','reviewed')),
+  status text not null check (status in ('uploaded','under_review','approved','rejected')),
 
   notes text null,
 
@@ -111,3 +111,4 @@ create table if not exists consents (
 );
 
 create index if not exists idx_consents_user_type on consents(user_id, type);
+
