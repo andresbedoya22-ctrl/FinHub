@@ -34,3 +34,89 @@ export async function GET(_req: NextRequest, context: { params: Promise<{ id: st
     return NextResponse.json({ ok: false, error: msg }, { status: 500 });
   }
 }
+
+type PatchBody = Partial<{
+  fields: Record<string, unknown>;
+  needsReview: boolean;
+  confidence: number | null;
+}>;
+
+export async function PATCH(req: NextRequest, context: { params: Promise<{ id: string }> }) {
+  try {
+    const documentId = await getIdFromParams(context);
+    if (!documentId) return NextResponse.json({ ok: false, error: "Missing id" }, { status: 400 });
+
+    const supabase = await createSupabaseServerClient();
+
+    const { data: userData, error: userErr } = await supabase.auth.getUser();
+    if (userErr) return NextResponse.json({ ok: false, error: userErr.message }, { status: 401 });
+    if (!userData.user) return NextResponse.json({ ok: false, error: "Not authenticated" }, { status: 401 });
+
+    let body: PatchBody = {};
+    try {
+      body = (await req.json()) as PatchBody;
+    } catch {
+      body = {};
+    }
+
+    // Get latest extraction (create one if missing)
+    const { data: existing, error: selErr } = await supabase
+      .from("document_extractions")
+      .select("id,fields,needs_review,confidence")
+      .eq("document_id", documentId)
+      .order("created_at", { ascending: false })
+      .limit(1);
+
+    if (selErr) return NextResponse.json({ ok: false, error: selErr.message }, { status: 400 });
+
+    const now = new Date().toISOString();
+
+    let extractionId: string | null = (existing ?? [])[0]?.id ?? null;
+
+    if (!extractionId) {
+      const { data: created, error: insErr } = await supabase
+        .from("document_extractions")
+        .insert({
+          document_id: documentId,
+          run_id: null,
+          user_id: userData.user.id,
+          extraction_type: "machtigingsregistratie",
+          schema_version: 1,
+          fields: body.fields ?? {},
+          needs_review: typeof body.needsReview === "boolean" ? body.needsReview : true,
+          confidence: typeof body.confidence === "number" ? body.confidence : null,
+          created_at: now,
+          updated_at: now,
+        })
+        .select("id")
+        .single();
+
+      if (insErr) return NextResponse.json({ ok: false, error: insErr.message }, { status: 400 });
+      extractionId = created.id as string;
+    } else {
+      const update: Record<string, unknown> = { updated_at: now };
+      if (body.fields) update.fields = body.fields;
+      if (typeof body.needsReview === "boolean") update.needs_review = body.needsReview;
+      if (body.confidence === null || typeof body.confidence === "number") update.confidence = body.confidence;
+
+      const { error: updErr } = await supabase.from("document_extractions").update(update).eq("id", extractionId);
+      if (updErr) return NextResponse.json({ ok: false, error: updErr.message }, { status: 400 });
+    }
+
+    // Audit: edited
+    await supabase.from("document_reviews").insert({
+      document_id: documentId,
+      user_id: userData.user.id,
+      actor_id: userData.user.id,
+      actor_role: "user",
+      action: "edited",
+      payload: { edited: true },
+      created_at: now,
+    });
+
+    return NextResponse.json({ ok: true, extractionId });
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : "Error desconocido";
+    return NextResponse.json({ ok: false, error: msg }, { status: 500 });
+  }
+}

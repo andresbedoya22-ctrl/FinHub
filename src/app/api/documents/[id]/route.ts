@@ -3,17 +3,39 @@ import { createSupabaseServerClient } from "@/lib/supabaseServerClient";
 
 export const dynamic = "force-dynamic";
 
-type PatchBody = Partial<{
-  status: string;
-  caseId: string | null;
-  notes: string;
-}>;
-
 async function getIdFromParams(context: { params: Promise<{ id: string }> }) {
   const p = await context.params;
   const id = (p?.id ?? "").toString().trim();
   return id;
 }
+
+export async function GET(_request: NextRequest, context: { params: Promise<{ id: string }> }) {
+  const id = await getIdFromParams(context);
+  if (!id) return NextResponse.json({ ok: false, error: "Missing id" }, { status: 400 });
+
+  const supabase = await createSupabaseServerClient();
+
+  const { data: userData, error: userErr } = await supabase.auth.getUser();
+  if (userErr) return NextResponse.json({ ok: false, error: userErr.message }, { status: 401 });
+  if (!userData.user) return NextResponse.json({ ok: false, error: "Not authenticated" }, { status: 401 });
+
+  const { data, error } = await supabase
+    .from("documents")
+    .select("id,user_id,case_id,file_name,type,status,notes,storage_path,created_at,updated_at")
+    .eq("id", id)
+    .maybeSingle();
+
+  if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 400 });
+  if (!data) return NextResponse.json({ ok: false, error: "Not found" }, { status: 404 });
+
+  return NextResponse.json({ ok: true, doc: data });
+}
+
+type PatchBody = Partial<{
+  status: string;
+  caseId: string | null;
+  notes: string;
+}>;
 
 export async function PATCH(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   const id = await getIdFromParams(context);
