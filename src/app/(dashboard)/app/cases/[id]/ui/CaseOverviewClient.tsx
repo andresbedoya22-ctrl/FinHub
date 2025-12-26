@@ -5,6 +5,7 @@ import { useMemo } from "react";
 import { useCases } from "@/features/cases/casesStore";
 import { stepsForCaseType, getCurrentAndNextStep } from "@/features/cases/steps";
 import { useDocuments } from "@/features/documents/documentsStore";
+import { usePaymentStatus } from "@/features/payments/usePaymentStatus";
 import { Card } from "@/ui/components/Card";
 import { InfoBox } from "@/ui/components/InfoBox";
 
@@ -12,12 +13,27 @@ function pill(text: string) {
   return <span className="rounded-xl border border-fh-border bg-fh-surface px-2 py-1 text-xs">{text}</span>;
 }
 
+type PaymentStateLike = {
+  paid?: boolean;
+  loading?: boolean;
+  isLoading?: boolean;
+  error?: string | null;
+};
+
 export function CaseOverviewClient({ caseId }: { caseId: string }) {
   const c = useCases((s) => s.getCase(caseId));
   const setStatus = useCases((s) => s.setStatus);
   const setStepKey = useCases((s) => s.setStepKey);
 
   const { state: docsState } = useDocuments();
+
+  // Importante: usar el prop caseId (no c?.id) para evitar TS issues y para soportar estado inicial
+  const { state: payStateRaw } = usePaymentStatus(caseId);
+  const payState = (payStateRaw ?? {}) as PaymentStateLike;
+
+  const paid = Boolean(payState.paid);
+  const loading = Boolean(payState.loading ?? payState.isLoading);
+  const locked = !paid;
 
   const docsForCase = useMemo(() => {
     const arr = docsState.documents.filter((d) => (d.caseId ?? "") === caseId);
@@ -39,16 +55,10 @@ export function CaseOverviewClient({ caseId }: { caseId: string }) {
 
   async function startCheckout() {
     try {
-      const safeCaseId = c?.id;
-      if (!safeCaseId) {
-        alert("Caso no encontrado.");
-        return;
-      }
-
       const res = await fetch("/api/payments/checkout", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ caseId: safeCaseId, productKey: "case_unlock" }),
+        body: JSON.stringify({ caseId, productKey: "case_unlock" }),
       });
 
       const json = (await res.json().catch(() => null)) as { ok?: boolean; url?: string; error?: string } | null;
@@ -58,7 +68,7 @@ export function CaseOverviewClient({ caseId }: { caseId: string }) {
         return;
       }
 
-      window.location.href = json.url;
+      window.location.assign(json.url);
     } catch (e) {
       const msg = e instanceof Error ? e.message : "Error desconocido";
       alert(msg);
@@ -69,22 +79,43 @@ export function CaseOverviewClient({ caseId }: { caseId: string }) {
     <div className="space-y-4">
       <div className="text-sm">
         <div className="font-semibold">{c.title}</div>
-        <div className="opacity-80">type: {String(c.type)} Â· status: {c.status} Â· step: {c.stepKey}</div>
+
+        {payState.error ? (
+          <InfoBox title="Error verificando pago" variant="warning">
+            {String(payState.error)}
+          </InfoBox>
+        ) : null}
+
+        {loading ? (
+          <InfoBox title="Verificando pago" variant="info">
+            Estamos verificando el estado del pago. Si acabas de pagar, espera unos segundos y recarga.
+          </InfoBox>
+        ) : locked ? (
+          <InfoBox title="Caso bloqueado" variant="warning">
+            Este caso está bloqueado hasta completar el pago. Usa el botón "Pagar" para continuar.
+          </InfoBox>
+        ) : null}
+
+        <div className="opacity-80">
+          type: {String(c.type)} · status: {c.status} · step: {c.stepKey}
+        </div>
       </div>
 
       <div className="flex flex-wrap gap-2">
         <button
-          className="rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm hover:bg-fh-surface-2"
+          className="rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm hover:bg-fh-surface-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          disabled={locked || loading}
           onClick={() => void setStepKey(c.id, next.key)}
         >
           Continuar
         </button>
 
         <button
-          className="rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm hover:bg-fh-surface-2"
+          className="rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm hover:bg-fh-surface-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          disabled={paid || loading}
           onClick={() => void startCheckout()}
         >
-          Pagar
+          {paid ? "Pagado" : "Pagar"}
         </button>
 
         <Link
@@ -119,12 +150,12 @@ export function CaseOverviewClient({ caseId }: { caseId: string }) {
 
         <div className="flex flex-wrap gap-2">
           {pill(`${docsForCase.length} docs`)}
-          {docsForCase.length ? pill("Ãºltimos cambios arriba") : null}
+          {docsForCase.length ? pill("últimos cambios arriba") : null}
         </div>
 
         {docsForCase.length === 0 ? (
-          <InfoBox title="VacÃ­o" variant="warning">
-            Este caso aÃºn no tiene documentos asignados.
+          <InfoBox title="Vacío" variant="warning">
+            Este caso aún no tiene documentos asignados.
           </InfoBox>
         ) : (
           <div className="overflow-auto">
@@ -169,6 +200,3 @@ export function CaseOverviewClient({ caseId }: { caseId: string }) {
     </div>
   );
 }
-
-
-
