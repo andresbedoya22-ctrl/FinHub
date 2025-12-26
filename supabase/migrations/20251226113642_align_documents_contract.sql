@@ -1,4 +1,7 @@
-﻿-- Align documents contract across DB: status/type constraints + legacy value normalization (idempotent)
+-- Align documents contract across DB: status/type constraints + legacy value normalization (idempotent)
+-- SAFETY: idempotent re-run (local init may re-apply partially)
+alter table public.documents drop constraint if exists documents_status_check;
+alter table public.documents drop constraint if exists documents_type_check;
 -- Canonical statuses: uploaded | under_review | approved | rejected
 -- Canonical types: id | income | bank | rental | tax | other
 

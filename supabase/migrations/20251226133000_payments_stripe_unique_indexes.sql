@@ -1,4 +1,4 @@
-﻿-- Idempotencia para Stripe: evita duplicados cuando Stripe reintenta eventos.
+-- Idempotencia para Stripe: evita duplicados cuando Stripe reintenta eventos.
 -- Requiere que stripe_session_id / stripe_payment_intent_id sean únicos cuando no son null.
 
 create unique index if not exists uq_payments_stripe_session_id

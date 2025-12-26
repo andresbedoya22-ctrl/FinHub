@@ -1,4 +1,4 @@
-﻿-- Ensure documents.status check constraint matches app contract (idempotent-ish)
+-- Ensure documents.status check constraint matches app contract (idempotent-ish)
 do $$
 begin
   -- Drop common/expected constraint name if present

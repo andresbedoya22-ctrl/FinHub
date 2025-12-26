@@ -1,4 +1,4 @@
-﻿-- Create Storage bucket 'vault' and owner-only RLS policies (idempotent)
+-- Create Storage bucket 'vault' and owner-only RLS policies (idempotent)
 -- Assumption: object name format is "{userId}/...." where userId = auth.uid()
 
 -- 1) Bucket (private)

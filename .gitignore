@@ -89,3 +89,7 @@ node_modules/
 # Supabase CLI temp (do not commit)
 supabase/.temp/
 
+
+# Supabase local artifacts
+supabase/.branches/
+
