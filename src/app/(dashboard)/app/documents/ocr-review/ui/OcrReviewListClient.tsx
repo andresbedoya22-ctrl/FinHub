@@ -55,7 +55,7 @@ export default function OcrReviewListClient() {
       <Header title="OCR Review" subtitle="Machtigingsregistratie: ejecutar OCR, editar y verificar campos." />
 
       <InfoBox>
-        Esta pantalla es el flujo dedicado de OCR. Aquí solo aparecen documentos con tipo <b>machtigingsregistratie</b>.
+        Esta pantalla es el flujo dedicado de OCR. Aquí solo aparecen documentos con ocr_kind <b>machtigingsregistratie</b>.
       </InfoBox>
 
       {error ? <InfoBox>{error}</InfoBox> : null}
@@ -64,7 +64,7 @@ export default function OcrReviewListClient() {
         {loading ? (
           <div>Cargando...</div>
         ) : items.length === 0 ? (
-          <div>No tienes documentos machtigingsregistratie todavía.</div>
+          <div>No tienes documentos con ocr_kind=machtigingsregistratie todavía.</div>
         ) : (
           <div className="flex flex-col gap-3">
             {items.map((d) => (

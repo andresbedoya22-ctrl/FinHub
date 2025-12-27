@@ -178,7 +178,7 @@ export default function OcrReviewDetailClient() {
         ) : !doc ? (
           <div>No encontrado.</div>
         ) : doc.ocr_kind !== "machtigingsregistratie" ? (
-          <div>Este documento no es tipo <b>machtigingsregistratie</b>.</div>
+          <div>Este documento no es ocr_kind <b>machtigingsregistratie</b>.</div>
         ) : (
           <div className="flex flex-col gap-4">
             <div className="text-sm opacity-70">Document ID: {id}</div>
