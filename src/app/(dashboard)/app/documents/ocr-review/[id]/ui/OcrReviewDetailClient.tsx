@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -177,7 +177,7 @@ export default function OcrReviewDetailClient() {
           <div>Cargando...</div>
         ) : !doc ? (
           <div>No encontrado.</div>
-        ) : doc.type !== "machtigingsregistratie" ? (
+        ) : doc.ocr_kind !== "machtigingsregistratie" ? (
           <div>Este documento no es tipo <b>machtigingsregistratie</b>.</div>
         ) : (
           <div className="flex flex-col gap-4">

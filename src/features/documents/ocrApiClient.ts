@@ -7,6 +7,7 @@ export type ApiDocumentRow = {
   status: string;
   notes: string | null;
   storage_path: string | null;
+  ocr_kind: string | null;
   created_at: string;
   updated_at: string;
 };
