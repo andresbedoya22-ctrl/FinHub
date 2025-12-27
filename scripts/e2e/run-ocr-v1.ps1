@@ -86,12 +86,12 @@ Write-Host "UserId: $userId"
 Write-Host "`n[2] Login via Next /api/auth/login (cookie session)"
 $session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
 
-$loginRes = Invoke-WebRequest -Method POST -Uri "$baseUrl/api/auth/login" -WebSession $session `
+$loginJson = Invoke-RestMethod -Method POST -Uri "$baseUrl/api/auth/login" -WebSession $session `
   -Headers @{ "content-type"="application/json" } `
   -Body (Json @{ email=$email; password=$password })
 
 $loginJson = $loginRes.Content | ConvertFrom-Json
-Assert-Ok ($loginJson.ok -eq $true) ("Login failed: " + ($loginJson.error | Out-String))
+Assert-Ok ($loginJson.ok -eq $true) ("Login failed: " + (Json $loginJson))
 
 # Confirm cookies exist
 $cookies = $session.Cookies.GetCookies($baseUrl)
