@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createSupabaseServerClient } from "/@/lib/supabaseServerClient";
+import { createSupabaseServerClient } from "@/lib/supabaseServerClient";
 import { createClient } from "@supabase/supabase-js";
 import { requireOcrKind } from "../_shared/ocrGuard";
 import { MACHTIGINGSREGISTRATIE_SCHEMA_VERSION } from "@/features/documents/machtigingsregistratieSchema";
