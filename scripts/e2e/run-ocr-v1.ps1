@@ -90,7 +90,6 @@ $loginJson = Invoke-RestMethod -Method POST -Uri "$baseUrl/api/auth/login" -WebS
   -Headers @{ "content-type"="application/json" } `
   -Body (Json @{ email=$email; password=$password })
 
-$loginJson = $loginRes.Content | ConvertFrom-Json
 Assert-Ok ($loginJson.ok -eq $true) ("Login failed: " + (Json $loginJson))
 
 # Confirm cookies exist
