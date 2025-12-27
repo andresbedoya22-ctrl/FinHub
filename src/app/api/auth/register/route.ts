@@ -18,7 +18,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ ok: false, error: error.message }, { status: 400 });
     }
 
-    // Si tu proyecto requiere confirmación por email, aquí puede quedar sin sesiÃ³n aún.
+    // Si tu proyecto requiere confirmación por email, aquí puede quedar sin sesión aún.
     // Igual devolvemos ok y el usuario decide loguearse luego.
     return NextResponse.json({ ok: true, userId: data.user?.id ?? null });
   } catch (e: unknown) {
