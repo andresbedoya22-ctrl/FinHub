@@ -40,8 +40,12 @@ async function downloadBytesFromStorage(
 }
 function parseStorageRef(storagePath: string): { bucket: string; path: string } {
   const p = (storagePath ?? "").replace(/^\/+/, "");
-  const parts = p.split("/");
-  if (parts.length >= 2) return { bucket: parts[0]!, path: parts.slice(1).join("/") };
+  if (!p) return { bucket: "vault", path: "" };
+
+  // Si viene como "vault/<path>", separa bucket correctamente
+  if (p.startsWith("vault/")) return { bucket: "vault", path: p.slice("vault/".length) };
+
+  // Si viene como "<userId>/<file>" (sin bucket), asumimos bucket vault
   return { bucket: "vault", path: p };
 }
 
