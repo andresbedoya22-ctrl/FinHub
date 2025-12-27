@@ -12,7 +12,7 @@ export async function GET() {
 
     const { data: docs, error: docsError, count } = await supabase
       .from("documents")
-      .select("id,user_id,case_id,file_name,type,status,storage_path,created_at,updated_at", { count: "exact" })
+      .select("id,user_id,case_id,file_name,type,status,storage_path,ocr_kind,created_at,updated_at", { count: "exact" })
       .order("created_at", { ascending: false })
       .limit(20);
 

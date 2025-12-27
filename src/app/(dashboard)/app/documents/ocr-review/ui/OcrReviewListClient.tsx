@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
@@ -34,7 +34,7 @@ export default function OcrReviewListClient() {
     void refresh();
   }, []);
 
-  const items = useMemo(() => docs.filter((d) => d.extraction_type === "machtigingsregistratie"), [docs]);
+  const items = useMemo(() => docs.filter((d) => d.ocrKind === "machtigingsregistratie"), [docs]);
 
   async function runOcr(id: string) {
     setBusyId(id);

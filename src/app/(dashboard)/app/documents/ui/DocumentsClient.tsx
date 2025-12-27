@@ -1,10 +1,10 @@
-﻿"use client";
+"use client";
 
 import { useMemo, useState } from "react";
 import { Card } from "@/ui/components/Card";
 import { InfoBox } from "@/ui/components/InfoBox";
 
-import type { DocumentStatus, DocumentType } from "@/features/documents/documentsTypes";
+import type { DocumentStatus, DocumentType, OcrKind } from "@/features/documents/documentsTypes";
 import { useDocuments } from "@/features/documents/documentsStore";
 import { useCases } from "@/features/cases/casesStore";
 import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
@@ -20,7 +20,7 @@ const TYPE_OPTIONS: { value: DocumentType; label: string }[] = [
 
 const STATUS_OPTIONS: { value: DocumentStatus; label: string }[] = [
   { value: "uploaded", label: "Subido" },
-  { value: "under_review", label: "En revisiÃ³n" },
+  { value: "under_review", label: "En revisión" },
   { value: "approved", label: "Aprobado" },
 ];
 
@@ -34,7 +34,9 @@ export function DocumentsClient() {
 
   const [file, setFile] = useState<File | null>(null);
   const [type, setType] = useState<DocumentType>("income");
-  const [caseId, setCaseId] = useState<string>("");
+  
+    const [ocrKind, setOcrKind] = useState<OcrKind | null>(null);
+const [caseId, setCaseId] = useState<string>("");
   const [notes, setNotesLocal] = useState("");
   const [filterStatus, setFilterStatus] = useState<DocumentStatus | "all">("all");
   const [busyUpload, setBusyUpload] = useState(false);
@@ -124,6 +126,12 @@ export function DocumentsClient() {
                 </option>
               ))}
             </select>
+
+            <label className="text-sm font-medium">OCR intent (opcional)</label>
+            <select className="border rounded px-2 py-2 text-sm" value={ocrKind ?? ""} onChange={(e) => setOcrKind(e.target.value ? (e.target.value as OcrKind) : null)}>
+              <option value="">Ninguno</option>
+              <option value="machtigingsregistratie">Machtigingsregistratie</option>
+            </select>
           </div>
 
           <div className="space-y-1">
@@ -147,7 +155,7 @@ export function DocumentsClient() {
             <input
               value={notes}
               onChange={(e) => setNotesLocal(e.target.value)}
-              placeholder="ej: falta la Ãºltima pÃ¡gina"
+              placeholder="ej: falta la última página"
               className="w-full rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-fh-accent/30"
             />
           </div>
@@ -158,12 +166,12 @@ export function DocumentsClient() {
           onClick={onAdd}
           className="w-full rounded-xl bg-fh-accent px-4 py-2 text-sm font-medium text-white hover:opacity-95 disabled:opacity-50"
         >
-          {busyUpload ? "Subiendo..." : "AÃ±adir a Vault"}
+          {busyUpload ? "Subiendo..." : "Añadir a Vault"}
         </button>
 
         {casesForSelect.length === 0 ? (
           <InfoBox title="Tip" variant="info">
-            No tienes casos creados. Crea uno en "Å“Casos"Â para poder asignar documentos.
+            No tienes casos creados. Crea uno en "œCasos" para poder asignar documentos.
           </InfoBox>
         ) : null}
       </Card>
@@ -191,7 +199,7 @@ export function DocumentsClient() {
 
       {filteredDocs.length === 0 ? (
         <Card>
-          <InfoBox title="VacÃ­o" variant="warning">
+          <InfoBox title="Vacío" variant="warning">
             No hay documentos en el vault con el filtro actual.
           </InfoBox>
         </Card>
@@ -261,3 +269,4 @@ export function DocumentsClient() {
     </div>
   );
 }
+

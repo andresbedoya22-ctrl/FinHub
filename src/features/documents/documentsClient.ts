@@ -1,5 +1,5 @@
 import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
-import type { DocumentEntity, DocumentStatus, DocumentType } from "./documentsTypes";
+import type { DocumentEntity, DocumentStatus, DocumentType, OcrKind } from "./documentsTypes";
 
 type DocumentRow = {
   id: string;
@@ -29,6 +29,7 @@ function toEntity(r: DocumentRow): DocumentEntity {
     caseId: r.case_id ?? undefined,
     notes: r.notes ?? "",
     storagePath: normalizeStoragePath(r.storage_path),
+    ocrKind: ((r as { ocr_kind?: string | null }).ocr_kind === "machtigingsregistratie" ? ("machtigingsregistratie" as OcrKind) : null),
     createdAt: r.created_at,
     updatedAt: r.updated_at,
   };
@@ -43,7 +44,7 @@ export async function listMyDocuments(): Promise<DocumentEntity[]> {
 
   const { data, error } = await supabase
     .from("documents")
-    .select("id,user_id,case_id,file_name,type,status,notes,storage_path,created_at,updated_at")
+    .select("id,user_id,case_id,file_name,type,status,notes,storage_path,ocr_kind,created_at,updated_at")
     .order("created_at", { ascending: false });
 
   if (error) throw new Error(error.message);
@@ -53,6 +54,7 @@ export async function listMyDocuments(): Promise<DocumentEntity[]> {
 export async function createDocument(args: {
   fileName: string;
   type: DocumentType;
+  ocrKind?: (import("./documentsTypes").OcrKind) | null;
   caseId?: string;
   notes?: string;
   storagePath?: string; // ruta relativa dentro del bucket (ej: userId/123_file.pdf)
@@ -75,6 +77,7 @@ export async function createDocument(args: {
     .from("documents")
     .insert({
       storage_path: storagePath,
+      ocr_kind: args.ocrKind ?? null,
       user_id: userData.user.id,
       case_id: args.caseId ?? null,
       file_name: args.fileName.trim(),
@@ -84,7 +87,7 @@ export async function createDocument(args: {
       created_at: now,
       updated_at: now,
     })
-    .select("id,user_id,case_id,file_name,type,status,notes,storage_path,created_at,updated_at")
+    .select("id,user_id,case_id,file_name,type,status,notes,storage_path,ocr_kind,created_at,updated_at")
     .single();
 
   if (error) throw new Error(error.message);

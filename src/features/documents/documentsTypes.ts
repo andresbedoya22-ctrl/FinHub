@@ -1,9 +1,11 @@
-﻿export type DocumentType = "id" | "income" | "bank" | "rental" | "tax" | "other";
+export type DocumentType = "id" | "income" | "bank" | "rental" | "tax" | "other";
+
+export type OcrKind = "machtigingsregistratie";
 
 /**
  * IMPORTANTE:
  * Estos estados deben coincidir con el CHECK constraint en la tabla documents.
- * Ajusta aquÃ­ solo si cambias el constraint en Supabase.
+ * Ajusta aquí solo si cambias el constraint en Supabase.
  */
 export type DocumentStatus = "uploaded" | "under_review" | "approved" | "rejected";
 
@@ -11,6 +13,7 @@ export type DocumentEntity = {
   id: string;
   fileName: string;
   type: DocumentType;
+  ocrKind?: OcrKind | null;
   extraction_type?: string | null;
   status: DocumentStatus;
   caseId?: string;
@@ -23,6 +26,7 @@ export type DocumentEntity = {
 export type DocumentsState = {
   documents: DocumentEntity[];
 };
+
 
 
 

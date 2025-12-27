@@ -147,3 +147,22 @@ create table if not exists public.document_reviews (
 
 create index if not exists idx_document_reviews_document on public.document_reviews(document_id, created_at desc);
 create index if not exists idx_document_reviews_user on public.document_reviews(user_id, created_at desc);
+
+-- === PATCH: documents.ocr_kind (OCR intent; separate from DocumentType) ===
+alter table public.documents
+  add column if not exists ocr_kind text null;
+
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_constraint
+    where conname = 'documents_ocr_kind_check'
+  ) then
+    alter table public.documents
+      add constraint documents_ocr_kind_check
+      check (ocr_kind is null or ocr_kind in ('machtigingsregistratie'));
+  end if;
+end $$;
+
+create index if not exists documents_ocr_kind_idx on public.documents (ocr_kind);

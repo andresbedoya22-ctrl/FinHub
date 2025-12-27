@@ -1,4 +1,4 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { createSupabaseServerClient } from "@/lib/supabaseServerClient";
 import type { DocumentEntity, DocumentStatus, DocumentType } from "@/features/documents/documentsTypes";
 
@@ -46,7 +46,7 @@ export async function GET() {
 
     const { data, error } = await supabase
       .from("documents")
-      .select("id,user_id,case_id,file_name,type,status,notes,storage_path,created_at,updated_at")
+      .select("id,user_id,case_id,file_name,type,status,notes,storage_path,ocr_kind,created_at,updated_at")
       .eq("user_id", userData.user.id)
       .order("created_at", { ascending: false });
 
@@ -58,3 +58,4 @@ export async function GET() {
     return NextResponse.json({ ok: false, error: msg }, { status: 500 });
   }
 }
+

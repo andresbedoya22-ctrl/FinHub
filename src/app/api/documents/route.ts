@@ -1,4 +1,4 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { createSupabaseServerClient } from "@/lib/supabaseServerClient";
 import type { DocumentEntity, DocumentStatus, DocumentType } from "@/features/documents/documentsTypes";
 
@@ -49,7 +49,7 @@ export async function POST(req: Request) {
     if (!userData.user) return NextResponse.json({ ok: false, error: "No authenticated user" }, { status: 401 });
 
     const body = (await req.json().catch(() => null)) as
-      | { fileName?: string; type?: DocumentType | string; caseId?: string | null; notes?: string | null; storagePath?: string | null }
+      | { fileName?: string; type?: DocumentType | string; caseId?: string | null; notes?: string | null; storagePath?: string | null; ocrKind?: string | null }
       | null;
 
     const fileName = body?.fileName?.toString().trim() ?? "";
@@ -57,7 +57,7 @@ export async function POST(req: Request) {
     const caseId = body?.caseId ?? null;
     const notes = (body?.notes ?? "").toString().trim();
 
-    if (fileName.length < 3) return NextResponse.json({ ok: false, error: "fileName inválido" }, { status: 400 });
+    if (fileName.length < 3) return NextResponse.json({ ok: false, error: "fileName inv�lido" }, { status: 400 });
     if (!type) return NextResponse.json({ ok: false, error: "type requerido" }, { status: 400 });
 
     const now = new Date().toISOString();
@@ -80,7 +80,7 @@ export async function POST(req: Request) {
         created_at: now,
         updated_at: now,
       })
-      .select("id,user_id,case_id,file_name,type,status,notes,storage_path,created_at,updated_at")
+      .select("id,user_id,case_id,file_name,type,status,notes,storage_path,ocr_kind,created_at,updated_at")
       .single();
 
     if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 400 });
@@ -91,3 +91,4 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: msg }, { status: 500 });
   }
 }
+
