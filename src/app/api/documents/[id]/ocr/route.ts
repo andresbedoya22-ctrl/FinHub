@@ -1,10 +1,8 @@
 ﻿import { NextRequest, NextResponse } from "next/server";
 import { createSupabaseServerClient } from "@/lib/supabaseServerClient";
-import {
-  MACHTIGINGSREGISTRATIE_SCHEMA_VERSION,
-  validateForSaveMachtigingsregistratieFieldsV1,
-  type MachtigingsregistratieFieldsV1,
-} from "@/features/documents/machtigingsregistratieSchema";
+import { MACHTIGINGSREGISTRATIE_SCHEMA_VERSION } from "@/features/documents/machtigingsregistratieSchema";
+import { getOcrTextProvider } from "@/features/documents/ocr/getOcrTextProvider";
+import { extractMachtigingsregistratieFieldsFromText } from "@/features/documents/ocr/machtigingsregistratieTextParser";
 
 export const dynamic = "force-dynamic";
 
@@ -13,43 +11,26 @@ async function getIdFromParams(context: { params: Promise<{ id: string }> }) {
   return (p?.id ?? "").toString().trim();
 }
 
-function buildDeterministicCode(seed: string, len: number): string {
-  const cleaned = seed.replace(/[^a-zA-Z0-9]+/g, "").toUpperCase();
-  const base = cleaned.length ? cleaned : "FINHUB";
-  const padded = (base + "X".repeat(len)).slice(0, len);
-  return padded;
+function parseStorageRef(storagePath: string): { bucket: string; path: string } {
+  const p = (storagePath ?? "").replace(/^\/+/, "");
+  const parts = p.split("/");
+  if (parts.length >= 2) return { bucket: parts[0]!, path: parts.slice(1).join("/") };
+  return { bucket: "vault", path: p };
 }
 
-function mockOcrMachtigingsregistratie(fileName: string): {
-  rawText: string;
-  fields: MachtigingsregistratieFieldsV1;
-  confidence: number | null;
-} {
-  // Mock v1: determinista por filename. NO pretende reflejar formato real de la carta aún.
-  const activeringscode = buildDeterministicCode(fileName, 8); // >= 6 chars
-  const briefkenmerk = `FINHUB-${buildDeterministicCode(fileName, 6)}`;
-  const intrekkingscode = `INT-${buildDeterministicCode(fileName, 6)}`;
-
-  const rawText =
-    `Machtigingsregistratie\n` +
-    `Activeringscode: ${activeringscode}\n` +
-    `Briefkenmerk: ${briefkenmerk}\n` +
-    `Intrekkingscode: ${intrekkingscode}\n`;
-
-  return {
-    rawText,
-    fields: {
-      activeringscode,
-      briefkenmerk,
-      intrekkingscode,
-      extra: {},
-    },
-    confidence: 0.5,
-  };
+async function fetchBytesFromSignedUrl(url: string): Promise<{ bytes: Uint8Array; contentType: string | null }> {
+  const res = await fetch(url, { method: "GET" });
+  if (!res.ok) {
+    const t = await res.text().catch(() => "");
+    throw new Error(`Fetch file failed (${res.status}): ${t.slice(0, 200)}`);
+  }
+  const ab = await res.arrayBuffer();
+  return { bytes: new Uint8Array(ab), contentType: res.headers.get("content-type") };
 }
 
 export async function POST(_req: NextRequest, context: { params: Promise<{ id: string }> }) {
   const supabase = await createSupabaseServerClient();
+  const provider = getOcrTextProvider();
 
   try {
     const documentId = await getIdFromParams(context);
@@ -59,10 +40,9 @@ export async function POST(_req: NextRequest, context: { params: Promise<{ id: s
     if (userErr) return NextResponse.json({ ok: false, error: userErr.message }, { status: 401 });
     if (!userData.user) return NextResponse.json({ ok: false, error: "Not authenticated" }, { status: 401 });
 
-    // Doc (RLS debe filtrar, pero además verificamos por seguridad)
     const { data: doc, error: docErr } = await supabase
       .from("documents")
-      .select("id,user_id,type,file_name")
+      .select("id,user_id,file_name,storage_path")
       .eq("id", documentId)
       .maybeSingle();
 
@@ -73,30 +53,27 @@ export async function POST(_req: NextRequest, context: { params: Promise<{ id: s
       return NextResponse.json({ ok: false, error: "Forbidden" }, { status: 403 });
     }
 
-    if (doc.type !== "machtigingsregistratie") {
-      return NextResponse.json({ ok: false, error: "OCR solo está habilitado para machtigingsregistratie" }, { status: 400 });
-    }
+    // Canon: DocumentType != extraction_type. OCR v1 trabaja con docKind fijo.
+    const extraction_type = "machtigingsregistratie" as const;
 
     const now = new Date().toISOString();
 
-    // Audit: requested
     await supabase.from("document_reviews").insert({
       document_id: documentId,
       user_id: userData.user.id,
       actor_id: userData.user.id,
       actor_role: "user",
       action: "ocr_requested",
-      payload: { provider: "mock" },
+      payload: { provider: provider.name, extraction_type },
       created_at: now,
     });
 
-    // Create run = processing
     const { data: runCreated, error: runCreateErr } = await supabase
       .from("document_ocr_runs")
       .insert({
         document_id: documentId,
         user_id: userData.user.id,
-        provider: "mock",
+        provider: provider.name,
         status: "processing",
         raw_text: null,
         raw_json: null,
@@ -109,31 +86,73 @@ export async function POST(_req: NextRequest, context: { params: Promise<{ id: s
 
     if (runCreateErr) return NextResponse.json({ ok: false, error: runCreateErr.message }, { status: 400 });
 
-    // Mock OCR produce fields
-    const mocked = mockOcrMachtigingsregistratie(doc.file_name ?? "");
-    const validated = validateForSaveMachtigingsregistratieFieldsV1(mocked.fields);
-    if (!validated.ok) {
-      // Mark run failed
-      await supabase.from("document_ocr_runs").update({ status: "failed", error: validated.error, updated_at: now }).eq("id", runCreated.id);
+    if (!doc.storage_path) {
+      const err = "Document has no storage_path";
+      await supabase.from("document_ocr_runs").update({ status: "failed", error: err, updated_at: now }).eq("id", runCreated.id);
       await supabase.from("document_reviews").insert({
         document_id: documentId,
         user_id: userData.user.id,
         actor_id: userData.user.id,
         actor_role: "user",
         action: "ocr_failed",
-        payload: { error: validated.error },
+        payload: { error: err },
         created_at: now,
       });
-      return NextResponse.json({ ok: false, error: validated.error }, { status: 400 });
+      return NextResponse.json({ ok: false, error: err }, { status: 400 });
     }
 
-    // Update run -> succeeded (store raw)
+    const { bucket, path } = parseStorageRef(doc.storage_path);
+    const { data: signed, error: signErr } = await supabase.storage.from(bucket).createSignedUrl(path, 120);
+
+    if (signErr || !signed?.signedUrl) {
+      const err = signErr?.message ?? "Failed to create signed URL";
+      await supabase.from("document_ocr_runs").update({ status: "failed", error: err, updated_at: now }).eq("id", runCreated.id);
+      await supabase.from("document_reviews").insert({
+        document_id: documentId,
+        user_id: userData.user.id,
+        actor_id: userData.user.id,
+        actor_role: "user",
+        action: "ocr_failed",
+        payload: { error: err },
+        created_at: now,
+      });
+      return NextResponse.json({ ok: false, error: err }, { status: 400 });
+    }
+
+    const fetched = await fetchBytesFromSignedUrl(signed.signedUrl);
+
+    const ocr = await provider.extractText({
+      bytes: fetched.bytes,
+      contentType: fetched.contentType,
+      fileName: doc.file_name ?? null,
+    });
+
+    const parsed = extractMachtigingsregistratieFieldsFromText(ocr.rawText);
+    if (!parsed.ok) {
+      await supabase
+        .from("document_ocr_runs")
+        .update({ status: "failed", error: parsed.error, raw_text: ocr.rawText, raw_json: ocr.rawJson, updated_at: now })
+        .eq("id", runCreated.id);
+
+      await supabase.from("document_reviews").insert({
+        document_id: documentId,
+        user_id: userData.user.id,
+        actor_id: userData.user.id,
+        actor_role: "user",
+        action: "ocr_failed",
+        payload: { error: parsed.error },
+        created_at: now,
+      });
+
+      return NextResponse.json({ ok: false, error: parsed.error }, { status: 400 });
+    }
+
     const { data: run, error: runUpdErr } = await supabase
       .from("document_ocr_runs")
       .update({
         status: "succeeded",
-        raw_text: mocked.rawText,
-        raw_json: { fields: validated.value, schema_version: MACHTIGINGSREGISTRATIE_SCHEMA_VERSION },
+        raw_text: ocr.rawText,
+        raw_json: ocr.rawJson ?? { provider: provider.name },
         error: null,
         updated_at: now,
       })
@@ -143,18 +162,17 @@ export async function POST(_req: NextRequest, context: { params: Promise<{ id: s
 
     if (runUpdErr) return NextResponse.json({ ok: false, error: runUpdErr.message }, { status: 400 });
 
-    // Create extraction
     const { data: extraction, error: exErr } = await supabase
       .from("document_extractions")
       .insert({
         document_id: documentId,
         run_id: run.id,
         user_id: userData.user.id,
-        extraction_type: "machtigingsregistratie",
+        extraction_type,
         schema_version: MACHTIGINGSREGISTRATIE_SCHEMA_VERSION,
-        fields: validated.value,
+        fields: parsed.fields,
         needs_review: true,
-        confidence: mocked.confidence,
+        confidence: ocr.confidence,
         created_at: now,
         updated_at: now,
       })
@@ -163,14 +181,13 @@ export async function POST(_req: NextRequest, context: { params: Promise<{ id: s
 
     if (exErr) return NextResponse.json({ ok: false, error: exErr.message }, { status: 400 });
 
-    // Audit: succeeded
     await supabase.from("document_reviews").insert({
       document_id: documentId,
       user_id: userData.user.id,
       actor_id: userData.user.id,
       actor_role: "user",
       action: "ocr_succeeded",
-      payload: { runId: run.id, extractionId: extraction.id },
+      payload: { runId: run.id, extractionId: extraction.id, provider: provider.name },
       created_at: now,
     });
 
