@@ -1,6 +1,6 @@
 import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
 import type { DocumentEntity, DocumentStatus, DocumentType, OcrKind } from "./documentsTypes";
-
+import { inferOcrKindFromType } from "./documentOcrRegistry";
 type DocumentRow = {
   id: string;
   user_id: string;
@@ -77,7 +77,7 @@ export async function createDocument(args: {
     .from("documents")
     .insert({
       storage_path: storagePath,
-      ocr_kind: args.ocrKind ?? (args.type === "machtigingsregistratie" ? "machtigingsregistratie" : null),
+      ocr_kind: args.ocrKind ?? inferOcrKindFromType(args.type),
       user_id: userData.user.id,
       case_id: args.caseId ?? null,
       file_name: args.fileName.trim(),

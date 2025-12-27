@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { createSupabaseServerClient } from "@/lib/supabaseServerClient";
 import type { DocumentEntity, DocumentStatus, DocumentType, OcrKind } from "@/features/documents/documentsTypes";
-
+import { inferOcrKindFromType, parseOcrKind } from "@/features/documents/documentOcrRegistry";
 export const dynamic = "force-dynamic";
 
 type DocumentRow = {
@@ -58,13 +58,7 @@ export async function POST(req: Request) {
     const type = (body?.type?.toString().trim() ?? "") as DocumentType;
     const caseId = body?.caseId ?? null;
     const notes = (body?.notes ?? "").toString().trim();
-
-
-    const ocrKindRaw = (body?.ocrKind ?? null);
-    const ocrKind =
-      typeof ocrKindRaw === "string" && ocrKindRaw.trim().toLowerCase() === "machtigingsregistratie"
-        ? "machtigingsregistratie"
-        : null;
+    const ocrKind = parseOcrKind(body?.ocrKind) ?? inferOcrKindFromType(type);
     if (fileName.length < 3) return NextResponse.json({ ok: false, error: "fileName inv�lido" }, { status: 400 });
     if (!type) return NextResponse.json({ ok: false, error: "type requerido" }, { status: 400 });
 
