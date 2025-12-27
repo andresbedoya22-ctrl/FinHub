@@ -171,9 +171,24 @@ $docId = $docRes.doc.id
 Assert-Ok ($docId) "No docId returned."
 Write-Host "DocumentId: $docId"
 
+# --- 4.1) Debug doc row before OCR ---
+Write-Host "`n[4.1] GET /api/documents/$docId (pre-OCR debug)"
+$docGetPre = Invoke-RestMethod -Method GET -Uri "$baseUrl/api/documents/$docId" -WebSession $session
+Assert-Ok ($docGetPre.ok -eq $true) ("Get document (pre) failed: " + (Json $docGetPre))
+Write-Host ("Pre-OCR status: " + $docGetPre.doc.status + "; type=" + $docGetPre.doc.type + "; ocr_kind=" + $docGetPre.doc.ocr_kind)
+
 # --- 5) Run OCR ---
 Write-Host "`n[5] POST /api/documents/$docId/ocr"
-$ocrRes = Invoke-RestMethod -Method POST -Uri "$baseUrl/api/documents/$docId/ocr" -WebSession $session
+try {
+  $ocrRes = Invoke-RestMethod -Method POST -Uri "$baseUrl/api/documents/$docId/ocr" -WebSession $session `
+    -Headers @{ "content-type"="application/json" } `
+    -Body "{}"
+} catch {
+  $body = Read-HttpErrorBody $_
+  if ($body) { throw ("POST /api/documents/$docId/ocr failed. Body: " + $body) }
+  throw ("POST /api/documents/$docId/ocr failed. Error: " + $_.Exception.Message)
+}
+
 Assert-Ok ($ocrRes.ok -eq $true) ("OCR failed: " + (Json $ocrRes))
 Write-Host "OCR ok."
 
@@ -210,7 +225,10 @@ Write-Host "Patched OK. extractionId=$($patchRes.extractionId)"
 
 # --- 8) Verify ---
 Write-Host "`n[8] POST /api/documents/$docId/verify"
-$verRes = Invoke-RestMethod -Method POST -Uri "$baseUrl/api/documents/$docId/verify" -WebSession $session
+$verRes = Invoke-RestMethod -Method POST -Uri "$baseUrl/api/documents/$docId/verify" -WebSession $session `
+  -Headers @{ "content-type"="application/json" } `
+  -Body "{}"
+
 Assert-Ok ($verRes.ok -eq $true) ("Verify failed: " + (Json $verRes))
 Write-Host "Verify OK. extractionId=$($verRes.extractionId)"
 
