@@ -1,4 +1,4 @@
-export type DocumentType = "id" | "income" | "bank" | "rental" | "tax" | "other";
+export type DocumentType = "id" | "income" | "bank" | "rental" | "tax" | "other" | "machtigingsregistratie";
 
 export type OcrKind = "machtigingsregistratie";
 
