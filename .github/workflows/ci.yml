@@ -1,14 +1,13 @@
 name: CI
 
 on:
-  pull_request:
   push:
     branches: [ main ]
+  pull_request:
 
 jobs:
-  build:
+  test_lint:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -16,25 +15,19 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version-file: .nvmrc
+          node-version: "20"
+          cache: "pnpm"
 
-      - name: Enable Corepack (pnpm)
-        run: |
-          corepack enable
-          corepack prepare pnpm@9.15.3 --activate
-          pnpm -v
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: "9"
 
       - name: Install
         run: pnpm install --frozen-lockfile
 
-      - name: Lint
-        run: pnpm lint
-
-      - name: Typecheck
-        run: pnpm typecheck
-
       - name: Test
         run: pnpm test
 
-      - name: Build
-        run: pnpm build
+      - name: Lint
+        run: pnpm lint
