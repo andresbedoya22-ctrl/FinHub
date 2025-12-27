@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createSupabaseServerClient } from "@/lib/supabaseServerClient";
+import { requireOcrKind } from "../_shared/ocrGuard";
 import { MACHTIGINGSREGISTRATIE_SCHEMA_VERSION } from "@/features/documents/machtigingsregistratieSchema";
 import { getOcrTextProvider } from "@/features/documents/ocr/getOcrTextProvider";
 import { extractMachtigingsregistratieFieldsFromText } from "@/features/documents/ocr/machtigingsregistratieTextParser";
@@ -39,39 +40,21 @@ export async function POST(_req: NextRequest, context: { params: Promise<{ id: s
     const { data: userData, error: userErr } = await supabase.auth.getUser();
     if (userErr) return NextResponse.json({ ok: false, error: userErr.message }, { status: 401 });
     if (!userData.user) return NextResponse.json({ ok: false, error: "Not authenticated" }, { status: 401 });
-
-    const { data: doc, error: docErr } = await supabase
-      .from("documents")
-      .select("id,user_id,file_name,storage_path,ocr_kind")
-      .eq("id", documentId)
-      .maybeSingle();
-
-    if (docErr) return NextResponse.json({ ok: false, error: docErr.message }, { status: 400 });
-    if (!doc) return NextResponse.json({ ok: false, error: "Document not found" }, { status: 404 });
-
-    if (doc.user_id !== userData.user.id) {
-      return NextResponse.json({ ok: false, error: "Forbidden" }, { status: 403 });
-    }
+    const g = await requireOcrKind({
+      supabase,
+      documentId,
+      userId: userData.user.id,
+      required: "machtigingsregistratie",
+      select: "id,user_id,file_name,storage_path,ocr_kind",
+      endpoint: "ocr",
+    });
+    if (!g.ok) return g.response;
+    const doc = g.doc;
 
     // Canon: DocumentType != extraction_type. OCR v1 trabaja con docKind fijo.
     const extraction_type = "machtigingsregistratie" as const;
 
     const now = new Date().toISOString();
-
-    const ocrKind = (doc as { ocr_kind?: string | null }).ocr_kind ?? null;
-    if (ocrKind !== "machtigingsregistratie") {
-      const err = "OCR solo soporta ocr_kind=machtigingsregistratie";
-      await supabase.from("document_reviews").insert({
-        document_id: documentId,
-        user_id: userData.user.id,
-        actor_id: userData.user.id,
-        actor_role: "user",
-        action: "ocr_failed",
-        payload: { error: err, ocr_kind: ocrKind },
-        created_at: now,
-      });
-      return NextResponse.json({ ok: false, error: err }, { status: 400 });
-    }
     await supabase.from("document_reviews").insert({
       document_id: documentId,
       user_id: userData.user.id,
@@ -114,8 +97,11 @@ export async function POST(_req: NextRequest, context: { params: Promise<{ id: s
       });
       return NextResponse.json({ ok: false, error: err }, { status: 400 });
     }
-
-    const { bucket, path } = parseStorageRef(doc.storage_path);
+    const storagePath = typeof doc.storage_path === "string" ? doc.storage_path : "";
+    if (!storagePath) {
+      return NextResponse.json({ ok: false, error: "storage_path inválido" }, { status: 400 });
+    }
+    const { bucket, path } = parseStorageRef(storagePath);
     const { data: signed, error: signErr } = await supabase.storage.from(bucket).createSignedUrl(path, 120);
 
     if (signErr || !signed?.signedUrl) {
@@ -138,7 +124,7 @@ export async function POST(_req: NextRequest, context: { params: Promise<{ id: s
     const ocr = await provider.extractText({
       bytes: fetched.bytes,
       contentType: fetched.contentType,
-      fileName: doc.file_name ?? null,
+      fileName: typeof doc.file_name === "string" ? doc.file_name : null,
     });
 
     const parsed = extractMachtigingsregistratieFieldsFromText(ocr.rawText);
