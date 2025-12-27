@@ -1,0 +1,7 @@
+# Force LF for SQL migrations to avoid Windows CRLF/BOM issues
+*.sql text eol=lf
+
+# Optional: keep LF for other config files
+*.md  text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
