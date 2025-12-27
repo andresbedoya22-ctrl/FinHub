@@ -1,4 +1,4 @@
-openapi: 3.0.3
+﻿openapi: 3.0.3
 info:
   title: FinHub API (v1)
   version: 1.0.0
@@ -196,7 +196,7 @@ components:
   schemas:
     DocumentType:
       type: string
-      enum: [id, income, bank, rental, tax, other, machtigingsregistratie]
+      enum: [id, income, bank, rental, tax, other]
 
     DocumentStatus:
       type: string

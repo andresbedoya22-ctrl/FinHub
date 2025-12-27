@@ -1,4 +1,4 @@
-﻿export type DocumentType = "id" | "income" | "bank" | "rental" | "tax" | "other" | "machtigingsregistratie";
+﻿export type DocumentType = "id" | "income" | "bank" | "rental" | "tax" | "other";
 
 /**
  * IMPORTANTE:
@@ -11,6 +11,7 @@ export type DocumentEntity = {
   id: string;
   fileName: string;
   type: DocumentType;
+  extraction_type?: string | null;
   status: DocumentStatus;
   caseId?: string;
   notes?: string;
@@ -22,4 +23,6 @@ export type DocumentEntity = {
 export type DocumentsState = {
   documents: DocumentEntity[];
 };
+
+
 

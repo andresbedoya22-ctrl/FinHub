@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
@@ -34,7 +34,7 @@ export default function OcrReviewListClient() {
     void refresh();
   }, []);
 
-  const items = useMemo(() => docs.filter((d) => d.type === "machtigingsregistratie"), [docs]);
+  const items = useMemo(() => docs.filter((d) => d.extraction_type === "machtigingsregistratie"), [docs]);
 
   async function runOcr(id: string) {
     setBusyId(id);
@@ -55,7 +55,7 @@ export default function OcrReviewListClient() {
       <Header title="OCR Review" subtitle="Machtigingsregistratie: ejecutar OCR, editar y verificar campos." />
 
       <InfoBox>
-        Esta pantalla es el flujo dedicado de OCR. Aquí solo aparecen documentos con tipo <b>machtigingsregistratie</b>.
+        Esta pantalla es el flujo dedicado de OCR. AquÃ­ solo aparecen documentos con tipo <b>machtigingsregistratie</b>.
       </InfoBox>
 
       {error ? <InfoBox>{error}</InfoBox> : null}
@@ -64,7 +64,7 @@ export default function OcrReviewListClient() {
         {loading ? (
           <div>Cargando...</div>
         ) : items.length === 0 ? (
-          <div>No tienes documentos machtigingsregistratie todavía.</div>
+          <div>No tienes documentos machtigingsregistratie todavÃ­a.</div>
         ) : (
           <div className="flex flex-col gap-3">
             {items.map((d) => (

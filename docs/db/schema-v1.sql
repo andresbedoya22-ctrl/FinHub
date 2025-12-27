@@ -1,4 +1,4 @@
--- FinHub schema v1 (reference) - aligned with current migrations
+﻿-- FinHub schema v1 (reference) - aligned with current migrations
 -- NOTE: Migrations in /supabase/migrations are the source of truth.
 -- This file is a human-friendly reference snapshot.
 
@@ -67,7 +67,7 @@ create table if not exists public.documents (
 
   file_name text not null,
   type text not null default 'other'
-    check (type in ('id','income','bank','rental','tax','other','machtigingsregistratie')),
+    check (type in ('id','income','bank','rental','tax','other')),
   status text not null default 'uploaded'
     check (status in ('uploaded','under_review','approved','rejected')),
 
