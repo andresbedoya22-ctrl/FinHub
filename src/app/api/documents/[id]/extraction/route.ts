@@ -1,8 +1,8 @@
 ﻿import { NextRequest, NextResponse } from "next/server";
 import { createSupabaseServerClient } from "@/lib/supabaseServerClient";
 import {
-  validateForSaveMachtigingsregistratieFieldsV1,
   MACHTIGINGSREGISTRATIE_SCHEMA_VERSION,
+  validateForSaveMachtigingsregistratieFieldsV1,
 } from "@/features/documents/machtigingsregistratieSchema";
 
 export const dynamic = "force-dynamic";
@@ -63,21 +63,16 @@ export async function PATCH(req: NextRequest, context: { params: Promise<{ id: s
       body = {};
     }
 
-    const { data: doc, error: docErr } = await supabase.from("documents").select("id,type").eq("id", documentId).maybeSingle();
+    // Enforce doc type (defensa en profundidad)
+    const { data: doc, error: docErr } = await supabase.from("documents").select("id,type,user_id").eq("id", documentId).maybeSingle();
     if (docErr) return NextResponse.json({ ok: false, error: docErr.message }, { status: 400 });
     if (!doc) return NextResponse.json({ ok: false, error: "Document not found" }, { status: 404 });
-
-    let normalizedFields: Record<string, unknown> | undefined = undefined;
-    if (typeof body.fields !== "undefined") {
-      if (doc.type === "machtigingsregistratie") {
-        const v = validateForSaveMachtigingsregistratieFieldsV1(body.fields);
-        if (!v.ok) return NextResponse.json({ ok: false, error: v.error }, { status: 400 });
-        normalizedFields = v.value as unknown as Record<string, unknown>;
-      } else {
-        normalizedFields = body.fields;
-      }
+    if (doc.user_id !== userData.user.id) return NextResponse.json({ ok: false, error: "Forbidden" }, { status: 403 });
+    if (doc.type !== "machtigingsregistratie") {
+      return NextResponse.json({ ok: false, error: "Extraction PATCH solo soporta machtigingsregistratie" }, { status: 400 });
     }
 
+    // Get latest extraction (create one if missing)
     const { data: existing, error: selErr } = await supabase
       .from("document_extractions")
       .select("id")
@@ -90,6 +85,13 @@ export async function PATCH(req: NextRequest, context: { params: Promise<{ id: s
     const now = new Date().toISOString();
     let extractionId: string | null = (existing ?? [])[0]?.id ?? null;
 
+    let normalizedFields: Record<string, unknown> | undefined = undefined;
+    if (typeof body.fields !== "undefined") {
+      const validated = validateForSaveMachtigingsregistratieFieldsV1(body.fields);
+      if (!validated.ok) return NextResponse.json({ ok: false, error: validated.error }, { status: 400 });
+      normalizedFields = validated.value as unknown as Record<string, unknown>;
+    }
+
     if (!extractionId) {
       const { data: created, error: insErr } = await supabase
         .from("document_extractions")
@@ -97,11 +99,11 @@ export async function PATCH(req: NextRequest, context: { params: Promise<{ id: s
           document_id: documentId,
           run_id: null,
           user_id: userData.user.id,
-          extraction_type: doc.type === "machtigingsregistratie" ? "machtigingsregistratie" : doc.type,
-          schema_version: doc.type === "machtigingsregistratie" ? MACHTIGINGSREGISTRATIE_SCHEMA_VERSION : 1,
+          extraction_type: "machtigingsregistratie",
+          schema_version: MACHTIGINGSREGISTRATIE_SCHEMA_VERSION,
           fields: normalizedFields ?? {},
           needs_review: typeof body.needsReview === "boolean" ? body.needsReview : true,
-          confidence: typeof body.confidence === "number" ? body.confidence : null,
+          confidence: body.confidence === null || typeof body.confidence === "number" ? body.confidence : null,
           created_at: now,
           updated_at: now,
         })
@@ -109,8 +111,7 @@ export async function PATCH(req: NextRequest, context: { params: Promise<{ id: s
         .single();
 
       if (insErr) return NextResponse.json({ ok: false, error: insErr.message }, { status: 400 });
-
-      extractionId = (created as unknown as { id: string }).id;
+      extractionId = created.id as string;
     } else {
       const update: Record<string, unknown> = { updated_at: now };
       if (typeof normalizedFields !== "undefined") update.fields = normalizedFields;
@@ -121,17 +122,14 @@ export async function PATCH(req: NextRequest, context: { params: Promise<{ id: s
       if (updErr) return NextResponse.json({ ok: false, error: updErr.message }, { status: 400 });
     }
 
+    // Audit: edited
     await supabase.from("document_reviews").insert({
       document_id: documentId,
       user_id: userData.user.id,
       actor_id: userData.user.id,
       actor_role: "user",
       action: "edited",
-      payload: {
-        edited: true,
-        hasFields: typeof normalizedFields !== "undefined",
-        needsReview: typeof body.needsReview === "boolean" ? body.needsReview : null,
-      },
+      payload: { edited: true },
       created_at: now,
     });
 
