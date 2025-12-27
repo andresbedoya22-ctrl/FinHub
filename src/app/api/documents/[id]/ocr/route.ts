@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createSupabaseServerClient } from "@/lib/supabaseServerClient";
+import { createSupabaseServerClient } from "/@/lib/supabaseServerClient";
+import { createClient } from "@supabase/supabase-js";
 import { requireOcrKind } from "../_shared/ocrGuard";
 import { MACHTIGINGSREGISTRATIE_SCHEMA_VERSION } from "@/features/documents/machtigingsregistratieSchema";
 import { getOcrTextProvider } from "@/features/documents/ocr/getOcrTextProvider";
@@ -12,6 +13,31 @@ async function getIdFromParams(context: { params: Promise<{ id: string }> }) {
   return (p?.id ?? "").toString().trim();
 }
 
+function createSupabaseServiceRoleClient() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url) throw new Error("Missing env: NEXT_PUBLIC_SUPABASE_URL");
+  if (!key) throw new Error("Missing env: SUPABASE_SERVICE_ROLE_KEY");
+
+  return createClient(url, key, {
+    auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
+  });
+}
+
+async function downloadBytesFromStorage(
+  bucket: string,
+  path: string
+): Promise<{ bytes: Uint8Array; contentType: string | null }> {
+  const admin = createSupabaseServiceRoleClient();
+  const { data, error } = await admin.storage.from(bucket).download(path);
+  if (error || !data) {
+    // Storage puede devolver "Object not found" también en denegaciones por policy.
+    throw new Error(error?.message ?? "Object not found");
+  }
+  const ab = await data.arrayBuffer();
+  const contentType = (data as unknown as { type?: string }).type ?? null;
+  return { bytes: new Uint8Array(ab), contentType };
+}
 function parseStorageRef(storagePath: string): { bucket: string; path: string } {
   const p = (storagePath ?? "").replace(/^\/+/, "");
   const parts = p.split("/");
@@ -19,15 +45,6 @@ function parseStorageRef(storagePath: string): { bucket: string; path: string } 
   return { bucket: "vault", path: p };
 }
 
-async function fetchBytesFromSignedUrl(url: string): Promise<{ bytes: Uint8Array; contentType: string | null }> {
-  const res = await fetch(url, { method: "GET" });
-  if (!res.ok) {
-    const t = await res.text().catch(() => "");
-    throw new Error(`Fetch file failed (${res.status}): ${t.slice(0, 200)}`);
-  }
-  const ab = await res.arrayBuffer();
-  return { bytes: new Uint8Array(ab), contentType: res.headers.get("content-type") };
-}
 
 export async function POST(_req: NextRequest, context: { params: Promise<{ id: string }> }) {
   const supabase = await createSupabaseServerClient();
@@ -102,10 +119,13 @@ export async function POST(_req: NextRequest, context: { params: Promise<{ id: s
       return NextResponse.json({ ok: false, error: "storage_path inválido" }, { status: 400 });
     }
     const { bucket, path } = parseStorageRef(storagePath);
-    const { data: signed, error: signErr } = await supabase.storage.from(bucket).createSignedUrl(path, 120);
 
-    if (signErr || !signed?.signedUrl) {
-      const err = signErr?.message ?? "Failed to create signed URL";
+    let fetched: { bytes: Uint8Array; contentType: string | null };
+    try {
+      // Ya validamos ownership con requireOcrKind; usamos service-role solo para leer el archivo.
+      fetched = await downloadBytesFromStorage(bucket, path);
+    } catch (e: unknown) {
+      const err = e instanceof Error ? e.message : "Failed to read file from Storage";
       await supabase.from("document_ocr_runs").update({ status: "failed", error: err, updated_at: now }).eq("id", runCreated.id);
       await supabase.from("document_reviews").insert({
         document_id: documentId,
@@ -113,15 +133,12 @@ export async function POST(_req: NextRequest, context: { params: Promise<{ id: s
         actor_id: userData.user.id,
         actor_role: "user",
         action: "ocr_failed",
-        payload: { error: err },
+        payload: { error: err, storage: { bucket, path } },
         created_at: now,
       });
       return NextResponse.json({ ok: false, error: err }, { status: 400 });
     }
-
-    const fetched = await fetchBytesFromSignedUrl(signed.signedUrl);
-
-    const ocr = await provider.extractText({
+const ocr = await provider.extractText({
       bytes: fetched.bytes,
       contentType: fetched.contentType,
       fileName: typeof doc.file_name === "string" ? doc.file_name : null,
