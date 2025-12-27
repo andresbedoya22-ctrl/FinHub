@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createSupabaseServerClient } from "@/lib/supabaseServerClient";
-import type { DocumentEntity, DocumentStatus, DocumentType } from "@/features/documents/documentsTypes";
+import type { DocumentEntity, DocumentStatus, DocumentType , OcrKind } from "@/features/documents/documentsTypes";
 
 export const dynamic = "force-dynamic";
 
@@ -11,6 +11,7 @@ type DocumentRow = {
   file_name: string;
   type: DocumentType;
   status: DocumentStatus;
+  ocr_kind?: string | null;
   notes: string | null;
   storage_path: string | null;
   created_at: string;
@@ -28,6 +29,7 @@ function toEntity(r: DocumentRow): DocumentEntity {
     fileName: r.file_name,
     type: r.type,
     status: r.status,
+    ocrKind: (r.ocr_kind === "machtigingsregistratie" ? ("machtigingsregistratie" as OcrKind) : null),
     caseId: r.case_id ?? undefined,
     notes: r.notes ?? "",
     storagePath: r.storage_path ? normalizeStoragePath(r.storage_path) : undefined,

@@ -1,4 +1,4 @@
-﻿import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { createSupabaseServerClient } from "@/lib/supabaseServerClient";
 import { MACHTIGINGSREGISTRATIE_SCHEMA_VERSION } from "@/features/documents/machtigingsregistratieSchema";
 import { getOcrTextProvider } from "@/features/documents/ocr/getOcrTextProvider";
@@ -42,7 +42,7 @@ export async function POST(_req: NextRequest, context: { params: Promise<{ id: s
 
     const { data: doc, error: docErr } = await supabase
       .from("documents")
-      .select("id,user_id,file_name,storage_path")
+      .select("id,user_id,file_name,storage_path,ocr_kind")
       .eq("id", documentId)
       .maybeSingle();
 
@@ -58,6 +58,20 @@ export async function POST(_req: NextRequest, context: { params: Promise<{ id: s
 
     const now = new Date().toISOString();
 
+const ocrKind = (doc as { ocr_kind?: string | null }).ocr_kind ?? null;
+    if (ocrKind !== "machtigingsregistratie") {
+      const err = "OCR solo soporta ocr_kind=machtigingsregistratie";
+      await supabase.from("document_reviews").insert({
+        document_id: documentId,
+        user_id: userData.user.id,
+        actor_id: userData.user.id,
+        actor_role: "user",
+        action: "ocr_failed",
+        payload: { error: err, ocr_kind: ocrKind },
+        created_at: now,
+      });
+      return NextResponse.json({ ok: false, error: err }, { status: 400 });
+    }
     await supabase.from("document_reviews").insert({
       document_id: documentId,
       user_id: userData.user.id,

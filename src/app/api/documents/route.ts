@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createSupabaseServerClient } from "@/lib/supabaseServerClient";
-import type { DocumentEntity, DocumentStatus, DocumentType } from "@/features/documents/documentsTypes";
+import type { DocumentEntity, DocumentStatus, DocumentType, OcrKind } from "@/features/documents/documentsTypes";
 
 export const dynamic = "force-dynamic";
 
@@ -11,6 +11,7 @@ type DocumentRow = {
   file_name: string;
   type: DocumentType;
   status: DocumentStatus;
+  ocr_kind?: string | null;
   notes: string | null;
   storage_path: string | null;
   created_at: string;
@@ -32,6 +33,7 @@ function toEntity(r: DocumentRow): DocumentEntity {
     fileName: r.file_name,
     type: r.type,
     status: r.status,
+    ocrKind: (r.ocr_kind === "machtigingsregistratie" ? ("machtigingsregistratie" as OcrKind) : null),
     caseId: r.case_id ?? undefined,
     notes: r.notes ?? "",
     storagePath: r.storage_path ? normalizeStoragePath(r.storage_path) : undefined,
@@ -57,6 +59,12 @@ export async function POST(req: Request) {
     const caseId = body?.caseId ?? null;
     const notes = (body?.notes ?? "").toString().trim();
 
+
+    const ocrKindRaw = (body?.ocrKind ?? null);
+    const ocrKind =
+      typeof ocrKindRaw === "string" && ocrKindRaw.trim().toLowerCase() === "machtigingsregistratie"
+        ? "machtigingsregistratie"
+        : null;
     if (fileName.length < 3) return NextResponse.json({ ok: false, error: "fileName inv�lido" }, { status: 400 });
     if (!type) return NextResponse.json({ ok: false, error: "type requerido" }, { status: 400 });
 
@@ -74,6 +82,7 @@ export async function POST(req: Request) {
         case_id: caseId,
         file_name: fileName,
         type,
+        ocr_kind: ocrKind,
         status: "uploaded",
         notes,
         storage_path: storagePath,
