@@ -1,4 +1,4 @@
-﻿-- FinHub schema v1 (reference) - aligned with current migrations
+-- FinHub schema v1 (reference) - aligned with current migrations
 -- NOTE: Migrations in /supabase/migrations are the source of truth.
 -- This file is a human-friendly reference snapshot.
 

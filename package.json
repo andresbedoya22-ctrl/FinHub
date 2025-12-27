@@ -10,11 +10,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint .",
+    "lint": "pnpm -s check:encoding && eslint .",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
-    "test": "vitest run"
+    "test": "vitest run",
+    "check:encoding": "node scripts/check-no-bom.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.8.0",
