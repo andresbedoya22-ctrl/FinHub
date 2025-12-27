@@ -1,16 +1,24 @@
-﻿-- Fix: revert documents.type to canon (no 'machtigingsregistratie' value)
-begin;
+-- Fix: revert documents.type to canon (no 'machtigingsregistratie' value)
 
--- If any rows were created with the non-canon type, normalize them.
+-- Safety: if any row still has the old type, normalize it.
 update public.documents
-set type = 'tax'
+set type = 'other'
 where type = 'machtigingsregistratie';
 
--- Recreate CHECK constraint (idempotent-ish)
-alter table public.documents drop constraint if exists documents_type_check;
+-- Recreate constraint deterministically (idempotent)
+do $$
+begin
+  if exists (
+    select 1 from pg_constraint
+    where conname = 'documents_type_check'
+  ) then
+    alter table public.documents
+      drop constraint documents_type_check;
+  end if;
+end $$;
 
 alter table public.documents
-add constraint documents_type_check
-check (type in ('id','income','bank','rental','tax','other'));
+  add constraint documents_type_check
+  check (type in ('id','income','bank','rental','tax','other'));
 
-commit;
+create index if not exists idx_documents_type on public.documents (type);

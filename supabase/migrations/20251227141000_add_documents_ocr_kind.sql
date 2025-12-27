@@ -1,4 +1,5 @@
-﻿-- Adds explicit OCR intent on documents (separate from DocumentType)
+-- Adds explicit OCR intent on documents (separate from DocumentType)
+
 alter table public.documents
   add column if not exists ocr_kind text null;
 
