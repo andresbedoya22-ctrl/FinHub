@@ -8,7 +8,7 @@ export async function POST(req: Request) {
     const password = String(body.password || "");
 
     if (!email || !password) {
-      return NextResponse.json({ ok: false, error: "Email y contraseÃ±a son obligatorios." }, { status: 400 });
+      return NextResponse.json({ ok: false, error: "Email y contraseña son obligatorios." }, { status: 400 });
     }
 
     const supabase = await createSupabaseServerClient();

@@ -59,7 +59,7 @@ export async function POST(req: Request) {
     const caseId = body?.caseId ?? null;
     const notes = (body?.notes ?? "").toString().trim();
     const ocrKind = parseOcrKind(body?.ocrKind) ?? inferOcrKindFromType(type);
-    if (fileName.length < 3) return NextResponse.json({ ok: false, error: "fileName inv�lido" }, { status: 400 });
+    if (fileName.length < 3) return NextResponse.json({ ok: false, error: "fileName inválido" }, { status: 400 });
     if (!type) return NextResponse.json({ ok: false, error: "type requerido" }, { status: 400 });
 
     const now = new Date().toISOString();

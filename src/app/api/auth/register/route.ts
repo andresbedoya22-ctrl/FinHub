@@ -8,7 +8,7 @@ export async function POST(req: Request) {
     const password = String(body.password || "");
 
     if (!email || !password) {
-      return NextResponse.json({ ok: false, error: "Email y contraseÃ±a son obligatorios." }, { status: 400 });
+      return NextResponse.json({ ok: false, error: "Email y contraseña son obligatorios." }, { status: 400 });
     }
 
     const supabase = await createSupabaseServerClient();
@@ -18,7 +18,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ ok: false, error: error.message }, { status: 400 });
     }
 
-    // Si tu proyecto requiere confirmaciÃ³n por email, aquÃ­ puede quedar sin sesiÃ³n aÃºn.
+    // Si tu proyecto requiere confirmación por email, aquí puede quedar sin sesiÃ³n aún.
     // Igual devolvemos ok y el usuario decide loguearse luego.
     return NextResponse.json({ ok: true, userId: data.user?.id ?? null });
   } catch (e: unknown) {
