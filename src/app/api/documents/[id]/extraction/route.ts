@@ -72,7 +72,7 @@ export async function PATCH(req: NextRequest, context: { params: Promise<{ id: s
     if (ocrKind !== "machtigingsregistratie") {
       return NextResponse.json({ ok: false, error: "Extraction PATCH solo soporta ocr_kind=machtigingsregistratie" }, { status: 400 });
     }
-// Get latest extraction (create one if missing)
+    // Get latest extraction (create one if missing)
     const { data: existing, error: selErr } = await supabase
       .from("document_extractions")
       .select("id")

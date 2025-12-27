@@ -58,7 +58,7 @@ export async function POST(_req: NextRequest, context: { params: Promise<{ id: s
 
     const now = new Date().toISOString();
 
-const ocrKind = (doc as { ocr_kind?: string | null }).ocr_kind ?? null;
+    const ocrKind = (doc as { ocr_kind?: string | null }).ocr_kind ?? null;
     if (ocrKind !== "machtigingsregistratie") {
       const err = "OCR solo soporta ocr_kind=machtigingsregistratie";
       await supabase.from("document_reviews").insert({

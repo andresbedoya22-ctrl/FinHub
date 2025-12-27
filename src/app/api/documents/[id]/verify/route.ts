@@ -31,7 +31,7 @@ export async function POST(_req: NextRequest, context: { params: Promise<{ id: s
     if (ocrKind !== "machtigingsregistratie") {
       return NextResponse.json({ ok: false, error: "Verify solo soporta ocr_kind=machtigingsregistratie" }, { status: 400 });
     }
-// Latest extraction
+    // Latest extraction
     const { data: exRows, error: exErr } = await supabase
       .from("document_extractions")
       .select("id,fields,needs_review")
