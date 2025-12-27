@@ -77,7 +77,7 @@ export async function createDocument(args: {
     .from("documents")
     .insert({
       storage_path: storagePath,
-      ocr_kind: args.ocrKind ?? null,
+      ocr_kind: args.ocrKind ?? (args.type === "machtigingsregistratie" ? "machtigingsregistratie" : null),
       user_id: userData.user.id,
       case_id: args.caseId ?? null,
       file_name: args.fileName.trim(),
