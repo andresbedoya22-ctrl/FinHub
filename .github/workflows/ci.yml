@@ -6,7 +6,7 @@ on:
   pull_request:
 
 jobs:
-  test_lint:
+  ci:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -15,13 +15,13 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version-file: .nvmrc
           cache: "pnpm"
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: "9"
+          version: "9.15.3"
 
       - name: Install
         run: pnpm install --frozen-lockfile
@@ -31,3 +31,9 @@ jobs:
 
       - name: Lint
         run: pnpm lint
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Build
+        run: pnpm build
