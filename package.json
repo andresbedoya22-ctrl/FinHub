@@ -15,7 +15,8 @@
     "format": "prettier . --write",
     "format:check": "prettier . --check",
     "test": "vitest run",
-    "check:encoding": "node scripts/check-no-bom.mjs"
+    "check:encoding": "node scripts/check-no-bom.mjs",
+    "e2e:phase7": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/e2e/run-ocr-extract-verify-v1.ps1"
   },
   "dependencies": {
     "@supabase/ssr": "^0.8.0",
