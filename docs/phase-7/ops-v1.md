@@ -83,3 +83,14 @@ Nota:
 - El modelo se valida contra una allowlist del servidor.
 - La respuesta del LLM tiene límite de salida (max_output_tokens) para controlar coste.
 
+
+### Rate limit (MVP)
+- Ventana: 60s
+- Límite: 20 req/min por usuario autenticado
+- Respuesta: 429 si excede
+- Nota: en producción multi-instancia, migrar a Redis/Upstash.
+
+### Auditoría (MVP)
+- Se registra evento estructurado en consola del servidor: user_id, lang, mode, input/output length y timestamp.
+- Futuro: persistir en DB (audit_log) cuando se defina esquema de auditoría.
+
