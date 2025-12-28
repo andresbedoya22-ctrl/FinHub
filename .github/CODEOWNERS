@@ -1,0 +1,7 @@
+﻿# Global owners
+* @andresbedoya22-ctrl
+
+# (Opcional) Áreas específicas (descomenta si quieres granularidad)
+# /.github/ @andresbedoya22-ctrl
+# /src/ @andresbedoya22-ctrl
+# /supabase/ @andresbedoya22-ctrl
