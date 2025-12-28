@@ -84,8 +84,8 @@ jobs:
             "SUPABASE_SERVICE_ROLE_KEY=$($env:SUPABASE_SERVICE_ROLE_KEY)"
             "NEXT_PUBLIC_SUPABASE_ANON_KEY=$($env:NEXT_PUBLIC_SUPABASE_ANON_KEY)"
             ""
-            "BASE_URL=http://localhost:3000"
-            "FINHUB_BASE_URL=http://localhost:3000"
+            "BASE_URL=http://127.0.0.1:3000"
+            "FINHUB_BASE_URL=http://127.0.0.1:3000"
           ) -join "`n"
 
           [System.IO.File]::WriteAllText(".env.local", $content, (New-Object System.Text.UTF8Encoding($false)))
@@ -94,7 +94,7 @@ jobs:
           $b=[System.IO.File]::ReadAllBytes(".env.local")
           "{0:X2} {1:X2} {2:X2}" -f $b[0],$b[1],$b[2]
 
-      - name: Start Next server (background) + wait ready
+      - name: Run E2E suite (start server + tests + logs)
         shell: pwsh
         run: |
           Set-StrictMode -Version Latest
@@ -102,61 +102,79 @@ jobs:
           $ProgressPreference = "SilentlyContinue"
 
           $env:PORT = "3000"
+          $base = "http://127.0.0.1:3000"
+          $readyUrl = "$base/api/debug/cookies"
 
-          # Arranca y captura logs
-          $p = Start-Process -FilePath "pnpm" -ArgumentList "start" -PassThru -NoNewWindow `
-            -RedirectStandardOutput ".next-server.out.log" `
-            -RedirectStandardError  ".next-server.err.log"
+          $pidFile = ".next-server.pid"
+          $outLog = ".next-server.out.log"
+          $errLog = ".next-server.err.log"
 
-          "Started server PID: $($p.Id)" | Out-Host
-          $p.Id | Set-Content -Path ".next-server.pid" -Encoding ASCII
+          function Dump-Logs {
+            "==== Dump logs ====" | Out-Host
+            if (Test-Path $pidFile) { "PID: $(Get-Content $pidFile)" | Out-Host }
+            "==== .next-server.err.log (tail 300) ====" | Out-Host
+            if (Test-Path $errLog) { Get-Content $errLog -Tail 300 | Out-Host } else { "no err log" | Out-Host }
+            "==== .next-server.out.log (tail 300) ====" | Out-Host
+            if (Test-Path $outLog) { Get-Content $outLog -Tail 300 | Out-Host } else { "no out log" | Out-Host }
+          }
 
-          $url = "http://localhost:3000/api/debug/cookies"
-          $ok = $false
-          for ($i=0; $i -lt 90; $i++) {
-            try {
-              Invoke-WebRequest -Uri $url -UseBasicParsing | Out-Null
-              $ok = $true
-              break
-            } catch {
-              Start-Sleep -Seconds 1
+          $p = $null
+          try {
+            # Start server and keep it alive within THIS step (critical on Windows runners)
+            $p = Start-Process -FilePath "pnpm" -ArgumentList "start" -PassThru -NoNewWindow `
+              -RedirectStandardOutput $outLog `
+              -RedirectStandardError  $errLog
+
+            "Started server PID: $($p.Id)" | Out-Host
+            $p.Id | Set-Content -Path $pidFile -Encoding ASCII
+
+            # Wait ready
+            $ok = $false
+            for ($i=0; $i -lt 90; $i++) {
+              try {
+                Invoke-WebRequest -Uri $readyUrl -UseBasicParsing | Out-Null
+                $ok = $true
+                break
+              } catch {
+                Start-Sleep -Seconds 1
+              }
             }
+
+            if (-not $ok) {
+              "Server did not become ready at $readyUrl" | Out-Host
+              Dump-Logs
+              throw "Server not ready"
+            }
+
+            # E2E dashboard
+            pnpm run e2e:dashboard
+            if ($LASTEXITCODE -ne 0) {
+              "E2E dashboard failed with exit code $LASTEXITCODE" | Out-Host
+              Dump-Logs
+              exit $LASTEXITCODE
+            }
+
+            # E2E assistant
+            pnpm run e2e:assistant
+            if ($LASTEXITCODE -ne 0) {
+              "E2E assistant failed with exit code $LASTEXITCODE" | Out-Host
+              Dump-Logs
+              exit $LASTEXITCODE
+            }
+
+            "E2E suite OK" | Out-Host
+            Dump-Logs
           }
-
-          if (-not $ok) {
-            "Server did not become ready at $url" | Out-Host
-            if (Test-Path ".next-server.err.log") { "==== .next-server.err.log (tail 200) ====" | Out-Host; Get-Content ".next-server.err.log" -Tail 200 | Out-Host }
-            if (Test-Path ".next-server.out.log") { "==== .next-server.out.log (tail 200) ====" | Out-Host; Get-Content ".next-server.out.log" -Tail 200 | Out-Host }
-            throw "Server not ready"
+          catch {
+            "E2E suite FAILED: $($_.Exception.Message)" | Out-Host
+            Dump-Logs
+            throw
           }
-
-      - name: E2E - dashboard smoke
-        shell: pwsh
-        run: pnpm run e2e:dashboard
-
-      - name: E2E - assistant chat
-        if: success()
-        shell: pwsh
-        run: pnpm run e2e:assistant
-
-      - name: Dump Next logs (always)
-        if: always()
-        shell: pwsh
-        run: |
-          "==== Dump logs ====" | Out-Host
-          if (Test-Path ".next-server.pid") { "PID: $(Get-Content .next-server.pid)" | Out-Host }
-          "==== .next-server.err.log (tail 300) ====" | Out-Host
-          if (Test-Path ".next-server.err.log") { Get-Content ".next-server.err.log" -Tail 300 | Out-Host } else { "no err log" | Out-Host }
-          "==== .next-server.out.log (tail 300) ====" | Out-Host
-          if (Test-Path ".next-server.out.log") { Get-Content ".next-server.out.log" -Tail 300 | Out-Host } else { "no out log" | Out-Host }
-
-      - name: Stop Next server
-        if: always()
-        shell: pwsh
-        run: |
-          $ErrorActionPreference = "SilentlyContinue"
-          if (Test-Path ".next-server.pid") {
-            $pid = Get-Content ".next-server.pid"
-            if ($pid) { Stop-Process -Id ([int]$pid) -Force }
-          }
-          exit 0
+          finally {
+            $ErrorActionPreference = "SilentlyContinue"
+            if ($p -and -not $p.HasExited) { Stop-Process -Id $p.Id -Force }
+            if (Test-Path $pidFile) {
+              $pid = Get-Content $pidFile
+              if ($pid) { try { Stop-Process -Id ([int]$pid) -Force } catch {} }
+            }
+            exit 0
