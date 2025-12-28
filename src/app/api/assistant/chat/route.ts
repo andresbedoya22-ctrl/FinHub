@@ -3,6 +3,8 @@ import OpenAI from "openai";
 import { matchFinnyFaq } from "@/features/assistant/finny/faqRegistry";
 import { buildFinnySystemPrompt } from "@/features/assistant/finny/finnyPrompt";
 import { normalizeLang, pickLangForText, type AppLang } from "@/features/i18n/lang";
+import { cookies } from "next/headers";
+import { createServerClient } from "@supabase/ssr";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -24,6 +26,33 @@ export async function POST(req: NextRequest) {
 
   const message = clampMessage(body?.message ?? "");
   if (message.length < 2) return bad("message requerido");
+  // AUTH_GUARD: require logged-in user (avoid public LLM abuse)
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!supabaseUrl || !supabaseAnonKey) {
+    return bad("Supabase env missing (NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY)", 500);
+  }
+
+  const cookieStore = await cookies();
+  const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
+    cookies: {
+      getAll() {
+        return cookieStore.getAll();
+      },
+      setAll(cookiesToSet) {
+        try {
+          cookiesToSet.forEach(({ name, value, options }) => cookieStore.set(name, value, options));
+        } catch {
+          // noop
+        }
+      },
+    },
+  });
+
+  const { data: { user }, error: authErr } = await supabase.auth.getUser();
+  if (authErr) return bad(authErr.message, 401);
+  if (!user) return bad("No autorizado", 401);
+
 
   // Idioma activo: preferimos body.lang; si no, Accept-Language.
   const headerLang = req.headers.get("accept-language") ?? "";
@@ -49,14 +78,14 @@ export async function POST(req: NextRequest) {
   const model = (process.env.FINNY_OPENAI_MODEL ?? "gpt-4.1-mini").toString();
 
   const system = buildFinnySystemPrompt(textLang);
-  const user = message;
+  const userMessage = message;
 
   try {
     const resp = await client.responses.create({
       model,
       input: [
         { role: "system", content: system },
-        { role: "user", content: user },
+        { role: "user", content: userMessage },
       ],
     });
 
@@ -72,3 +101,5 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: false as const, error: msg }, { status: 500 });
   }
 }
+
+
