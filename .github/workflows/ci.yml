@@ -64,8 +64,8 @@ jobs:
       - name: Build
         run: pnpm build
 
-      - name: Create .env.local for E2E
-        shell: powershell
+      - name: Create .env.local for E2E (no BOM)
+        shell: pwsh
         env:
           SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
@@ -78,20 +78,24 @@ jobs:
           if (-not $env:SUPABASE_SERVICE_ROLE_KEY) { throw "Missing secret: SUPABASE_SERVICE_ROLE_KEY" }
           if (-not $env:NEXT_PUBLIC_SUPABASE_ANON_KEY) { throw "Missing secret: NEXT_PUBLIC_SUPABASE_ANON_KEY" }
 
-          $envLines = @(
-            "SUPABASE_URL=$($env:SUPABASE_URL)",
-            "NEXT_PUBLIC_SUPABASE_URL=$($env:SUPABASE_URL)",
-            "SUPABASE_SERVICE_ROLE_KEY=$($env:SUPABASE_SERVICE_ROLE_KEY)",
-            "NEXT_PUBLIC_SUPABASE_ANON_KEY=$($env:NEXT_PUBLIC_SUPABASE_ANON_KEY)",
-            "",
-            "BASE_URL=http://localhost:3000",
+          $content = @(
+            "SUPABASE_URL=$($env:SUPABASE_URL)"
+            "NEXT_PUBLIC_SUPABASE_URL=$($env:SUPABASE_URL)"
+            "SUPABASE_SERVICE_ROLE_KEY=$($env:SUPABASE_SERVICE_ROLE_KEY)"
+            "NEXT_PUBLIC_SUPABASE_ANON_KEY=$($env:NEXT_PUBLIC_SUPABASE_ANON_KEY)"
+            ""
+            "BASE_URL=http://localhost:3000"
             "FINHUB_BASE_URL=http://localhost:3000"
-          )
+          ) -join "`n"
 
-          $envLines -join "`n" | Set-Content -Path ".env.local" -Encoding UTF8
+          [System.IO.File]::WriteAllText(".env.local", $content, (New-Object System.Text.UTF8Encoding($false)))
+
+          # Safe debug: primeros 3 bytes deben ser 53 55 50 ("SUP") => sin BOM
+          $b=[System.IO.File]::ReadAllBytes(".env.local")
+          "{0:X2} {1:X2} {2:X2}" -f $b[0],$b[1],$b[2]
 
       - name: Start Next server (background) + wait ready
-        shell: powershell
+        shell: pwsh
         run: |
           Set-StrictMode -Version Latest
           $ErrorActionPreference = "Stop"
@@ -99,6 +103,7 @@ jobs:
 
           $env:PORT = "3000"
 
+          # Arranca y captura logs
           $p = Start-Process -FilePath "pnpm" -ArgumentList "start" -PassThru -NoNewWindow `
             -RedirectStandardOutput ".next-server.out.log" `
             -RedirectStandardError  ".next-server.err.log"
@@ -120,31 +125,34 @@ jobs:
 
           if (-not $ok) {
             "Server did not become ready at $url" | Out-Host
-            if (Test-Path ".next-server.err.log") { Get-Content ".next-server.err.log" -Tail 200 | Out-Host }
-            if (Test-Path ".next-server.out.log") { Get-Content ".next-server.out.log" -Tail 200 | Out-Host }
+            if (Test-Path ".next-server.err.log") { "==== .next-server.err.log (tail 200) ====" | Out-Host; Get-Content ".next-server.err.log" -Tail 200 | Out-Host }
+            if (Test-Path ".next-server.out.log") { "==== .next-server.out.log (tail 200) ====" | Out-Host; Get-Content ".next-server.out.log" -Tail 200 | Out-Host }
             throw "Server not ready"
           }
 
       - name: E2E - dashboard smoke
-        shell: powershell
+        shell: pwsh
         run: pnpm run e2e:dashboard
 
       - name: E2E - assistant chat
-        shell: powershell
+        if: success()
+        shell: pwsh
         run: pnpm run e2e:assistant
 
-      - name: Dump Next logs on failure
-        if: failure()
-        shell: powershell
+      - name: Dump Next logs (always)
+        if: always()
+        shell: pwsh
         run: |
-          "==== .next-server.err.log (tail 200) ====" | Out-Host
-          if (Test-Path ".next-server.err.log") { Get-Content ".next-server.err.log" -Tail 200 | Out-Host } else { "no err log" | Out-Host }
-          "==== .next-server.out.log (tail 200) ====" | Out-Host
-          if (Test-Path ".next-server.out.log") { Get-Content ".next-server.out.log" -Tail 200 | Out-Host } else { "no out log" | Out-Host }
+          "==== Dump logs ====" | Out-Host
+          if (Test-Path ".next-server.pid") { "PID: $(Get-Content .next-server.pid)" | Out-Host }
+          "==== .next-server.err.log (tail 300) ====" | Out-Host
+          if (Test-Path ".next-server.err.log") { Get-Content ".next-server.err.log" -Tail 300 | Out-Host } else { "no err log" | Out-Host }
+          "==== .next-server.out.log (tail 300) ====" | Out-Host
+          if (Test-Path ".next-server.out.log") { Get-Content ".next-server.out.log" -Tail 300 | Out-Host } else { "no out log" | Out-Host }
 
       - name: Stop Next server
         if: always()
-        shell: powershell
+        shell: pwsh
         run: |
           $ErrorActionPreference = "SilentlyContinue"
           if (Test-Path ".next-server.pid") {
