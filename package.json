@@ -18,7 +18,8 @@
     "check:encoding": "node scripts/check-no-bom.mjs",
     "e2e:phase7": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/e2e/run-ocr-extract-verify-v1.ps1",
     "e2e:assistant": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/e2e/run-assistant-chat-v1.ps1",
-    "e2e:dashboard": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/e2e/run-dashboard-smoke-v1.ps1"
+    "e2e:dashboard": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/e2e/run-dashboard-smoke-v1.ps1",
+    "e2e:suite": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/e2e/run-suite-local.ps1"
   },
   "dependencies": {
     "@supabase/ssr": "^0.8.0",
