@@ -106,7 +106,7 @@ export default function FinnyWidget() {
   }
 
   return (
-    <div className="fixed bottom-4 left-4 z-50">
+    <div className="fixed bottom-4 right-4 z-50">
       {open ? (
         <div className="w-[340px] max-w-[90vw] rounded-2xl border bg-white shadow-lg overflow-hidden">
           <div className="flex items-center justify-between px-4 py-3 border-b">
@@ -183,4 +183,5 @@ export default function FinnyWidget() {
     </div>
   );
 }
+
 
