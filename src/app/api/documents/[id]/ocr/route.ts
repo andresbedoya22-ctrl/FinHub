@@ -1,10 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
+﻿import { NextRequest, NextResponse } from "next/server";
 import { createSupabaseServerClient } from "@/lib/supabaseServerClient";
 import { createClient } from "@supabase/supabase-js";
 import { requireOcrKind } from "../_shared/ocrGuard";
 import { MACHTIGINGSREGISTRATIE_SCHEMA_VERSION } from "@/features/documents/machtigingsregistratieSchema";
 import { getOcrTextProvider } from "@/features/documents/ocr/getOcrTextProvider";
 import { extractMachtigingsregistratieFieldsFromText } from "@/features/documents/ocr/machtigingsregistratieTextParser";
+import { assertSupabaseServerEnv } from "@/config/env";
 
 export const dynamic = "force-dynamic";
 
@@ -31,7 +32,7 @@ async function downloadBytesFromStorage(
   const admin = createSupabaseServiceRoleClient();
   const { data, error } = await admin.storage.from(bucket).download(path);
   if (error || !data) {
-    // Storage puede devolver "Object not found" también en denegaciones por policy.
+    // Storage puede devolver "Object not found" tambiÃ©n en denegaciones por policy.
     throw new Error(error?.message ?? "Object not found");
   }
   const ab = await data.arrayBuffer();
@@ -51,7 +52,9 @@ function parseStorageRef(storagePath: string): { bucket: string; path: string } 
 
 
 export async function POST(_req: NextRequest, context: { params: Promise<{ id: string }> }) {
-  const supabase = await createSupabaseServerClient();
+  
+  assertSupabaseServerEnv();
+const supabase = await createSupabaseServerClient();
   const provider = getOcrTextProvider();
 
   try {
@@ -120,7 +123,7 @@ export async function POST(_req: NextRequest, context: { params: Promise<{ id: s
     }
     const storagePath = typeof doc.storage_path === "string" ? doc.storage_path : "";
     if (!storagePath) {
-      return NextResponse.json({ ok: false, error: "storage_path inválido" }, { status: 400 });
+      return NextResponse.json({ ok: false, error: "storage_path invÃ¡lido" }, { status: 400 });
     }
     const { bucket, path } = parseStorageRef(storagePath);
 
@@ -218,3 +221,4 @@ const ocr = await provider.extractText({
     return NextResponse.json({ ok: false, error: msg }, { status: 500 });
   }
 }
+

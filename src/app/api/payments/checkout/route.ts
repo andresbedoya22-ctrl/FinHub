@@ -1,6 +1,7 @@
 ﻿import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { createSupabaseServerClient } from "@/lib/supabaseServerClient";
+import { assertStripeCheckoutEnv } from "@/config/env";
 
 export const dynamic = "force-dynamic";
 
@@ -13,7 +14,9 @@ const PRODUCTS: Record<ProductKey, { amountCents: number; currency: string; name
 };
 
 export async function POST(req: Request) {
-  try {
+  
+  assertStripeCheckoutEnv();
+try {
     const supabase = await createSupabaseServerClient();
 
     const { data: userData, error: userErr } = await supabase.auth.getUser();
@@ -110,3 +113,4 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: msg }, { status: 500 });
   }
 }
+

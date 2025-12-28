@@ -1,6 +1,7 @@
 ﻿import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { createSupabaseAdminClient } from "@/lib/supabaseAdminClient";
+import { assertStripeWebhookEnv } from "@/config/env";
 
 export const dynamic = "force-dynamic";
 
@@ -12,7 +13,9 @@ function normalizeStatus(eventType: string): "paid" | "failed" | "pending" {
 }
 
 export async function POST(req: Request) {
-  try {
+  
+  assertStripeWebhookEnv();
+try {
     const secretKey = process.env.STRIPE_SECRET_KEY;
     const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
@@ -118,3 +121,4 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: msg }, { status: 500 });
   }
 }
+
