@@ -5,55 +5,73 @@ if (!file) throw new Error("Usage: node tools/patch-finny-rate-limit.mjs <route.
 
 let s = fs.readFileSync(file, "utf8");
 
-if (s.includes("FINNY_RATE_LIMIT: in-memory per user")) {
+// idempotente
+if (s.includes("RATE_LIMIT: per-user (MVP)")) {
   console.log("already patched", file);
   process.exit(0);
 }
 
-// Insertar helpers cerca de top-level (después de exports runtime/dynamic si existen)
-const anchor = /export const runtime\s*=\s*["']nodejs["'];\s*\r?\n/m;
-const m = s.match(anchor);
-if (!m) throw new Error("No encontré `export const runtime = \"nodejs\";` como anchor.");
+// 1) helper top-level
+const runtimeLine = /export\s+const\s+runtime\s*=\s*["']nodejs["']\s*;\s*\r?\n/m;
+const rm = s.match(runtimeLine);
+if (!rm) throw new Error("No encontré `export const runtime = \"nodejs\";` para insertar rate limit helper.");
 
-const block = `
-/**
- * FINNY_RATE_LIMIT: in-memory per user (MVP)
- * Nota: en producción multi-instance necesitas Redis/Upstash para consistencia.
+const helper = `
+/** RATE_LIMIT: per-user (MVP)
+ * - Ventana: 60s
+ * - Límite: 20 req/min por usuario autenticado
+ * - Nota: en producción multi-instancia, migrar a Redis/Upstash.
  */
-type RL = { t0: number; n: number };
-const RL_WINDOW_MS = 60_000;
-const RL_MAX = 20;
-const rl = new Map<string, RL>();
+type RateBucket = { count: number; resetAt: number };
+const RATE_WINDOW_MS = 60_000;
+const RATE_LIMIT = 20;
+const __rateBuckets = new Map<string, RateBucket>();
 
-function hitRateLimit(key: string) {
+function rateLimitCheck(userId: string) {
   const now = Date.now();
-  const cur = rl.get(key);
-  if (!cur || now - cur.t0 > RL_WINDOW_MS) {
-    rl.set(key, { t0: now, n: 1 });
-    return { ok: true as const, remaining: RL_MAX - 1 };
+  const b = __rateBuckets.get(userId);
+  if (!b || b.resetAt <= now) {
+    __rateBuckets.set(userId, { count: 1, resetAt: now + RATE_WINDOW_MS });
+    return { ok: true as const };
   }
-  cur.n += 1;
-  if (cur.n > RL_MAX) return { ok: false as const, remaining: 0 };
-  return { ok: true as const, remaining: RL_MAX - cur.n };
+  b.count += 1;
+  if (b.count > RATE_LIMIT) {
+    const retryAfterSec = Math.max(1, Math.ceil((b.resetAt - now) / 1000));
+    return { ok: false as const, retryAfterSec };
+  }
+  return { ok: true as const };
 }
 `;
+s = s.replace(runtimeLine, (hit) => hit + helper);
 
-s = s.replace(anchor, (hit) => hit + block);
+// 2) Enforce: insert after `if (!user) ... 401`
+const authUserLine = /const\s*\{\s*data:\s*\{\s*user\s*\}\s*,\s*error:\s*authErr\s*\}\s*=\s*await\s*supabase\.auth\.getUser\(\)\s*;\s*\r?\n/m;
+const au = s.match(authUserLine);
+if (!au) throw new Error("No encontré `await supabase.auth.getUser()` (línea destructuring) para ubicar el auth guard.");
 
-// Insertar el check justo después del AUTH_GUARD (tras `if (!user) return bad(...)`)
-const authEnd = /if\s*\(\s*!user\s*)\s*return\s*bad\([^)]*)\s*,\s*401);\s*\r?\n/m;
-if (!authEnd.test(s)) throw new Error("No encontré el final del AUTH_GUARD para insertar rate-limit.");
+const afterAuthSliceStart = au.index + au[0].length;
+const afterAuth = s.slice(afterAuthSliceStart);
 
-s = s.replace(authEnd, (hit) => {
-  return hit + `
-  // FINNY_RATE_LIMIT: in-memory per user (MVP)
-  const rlKey = user.id;
-  const rlHit = hitRateLimit(rlKey);
-  if (!rlHit.ok) return bad("Demasiadas solicitudes. Intenta de nuevo en ~1 minuto.", 429);
+// primer if (!user) con return 401 (flexible)
+const ifNoUser = /if\s*\(\s*!user\s*\)\s*return\s*bad\([\s\S]*?\b401\b[\s\S]*?\)\s*;\s*\r?\n/m;
+const nu = afterAuth.match(ifNoUser);
+if (!nu) throw new Error("No encontré `if (!user) return bad(...401...)` después de getUser().");
+
+const enforcement = `
+  // RATE_LIMIT enforcement (MVP)
+  const rl = rateLimitCheck(user.id);
+  if (!rl.ok) {
+    return NextResponse.json(
+      { ok: false as const, error: "Rate limit excedido" },
+      { status: 429, headers: { "Retry-After": String(rl.retryAfterSec) } }
+    );
+  }
+
 `;
-});
+
+const insertPos = afterAuthSliceStart + nu.index + nu[0].length;
+s = s.slice(0, insertPos) + enforcement + s.slice(insertPos);
 
 if (!s.endsWith("\n")) s += "\n";
 fs.writeFileSync(file, s, "utf8");
 console.log("patched", file);
-

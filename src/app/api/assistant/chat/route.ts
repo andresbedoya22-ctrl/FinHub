@@ -9,6 +9,31 @@ import { createServerClient } from "@supabase/ssr";
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
+
+/** RATE_LIMIT: per-user (MVP)
+ * - Ventana: 60s
+ * - Límite: 20 req/min por usuario autenticado
+ * - Nota: en producción multi-instancia, migrar a Redis/Upstash.
+ */
+type RateBucket = { count: number; resetAt: number };
+const RATE_WINDOW_MS = 60_000;
+const RATE_LIMIT = 20;
+const __rateBuckets = new Map<string, RateBucket>();
+
+function rateLimitCheck(userId: string) {
+  const now = Date.now();
+  const b = __rateBuckets.get(userId);
+  if (!b || b.resetAt <= now) {
+    __rateBuckets.set(userId, { count: 1, resetAt: now + RATE_WINDOW_MS });
+    return { ok: true as const };
+  }
+  b.count += 1;
+  if (b.count > RATE_LIMIT) {
+    const retryAfterSec = Math.max(1, Math.ceil((b.resetAt - now) / 1000));
+    return { ok: false as const, retryAfterSec };
+  }
+  return { ok: true as const };
+}
 type Body = { message?: string; lang?: string };
 
 function bad(msg: string, status = 400) {
@@ -53,6 +78,16 @@ export async function POST(req: NextRequest) {
   if (authErr) return bad(authErr.message, 401);
   if (!user) return bad("No autorizado", 401);
 
+
+
+  // RATE_LIMIT enforcement (MVP)
+  const rl = rateLimitCheck(user.id);
+  if (!rl.ok) {
+    return NextResponse.json(
+      { ok: false as const, error: "Rate limit excedido" },
+      { status: 429, headers: { "Retry-After": String(rl.retryAfterSec) } }
+    );
+  }
 
   // Idioma activo: preferimos body.lang; si no, Accept-Language.
   const headerLang = req.headers.get("accept-language") ?? "";
