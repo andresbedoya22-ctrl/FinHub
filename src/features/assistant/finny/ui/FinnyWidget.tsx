@@ -1,67 +1,72 @@
 ﻿"use client";
 
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
+import { finnyChat } from "@/features/assistant/finny/finnyApiClient";
+import { AppLang, normalizeLang, pickLangForText } from "@/features/i18n/lang";
 
-type Lang = "es" | "en";
 type Msg = { role: "user" | "assistant"; text: string; mode?: "faq" | "llm" | "error" };
 
-function normalizeLang(v?: string): Lang {
-  const x = (v ?? "").toString().trim().toLowerCase();
-  if (x.startsWith("en")) return "en";
-  return "es";
+function detectActiveLang(): AppLang {
+  // 1) <html lang="...">
+  const htmlLang = typeof document !== "undefined" ? document.documentElement.getAttribute("lang") : null;
+  const l1 = normalizeLang(htmlLang ?? "", "es");
+
+  // 2) localStorage fallback (si tu selector lo guarda)
+  let ls: string | null = null;
+  try {
+    ls = typeof window !== "undefined" ? window.localStorage.getItem("fh_lang") : null;
+  } catch {
+    ls = null;
+  }
+  const l2 = normalizeLang(ls ?? "", l1);
+
+  // 3) si no es ES/EN, cae a EN (por ahora)
+  return pickLangForText(l2);
 }
 
-const i18n = {
-  es: {
-    name: "Finny",
-    subtitle: "FAQ + IA (cuando aplique)",
-    close: "Cerrar",
-    open: "Abrir Finny",
-    placeholder: "Escribe tu pregunta…",
-    send: "Enviar",
-    busy: "…",
-    auto: "Respuesta automática",
-    ai: "IA",
-    err: "Error",
-    greet: "Hola, soy Finny. Puedo ayudarte a navegar FinHub y resolver dudas frecuentes. ¿Qué necesitas?",
-    fail: "No pude procesar tu mensaje.",
-    llmFallback: "No pude generar una respuesta útil. Intenta reformular.",
-    unknown: "Error desconocido",
-  },
-  en: {
-    name: "Finny",
+function uiText(lang: AppLang) {
+  if (lang === "es") {
+    return {
+      title: "Finny",
+      subtitle: "FAQ + IA (cuando aplique)",
+      hello: "Hola, soy Finny. Puedo ayudarte a navegar FinHub y resolver dudas frecuentes. ¿Qué necesitas?",
+      close: "Cerrar",
+      placeholder: "Escribe tu pregunta…",
+      send: "Enviar",
+      sending: "…",
+      fail: "No pude procesar tu mensaje.",
+      faqTag: "Respuesta automática",
+      llmTag: "IA",
+      errTag: "Error",
+    };
+  }
+  return {
+    title: "Finny",
     subtitle: "FAQ + AI (when applicable)",
+    hello: "Hi, I'm Finny. I can help you navigate FinHub and answer common questions. What do you need?",
     close: "Close",
-    open: "Open Finny",
     placeholder: "Type your question…",
     send: "Send",
-    busy: "…",
-    auto: "Auto answer",
-    ai: "AI",
-    err: "Error",
-    greet: "Hi, I’m Finny. I can help you navigate FinHub and answer common questions. What do you need?",
-    fail: "I couldn’t process your message.",
-    llmFallback: "I could not generate a useful answer. Please try rephrasing.",
-    unknown: "Unknown error",
-  },
-} as const;
+    sending: "…",
+    fail: "I could not process your message.",
+    faqTag: "Auto answer",
+    llmTag: "AI",
+    errTag: "Error",
+  };
+}
 
 export default function FinnyWidget() {
+  const lang = useMemo(() => detectActiveLang(), []);
+  const t = useMemo(() => uiText(lang), [lang]);
+
   const [open, setOpen] = useState(false);
-  const [lang, setLang] = useState<Lang>("es");
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
-  const [messages, setMessages] = useState<Msg[]>([]);
+  const [messages, setMessages] = useState<Msg[]>([
+    { role: "assistant", text: t.hello, mode: "faq" },
+  ]);
 
-  const t = i18n[lang];
   const listRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    const l = normalizeLang(document?.documentElement?.lang || navigator.language);
-    setLang(l);
-    setMessages([{ role: "assistant", text: i18n[l].greet, mode: "faq" }]);
-  }, []);
-
   const canSend = useMemo(() => input.trim().length >= 2 && !busy, [input, busy]);
 
   async function send() {
@@ -73,35 +78,18 @@ export default function FinnyWidget() {
     setMessages((m) => [...m, { role: "user", text: msg }]);
 
     try {
-      const res = await fetch("/api/assistant/chat", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ message: msg, lang }),
-      });
+      const json = await finnyChat(msg, lang);
 
-      type ApiOk = { ok: true; mode?: "faq" | "llm"; answer?: string };
-      type ApiErr = { ok?: false; error?: string };
-      type ApiResp = ApiOk | ApiErr | null;
-
-      const json = (await res.json().catch(() => null)) as ApiResp;
-
-      if (!res.ok || !json?.ok) {
-        const err = (() => {
-          if (json && typeof json === "object") {
-            const r = json as Record<string, unknown>;
-            const e = r.error;
-            if (typeof e === "string" && e.trim().length > 0) return e;
-          }
-          return t.fail;
-        })();
+      if (!json.ok) {
+        const err = (json.error ?? t.fail).toString();
         setMessages((m) => [...m, { role: "assistant", text: err, mode: "error" }]);
       } else {
-        const mode = (json.mode ?? "llm") as "faq" | "llm";
-        const answer = (json.answer ?? "").toString().trim() || t.llmFallback;
+        const mode = json.mode ?? "llm";
+        const answer = (json.answer ?? "").toString().trim() || t.fail;
         setMessages((m) => [...m, { role: "assistant", text: answer, mode }]);
       }
     } catch (e: unknown) {
-      const err = e instanceof Error ? e.message : t.unknown;
+      const err = e instanceof Error ? e.message : t.fail;
       setMessages((m) => [...m, { role: "assistant", text: err, mode: "error" }]);
     } finally {
       setBusy(false);
@@ -109,13 +97,6 @@ export default function FinnyWidget() {
         if (listRef.current) listRef.current.scrollTop = listRef.current.scrollHeight;
       });
     }
-  }
-
-  function modeLabel(m?: Msg["mode"]) {
-    if (!m) return null;
-    if (m === "faq") return t.auto;
-    if (m === "llm") return t.ai;
-    return t.err;
   }
 
   return (
@@ -128,7 +109,7 @@ export default function FinnyWidget() {
                 F
               </div>
               <div className="leading-tight">
-                <div className="text-sm font-semibold">{t.name}</div>
+                <div className="text-sm font-semibold">{t.title}</div>
                 <div className="text-xs text-gray-500">{t.subtitle}</div>
               </div>
             </div>
@@ -152,7 +133,9 @@ export default function FinnyWidget() {
                 >
                   {m.text}
                   {m.role === "assistant" && m.mode ? (
-                    <div className="mt-1 text-[11px] opacity-70">{modeLabel(m.mode)}</div>
+                    <div className="mt-1 text-[11px] opacity-70">
+                      {m.mode === "faq" ? t.faqTag : m.mode === "llm" ? t.llmTag : t.errTag}
+                    </div>
                   ) : null}
                 </div>
               </div>
@@ -175,7 +158,7 @@ export default function FinnyWidget() {
               onClick={send}
               disabled={!canSend}
             >
-              {busy ? t.busy : t.send}
+              {busy ? t.sending : t.send}
             </button>
           </div>
         </div>
@@ -185,8 +168,8 @@ export default function FinnyWidget() {
         <button
           className="h-14 w-14 rounded-full bg-[#0D1B2A] text-white shadow-lg flex items-center justify-center text-lg font-semibold"
           onClick={() => setOpen(true)}
-          aria-label={t.open}
-          title={t.open}
+          aria-label="Abrir Finny"
+          title="Abrir Finny"
         >
           F
         </button>
@@ -194,6 +177,3 @@ export default function FinnyWidget() {
     </div>
   );
 }
-
-
-
