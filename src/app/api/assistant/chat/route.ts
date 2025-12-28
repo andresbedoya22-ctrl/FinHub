@@ -98,6 +98,25 @@ export async function POST(req: NextRequest) {
   // 1) FAQ match (respuesta automática)
   const faq = matchFinnyFaq(message, textLang);
   if (faq) {
+
+    // AUDIT_CONSOLE: finny_chat_faq (MVP)
+    try {
+      console.log(
+        JSON.stringify({
+          evt: "finny_chat",
+          user_id: user?.id ?? null,
+          lang: textLang ?? null,
+          mode: "faq",
+          input_len: typeof message === "string" ? message.length : null,
+          output_len: typeof faq?.answerMd === "string" ? faq.answerMd.length : null,
+          ts: new Date().toISOString(),
+        })
+      );
+    } catch {
+      // noop
+    }
+
+
     return NextResponse.json({ ok: true as const, mode: "faq" as const, lang: textLang, answer: faq.answerMd });
   }
 
@@ -140,6 +159,24 @@ export async function POST(req: NextRequest) {
       (textLang === "es"
         ? "No pude generar una respuesta útil. Intenta reformular tu pregunta."
         : "I couldn't generate a useful answer. Please rephrase your question.");
+
+
+    // AUDIT_CONSOLE: finny_chat_llm (MVP)
+    try {
+      console.log(
+        JSON.stringify({
+          evt: "finny_chat",
+          user_id: user?.id ?? null,
+          lang: textLang ?? null,
+          mode: "llm",
+          input_len: typeof message === "string" ? message.length : null,
+      output_len: typeof (text) === "string" ? (text).length : null,
+          ts: new Date().toISOString(),
+        })
+      );
+    } catch {
+      // noop
+    }
 
     return NextResponse.json({ ok: true as const, mode: "llm" as const, lang: textLang, answer: text });
   } catch (e: unknown) {
