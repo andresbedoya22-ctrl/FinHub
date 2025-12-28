@@ -90,7 +90,6 @@ jobs:
 
           [System.IO.File]::WriteAllText(".env.local", $content, (New-Object System.Text.UTF8Encoding($false)))
 
-          # Safe debug: primeros 3 bytes deben ser 53 55 50 ("SUP") => sin BOM
           $b=[System.IO.File]::ReadAllBytes(".env.local")
           "{0:X2} {1:X2} {2:X2}" -f $b[0],$b[1],$b[2]
 
@@ -120,7 +119,6 @@ jobs:
 
           $p = $null
           try {
-            # Start server and keep it alive within THIS step (critical on Windows runners)
             $p = Start-Process -FilePath "pnpm" -ArgumentList "start" -PassThru -NoNewWindow `
               -RedirectStandardOutput $outLog `
               -RedirectStandardError  $errLog
@@ -128,7 +126,6 @@ jobs:
             "Started server PID: $($p.Id)" | Out-Host
             $p.Id | Set-Content -Path $pidFile -Encoding ASCII
 
-            # Wait ready
             $ok = $false
             for ($i=0; $i -lt 90; $i++) {
               try {
@@ -146,20 +143,18 @@ jobs:
               throw "Server not ready"
             }
 
-            # E2E dashboard
-            pnpm run e2e:dashboard
+            & pnpm run e2e:dashboard
             if ($LASTEXITCODE -ne 0) {
               "E2E dashboard failed with exit code $LASTEXITCODE" | Out-Host
               Dump-Logs
-              exit $LASTEXITCODE
+              throw "E2E dashboard failed"
             }
 
-            # E2E assistant
-            pnpm run e2e:assistant
+            & pnpm run e2e:assistant
             if ($LASTEXITCODE -ne 0) {
               "E2E assistant failed with exit code $LASTEXITCODE" | Out-Host
               Dump-Logs
-              exit $LASTEXITCODE
+              throw "E2E assistant failed"
             }
 
             "E2E suite OK" | Out-Host
@@ -177,4 +172,4 @@ jobs:
               $pid = Get-Content $pidFile
               if ($pid) { try { Stop-Process -Id ([int]$pid) -Force } catch {} }
             }
-            exit 0
+          }
