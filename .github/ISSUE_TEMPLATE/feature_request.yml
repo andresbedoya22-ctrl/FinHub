@@ -1,0 +1,19 @@
+﻿name: Feature request
+description: Proponer una mejora
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: goal
+    attributes:
+      label: Objetivo
+      description: ¿Qué quieres lograr?
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Alcance
+      description: Qué incluye y qué NO incluye.
+    validations:
+      required: true
