@@ -1,72 +1,65 @@
 ﻿"use client";
 
 import React, { useMemo, useRef, useState } from "react";
-import { finnyChat } from "@/features/assistant/finny/finnyApiClient";
-import { AppLang, normalizeLang, pickLangForText } from "@/features/i18n/lang";
+import { normalizeLang, pickLangForText, type AppLang } from "@/features/i18n/lang";
 
 type Msg = { role: "user" | "assistant"; text: string; mode?: "faq" | "llm" | "error" };
 
-function detectActiveLang(): AppLang {
-  // 1) <html lang="...">
-  const htmlLang = typeof document !== "undefined" ? document.documentElement.getAttribute("lang") : null;
-  const l1 = normalizeLang(htmlLang ?? "", "es");
-
-  // 2) localStorage fallback (si tu selector lo guarda)
-  let ls: string | null = null;
-  try {
-    ls = typeof window !== "undefined" ? window.localStorage.getItem("fh_lang") : null;
-  } catch {
-    ls = null;
-  }
-  const l2 = normalizeLang(ls ?? "", l1);
-
-  // 3) si no es ES/EN, cae a EN (por ahora)
-  return pickLangForText(l2);
+type ApiOk = { ok: true; mode: "faq" | "llm"; lang: AppLang; answer: string };
+function isRecord(x: unknown): x is Record<string, unknown> {
+  return typeof x === "object" && x !== null;
 }
 
-function uiText(lang: AppLang) {
-  if (lang === "es") {
-    return {
-      title: "Finny",
-      subtitle: "FAQ + IA (cuando aplique)",
-      hello: "Hola, soy Finny. Puedo ayudarte a navegar FinHub y resolver dudas frecuentes. ¿Qué necesitas?",
-      close: "Cerrar",
-      placeholder: "Escribe tu pregunta…",
-      send: "Enviar",
-      sending: "…",
-      fail: "No pude procesar tu mensaje.",
-      faqTag: "Respuesta automática",
-      llmTag: "IA",
-      errTag: "Error",
-    };
-  }
-  return {
-    title: "Finny",
-    subtitle: "FAQ + AI (when applicable)",
+function readString(x: unknown, key: string): string | null {
+  if (!isRecord(x)) return null;
+  const v = x[key];
+  return typeof v === "string" ? v : null;
+}
+
+function getActiveLang(): AppLang {
+  // Fuente mínima: <html lang="...">
+  const htmlLang = typeof document !== "undefined" ? document.documentElement.lang : "";
+  return normalizeLang(htmlLang, "es");
+}
+
+const UI = {
+  es: {
+    hello: "Hola, soy Finny. Puedo ayudarte a navegar FinHub y resolver dudas frecuentes. ¿Qué necesitas?",
+    badge: "FAQ + IA (cuando aplique)",
+    close: "Cerrar",
+    back: "Volver",
+    placeholder: "Escribe tu pregunta…",
+    send: "Enviar",
+    fail: "No pude procesar tu mensaje.",
+    retry: "No pude generar una respuesta útil. Intenta reformular.",
+  },
+  en: {
     hello: "Hi, I'm Finny. I can help you navigate FinHub and answer common questions. What do you need?",
+    badge: "FAQ + AI (when applicable)",
     close: "Close",
+    back: "Back",
     placeholder: "Type your question…",
     send: "Send",
-    sending: "…",
-    fail: "I could not process your message.",
-    faqTag: "Auto answer",
-    llmTag: "AI",
-    errTag: "Error",
-  };
-}
+    fail: "I couldn't process your message.",
+    retry: "I couldn't generate a useful answer. Please rephrase.",
+  },
+} as const;
 
 export default function FinnyWidget() {
-  const lang = useMemo(() => detectActiveLang(), []);
-  const t = useMemo(() => uiText(lang), [lang]);
-
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
+
+  const activeLang = getActiveLang();
+  const textLang = pickLangForText(activeLang);
+  const t = textLang === "es" ? UI.es : UI.en;
+
   const [messages, setMessages] = useState<Msg[]>([
     { role: "assistant", text: t.hello, mode: "faq" },
   ]);
 
   const listRef = useRef<HTMLDivElement | null>(null);
+
   const canSend = useMemo(() => input.trim().length >= 2 && !busy, [input, busy]);
 
   async function send() {
@@ -78,15 +71,28 @@ export default function FinnyWidget() {
     setMessages((m) => [...m, { role: "user", text: msg }]);
 
     try {
-      const json = await finnyChat(msg, lang);
+      const res = await fetch("/api/assistant/chat", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ message: msg, lang: activeLang }),
+      });
 
-      if (!json.ok) {
-        const err = (json.error ?? t.fail).toString();
+      const jsonUnknown = (await res.json().catch(() => null)) as unknown;
+
+      if (!res.ok) {
+        const err = readString(jsonUnknown, "error") ?? t.fail;
         setMessages((m) => [...m, { role: "assistant", text: err, mode: "error" }]);
       } else {
-        const mode = json.mode ?? "llm";
-        const answer = (json.answer ?? "").toString().trim() || t.fail;
-        setMessages((m) => [...m, { role: "assistant", text: answer, mode }]);
+        // ok-path: validamos shape mínimo sin any
+        const ok = isRecord(jsonUnknown) && jsonUnknown.ok === true;
+        if (!ok) {
+          const err = readString(jsonUnknown, "error") ?? t.fail;
+          setMessages((m) => [...m, { role: "assistant", text: err, mode: "error" }]);
+        } else {
+          const answer = (readString(jsonUnknown, "answer") ?? t.retry).toString().trim();
+          const mode = (readString(jsonUnknown, "mode") ?? "llm") as ApiOk["mode"];
+          setMessages((m) => [...m, { role: "assistant", text: answer, mode }]);
+        }
       }
     } catch (e: unknown) {
       const err = e instanceof Error ? e.message : t.fail;
@@ -109,8 +115,8 @@ export default function FinnyWidget() {
                 F
               </div>
               <div className="leading-tight">
-                <div className="text-sm font-semibold">{t.title}</div>
-                <div className="text-xs text-gray-500">{t.subtitle}</div>
+                <div className="text-sm font-semibold">Finny</div>
+                <div className="text-xs text-gray-500">{t.badge}</div>
               </div>
             </div>
             <button
@@ -134,7 +140,7 @@ export default function FinnyWidget() {
                   {m.text}
                   {m.role === "assistant" && m.mode ? (
                     <div className="mt-1 text-[11px] opacity-70">
-                      {m.mode === "faq" ? t.faqTag : m.mode === "llm" ? t.llmTag : t.errTag}
+                      {m.mode === "faq" ? (textLang === "es" ? "Respuesta automática" : "Auto reply") : m.mode === "llm" ? (textLang === "es" ? "IA" : "AI") : (textLang === "es" ? "Error" : "Error")}
                     </div>
                   ) : null}
                 </div>
@@ -158,7 +164,7 @@ export default function FinnyWidget() {
               onClick={send}
               disabled={!canSend}
             >
-              {busy ? t.sending : t.send}
+              {busy ? "…" : t.send}
             </button>
           </div>
         </div>
@@ -177,3 +183,4 @@ export default function FinnyWidget() {
     </div>
   );
 }
+
