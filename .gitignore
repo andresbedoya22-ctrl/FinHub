@@ -10,8 +10,6 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 # env
-.env
-.env.*.local
 # misc
 .DS_Store
 *.pem
@@ -21,7 +19,6 @@ coverage
 .idea
 .vscode
 # Local env (NO COMMIT)
-.env.local
 # Temp / backups
 *.bak
 *.old
@@ -46,4 +43,13 @@ supabase/.branches/
 
 # local artifacts
 tmp/
+
+
+# env files (sensitive)
+
+
+# env files (sensitive)
+.env
+.env.*
+!.env.example
 
