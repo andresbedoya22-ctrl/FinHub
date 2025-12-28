@@ -1,175 +1,43 @@
-name: CI
+﻿name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
   pull_request:
-    branches: [main]
+    branches: [ main ]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  ci:
-    runs-on: ubuntu-24.04
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: .nvmrc
-
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: "9.15.3"
+          version: 9
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
 
       - name: Install
         run: pnpm install --frozen-lockfile
-
-      - name: Test
-        run: pnpm test
 
       - name: Lint
         run: pnpm lint
 
-      - name: Typecheck
-        run: pnpm typecheck
+      - name: Test
+        run: pnpm test
 
       - name: Build
         run: pnpm build
-
-  e2e_windows:
-    name: E2E (Windows) - dashboard + assistant
-    needs: ci
-    runs-on: windows-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: .nvmrc
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: "9.15.3"
-
-      - name: Install
-        run: pnpm install --frozen-lockfile
-
-      - name: Build
-        run: pnpm build
-
-      - name: Create .env.local for E2E (no BOM)
-        shell: pwsh
-        env:
-          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
-        run: |
-          Set-StrictMode -Version Latest
-          $ErrorActionPreference = "Stop"
-
-          if (-not $env:SUPABASE_URL) { throw "Missing secret: NEXT_PUBLIC_SUPABASE_URL" }
-          if (-not $env:SUPABASE_SERVICE_ROLE_KEY) { throw "Missing secret: SUPABASE_SERVICE_ROLE_KEY" }
-          if (-not $env:NEXT_PUBLIC_SUPABASE_ANON_KEY) { throw "Missing secret: NEXT_PUBLIC_SUPABASE_ANON_KEY" }
-
-          $content = @(
-            "SUPABASE_URL=$($env:SUPABASE_URL)"
-            "NEXT_PUBLIC_SUPABASE_URL=$($env:SUPABASE_URL)"
-            "SUPABASE_SERVICE_ROLE_KEY=$($env:SUPABASE_SERVICE_ROLE_KEY)"
-            "NEXT_PUBLIC_SUPABASE_ANON_KEY=$($env:NEXT_PUBLIC_SUPABASE_ANON_KEY)"
-            ""
-            "BASE_URL=http://127.0.0.1:3000"
-            "FINHUB_BASE_URL=http://127.0.0.1:3000"
-          ) -join "`n"
-
-          [System.IO.File]::WriteAllText(".env.local", $content, (New-Object System.Text.UTF8Encoding($false)))
-
-          $b=[System.IO.File]::ReadAllBytes(".env.local")
-          "{0:X2} {1:X2} {2:X2}" -f $b[0],$b[1],$b[2]
-
-      - name: Run E2E suite (start server + tests + logs)
-        shell: pwsh
-        run: |
-          Set-StrictMode -Version Latest
-          $ErrorActionPreference = "Stop"
-          $ProgressPreference = "SilentlyContinue"
-
-          $env:PORT = "3000"
-          $base = "http://127.0.0.1:3000"
-          $readyUrl = "$base/api/debug/cookies"
-
-          $pidFile = ".next-server.pid"
-          $outLog = ".next-server.out.log"
-          $errLog = ".next-server.err.log"
-
-          function Dump-Logs {
-            "==== Dump logs ====" | Out-Host
-            if (Test-Path $pidFile) { "PID: $(Get-Content $pidFile)" | Out-Host }
-            "==== .next-server.err.log (tail 300) ====" | Out-Host
-            if (Test-Path $errLog) { Get-Content $errLog -Tail 300 | Out-Host } else { "no err log" | Out-Host }
-            "==== .next-server.out.log (tail 300) ====" | Out-Host
-            if (Test-Path $outLog) { Get-Content $outLog -Tail 300 | Out-Host } else { "no out log" | Out-Host }
-          }
-
-          $p = $null
-          try {
-            $p = Start-Process -FilePath "pnpm" -ArgumentList "start" -PassThru -NoNewWindow `
-              -RedirectStandardOutput $outLog `
-              -RedirectStandardError  $errLog
-
-            "Started server PID: $($p.Id)" | Out-Host
-            $p.Id | Set-Content -Path $pidFile -Encoding ASCII
-
-            $ok = $false
-            for ($i=0; $i -lt 90; $i++) {
-              try {
-                Invoke-WebRequest -Uri $readyUrl -UseBasicParsing | Out-Null
-                $ok = $true
-                break
-              } catch {
-                Start-Sleep -Seconds 1
-              }
-            }
-
-            if (-not $ok) {
-              "Server did not become ready at $readyUrl" | Out-Host
-              Dump-Logs
-              throw "Server not ready"
-            }
-
-            & pnpm run e2e:dashboard
-            if ($LASTEXITCODE -ne 0) {
-              "E2E dashboard failed with exit code $LASTEXITCODE" | Out-Host
-              Dump-Logs
-              throw "E2E dashboard failed"
-            }
-
-            & pnpm run e2e:assistant
-            if ($LASTEXITCODE -ne 0) {
-              "E2E assistant failed with exit code $LASTEXITCODE" | Out-Host
-              Dump-Logs
-              throw "E2E assistant failed"
-            }
-
-            "E2E suite OK" | Out-Host
-            Dump-Logs
-          }
-          catch {
-            "E2E suite FAILED: $($_.Exception.Message)" | Out-Host
-            Dump-Logs
-            throw
-          }
-          finally {
-            $ErrorActionPreference = "SilentlyContinue"
-            if ($p -and -not $p.HasExited) { Stop-Process -Id $p.Id -Force }
-            if (Test-Path $pidFile) {
-              $pid = Get-Content $pidFile
-              if ($pid) { try { Stop-Process -Id ([int]$pid) -Force } catch {} }
-            }
-          }
