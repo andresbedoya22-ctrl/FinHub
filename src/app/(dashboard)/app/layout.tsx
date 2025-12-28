@@ -1,10 +1,11 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import type { ReactNode } from "react";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { createServerClient } from "@supabase/ssr";
 
 import { AppProviders } from "./providers";
+import FinnyWidget from "@/features/assistant/finny/ui/FinnyWidget";
 
 type Profile = { role: "user" | "admin" };
 
@@ -128,8 +129,12 @@ export default async function DashboardLayout({ children }: { children: ReactNod
       </header>
 
       <div className="fh-container py-6">
-        <AppProviders>{children}</AppProviders>
+        <AppProviders>
+          {children}
+          <FinnyWidget />
+        </AppProviders>
       </div>
     </div>
   );
 }
+
