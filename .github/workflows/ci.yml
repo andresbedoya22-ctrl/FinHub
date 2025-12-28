@@ -10,94 +10,75 @@ jobs:
   ci:
     runs-on: ubuntu-24.04
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v4
         with:
           version: "9.15.3"
 
-      - name: Install
-        run: pnpm install --frozen-lockfile
-
-      - name: Test
-        run: pnpm test
-
-      - name: Lint
-        run: pnpm lint
-
-      - name: Typecheck
-        run: pnpm typecheck
-
-      - name: Build
-        run: pnpm build
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm build
 
   e2e_windows:
     name: E2E (Windows) - dashboard + assistant
     needs: ci
     runs-on: windows-latest
-    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v4
         with:
           version: "9.15.3"
 
-      - name: Install
-        run: pnpm install --frozen-lockfile
-
-      - name: Build
-        run: pnpm build
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
 
       - name: Create .env.local for E2E
-        shell: powershell
+        shell: pwsh
         env:
-          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: |
-          Set-StrictMode -Version Latest
           $ErrorActionPreference = "Stop"
 
-          if (-not $env:SUPABASE_URL) { throw "Missing secret: NEXT_PUBLIC_SUPABASE_URL" }
-          if (-not $env:SUPABASE_SERVICE_ROLE_KEY) { throw "Missing secret: SUPABASE_SERVICE_ROLE_KEY" }
+          if (-not $env:NEXT_PUBLIC_SUPABASE_URL) { throw "Missing secret: NEXT_PUBLIC_SUPABASE_URL" }
           if (-not $env:NEXT_PUBLIC_SUPABASE_ANON_KEY) { throw "Missing secret: NEXT_PUBLIC_SUPABASE_ANON_KEY" }
+          if (-not $env:SUPABASE_SERVICE_ROLE_KEY) { throw "Missing secret: SUPABASE_SERVICE_ROLE_KEY" }
 
-          @"
-SUPABASE_URL=$($env:SUPABASE_URL)
-NEXT_PUBLIC_SUPABASE_URL=$($env:SUPABASE_URL)
-SUPABASE_SERVICE_ROLE_KEY=$($env:SUPABASE_SERVICE_ROLE_KEY)
-NEXT_PUBLIC_SUPABASE_ANON_KEY=$($env:NEXT_PUBLIC_SUPABASE_ANON_KEY)
+          $lines = @(
+            "SUPABASE_URL=$env:NEXT_PUBLIC_SUPABASE_URL",
+            "NEXT_PUBLIC_SUPABASE_URL=$env:NEXT_PUBLIC_SUPABASE_URL",
+            "SUPABASE_SERVICE_ROLE_KEY=$env:SUPABASE_SERVICE_ROLE_KEY",
+            "NEXT_PUBLIC_SUPABASE_ANON_KEY=$env:NEXT_PUBLIC_SUPABASE_ANON_KEY",
+            "",
+            "BASE_URL=http://localhost:3000",
+            "FINHUB_BASE_URL=http://localhost:3000"
+          )
+          $lines | Set-Content -Path ".env.local" -Encoding utf8
 
-BASE_URL=http://localhost:3000
-FINHUB_BASE_URL=http://localhost:3000
-"@ | Set-Content -Path ".env.local" -Encoding UTF8
-
-      - name: Start Next server (background) + wait ready
-        shell: powershell
+      - name: Start Next server + wait ready
+        shell: pwsh
         run: |
-          Set-StrictMode -Version Latest
           $ErrorActionPreference = "Stop"
           $ProgressPreference = "SilentlyContinue"
 
           $env:PORT = "3000"
           $p = Start-Process -FilePath "pnpm" -ArgumentList "start" -PassThru -NoNewWindow
-          Write-Host "Started server PID:" $p.Id
+          "Started server PID: $($p.Id)" | Out-Host
 
           $url = "http://localhost:3000/api/debug/cookies"
           $ok = $false
@@ -110,26 +91,26 @@ FINHUB_BASE_URL=http://localhost:3000
               Start-Sleep -Seconds 1
             }
           }
+
           if (-not $ok) {
             try { Stop-Process -Id $p.Id -Force } catch {}
             throw "Server did not become ready at $url"
           }
 
-          $p.Id | Set-Content -Path ".next-server.pid" -Encoding ASCII
+          $p.Id | Set-Content -Path ".next-server.pid" -Encoding ascii
 
       - name: E2E - dashboard smoke
-        shell: powershell
+        shell: pwsh
         run: pnpm run e2e:dashboard
 
       - name: E2E - assistant chat
-        shell: powershell
+        shell: pwsh
         run: pnpm run e2e:assistant
 
       - name: Stop Next server
-        if: ${{ always() }}
-        shell: powershell
+        if: always()
+        shell: pwsh
         run: |
-          Set-StrictMode -Version Latest
           $ErrorActionPreference = "SilentlyContinue"
           if (Test-Path ".next-server.pid") {
             $pid = Get-Content ".next-server.pid"
