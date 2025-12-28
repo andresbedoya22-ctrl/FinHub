@@ -49,5 +49,11 @@
     "typescript": "5.7.2",
     "typescript-eslint": "^8.50.0",
     "vitest": "2.1.9"
+  },
+  "pnpm": {
+    "overrides": {
+      "esbuild": "0.25.0",
+      "@eslint/plugin-kit": "0.3.4"
+    }
   }
 }
