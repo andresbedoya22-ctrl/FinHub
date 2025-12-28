@@ -1,4 +1,4 @@
-name: CI
+﻿name: CI
 
 on:
   push:
@@ -37,3 +37,109 @@ jobs:
 
       - name: Build
         run: pnpm build
+
+  e2e_windows:
+    name: E2E (Windows) - dashboard + assistant
+    needs: ci
+    runs-on: windows-latest
+    # No corremos e2e en PRs desde forks porque no hay secrets
+    if: >
+      github.event_name == 'push' ||
+      (github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == false)
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: "9.15.3"
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+
+      - name: Create .env.local for E2E
+        shell: powershell
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+        run: |
+          Set-StrictMode -Version Latest
+          $ErrorActionPreference = "Stop"
+
+          if (-not $env:SUPABASE_URL) { throw "Missing secret: SUPABASE_URL" }
+          if (-not $env:SUPABASE_SERVICE_ROLE_KEY) { throw "Missing secret: SUPABASE_SERVICE_ROLE_KEY" }
+          if (-not $env:NEXT_PUBLIC_SUPABASE_ANON_KEY) { throw "Missing secret: NEXT_PUBLIC_SUPABASE_ANON_KEY" }
+
+          # No imprimir secrets en logs
+          @"
+SUPABASE_URL=$($env:SUPABASE_URL)
+NEXT_PUBLIC_SUPABASE_URL=$($env:SUPABASE_URL)
+SUPABASE_SERVICE_ROLE_KEY=$($env:SUPABASE_SERVICE_ROLE_KEY)
+NEXT_PUBLIC_SUPABASE_ANON_KEY=$($env:NEXT_PUBLIC_SUPABASE_ANON_KEY)
+
+# E2E base URL (scripts usan BASE_URL o FINHUB_BASE_URL)
+BASE_URL=http://localhost:3000
+FINHUB_BASE_URL=http://localhost:3000
+"@ | Set-Content -Path ".env.local" -Encoding UTF8
+
+      - name: Start Next server (background) + wait ready
+        shell: powershell
+        run: |
+          Set-StrictMode -Version Latest
+          $ErrorActionPreference = "Stop"
+          $ProgressPreference = "SilentlyContinue"
+
+          $env:PORT = "3000"
+          # Next start en background
+          $p = Start-Process -FilePath "pnpm" -ArgumentList "start" -PassThru -NoNewWindow
+          Write-Host "Started server PID:" $p.Id
+
+          # Wait until ready (poll debug endpoint)
+          $url = "http://localhost:3000/api/debug/cookies"
+          $ok = $false
+          for ($i=0; $i -lt 60; $i++) {
+            try {
+              Invoke-WebRequest -Uri $url -UseBasicParsing | Out-Null
+              $ok = $true
+              break
+            } catch {
+              Start-Sleep -Seconds 1
+            }
+          }
+          if (-not $ok) {
+            try { Stop-Process -Id $p.Id -Force } catch {}
+            throw "Server did not become ready at $url"
+          }
+
+          # Persist PID for later stop
+          $p.Id | Set-Content -Path ".next-server.pid" -Encoding ASCII
+
+      - name: E2E - dashboard smoke
+        shell: powershell
+        run: pnpm run e2e:dashboard
+
+      - name: E2E - assistant chat
+        shell: powershell
+        run: pnpm run e2e:assistant
+
+      - name: Stop Next server
+        if: always()
+        shell: powershell
+        run: |
+          Set-StrictMode -Version Latest
+          $ErrorActionPreference = "SilentlyContinue"
+          if (Test-Path ".next-server.pid") {
+            $pid = Get-Content ".next-server.pid"
+            if ($pid) { Stop-Process -Id ([int]$pid) -Force }
+          }
