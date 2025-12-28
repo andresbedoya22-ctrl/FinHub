@@ -77,6 +77,17 @@ export async function POST(req: NextRequest) {
   // Modelo configurable
   const model = (process.env.FINNY_OPENAI_MODEL ?? "gpt-4.1-mini").toString();
 
+
+  // FINNY_HARDENING: allowlist models + max_output_tokens
+  const ALLOWED_MODELS = new Set([
+    "gpt-4.1-mini",
+    "gpt-4.1",
+    "gpt-4o-mini",
+  ]);
+  if (!ALLOWED_MODELS.has(model)) {
+    return bad("FINNY_OPENAI_MODEL no permitido por política del servidor", 500);
+  }
+
   const system = buildFinnySystemPrompt(textLang);
   const userMessage = message;
 

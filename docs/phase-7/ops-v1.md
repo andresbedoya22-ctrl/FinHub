@@ -69,3 +69,17 @@ Nota:
    - pnpm e2e:assistant OK sin prompts interactivos.
 6) CI-ready:
    - pnpm lint/test/build OK.
+
+## Finny (Assistant) – Operación
+
+### Variables de entorno
+- OPENAI_API_KEY (requerida para modo LLM)
+- FINNY_OPENAI_MODEL (opcional; default del servidor)
+- NEXT_PUBLIC_SUPABASE_URL (requerida para auth guard)
+- NEXT_PUBLIC_SUPABASE_ANON_KEY (requerida para auth guard)
+
+### Políticas
+- El endpoint /api/assistant/chat requiere sesión (401 si no hay usuario).
+- El modelo se valida contra una allowlist del servidor.
+- La respuesta del LLM tiene límite de salida (max_output_tokens) para controlar coste.
+
