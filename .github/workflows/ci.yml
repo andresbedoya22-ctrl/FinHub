@@ -42,7 +42,7 @@ jobs:
     name: E2E (Windows) - dashboard + assistant
     needs: ci
     runs-on: windows-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
 
     steps:
       - name: Checkout
@@ -126,7 +126,7 @@ FINHUB_BASE_URL=http://localhost:3000
         run: pnpm run e2e:assistant
 
       - name: Stop Next server
-        if: always()
+        if: ${{ always() }}
         shell: powershell
         run: |
           Set-StrictMode -Version Latest
