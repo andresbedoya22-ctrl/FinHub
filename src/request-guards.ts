@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+﻿import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 
 export async function middleware(request: NextRequest) {
@@ -39,3 +39,4 @@ redirectUrl.searchParams.set("redirectTo", fullPath);
 export const config = {
   matcher: ["/app/:path*"],
 };
+

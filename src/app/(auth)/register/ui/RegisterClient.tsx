@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -88,6 +88,18 @@ export function RegisterClient() {
           <Link className="underline" href="/login">
             Login
           </Link>
+        </div>
+
+        <div className="text-xs opacity-70">
+          Al crear una cuenta aceptas los{" "}
+          <Link className="underline" href="/terms">
+            Términos
+          </Link>{" "}
+          y la{" "}
+          <Link className="underline" href="/privacy">
+            Política de Privacidad
+          </Link>
+          .
         </div>
       </Card>
     </div>
