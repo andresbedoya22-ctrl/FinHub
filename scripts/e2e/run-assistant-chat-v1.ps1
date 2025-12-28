@@ -68,9 +68,9 @@ function Post-Json([string]$Url, $Obj, [Microsoft.PowerShell.Commands.WebRequest
 function Post-JsonRaw([string]$Url, $Obj, [Microsoft.PowerShell.Commands.WebRequestSession]$Session = $null) {
   $json = $Obj | ConvertTo-Json -Depth 10
   if ($Session) {
-    return Invoke-WebRequest -Method Post -Uri $Url -ContentType "application/json" -Body $json -WebSession $Session -ErrorAction Stop
+    return Invoke-WebRequest -UseBasicParsing -Method Post -Uri $Url -ContentType "application/json" -Body $json -WebSession $Session -ErrorAction Stop
   }
-  return Invoke-WebRequest -Method Post -Uri $Url -ContentType "application/json" -Body $json -ErrorAction Stop
+  return Invoke-WebRequest -UseBasicParsing -Method Post -Uri $Url -ContentType "application/json" -Body $json -ErrorAction Stop
 }
 
 # [1] Create confirmed user via Supabase Admin API
@@ -133,7 +133,7 @@ Write-Host "Unauth OK => 401"
 Write-Host ""
 Write-Host "[3] Login via Next /api/auth/login (cookie session)"
 
-$null = Invoke-WebRequest -Method Post -Uri "$BaseUrl/api/auth/login" -ContentType "application/json" `
+$null = Invoke-WebRequest -UseBasicParsing -Method Post -Uri "$BaseUrl/api/auth/login" -ContentType "application/json" `
   -Body (@{ email = $email; password = $pass } | ConvertTo-Json) `
   -SessionVariable sess
 
@@ -166,6 +166,7 @@ Write-Host "Answer (en) length:" ($respEn.answer.ToString().Length)
 
 Write-Host ""
 Write-Host "E2E Assistant Chat (auth + lang) OK."
+
 
 
 
