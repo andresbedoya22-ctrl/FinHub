@@ -44,8 +44,7 @@ supabase/.branches/
 # local artifacts
 tmp/
 
-
-# env files (sensitive)
+.env.*
 
 
 # env files (sensitive)
