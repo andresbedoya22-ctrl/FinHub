@@ -23,7 +23,7 @@ export function assertSupabaseServerEnv() {
   const missing = missingKeys(required);
   if (missing.length) {
     throw new Error(
-      Missing required Supabase env vars: . Check .env.local / deployment config.
+      `Missing required Supabase env vars: ${missing.join(", ")}. Check .env.local / deployment config.`
     );
   }
 }
@@ -36,7 +36,7 @@ export function assertStripeCheckoutEnv() {
   const missing = missingKeys(required);
   if (missing.length) {
     throw new Error(
-      Missing required Stripe env vars (checkout): . Check .env.local / deployment config.
+      `Missing required Stripe env vars (checkout): ${missing.join(", ")}. Check .env.local / deployment config.`
     );
   }
 }
@@ -49,7 +49,7 @@ export function assertStripeWebhookEnv() {
   const missing = missingKeys(required);
   if (missing.length) {
     throw new Error(
-      Missing required Stripe env vars (webhook): . Check .env.local / deployment config.
+      `Missing required Stripe env vars (webhook): ${missing.join(", ")}. Check .env.local / deployment config.`
     );
   }
 }
