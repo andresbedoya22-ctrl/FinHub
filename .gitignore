@@ -43,3 +43,7 @@ supabase/.temp/
 supabase/.branches/
 # TypeScript incremental build cache
 **/*.tsbuildinfo
+
+# local artifacts
+tmp/
+
