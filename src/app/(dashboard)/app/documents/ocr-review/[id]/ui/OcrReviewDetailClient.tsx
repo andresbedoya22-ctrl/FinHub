@@ -33,7 +33,7 @@ function parseExtraJson(s: string): { ok: true; value: Record<string, unknown> }
     }
     return { ok: true, value: v as Record<string, unknown> };
   } catch (e: unknown) {
-    return { ok: false, error: e instanceof Error ? e.message : "JSON invÃ¡lido" };
+    return { ok: false, error: e instanceof Error ? e.message : "JSON inválido" };
   }
 }
 
@@ -81,7 +81,7 @@ export default function OcrReviewDetailClient() {
         // Si hay basura en DB, no rompemos UI; mostramos error pero dejamos editable.
         setFields(emptyMachtigingsregistratieFieldsV1());
         setExtraText("{}");
-        setError(`Fields invÃ¡lidos en extracciÃ³n: ${validated.error}`);
+        setError(`Fields inválidos en extracción: ${validated.error}`);
       }
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : "Error desconocido");
@@ -126,7 +126,7 @@ export default function OcrReviewDetailClient() {
     if (!id) return;
 
     if (!parsedExtra.ok) {
-      setError(`extra invÃ¡lido: ${parsedExtra.error}`);
+      setError(`extra inválido: ${parsedExtra.error}`);
       return;
     }
 
@@ -153,7 +153,7 @@ export default function OcrReviewDetailClient() {
     if (!id) return;
 
     if (!verifyReady) {
-      setError("No puedes verificar todavÃ­a: falta activeringscode vÃ¡lido.");
+      setError("No puedes verificar todavía: falta activeringscode válido.");
       return;
     }
 
@@ -176,8 +176,8 @@ export default function OcrReviewDetailClient() {
   return (
     <Screen>
       <Header
-        title="OCR Review â€” Detalle"
-        subtitle={doc ? `${doc.file_name} â€” status: ${doc.status}` : "Cargando documento..."}
+        title="OCR Review — Detalle"
+        subtitle={doc ? `${doc.file_name} — status: ${doc.status}` : "Cargando documento..."}
         right={
           <Link className="underline text-sm" href="/app/documents/ocr-review">
             Volver
@@ -275,7 +275,7 @@ export default function OcrReviewDetailClient() {
                   className="w-full rounded-md border p-2 text-sm"
                   value={(fields.bsn ?? "").toString()}
                   onChange={(e) => setField("bsn", e.target.value)}
-                  placeholder="9 dÃ­gitos"
+                  placeholder="9 dígitos"
                 />
               </div>
             </div>
@@ -287,7 +287,7 @@ export default function OcrReviewDetailClient() {
                 value={extraText}
                 onChange={(e) => setExtraText(e.target.value)}
               />
-              {!parsedExtra.ok ? <div className="text-sm">extra invÃ¡lido: {parsedExtra.error}</div> : null}
+              {!parsedExtra.ok ? <div className="text-sm">extra inválido: {parsedExtra.error}</div> : null}
             </div>
           </div>
         )}

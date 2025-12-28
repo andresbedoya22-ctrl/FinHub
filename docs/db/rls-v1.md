@@ -19,7 +19,7 @@ Policies (storage.objects, bucket_id='vault'):
 
 ## Admin queue
 - /admin/cases requiere rol admin/operator (claim en JWT o tabla roles).
-- Admin puede leer cases (y opcionalmente documents) para revisiÃ³n humana.
+- Admin puede leer cases (y opcionalmente documents) para revisión humana.
 
 ## Notas
 - Consent debe auditarse siempre (createdAt + source).
