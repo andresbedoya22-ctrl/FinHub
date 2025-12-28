@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -10,6 +10,7 @@ import { Button } from "@/ui/components/Button";
 import { InfoBox } from "@/ui/components/InfoBox";
 import {
   requestOcr,
+  runExtraction,
   getDocument,
   getLatestExtraction,
   updateLatestExtraction,
@@ -32,7 +33,7 @@ function parseExtraJson(s: string): { ok: true; value: Record<string, unknown> }
     }
     return { ok: true, value: v as Record<string, unknown> };
   } catch (e: unknown) {
-    return { ok: false, error: e instanceof Error ? e.message : "JSON inválido" };
+    return { ok: false, error: e instanceof Error ? e.message : "JSON invÃ¡lido" };
   }
 }
 
@@ -80,7 +81,7 @@ export default function OcrReviewDetailClient() {
         // Si hay basura en DB, no rompemos UI; mostramos error pero dejamos editable.
         setFields(emptyMachtigingsregistratieFieldsV1());
         setExtraText("{}");
-        setError(`Fields inválidos en extracción: ${validated.error}`);
+        setError(`Fields invÃ¡lidos en extracciÃ³n: ${validated.error}`);
       }
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : "Error desconocido");
@@ -107,11 +108,25 @@ export default function OcrReviewDetailClient() {
     }
   }
 
+  async function runExtractionAction() {
+    if (!id) return;
+    setBusy("extract");
+    setError(null);
+    try {
+      await runExtraction(id);
+      await refresh();
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : "Error desconocido");
+    } finally {
+      setBusy(null);
+    }
+  }
+
   async function saveAction() {
     if (!id) return;
 
     if (!parsedExtra.ok) {
-      setError(`extra inválido: ${parsedExtra.error}`);
+      setError(`extra invÃ¡lido: ${parsedExtra.error}`);
       return;
     }
 
@@ -138,7 +153,7 @@ export default function OcrReviewDetailClient() {
     if (!id) return;
 
     if (!verifyReady) {
-      setError("No puedes verificar todavía: falta activeringscode válido.");
+      setError("No puedes verificar todavÃ­a: falta activeringscode vÃ¡lido.");
       return;
     }
 
@@ -161,8 +176,8 @@ export default function OcrReviewDetailClient() {
   return (
     <Screen>
       <Header
-        title="OCR Review — Detalle"
-        subtitle={doc ? `${doc.file_name} — status: ${doc.status}` : "Cargando documento..."}
+        title="OCR Review â€” Detalle"
+        subtitle={doc ? `${doc.file_name} â€” status: ${doc.status}` : "Cargando documento..."}
         right={
           <Link className="underline text-sm" href="/app/documents/ocr-review">
             Volver
@@ -190,6 +205,9 @@ export default function OcrReviewDetailClient() {
             <div className="flex flex-wrap gap-2">
               <Button disabled={busy !== null} onClick={() => void runOcrAction()}>
                 {busy === "ocr" ? "Ejecutando..." : "Ejecutar OCR"}
+              </Button>
+              <Button disabled={busy !== null} onClick={() => void runExtractionAction()}>
+                {busy === "extract" ? "Extrayendo..." : "Ejecutar extracción IA"}
               </Button>
               <Button disabled={busy !== null || !parsedExtra.ok} onClick={() => void saveAction()}>
                 {busy === "save" ? "Guardando..." : "Guardar cambios"}
@@ -257,7 +275,7 @@ export default function OcrReviewDetailClient() {
                   className="w-full rounded-md border p-2 text-sm"
                   value={(fields.bsn ?? "").toString()}
                   onChange={(e) => setField("bsn", e.target.value)}
-                  placeholder="9 dígitos"
+                  placeholder="9 dÃ­gitos"
                 />
               </div>
             </div>
@@ -269,7 +287,7 @@ export default function OcrReviewDetailClient() {
                 value={extraText}
                 onChange={(e) => setExtraText(e.target.value)}
               />
-              {!parsedExtra.ok ? <div className="text-sm">extra inválido: {parsedExtra.error}</div> : null}
+              {!parsedExtra.ok ? <div className="text-sm">extra invÃ¡lido: {parsedExtra.error}</div> : null}
             </div>
           </div>
         )}
@@ -277,3 +295,4 @@ export default function OcrReviewDetailClient() {
     </Screen>
   );
 }
+

@@ -1,4 +1,4 @@
-export type ApiDocumentRow = {
+﻿export type ApiDocumentRow = {
   id: string;
   user_id: string;
   case_id: string | null;
@@ -97,3 +97,12 @@ export async function verifyExtraction(documentId: string): Promise<{ extraction
   if (!extractionId) throw new Error("Missing extractionId");
   return { extractionId };
 }
+export async function runExtraction(documentId: string): Promise<{ extraction: ApiExtractionRow | null }> {
+  const res = await fetch(`/api/documents/${encodeURIComponent(documentId)}/extraction`, { method: "POST" });
+  const json = await readJson(res);
+  assertOk(res, json, "Extraction request failed");
+
+  const obj = json as Record<string, unknown>;
+  return { extraction: (obj.extraction as ApiExtractionRow | null) ?? null };
+}
+

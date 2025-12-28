@@ -1,7 +1,7 @@
 ﻿import {
   MACHTIGINGSREGISTRATIE_SCHEMA_VERSION,
   validateForSaveMachtigingsregistratieFieldsV1,
-} from "@/features/documents/machtigingsregistratieSchema";
+} from "../machtigingsregistratieSchema";
 
 export const EXTRACTION_TYPE = "machtigingsregistratie" as const;
 export const SCHEMA_VERSION = MACHTIGINGSREGISTRATIE_SCHEMA_VERSION;
