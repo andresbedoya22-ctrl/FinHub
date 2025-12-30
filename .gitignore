@@ -52,3 +52,6 @@ tmp/
 .env.*
 !.env.example
 
+
+# Workflow backup artifacts
+.github/workflows/*.bak*

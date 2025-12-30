@@ -1,17 +1,21 @@
-# Contribución
+﻿# Contribución
 
 ## Estilo de commits (mínimo)
-- `feat:` nueva funcionalidad
-- `fix:` corrección
-- `chore:` mantenimiento
-- `docs:` documentación
-- `refactor:` refactor
+- eat: nueva funcionalidad
+- ix: corrección
+- chore: mantenimiento
+- docs: documentación
+- efactor: refactor
+- 	est: tests
+- ci: CI
 
 ## Pull Requests
-- Debe pasar `pnpm lint`, `pnpm typecheck`, `pnpm test` y `pnpm build`.
+- Trabajar siempre por branch + PR (main protegido).
+- Debe pasar: pnpm lint, pnpm test, pnpm build (y pnpm typecheck si aplica).
 - Preferir PRs pequeñas y revisables.
-- Documentar decisiones relevantes en `docs/adr`.
+- Documentar decisiones relevantes en docs/adr/.
 
 ## Calidad
 - Mantener TypeScript estricto.
 - Evitar dependencias innecesarias.
+- No subir artefactos temporales (*.bak*, dumps, exports locales).
