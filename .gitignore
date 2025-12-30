@@ -52,3 +52,10 @@ tmp/
 .env.*
 !.env.example
 
+
+# Backup artifacts
+*.bak
+*.bak.*
+*.bak-*
+*.bak_*
+*.bak*
