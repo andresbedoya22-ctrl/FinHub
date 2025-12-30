@@ -22,6 +22,7 @@
     "e2e:suite": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/e2e/run-suite-local.ps1"
   },
   "dependencies": {
+    "@sentry/nextjs": "10",
     "@supabase/ssr": "^0.8.0",
     "@supabase/supabase-js": "^2.89.0",
     "next": "16.1.0",
