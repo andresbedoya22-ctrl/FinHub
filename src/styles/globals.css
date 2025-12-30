@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@config "../../tailwind.config.ts";
+﻿@import "tailwindcss";
+@config "../../tailwind.config.mjs";
 
 /* FinHub tokens (Fase 2) */
 :root {
@@ -14,7 +14,7 @@
   --fh-muted: #a9b6d3;       /* texto secundario */
   --fh-border: rgba(234, 240, 255, 0.12);
 
-  --fh-primary: #4caf50;     /* verde acción */
+  --fh-primary: #4caf50;     /* verde acciÃ³n */
   --fh-primary-fg: #06120a;
 
   --fh-danger: #ef4444;
@@ -36,10 +36,11 @@ body {
     Arial, "Apple Color Emoji", "Segoe UI Emoji";
 }
 
-/* Contenedor estándar */
+/* Contenedor estÃ¡ndar */
 .fh-container {
   width: 100%;
   max-width: 1120px;
   margin: 0 auto;
   padding: 16px;
 }
+
