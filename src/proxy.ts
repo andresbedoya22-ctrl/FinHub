@@ -22,7 +22,7 @@ function setSecurityHeaders(response: NextResponse) {
   }
 }
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const response = await updateSession(request);
   setSecurityHeaders(response);
   return response;
@@ -34,3 +34,4 @@ export const config = {
     "/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml).*)",
   ],
 };
+
