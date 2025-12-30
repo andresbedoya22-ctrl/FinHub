@@ -20,3 +20,15 @@ Capturar errores (server/client/edge), performance tracing y replay (cliente) co
 1) Ejecutar: pnpm dev
 2) Provocar error controlado (p.ej. throw en una ruta dev-only) y verificar evento en Sentry.
 3) Confirmar que NO existen rutas /sentry-example-page ni /api/sentry-example-api.
+
+## Privacy-first hardening (beforeSend hooks)
+
+We sanitize Sentry events and transactions to reduce accidental PII leakage:
+- Removes sensitive request headers: Authorization, Cookie, Set-Cookie, X-API-Key
+- Drops request cookies and request body/data payloads
+- Drops request query_string (can include tokens)
+- Strips fetch/xhr breadcrumb payload fields: body, data, headers
+
+Config:
+- sendDefaultPii is env-controlled and defaults to false:
+  - SENTRY_SEND_DEFAULT_PII=true enables default PII sending
