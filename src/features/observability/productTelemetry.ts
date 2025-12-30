@@ -1,0 +1,114 @@
+﻿import * as Sentry from "@sentry/nextjs";
+
+const ENABLED = process.env.SENTRY_PRODUCT_TELEMETRY_ENABLED === "true";
+const SAMPLE_RATE = Number(process.env.SENTRY_PRODUCT_TELEMETRY_SAMPLE_RATE ?? 0);
+
+const MAX_STR = 120;
+
+const BLOCKED_KEYS = new Set([
+  "email","mail","name","first_name","last_name","fullname","phone","address","street","postcode","zip",
+  "bsn","iban","account","token","access_token","refresh_token","authorization","cookie","set-cookie",
+  "password","pass","secret","session","digid"
+]);
+
+function clampString(v: string): string {
+  const s = v.trim();
+  if (s.length <= MAX_STR) return s;
+  return s.slice(0, MAX_STR) + "…";
+}
+
+function isLikelyPiiValue(v: unknown): boolean {
+  if (typeof v !== "string") return false;
+  const s = v.trim();
+  if (!s) return false;
+  // Heurísticas simples: email, tokens largos, JWT-ish
+  if (s.includes("@")) return true;
+  if (s.length > 160) return true;
+  if (s.split(".").length >= 3 && s.length > 60) return true;
+  return false;
+}
+
+export type ProductEventName =
+  | "auth.login.attempt"
+  | "auth.login.success"
+  | "auth.login.fail"
+  | "auth.register.attempt"
+  | "auth.register.success"
+  | "auth.register.fail"
+  | "case.create"
+  | "doc.upload"
+  | "ocr.start"
+  | "ocr.finish"
+  | "ocr.fail"
+  | "checkout.start"
+  | "checkout.success"
+  | "checkout.fail";
+
+export type ProductEventAttr =
+  | "surface"          // e.g. "web"
+  | "route"            // e.g. "/login"
+  | "result"           // e.g. "ok" | "fail"
+  | "reason"           // e.g. "invalid_credentials" (no texto libre largo)
+  | "docType"          // e.g. "machtigingsregistratie"
+  | "provider"         // e.g. "stripe"
+  | "step"             // e.g. "upload" | "review"
+  | "latencyMs"        // number
+  | "httpStatus"       // number
+  | "build"            // optional build/version string
+  ;
+
+type Attrs = Partial<Record<ProductEventAttr, string | number | boolean | null>>;
+
+function shouldSample(): boolean {
+  if (!ENABLED) return false;
+  if (!Number.isFinite(SAMPLE_RATE) || SAMPLE_RATE <= 0) return false;
+  if (SAMPLE_RATE >= 1) return true;
+  return Math.random() < SAMPLE_RATE;
+}
+
+function sanitizeAttrs(attrs: Attrs | undefined): Record<string, string | number | boolean> | undefined {
+  if (!attrs) return undefined;
+
+  const out: Record<string, string | number | boolean> = {};
+  for (const [kRaw, v] of Object.entries(attrs)) {
+    const k = kRaw.trim();
+    if (!k) continue;
+
+    const lk = k.toLowerCase();
+    if (BLOCKED_KEYS.has(lk)) continue;
+    if (lk.startsWith("utm_")) continue; // marketing puede traer identificadores
+
+    if (v === null || v === undefined) continue;
+
+    if (typeof v === "string") {
+      if (isLikelyPiiValue(v)) continue;
+      out[k] = clampString(v);
+      continue;
+    }
+
+    if (typeof v === "number" || typeof v === "boolean") {
+      out[k] = v;
+      continue;
+    }
+  }
+
+  return Object.keys(out).length ? out : undefined;
+}
+
+export function trackProductEvent(name: ProductEventName, attrs?: Attrs) {
+  if (!shouldSample()) return;
+
+  const safeAttrs = sanitizeAttrs(attrs);
+
+  // Evento standalone (no breadcrumb) para que llegue aunque no haya error.
+  // Mensaje controlado (sin texto libre).
+  Sentry.captureEvent({
+    message: `product:${name}`,
+    level: "info",
+    tags: {
+      "telemetry.kind": "product",
+      "telemetry.name": name,
+    },
+    extra: safeAttrs,
+  });
+}

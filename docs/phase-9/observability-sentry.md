@@ -32,3 +32,24 @@ We sanitize Sentry events and transactions to reduce accidental PII leakage:
 Config:
 - sendDefaultPii is env-controlled and defaults to false:
   - SENTRY_SEND_DEFAULT_PII=true enables default PII sending
+
+## Product telemetry (non-PII)
+
+Ubicación:
+- src/features/observability/productTelemetry.ts
+- src/__tests__/productTelemetry.test.ts
+
+Objetivo:
+- Emitir eventos de producto (UX/flujo) sin PII, usando Sentry como backend de observabilidad.
+
+Variables de entorno:
+- SENTRY_PRODUCT_TELEMETRY_ENABLED: "true" para activar (default: false si no está definida)
+- SENTRY_PRODUCT_TELEMETRY_SAMPLE_RATE: tasa [0..1] (default recomendado: 0.1)
+
+Garantías de privacidad (high-level):
+- Se aplica un filtro/denylist de claves sensibles (p. ej. email/token) y no se debe enviar contenido que identifique a una persona.
+- Diseñado para métricas de flujo (pantallas, acciones, outcomes), no para datos de usuario.
+
+Uso (ejemplo conceptual):
+- trackProductEvent("auth.login.fail", { route: "/login", reason: "invalid_credentials" })
+
