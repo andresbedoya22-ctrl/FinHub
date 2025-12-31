@@ -2,6 +2,7 @@
 import Stripe from "stripe";
 import { createSupabaseServerClient } from "@/lib/supabaseServerClient";
 import { assertStripeCheckoutEnv } from "@/config/env";
+import { trackProductEvent, trackProductRoute } from "@/features/observability/productTelemetry";
 
 export const dynamic = "force-dynamic";
 
@@ -12,16 +13,20 @@ const PRODUCTS: Record<ProductKey, { amountCents: number; currency: string; name
   // Ajusta el monto cuando definas pricing final.
   case_unlock: { amountCents: 4900, currency: "EUR", name: "FinHub – Case Unlock" },
 };
-
+const __FINHUB_TELEMETRY_ROUTE = "/api/payments/checkout";
+const __FINHUB_TELEMETRY_PAIR = { success: "product.payment.checkout.success", fail: "product.payment.checkout.fail" } as const;
 export async function POST(req: Request) {
   
-  assertStripeCheckoutEnv();
+  
+  const __t0 = Date.now();
+  trackProductEvent("product.payment.checkout.start", { route: __FINHUB_TELEMETRY_ROUTE });
+assertStripeCheckoutEnv();
 try {
     const supabase = await createSupabaseServerClient();
 
     const { data: userData, error: userErr } = await supabase.auth.getUser();
-    if (userErr) return NextResponse.json({ ok: false, error: userErr.message }, { status: 401 });
-    if (!userData.user) return NextResponse.json({ ok: false, error: "No authenticated user" }, { status: 401 });
+    if (userErr) return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: userErr.message }, { status: 401 }));
+    if (!userData.user) return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: "No authenticated user" }, { status: 401 }));
 
     const body = (await req.json().catch(() => null)) as
       | { caseId?: string; productKey?: string }
@@ -30,20 +35,20 @@ try {
     const caseId = (body?.caseId ?? "").toString().trim();
     const productKey = (body?.productKey ?? "").toString().trim() as ProductKey;
 
-    if (!caseId) return NextResponse.json({ ok: false, error: "caseId requerido" }, { status: 400 });
+    if (!caseId) return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: "caseId requerido" }, { status: 400 }));
     if (!productKey || !(productKey in PRODUCTS)) {
-      return NextResponse.json({ ok: false, error: "productKey inválido" }, { status: 400 });
+      return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: "productKey inválido" }, { status: 400 }));
     }
 
     const p = PRODUCTS[productKey];
 
     const secretKey = process.env.STRIPE_SECRET_KEY;
-    if (!secretKey) return NextResponse.json({ ok: false, error: "Missing STRIPE_SECRET_KEY" }, { status: 500 });
+    if (!secretKey) return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: "Missing STRIPE_SECRET_KEY" }, { status: 500 }));
 
     const stripe = new Stripe(secretKey);
 
     const origin = req.headers.get("origin") ?? "";
-    if (!origin) return NextResponse.json({ ok: false, error: "Missing Origin header" }, { status: 400 });
+    if (!origin) return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: "Missing Origin header" }, { status: 400 }));
 
     // URLs de retorno (v1)
     const successUrl = `${origin}/app/cases/${encodeURIComponent(caseId)}?payment=success`;
@@ -71,7 +76,7 @@ try {
     });
 
     if (!session?.id || !session?.url) {
-      return NextResponse.json({ ok: false, error: "Stripe session inválida" }, { status: 502 });
+      return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: "Stripe session inválida" }, { status: 502 }));
     }
 
     const now = new Date().toISOString();
@@ -103,14 +108,15 @@ try {
         .eq("stripe_session_id", session.id);
 
       if (updErr) {
-        return NextResponse.json({ ok: false, error: insErr.message }, { status: 400 });
+        return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: insErr.message }, { status: 400 }));
       }
     }
 
-    return NextResponse.json({ ok: true, url: session.url });
+    return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: true, url: session.url }));
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : "Error desconocido";
-    return NextResponse.json({ ok: false, error: msg }, { status: 500 });
+    return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: msg }, { status: 500 }));
   }
 }
+
 

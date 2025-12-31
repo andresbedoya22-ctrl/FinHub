@@ -1,7 +1,8 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 import { createSupabaseServerClient } from "@/lib/supabaseServerClient";
 import type { DocumentEntity, DocumentStatus, DocumentType, OcrKind } from "@/features/documents/documentsTypes";
 import { inferOcrKindFromType, parseOcrKind } from "@/features/documents/documentOcrRegistry";
+import { trackProductRoute } from "@/features/observability/productTelemetry";
 export const dynamic = "force-dynamic";
 
 type DocumentRow = {
@@ -41,14 +42,17 @@ function toEntity(r: DocumentRow): DocumentEntity {
     updatedAt: r.updated_at,
   };
 }
-
+const __FINHUB_TELEMETRY_ROUTE = "/api/documents";
+const __FINHUB_TELEMETRY_PAIR = { success: "product.doc.upload.success", fail: "product.doc.upload.fail" } as const;
 export async function POST(req: Request) {
-  try {
+  
+  const __t0 = Date.now();
+try {
     const supabase = await createSupabaseServerClient();
 
     const { data: userData, error: userErr } = await supabase.auth.getUser();
-    if (userErr) return NextResponse.json({ ok: false, error: userErr.message }, { status: 401 });
-    if (!userData.user) return NextResponse.json({ ok: false, error: "No authenticated user" }, { status: 401 });
+    if (userErr) return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: userErr.message }, { status: 401 }));
+    if (!userData.user) return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: "No authenticated user" }, { status: 401 }));
 
     const body = (await req.json().catch(() => null)) as
       | { fileName?: string; type?: DocumentType | string; caseId?: string | null; notes?: string | null; storagePath?: string | null; ocrKind?: string | null }
@@ -59,8 +63,8 @@ export async function POST(req: Request) {
     const caseId = body?.caseId ?? null;
     const notes = (body?.notes ?? "").toString().trim();
     const ocrKind = parseOcrKind(body?.ocrKind) ?? inferOcrKindFromType(type);
-    if (fileName.length < 3) return NextResponse.json({ ok: false, error: "fileName inválido" }, { status: 400 });
-    if (!type) return NextResponse.json({ ok: false, error: "type requerido" }, { status: 400 });
+    if (fileName.length < 3) return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: "fileName inválido" }, { status: 400 }));
+    if (!type) return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: "type requerido" }, { status: 400 }));
 
     const now = new Date().toISOString();
 
@@ -86,12 +90,15 @@ export async function POST(req: Request) {
       .select("id,user_id,case_id,file_name,type,status,notes,storage_path,ocr_kind,created_at,updated_at")
       .single();
 
-    if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 400 });
+    if (error) return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: error.message }, { status: 400 }));
 
-    return NextResponse.json({ ok: true, doc: toEntity(data as DocumentRow) });
+    return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: true, doc: toEntity(data as DocumentRow) }));
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : "Error desconocido";
-    return NextResponse.json({ ok: false, error: msg }, { status: 500 });
+    return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: msg }, { status: 500 }));
   }
 }
+
+
+
 

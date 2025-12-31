@@ -5,6 +5,7 @@ import { buildFinnySystemPrompt } from "@/features/assistant/finny/finnyPrompt";
 import { normalizeLang, pickLangForText, type AppLang } from "@/features/i18n/lang";
 import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
+import { trackProductRoute } from "@/features/observability/productTelemetry";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -36,21 +37,26 @@ function rateLimitCheck(userId: string) {
 }
 type Body = { message?: string; lang?: string };
 
-function bad(msg: string, status = 400) {
-  return NextResponse.json({ ok: false as const, error: msg }, { status });
+function bad(msg: string, status = 400, t0?: number) {
+  const res = NextResponse.json({ ok: false as const, error: msg }, { status });
+  return typeof t0 === "number"
+    ? trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, t0, res)
+    : res;
 }
-
 function clampMessage(s: string) {
   const t = (s ?? "").toString().trim();
   // límite defensivo para evitar prompts gigantes
   return t.length > 1200 ? t.slice(0, 1200) : t;
 }
-
+const __FINHUB_TELEMETRY_ROUTE = "/api/assistant/chat";
+const __FINHUB_TELEMETRY_PAIR = { success: "product.assistant.chat.success", fail: "product.assistant.chat.fail" } as const;
 export async function POST(req: NextRequest) {
-  const body = (await req.json().catch(() => null)) as Body | null;
+  
+  const __t0 = Date.now();
+const body = (await req.json().catch(() => null)) as Body | null;
 
   const message = clampMessage(body?.message ?? "");
-  if (message.length < 2) return bad("message requerido");
+  if (message.length < 2) return bad("message requerido", 400, __t0);
   // AUTH_GUARD: require logged-in user (avoid public LLM abuse)
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -83,10 +89,10 @@ export async function POST(req: NextRequest) {
   // RATE_LIMIT enforcement (MVP)
   const rl = rateLimitCheck(user.id);
   if (!rl.ok) {
-    return NextResponse.json(
+    return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json(
       { ok: false as const, error: "Rate limit excedido" },
       { status: 429, headers: { "Retry-After": String(rl.retryAfterSec) } }
-    );
+    ));
   }
 
   // Idioma activo: preferimos body.lang; si no, Accept-Language.
@@ -117,7 +123,7 @@ export async function POST(req: NextRequest) {
     }
 
 
-    return NextResponse.json({ ok: true as const, mode: "faq" as const, lang: textLang, answer: faq.answerMd });
+    return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: true as const, mode: "faq" as const, lang: textLang, answer: faq.answerMd }));
   }
 
   // 2) IA fallback
@@ -178,11 +184,16 @@ export async function POST(req: NextRequest) {
       // noop
     }
 
-    return NextResponse.json({ ok: true as const, mode: "llm" as const, lang: textLang, answer: text });
+    return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: true as const, mode: "llm" as const, lang: textLang, answer: text }));
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : "Error desconocido";
-    return NextResponse.json({ ok: false as const, error: msg }, { status: 500 });
+    return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false as const, error: msg }, { status: 500 }));
   }
 }
+
+
+
+
+
 
 
