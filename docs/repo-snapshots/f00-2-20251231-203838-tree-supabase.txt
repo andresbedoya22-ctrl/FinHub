@@ -1,0 +1,53 @@
+﻿Listado de rutas de carpetas
+El n·mero de serie del volumen es FE82-DFA6
+C:\USERS\USER\FINHUB\FINHUB-WEB\SUPABASE
++---.branches
+|       _current_branch
+|       
++---.temp
+|       cli-latest
+|       gotrue-version
+|       pooler-url
+|       postgres-version
+|       project-ref
+|       rest-version
+|       storage-migration
+|       storage-version
+|       
+\---migrations
+    |   20251222194856_expand_case_step_keys.sql
+    |   20251222195258_expand_case_step_keys_v2.sql
+    |   20251222210000_schema_v1.sql
+    |   20251222210010_rls_v1.sql
+    |   20251222210144_admin_roles_and_policies.sql
+    |   20251222210317_seed_admin_role.sql
+    |   20251223214703_add_notes_to_documents.sql
+    |   20251223215020_add_status_to_documents.sql
+    |   20251223215300_align_documents_columns.sql
+    |   20251223215816_align_documents_schema.sql
+    |   20251223220143_documents_storage_path_nullable.sql
+    |   20251226113642_align_documents_contract.sql
+    |   20251226113916_storage_vault_bucket_and_policies.sql
+    |   20251226114843_documents_status_check_fix.sql
+    |   20251226133000_payments_stripe_unique_indexes.sql
+    |   20251226174819_sync_step_key_constraints.sql
+    |   20251226183045_enforce_paid_to_access_locked_steps.sql
+    |   20251226210000_fix_documents_status_check.sql
+    |   20251226220000_documents_ocr_v1.sql
+    |   20251227130000_fix_documents_type_remove_machtigingsregistratie.sql
+    |   20251227141000_add_documents_ocr_kind.sql
+    |   20251227200908_documents_type_allow_machtigingsregistratie.sql
+    |   20251227202547_documents_rls_drop_admin_policy.sql
+    |   
+    +---.bak
+    |       20251226113642_align_documents_contract.sql.bak_20251226185706
+    |       20251226113916_storage_vault_bucket_and_policies.sql.bak_20251226185706
+    |       20251226114843_documents_status_check_fix.sql.bak_20251226185706
+    |       20251226133000_payments_stripe_unique_indexes.sql.bak_20251226185706
+    |       20251226174819_sync_step_key_constraints.sql.bak_20251226185706
+    |       20251226183045_enforce_paid_to_access_locked_steps.sql.bak_20251226185706
+    |       
+    \---.bak_files
+            20251222195258_expand_case_step_keys_v2.sql.bak_20251226184759
+            
+

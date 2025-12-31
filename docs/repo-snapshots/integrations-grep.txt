@@ -1,0 +1,83 @@
+﻿
+src\config\env.ts:2:  | "NEXT_PUBLIC_SUPABASE_URL"
+src\config\env.ts:3:  | "NEXT_PUBLIC_SUPABASE_ANON_KEY"
+src\config\env.ts:4:  | "SUPABASE_SERVICE_ROLE_KEY"
+src\config\env.ts:5:  | "STRIPE_SECRET_KEY"
+src\config\env.ts:6:  | "STRIPE_WEBHOOK_SECRET"
+src\config\env.ts:7:  | "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY";
+src\config\env.ts:14: * Supabase server-side usage (service role).
+src\config\env.ts:15: * WARNING: SUPABASE_SERVICE_ROLE_KEY must never be used on the client.
+src\config\env.ts:17:export function assertSupabaseServerEnv() {
+src\config\env.ts:19:    "NEXT_PUBLIC_SUPABASE_URL",
+src\config\env.ts:20:    "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+src\config\env.ts:21:    "SUPABASE_SERVICE_ROLE_KEY",
+src\config\env.ts:26:      `Missing required Supabase env vars: ${missing.join(", ")}. Check .env.local / deployment config.`
+src\config\env.ts:32: * Stripe server-side usage for checkout creation.
+src\config\env.ts:34:export function assertStripeCheckoutEnv() {
+src\config\env.ts:35:  const required: EnvKey[] = ["STRIPE_SECRET_KEY"];
+src\config\env.ts:39:      `Missing required Stripe env vars (checkout): ${missing.join(", ")}. Check .env.local / deployment config.`
+src\config\env.ts:45: * Stripe server-side usage for webhook verification.
+src\config\env.ts:47:export function assertStripeWebhookEnv() {
+src\config\env.ts:48:  const required: EnvKey[] = ["STRIPE_SECRET_KEY", "STRIPE_WEBHOOK_SECRET"];
+src\config\env.ts:52:      `Missing required Stripe env vars (webhook): ${missing.join(", ")}. Check .env.local / deployment config.`
+src\config\env.ts:61:  NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL!,
+src\config\env.ts:62:  NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+src\config\env.ts:63:  SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY!,
+src\config\env.ts:64:  STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY!,
+src\config\env.ts:65:  STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET!,
+src\config\env.ts:66:  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
+src\lib\supabaseAdminClient.ts:1:import { createClient } from "@supabase/supabase-js";
+src\lib\supabaseAdminClient.ts:3:export function createSupabaseAdminClient() {
+src\lib\supabaseAdminClient.ts:4:  const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+src\lib\supabaseAdminClient.ts:5:  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+src\lib\supabaseAdminClient.ts:7:    throw new Error("Missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY");
+src\lib\supabaseBrowserClient.ts:1:import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+src\lib\supabaseBrowserClient.ts:3:let _client: SupabaseClient | null = null;
+src\lib\supabaseBrowserClient.ts:5:export function createSupabaseBrowserClient(): SupabaseClient {
+src\lib\supabaseBrowserClient.ts:8:  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+src\lib\supabaseBrowserClient.ts:9:  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+src\lib\supabaseBrowserClient.ts:12:    throw new Error("Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY");
+src\lib\supabaseServerClient.ts:2:import { createServerClient } from "@supabase/ssr";
+src\lib\supabaseServerClient.ts:4:export async function createSupabaseServerClient() {
+src\lib\supabaseServerClient.ts:5:  const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+src\lib\supabaseServerClient.ts:6:  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+src\lib\supabaseServerClient.ts:7:  if (!url || !anonKey) throw new Error("Missing NEXT_PUBLIC_SUPABASE_URL or 
+NEXT_PUBLIC_SUPABASE_ANON_KEY");
+src\__tests__\ocrGuard.test.ts:2:import { requireOcrKind } from "../app/api/documents/[id]/_shared/ocrGuard";
+src\__tests__\ocrGuard.test.ts:4:type SupabaseErr = { message: string };
+src\__tests__\ocrGuard.test.ts:6:function makeSupabase(args: {
+src\__tests__\ocrGuard.test.ts:8:  docErr?: SupabaseErr | null;
+src\__tests__\ocrGuard.test.ts:20:        return { error: null as SupabaseErr | null };
+src\__tests__\ocrGuard.test.ts:26:describe("ocrGuard.requireOcrKind", () => {
+src\__tests__\ocrGuard.test.ts:28:    const supabase = makeSupabase({ doc: null, docErr: { message: "boom" } });
+src\__tests__\ocrGuard.test.ts:29:    const r = await requireOcrKind({
+src\__tests__\ocrGuard.test.ts:30:      supabase,
+src\__tests__\ocrGuard.test.ts:34:      select: "id,user_id,ocr_kind",
+src\__tests__\ocrGuard.test.ts:35:      endpoint: "ocr",
+src\__tests__\ocrGuard.test.ts:42:    const supabase = makeSupabase({ doc: null });
+src\__tests__\ocrGuard.test.ts:43:    const r = await requireOcrKind({
+src\__tests__\ocrGuard.test.ts:44:      supabase,
+src\__tests__\ocrGuard.test.ts:48:      select: "id,user_id,ocr_kind",
+src\__tests__\ocrGuard.test.ts:49:      endpoint: "ocr",
+src\__tests__\ocrGuard.test.ts:56:    const supabase = makeSupabase({ doc: { id: "d1", user_id: "u2", ocr_kind: "machtigingsregistratie" } 
+});
+src\__tests__\ocrGuard.test.ts:57:    const r = await requireOcrKind({
+src\__tests__\ocrGuard.test.ts:58:      supabase,
+src\__tests__\ocrGuard.test.ts:62:      select: "id,user_id,ocr_kind",
+src\__tests__\ocrGuard.test.ts:69:  it("400 cuando ocr_kind no coincide y escribe auditoría (best-effort)", async () => {
+src\__tests__\ocrGuard.test.ts:71:    const supabase = makeSupabase({
+src\__tests__\ocrGuard.test.ts:72:      doc: { id: "d1", user_id: "u1", ocr_kind: null },
+src\__tests__\ocrGuard.test.ts:76:    const r = await requireOcrKind({
+src\__tests__\ocrGuard.test.ts:77:      supabase,
+src\__tests__\ocrGuard.test.ts:81:      select: "id,user_id,ocr_kind",
+src\__tests__\ocrGuard.test.ts:91:    const supabase = makeSupabase({ doc: { id: "d1", user_id: "u1", ocr_kind: "machtigingsregistratie" } 
+});
+src\__tests__\ocrGuard.test.ts:92:    const r = await requireOcrKind({
+src\__tests__\ocrGuard.test.ts:93:      supabase,
+src\__tests__\ocrGuard.test.ts:97:      select: "id,user_id,ocr_kind",
+src\__tests__\ocrGuard.test.ts:98:      endpoint: "ocr",
+src\__tests__\productTelemetry.test.ts:35:      email: "test@example.com",
+src\__tests__\productTelemetry.test.ts:54:    expect(extra["email"]).toBeUndefined();
+
+
+

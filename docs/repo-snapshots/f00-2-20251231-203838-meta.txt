@@ -1,0 +1,44 @@
+﻿# FinHub repo snapshot (F00.2)
+timestamp: 20251231-203838
+C:/Users/User/FinHub/finhub-web
+
+meta/f00-discovery-snapshots
+
+On branch meta/f00-discovery-snapshots
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	docs/repo-snapshots/
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+7bf42bd chore(f9.5): non-PII telemetry for core API + OCR/verify (#20)
+3f463a4 Merge pull request #18 from andresbedoya22-ctrl/meta/f9-4-product-telemetry
+292888f chore(f9): add non-PII product telemetry wrapper (sentry)
+be78bce Merge pull request #17 from andresbedoya22-ctrl/meta/f9-3-sentry-product-telemetry
+16c6a29 docs(f9): document sentry privacy-first hooks
+6c89ca0 chore(f9): privacy-first sentry sanitize hooks (typed)
+60c4d2f Merge pull request #16 from andresbedoya22-ctrl/meta/f9-2-sentry-hardening
+6cb2e50 chore(f9): harden Sentry (remove examples + env sampling + docs)
+fcfb5c8 Merge pull request #15 from andresbedoya22-ctrl/meta/f9-1-sentry-bootstrap
+2cadc98 chore(f9): bootstrap Sentry (nextjs)
+866efd7 Merge pull request #14 from andresbedoya22-ctrl/meta/f8-5-tailwind-config-esm
+ece019c chore(f8): migrate tailwind config to mjs (fix @config path)
+1f011da Merge pull request #13 from andresbedoya22-ctrl/meta/f8-4-proxy-migration
+36a86ca chore(f8): migrate middleware to proxy (Next 16)
+00ed391 Merge pull request #10 from andresbedoya22-ctrl/meta/f8-qa-gdpr-hardening
+bd8d604 chore: resolve conflicts for PR #10
+358213e Merge pull request #12 from andresbedoya22-ctrl/meta/f8-3-line-endings
+5d626df chore(f8): normalize line endings + harden gitattributes
+5ee872e Merge pull request #11 from andresbedoya22-ctrl/meta/f8-2-release-compliance
+4fb0c33 docs(f8): release readiness + fix docs encoding; ignore workflow backups
+738f1e1 chore(f8): release hardening (canon + ignore backups + security headers)
+271be89 ci: add gitleaks secret scan (#9)
+e5c7493 chore(deps): patch security advisories (esbuild, eslint plugin-kit) (#8)
+fb5f526 chore(deps-dev): bump vitest from 2.1.8 to 2.1.9 (#6)
+caa7aff docs: add release and versioning docs (#7)
+039707c ci: add CodeQL scanning (#5)
+7ed9c49 ci: add workflow_dispatch to CI (#4)
+21eb98b meta: add repo templates (PR/Issues/Security/Contributing) (#3)
+b856610 meta: add CODEOWNERS (#2)
+2fbf627 ci: fix workflow yaml formatting (separate steps)
+

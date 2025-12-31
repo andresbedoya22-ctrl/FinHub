@@ -1,0 +1,277 @@
+﻿Listado de rutas de carpetas
+El n·mero de serie del volumen es FE82-DFA6
+C:\USERS\USER\FINHUB\FINHUB-WEB\SRC
+|   instrumentation-client.ts
+|   instrumentation.ts
+|   proxy.ts
+|   request-guards.ts
+|   
++---app
+|   |   global-error.tsx
+|   |   layout.tsx
+|   |   page.tsx
+|   |   
+|   +---(auth)
+|   |   +---login
+|   |   |   |   page.tsx
+|   |   |   |   
+|   |   |   \---ui
+|   |   |           LoginClient.tsx
+|   |   |           
+|   |   \---register
+|   |       |   page.tsx
+|   |       |   
+|   |       \---ui
+|   |               RegisterClient.tsx
+|   |               
+|   +---(dashboard)
+|   |   \---app
+|   |       |   layout.tsx
+|   |       |   page.tsx
+|   |       |   providers.tsx
+|   |       |   
+|   |       +---admin
+|   |       |   |   layout.tsx
+|   |       |   |   page.tsx
+|   |       |   |   
+|   |       |   +---cases
+|   |       |   |       page.tsx
+|   |       |   |       
+|   |       |   +---documents
+|   |       |   |       page.tsx
+|   |       |   |       
+|   |       |   \---users
+|   |       |           page.tsx
+|   |       |           
+|   |       +---cases
+|   |       |   |   page.tsx
+|   |       |   |   
+|   |       |   +---new
+|   |       |   |   |   page.tsx
+|   |       |   |   |   
+|   |       |   |   \---ui
+|   |       |   |           NewCaseClient.tsx
+|   |       |   |           
+|   |       |   +---ui
+|   |       |   |       CasesListClient.tsx
+|   |       |   |       
+|   |       |   \---[id]
+|   |       |       |   page.tsx
+|   |       |       |   
+|   |       |       +---ui
+|   |       |       |       CaseOverviewClient.tsx
+|   |       |       |       
+|   |       |       \---[stepKey]
+|   |       |           |   page.tsx
+|   |       |           |   
+|   |       |           \---ui
+|   |       |                   StepClient.tsx
+|   |       |                   
+|   |       +---documents
+|   |       |   |   page.tsx
+|   |       |   |   
+|   |       |   +---ocr-review
+|   |       |   |   |   page.tsx
+|   |       |   |   |   
+|   |       |   |   +---ui
+|   |       |   |   |       OcrReviewListClient.tsx
+|   |       |   |   |       
+|   |       |   |   \---[id]
+|   |       |   |       |   page.tsx
+|   |       |   |       |   
+|   |       |   |       \---ui
+|   |       |   |               OcrReviewDetailClient.tsx
+|   |       |   |               
+|   |       |   \---ui
+|   |       |           DocumentsClient.tsx
+|   |       |           
+|   |       +---profile
+|   |       |   |   page.tsx
+|   |       |   |   
+|   |       |   +---ui
+|   |       |   |       ProfileClient.tsx
+|   |       |   |       
+|   |       |   \---whoami
+|   |       |           page.tsx
+|   |       |           
+|   |       \---ui-kit
+|   |               page.tsx
+|   |               
+|   +---(marketing)
+|   |   +---landing
+|   |   |       page.tsx
+|   |   |       
+|   |   +---privacy
+|   |   |       page.tsx
+|   |   |       
+|   |   \---terms
+|   |           page.tsx
+|   |           
+|   \---api
+|       +---admin
+|       |   \---documents
+|       |       \---signed-url
+|       |               route.ts
+|       |               
+|       +---assistant
+|       |   \---chat
+|       |           route.ts
+|       |           
+|       +---auth
+|       |   +---login
+|       |   |       route.ts
+|       |   |       
+|       |   +---logout
+|       |   |       route.ts
+|       |   |       
+|       |   \---register
+|       |           route.ts
+|       |           
+|       +---debug
+|       |   +---admin
+|       |   |       route.ts
+|       |   |       
+|       |   +---cookies
+|       |   |       route.ts
+|       |   |       
+|       |   \---documents
+|       |           route.ts
+|       |           
+|       +---documents
+|       |   |   route.ts
+|       |   |   
+|       |   +---my
+|       |   |       route.ts
+|       |   |       
+|       |   \---[id]
+|       |       |   route.ts
+|       |       |   
+|       |       +---extraction
+|       |       |       route.ts
+|       |       |       
+|       |       +---ocr
+|       |       |       route.ts
+|       |       |       
+|       |       +---verify
+|       |       |       route.ts
+|       |       |       
+|       |       \---_shared
+|       |               ocrGuard.ts
+|       |               
+|       +---payments
+|       |   +---checkout
+|       |   |       route.ts
+|       |   |       
+|       |   \---status
+|       |           route.ts
+|       |           
+|       +---profile
+|       |   +---delete
+|       |   |       route.ts
+|       |   |       
+|       |   \---export
+|       |           route.ts
+|       |           
+|       \---stripe
+|           \---webhook
+|                   route.ts
+|                   
++---config
+|       env.ts
+|       
++---features
+|   |   README.md
+|   |   
+|   +---ai
+|   |   \---llm
+|   |           getLlmProvider.ts
+|   |           llmProvider.ts
+|   |           mockLlmProvider.test.ts
+|   |           mockLlmProvider.ts
+|   |           openaiLlmProvider.ts
+|   |           
+|   +---assistant
+|   |   \---finny
+|   |       |   faqRegistry.ts
+|   |       |   finnyApiClient.ts
+|   |       |   finnyPrompt.ts
+|   |       |   
+|   |       \---ui
+|   |               FinnyWidget.tsx
+|   |               
+|   +---auth
+|   |       roleClient.ts
+|   |       
+|   +---cases
+|   |       casesClient.ts
+|   |       casesConfig.ts
+|   |       casesStorage.ts
+|   |       casesStore.ts
+|   |       caseStepDataClient.ts
+|   |       casesTypes.ts
+|   |       steps.ts
+|   |       
+|   +---documents
+|   |   |   documentOcrRegistry.test.ts
+|   |   |   documentOcrRegistry.ts
+|   |   |   documentsClient.ts
+|   |   |   documentsStore.tsx
+|   |   |   documentsTypes.ts
+|   |   |   machtigingsregistratieSchema.test.ts
+|   |   |   machtigingsregistratieSchema.ts
+|   |   |   ocrApiClient.ts
+|   |   |   
+|   |   +---document-schemas
+|   |   |       machtigingsregistratie.v1.ts
+|   |   |       registry.test.ts
+|   |   |       registry.ts
+|   |   |       
+|   |   \---ocr
+|   |       |   getOcrTextProvider.ts
+|   |       |   machtigingsregistratieTextParser.ts
+|   |       |   README.md
+|   |       |   
+|   |       \---providers
+|   |               azureDocumentIntelligenceOcrTextProvider.ts
+|   |               mockOcrTextProvider.ts
+|   |               ocrTextProvider.ts
+|   |               
+|   +---i18n
+|   |       lang.ts
+|   |       
+|   +---observability
+|   |       productTelemetry.ts
+|   |       
+|   \---payments
+|           usePaymentStatus.ts
+|           
++---lib
+|   |   supabaseAdminClient.ts
+|   |   supabaseBrowserClient.ts
+|   |   supabaseServerClient.ts
+|   |   
+|   \---supabase
+|           browser.ts
+|           middleware.ts
+|           
++---styles
+|       globals.css
+|       
++---ui
+|   |   cn.ts
+|   |   
+|   \---components
+|           Badge.tsx
+|           Button.tsx
+|           Card.tsx
+|           Header.tsx
+|           InfoBox.tsx
+|           Input.tsx
+|           Screen.tsx
+|           
+\---__tests__
+        ocrGuard.test.ts
+        productTelemetry.test.ts
+        smoke.test.ts
+        
+

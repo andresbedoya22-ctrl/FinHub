@@ -1,0 +1,63 @@
+﻿# Env/Config inventory (filenames only, no contents)
+
+FullName                                                          Length LastWriteTime            
+--------                                                          ------ -------------            
+C:\Users\User\FinHub\finhub-web\.env.example                         290 30/12/2025 09:27:20 p. m.
+C:\Users\User\FinHub\finhub-web\.env.local                           919 26/12/2025 06:34:47 p. m.
+C:\Users\User\FinHub\finhub-web\.env.local.bak                       305 21/12/2025 11:51:33 a. m.
+C:\Users\User\FinHub\finhub-web\.env.local.bak_20251226183152        922 26/12/2025 05:26:53 p. m.
+C:\Users\User\FinHub\finhub-web\.env.local.bak_bom_20251226183447    922 26/12/2025 06:32:16 p. m.
+C:\Users\User\FinHub\finhub-web\.env.sentry-build-plugin             473 30/12/2025 08:16:46 p. m.
+
+
+
+
+FullName                                                Length LastWriteTime            
+--------                                                ------ -------------            
+C:\Users\User\FinHub\finhub-web\eslint.config.mjs         1230 22/12/2025 09:57:44 p. m.
+C:\Users\User\FinHub\finhub-web\eslint.config.mjs.bak     1010 19/12/2025 08:48:47 p. m.
+C:\Users\User\FinHub\finhub-web\next.config.mjs           1499 30/12/2025 08:28:49 p. m.
+C:\Users\User\FinHub\finhub-web\postcss.config.mjs          92 20/12/2025 07:49:35 p. m.
+C:\Users\User\FinHub\finhub-web\sentry.edge.config.ts     2985 30/12/2025 09:08:10 p. m.
+C:\Users\User\FinHub\finhub-web\sentry.server.config.ts   2830 30/12/2025 09:08:10 p. m.
+C:\Users\User\FinHub\finhub-web\tailwind.config.mjs        733 30/12/2025 08:04:14 p. m.
+C:\Users\User\FinHub\finhub-web\vitest.config.ts           119 19/12/2025 08:38:28 p. m.
+
+
+
+
+FullName                                        Length LastWriteTime            
+--------                                        ------ -------------            
+C:\Users\User\FinHub\finhub-web\next.config.mjs   1499 30/12/2025 08:28:49 p. m.
+
+
+
+
+FullName                                      Length LastWriteTime            
+--------                                      ------ -------------            
+C:\Users\User\FinHub\finhub-web\tsconfig.json    820 19/12/2025 08:46:15 p. m.
+
+
+
+
+FullName                                              Length LastWriteTime            
+--------                                              ------ -------------            
+C:\Users\User\FinHub\finhub-web\eslint.config.mjs       1230 22/12/2025 09:57:44 p. m.
+C:\Users\User\FinHub\finhub-web\eslint.config.mjs.bak   1010 19/12/2025 08:48:47 p. m.
+
+
+
+
+FullName                                           Length LastWriteTime            
+--------                                           ------ -------------            
+C:\Users\User\FinHub\finhub-web\postcss.config.mjs     92 20/12/2025 07:49:35 p. m.
+
+
+
+
+FullName                                            Length LastWriteTime            
+--------                                            ------ -------------            
+C:\Users\User\FinHub\finhub-web\tailwind.config.mjs    733 30/12/2025 08:04:14 p. m.
+
+
+
