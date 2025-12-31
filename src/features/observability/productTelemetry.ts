@@ -42,7 +42,23 @@ export type ProductEventName =
   | "ocr.fail"
   | "checkout.start"
   | "checkout.success"
-  | "checkout.fail";
+  | "checkout.fail"
+  | "product.auth.login.success"
+  | "product.auth.login.fail"
+  | "product.auth.register.success"
+  | "product.auth.register.fail"
+  | "product.doc.upload.success"
+  | "product.doc.upload.fail"
+  | "product.ocr.start"
+  | "product.ocr.success"
+  | "product.ocr.fail"
+  | "product.doc.verify.success"
+  | "product.doc.verify.fail"
+  | "product.payment.checkout.start"
+  | "product.payment.checkout.success"
+  | "product.payment.checkout.fail"
+  | "product.assistant.chat.success"
+  | "product.assistant.chat.fail";
 
 export type ProductEventAttr =
   | "surface"          // e.g. "web"
@@ -55,7 +71,17 @@ export type ProductEventAttr =
   | "latencyMs"        // number
   | "httpStatus"       // number
   | "build"            // optional build/version string
-  ;
+  
+  | "env"
+  | "release"
+  | "outcome"
+  | "error_code"
+  | "latency_bucket"
+  | "status"
+  | "doc_type"
+  | "size_bucket"
+  | "plan"
+  | "intent";
 
 type Attrs = Partial<Record<ProductEventAttr, string | number | boolean | null>>;
 
@@ -112,3 +138,40 @@ export function trackProductEvent(name: ProductEventName, attrs?: Attrs) {
     extra: safeAttrs,
   });
 }
+export type TelemetryOutcome = "success" | "fail";
+export type LatencyBucket = "lt_250ms" | "lt_1s" | "lt_3s" | "gte_3s";
+
+export function bucketLatencyMs(ms: number): LatencyBucket {
+  if (!Number.isFinite(ms) || ms < 0) return "gte_3s";
+  if (ms < 250) return "lt_250ms";
+  if (ms < 1000) return "lt_1s";
+  if (ms < 3000) return "lt_3s";
+  return "gte_3s";
+}
+
+export type ProductRouteEventPair = {
+  success: ProductEventName;
+  fail: ProductEventName;
+};
+
+export function trackProductRoute(
+  pair: ProductRouteEventPair,
+  attrs: Attrs,
+  t0: number,
+  res: Response
+): Response {
+  const ms = Date.now() - t0;
+  const ok = res.status >= 200 && res.status < 300;
+  const outcome: TelemetryOutcome = ok ? "success" : "fail";
+
+  trackProductEvent(ok ? pair.success : pair.fail, {
+    ...attrs,
+    outcome,
+    latency_bucket: bucketLatencyMs(ms),
+    status: res.status,
+  });
+
+  return res;
+}
+
+
