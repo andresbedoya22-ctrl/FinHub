@@ -1,0 +1,6 @@
+﻿{
+  "app": { "name": "FinHub" },
+  "landing": { "title": "Manage your finances in the Netherlands", "cta": "Get started" },
+  "auth": { "login": "Log in", "register": "Create account" },
+  "finny": { "ask": "Ask Finny" }
+}

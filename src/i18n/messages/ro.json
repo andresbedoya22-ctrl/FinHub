@@ -1,0 +1,6 @@
+﻿{
+  "app": { "name": "FinHub" },
+  "landing": { "title": "Gestionează-ți finanțele în Olanda", "cta": "Începe" },
+  "auth": { "login": "Autentificare", "register": "Creează cont" },
+  "finny": { "ask": "Întreabă-l pe Finny" }
+}
