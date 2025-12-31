@@ -130,7 +130,7 @@ const supabase = await createSupabaseServerClient();
     }
     const storagePath = typeof doc.storage_path === "string" ? doc.storage_path : "";
     if (!storagePath) {
-      return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: "storage_path invÃ¡lido" }, { status: 400 }));
+      return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: "storage_path inválido" }, { status: 400 }));
     }
     const { bucket, path } = parseStorageRef(storagePath);
 
@@ -228,4 +228,5 @@ const ocr = await provider.extractText({
     return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: msg }, { status: 500 }));
   }
 }
+
 

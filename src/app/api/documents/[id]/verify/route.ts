@@ -52,7 +52,7 @@ export async function POST(_req: NextRequest, context: { params: Promise<{ id: s
     const ex = (exRows ?? [])[0] ?? null;
     if (!ex?.id) return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: "No extraction to verify" }, { status: 400 }));
 
-    // ValidaciÃ³n estricta (mÃ­nimo: activeringscode)
+    // Validación estricta (mínimo: activeringscode)
     const validated = validateForVerifyMachtigingsregistratieFieldsV1(ex.fields);
     if (!validated.ok) return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: validated.error }, { status: 400 }));
 
@@ -89,3 +89,4 @@ export async function POST(_req: NextRequest, context: { params: Promise<{ id: s
     return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: msg }, { status: 500 }));
   }
 }
+
