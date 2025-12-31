@@ -1,0 +1,21 @@
+﻿name: finhub-web
+version: 0.0.0
+
+scripts:
+- build: next build
+- check:encoding: node scripts/check-no-bom.mjs
+- dev: next dev
+- e2e:assistant: powershell -NoProfile -ExecutionPolicy Bypass -File scripts/e2e/run-assistant-chat-v1.ps1
+- e2e:dashboard: powershell -NoProfile -ExecutionPolicy Bypass -File scripts/e2e/run-dashboard-smoke-v1.ps1
+- e2e:phase7: powershell -NoProfile -ExecutionPolicy Bypass -File scripts/e2e/run-ocr-extract-verify-v1.ps1
+- e2e:suite: powershell -NoProfile -ExecutionPolicy Bypass -File scripts/e2e/run-suite-local.ps1
+- format: prettier . --write
+- format:check: prettier . --check
+- lint: pnpm -s check:encoding && eslint .
+- start: next start
+- test: vitest run
+- typecheck: tsc -p tsconfig.json --noEmit
+
+dependencies: 9
+devDependencies: 17
+

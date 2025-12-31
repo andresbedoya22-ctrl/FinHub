@@ -1,0 +1,41 @@
+﻿Listado de rutas de carpetas
+El n·mero de serie del volumen es FE82-DFA6
+C:\USERS\USER\FINHUB\FINHUB-WEB\DOCS
+|   Canon.docx
+|   CONTRIBUTING.md
+|   db-notes.md
+|   phase-4-closure.md
+|   README.md
+|   
++---adr
+|       0000-template.md
+|       
++---db
+|       documents.sql
+|       rls-v1.md
+|       schema-v1.sql
+|       
++---domain
+|       mapping-localstorage-to-db.md
+|       model-v1.md
+|       scope-v1.md
+|       
++---openapi
+|       finhub-v1.yaml
+|       
++---phase-7
+|       ops-v1.md
+|       
++---phase-8
+|       release-readiness.md
+|       
++---phase-9
+|       observability-sentry.md
+|       
+\---repo-snapshots
+        f00-2-20251231-203838-meta.txt
+        f00-2-20251231-203838-tree-scripts.txt
+        f00-2-20251231-203838-tree-src.txt
+        f00-2-20251231-203838-tree-supabase.txt
+        
+

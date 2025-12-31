@@ -1,0 +1,160 @@
+﻿
+
+    Directorio: C:\Users\User\FinHub\finhub-web\src\features
+
+
+Mode                 LastWriteTime         Length Name                                                                                     
+----                 -------------         ------ ----                                                                                     
+d-----     28/12/2025  11:43 a. m.                ai                                                                                       
+d-----     28/12/2025  01:15 p. m.                assistant                                                                                
+d-----     26/12/2025  01:10 p. m.                auth                                                                                     
+d-----     30/12/2025  07:12 p. m.                cases                                                                                    
+d-----     30/12/2025  07:43 p. m.                documents                                                                                
+d-----     30/12/2025  07:43 p. m.                i18n                                                                                     
+d-----     31/12/2025  08:19 p. m.                observability                                                                            
+d-----     26/12/2025  05:53 p. m.                payments                                                                                 
+-a----     19/12/2025  08:38 p. m.            186 README.md                                                                                
+
+
+    Directorio: C:\Users\User\FinHub\finhub-web\src\features\ai
+
+
+Mode                 LastWriteTime         Length Name                                                                                     
+----                 -------------         ------ ----                                                                                     
+d-----     30/12/2025  07:43 p. m.                llm                                                                                      
+
+
+    Directorio: C:\Users\User\FinHub\finhub-web\src\features\ai\llm
+
+
+Mode                 LastWriteTime         Length Name                                                                                     
+----                 -------------         ------ ----                                                                                     
+-a----     30/12/2025  07:43 p. m.            372 getLlmProvider.ts                                                                        
+-a----     30/12/2025  07:43 p. m.            440 llmProvider.ts                                                                           
+-a----     30/12/2025  07:43 p. m.            912 mockLlmProvider.test.ts                                                                  
+-a----     30/12/2025  07:43 p. m.           1443 mockLlmProvider.ts                                                                       
+-a----     30/12/2025  07:43 p. m.           2290 openaiLlmProvider.ts                                                                     
+
+
+    Directorio: C:\Users\User\FinHub\finhub-web\src\features\assistant
+
+
+Mode                 LastWriteTime         Length Name                                                                                     
+----                 -------------         ------ ----                                                                                     
+d-----     30/12/2025  07:43 p. m.                finny                                                                                    
+
+
+    Directorio: C:\Users\User\FinHub\finhub-web\src\features\assistant\finny
+
+
+Mode                 LastWriteTime         Length Name                                                                                     
+----                 -------------         ------ ----                                                                                     
+d-----     30/12/2025  07:43 p. m.                ui                                                                                       
+-a----     30/12/2025  07:43 p. m.           2489 faqRegistry.ts                                                                           
+-a----     30/12/2025  07:43 p. m.           1147 finnyApiClient.ts                                                                        
+-a----     30/12/2025  07:43 p. m.           1969 finnyPrompt.ts                                                                           
+
+
+    Directorio: C:\Users\User\FinHub\finhub-web\src\features\assistant\finny\ui
+
+
+Mode                 LastWriteTime         Length Name                                                                                     
+----                 -------------         ------ ----                                                                                     
+-a----     30/12/2025  07:43 p. m.           6777 FinnyWidget.tsx                                                                          
+
+
+    Directorio: C:\Users\User\FinHub\finhub-web\src\features\auth
+
+
+Mode                 LastWriteTime         Length Name                                                                                     
+----                 -------------         ------ ----                                                                                     
+-a----     26/12/2025  01:10 p. m.            607 roleClient.ts                                                                            
+
+
+    Directorio: C:\Users\User\FinHub\finhub-web\src\features\cases
+
+
+Mode                 LastWriteTime         Length Name                                                                                     
+----                 -------------         ------ ----                                                                                     
+-a----     26/12/2025  01:10 p. m.           1312 casesClient.ts                                                                           
+-a----     26/12/2025  01:10 p. m.           1833 casesConfig.ts                                                                           
+-a----     26/12/2025  01:10 p. m.            648 casesStorage.ts                                                                          
+-a----     23/12/2025  07:03 p. m.           5919 casesStore.ts                                                                            
+-a----     26/12/2025  01:10 p. m.           2079 caseStepDataClient.ts                                                                    
+-a----     26/12/2025  01:10 p. m.            956 casesTypes.ts                                                                            
+-a----     23/12/2025  07:03 p. m.           2071 steps.ts                                                                                 
+
+
+    Directorio: C:\Users\User\FinHub\finhub-web\src\features\documents
+
+
+Mode                 LastWriteTime         Length Name                                                                                     
+----                 -------------         ------ ----                                                                                     
+d-----     30/12/2025  07:43 p. m.                document-schemas                                                                         
+d-----     27/12/2025  01:37 p. m.                ocr                                                                                      
+-a----     27/12/2025  05:40 p. m.           1114 documentOcrRegistry.test.ts                                                              
+-a----     27/12/2025  05:39 p. m.            746 documentOcrRegistry.ts                                                                   
+-a----     30/12/2025  07:43 p. m.           5034 documentsClient.ts                                                                       
+-a----     27/12/2025  01:45 p. m.           4251 documentsStore.tsx                                                                       
+-a----     30/12/2025  07:43 p. m.            801 documentsTypes.ts                                                                        
+-a----     26/12/2025  10:02 p. m.           1108 machtigingsregistratieSchema.test.ts                                                     
+-a----     26/12/2025  10:02 p. m.           3907 machtigingsregistratieSchema.ts                                                          
+-a----     30/12/2025  07:43 p. m.           3770 ocrApiClient.ts                                                                          
+
+
+    Directorio: C:\Users\User\FinHub\finhub-web\src\features\documents\document-schemas
+
+
+Mode                 LastWriteTime         Length Name                                                                                     
+----                 -------------         ------ ----                                                                                     
+-a----     30/12/2025  07:43 p. m.           1620 machtigingsregistratie.v1.ts                                                             
+-a----     30/12/2025  07:43 p. m.            694 registry.test.ts                                                                         
+-a----     30/12/2025  07:43 p. m.            893 registry.ts                                                                              
+
+
+    Directorio: C:\Users\User\FinHub\finhub-web\src\features\documents\ocr
+
+
+Mode                 LastWriteTime         Length Name                                                                                     
+----                 -------------         ------ ----                                                                                     
+d-----     27/12/2025  01:30 p. m.                providers                                                                                
+-a----     27/12/2025  01:31 p. m.            506 getOcrTextProvider.ts                                                                    
+-a----     27/12/2025  01:34 p. m.           1043 machtigingsregistratieTextParser.ts                                                      
+-a----     27/12/2025  01:37 p. m.           1144 README.md                                                                                
+
+
+    Directorio: C:\Users\User\FinHub\finhub-web\src\features\documents\ocr\providers
+
+
+Mode                 LastWriteTime         Length Name                                                                                     
+----                 -------------         ------ ----                                                                                     
+-a----     27/12/2025  01:34 p. m.           2826 azureDocumentIntelligenceOcrTextProvider.ts                                              
+-a----     27/12/2025  01:30 p. m.           1074 mockOcrTextProvider.ts                                                                   
+-a----     27/12/2025  01:30 p. m.            346 ocrTextProvider.ts                                                                       
+
+
+    Directorio: C:\Users\User\FinHub\finhub-web\src\features\i18n
+
+
+Mode                 LastWriteTime         Length Name                                                                                     
+----                 -------------         ------ ----                                                                                     
+-a----     30/12/2025  07:43 p. m.            625 lang.ts                                                                                  
+
+
+    Directorio: C:\Users\User\FinHub\finhub-web\src\features\observability
+
+
+Mode                 LastWriteTime         Length Name                                                                                     
+----                 -------------         ------ ----                                                                                     
+-a----     31/12/2025  08:19 p. m.           4949 productTelemetry.ts                                                                      
+
+
+    Directorio: C:\Users\User\FinHub\finhub-web\src\features\payments
+
+
+Mode                 LastWriteTime         Length Name                                                                                     
+----                 -------------         ------ ----                                                                                     
+-a----     26/12/2025  05:53 p. m.           1575 usePaymentStatus.ts                                                                      
+
+
+
