@@ -1,0 +1,6 @@
+﻿{
+  "app": { "name": "FinHub" },
+  "landing": { "title": "Gestiona tus finanzas en Países Bajos", "cta": "Empezar" },
+  "auth": { "login": "Iniciar sesión", "register": "Crear cuenta" },
+  "finny": { "ask": "Pregúntale a Finny" }
+}

@@ -1,0 +1,6 @@
+﻿{
+  "app": { "name": "FinHub" },
+  "landing": { "title": "Zarządzaj finansami w Holandii", "cta": "Zacznij" },
+  "auth": { "login": "Zaloguj się", "register": "Utwórz konto" },
+  "finny": { "ask": "Zapytaj Finny" }
+}
