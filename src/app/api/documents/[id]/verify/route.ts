@@ -1,7 +1,12 @@
-import { NextRequest, NextResponse } from "next/server";
+﻿import { NextRequest, NextResponse } from "next/server";
 import { createSupabaseServerClient } from "@/lib/supabaseServerClient";
 import { requireOcrKind } from "../_shared/ocrGuard";
 import { validateForVerifyMachtigingsregistratieFieldsV1 } from "@/features/documents/machtigingsregistratieSchema";
+import { trackProductRoute } from "@/features/observability/productTelemetry";
+
+const __FINHUB_TELEMETRY_ROUTE = "/api/documents/:id/verify";
+const __FINHUB_TELEMETRY_PAIR = { success: "product.doc.verify.success", fail: "product.doc.verify.fail" } as const;
+
 
 export const dynamic = "force-dynamic";
 
@@ -11,15 +16,16 @@ async function getIdFromParams(context: { params: Promise<{ id: string }> }) {
 }
 
 export async function POST(_req: NextRequest, context: { params: Promise<{ id: string }> }) {
+  const __t0 = Date.now();
   try {
     const documentId = await getIdFromParams(context);
-    if (!documentId) return NextResponse.json({ ok: false, error: "Missing id" }, { status: 400 });
+    if (!documentId) return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: "Missing id" }, { status: 400 }));
 
     const supabase = await createSupabaseServerClient();
 
     const { data: userData, error: userErr } = await supabase.auth.getUser();
-    if (userErr) return NextResponse.json({ ok: false, error: userErr.message }, { status: 401 });
-    if (!userData.user) return NextResponse.json({ ok: false, error: "Not authenticated" }, { status: 401 });
+    if (userErr) return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: userErr.message }, { status: 401 }));
+    if (!userData.user) return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: "Not authenticated" }, { status: 401 }));
 
     const now = new Date().toISOString();
 
@@ -41,14 +47,14 @@ export async function POST(_req: NextRequest, context: { params: Promise<{ id: s
       .order("created_at", { ascending: false })
       .limit(1);
 
-    if (exErr) return NextResponse.json({ ok: false, error: exErr.message }, { status: 400 });
+    if (exErr) return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: exErr.message }, { status: 400 }));
 
     const ex = (exRows ?? [])[0] ?? null;
-    if (!ex?.id) return NextResponse.json({ ok: false, error: "No extraction to verify" }, { status: 400 });
+    if (!ex?.id) return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: "No extraction to verify" }, { status: 400 }));
 
-    // Validación estricta (mínimo: activeringscode)
+    // ValidaciÃ³n estricta (mÃ­nimo: activeringscode)
     const validated = validateForVerifyMachtigingsregistratieFieldsV1(ex.fields);
-    if (!validated.ok) return NextResponse.json({ ok: false, error: validated.error }, { status: 400 });
+    if (!validated.ok) return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: validated.error }, { status: 400 }));
 
     const extractionId = ex.id as string;
 
@@ -57,7 +63,7 @@ export async function POST(_req: NextRequest, context: { params: Promise<{ id: s
       .update({ needs_review: false, updated_at: now })
       .eq("id", extractionId);
 
-    if (updExErr) return NextResponse.json({ ok: false, error: updExErr.message }, { status: 400 });
+    if (updExErr) return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: updExErr.message }, { status: 400 }));
 
     // Optional: move document status uploaded -> under_review
     await supabase
@@ -77,9 +83,9 @@ export async function POST(_req: NextRequest, context: { params: Promise<{ id: s
       created_at: now,
     });
 
-    return NextResponse.json({ ok: true, extractionId });
+    return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: true, extractionId }));
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : "Error desconocido";
-    return NextResponse.json({ ok: false, error: msg }, { status: 500 });
+    return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: msg }, { status: 500 }));
   }
 }

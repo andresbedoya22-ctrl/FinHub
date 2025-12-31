@@ -6,6 +6,11 @@ import { MACHTIGINGSREGISTRATIE_SCHEMA_VERSION } from "@/features/documents/mach
 import { getOcrTextProvider } from "@/features/documents/ocr/getOcrTextProvider";
 import { extractMachtigingsregistratieFieldsFromText } from "@/features/documents/ocr/machtigingsregistratieTextParser";
 import { assertSupabaseServerEnv } from "@/config/env";
+import { trackProductEvent, trackProductRoute } from "@/features/observability/productTelemetry";
+
+const __FINHUB_TELEMETRY_ROUTE = "/api/documents/:id/ocr";
+const __FINHUB_TELEMETRY_PAIR = { success: "product.ocr.success", fail: "product.ocr.fail" } as const;
+
 
 export const dynamic = "force-dynamic";
 
@@ -52,6 +57,8 @@ function parseStorageRef(storagePath: string): { bucket: string; path: string } 
 
 
 export async function POST(_req: NextRequest, context: { params: Promise<{ id: string }> }) {
+  const __t0 = Date.now();
+  trackProductEvent("product.ocr.start", { route: __FINHUB_TELEMETRY_ROUTE });
   
   assertSupabaseServerEnv();
 const supabase = await createSupabaseServerClient();
@@ -59,11 +66,11 @@ const supabase = await createSupabaseServerClient();
 
   try {
     const documentId = await getIdFromParams(context);
-    if (!documentId) return NextResponse.json({ ok: false, error: "Missing id" }, { status: 400 });
+    if (!documentId) return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: "Missing id" }, { status: 400 }));
 
     const { data: userData, error: userErr } = await supabase.auth.getUser();
-    if (userErr) return NextResponse.json({ ok: false, error: userErr.message }, { status: 401 });
-    if (!userData.user) return NextResponse.json({ ok: false, error: "Not authenticated" }, { status: 401 });
+    if (userErr) return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: userErr.message }, { status: 401 }));
+    if (!userData.user) return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: "Not authenticated" }, { status: 401 }));
     const g = await requireOcrKind({
       supabase,
       documentId,
@@ -105,7 +112,7 @@ const supabase = await createSupabaseServerClient();
       .select("id,document_id,status,provider,created_at,updated_at")
       .single();
 
-    if (runCreateErr) return NextResponse.json({ ok: false, error: runCreateErr.message }, { status: 400 });
+    if (runCreateErr) return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: runCreateErr.message }, { status: 400 }));
 
     if (!doc.storage_path) {
       const err = "Document has no storage_path";
@@ -119,11 +126,11 @@ const supabase = await createSupabaseServerClient();
         payload: { error: err },
         created_at: now,
       });
-      return NextResponse.json({ ok: false, error: err }, { status: 400 });
+      return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: err }, { status: 400 }));
     }
     const storagePath = typeof doc.storage_path === "string" ? doc.storage_path : "";
     if (!storagePath) {
-      return NextResponse.json({ ok: false, error: "storage_path invÃ¡lido" }, { status: 400 });
+      return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: "storage_path invÃ¡lido" }, { status: 400 }));
     }
     const { bucket, path } = parseStorageRef(storagePath);
 
@@ -143,7 +150,7 @@ const supabase = await createSupabaseServerClient();
         payload: { error: err, storage: { bucket, path } },
         created_at: now,
       });
-      return NextResponse.json({ ok: false, error: err }, { status: 400 });
+      return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: err }, { status: 400 }));
     }
 const ocr = await provider.extractText({
       bytes: fetched.bytes,
@@ -168,7 +175,7 @@ const ocr = await provider.extractText({
         created_at: now,
       });
 
-      return NextResponse.json({ ok: false, error: parsed.error }, { status: 400 });
+      return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: parsed.error }, { status: 400 }));
     }
 
     const { data: run, error: runUpdErr } = await supabase
@@ -184,7 +191,7 @@ const ocr = await provider.extractText({
       .select("id,document_id,status,provider,created_at,updated_at")
       .single();
 
-    if (runUpdErr) return NextResponse.json({ ok: false, error: runUpdErr.message }, { status: 400 });
+    if (runUpdErr) return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: runUpdErr.message }, { status: 400 }));
 
     const { data: extraction, error: exErr } = await supabase
       .from("document_extractions")
@@ -203,7 +210,7 @@ const ocr = await provider.extractText({
       .select("id,document_id,run_id,extraction_type,schema_version,fields,needs_review,confidence,created_at,updated_at")
       .single();
 
-    if (exErr) return NextResponse.json({ ok: false, error: exErr.message }, { status: 400 });
+    if (exErr) return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: exErr.message }, { status: 400 }));
 
     await supabase.from("document_reviews").insert({
       document_id: documentId,
@@ -215,10 +222,10 @@ const ocr = await provider.extractText({
       created_at: now,
     });
 
-    return NextResponse.json({ ok: true, run, extraction });
+    return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: true, run, extraction }));
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : "Error desconocido";
-    return NextResponse.json({ ok: false, error: msg }, { status: 500 });
+    return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: msg }, { status: 500 }));
   }
 }
 
