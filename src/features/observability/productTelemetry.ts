@@ -1,4 +1,4 @@
-﻿import * as Sentry from "@sentry/nextjs";
+import * as Sentry from "@sentry/nextjs";
 
 const ENABLED = process.env.SENTRY_PRODUCT_TELEMETRY_ENABLED === "true";
 const SAMPLE_RATE = Number(process.env.SENTRY_PRODUCT_TELEMETRY_SAMPLE_RATE ?? 0);
@@ -58,7 +58,11 @@ export type ProductEventName =
   | "product.payment.checkout.success"
   | "product.payment.checkout.fail"
   | "product.assistant.chat.success"
-  | "product.assistant.chat.fail";
+  | "product.assistant.chat.fail"
+  | "product.marketing.landing.view"
+  | "product.marketing.cta.click"
+  | "product.marketing.lead.submit.success"
+  | "product.marketing.lead.submit.fail";
 
 export type ProductEventAttr =
   | "surface"          // e.g. "web"
@@ -69,6 +73,7 @@ export type ProductEventAttr =
   | "provider"         // e.g. "stripe"
   | "step"             // e.g. "upload" | "review"
   | "latencyMs"        // number
+  | "interested_count" // number
   | "httpStatus"       // number
   | "build"            // optional build/version string
   
@@ -173,5 +178,6 @@ export function trackProductRoute(
 
   return res;
 }
+
 
 
