@@ -1,48 +1,43 @@
+﻿"use client";
+
 import * as React from "react";
 
-export type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
+type Props = React.InputHTMLAttributes<HTMLInputElement> & {
   label?: string;
   hint?: string;
   error?: string;
+  containerClassName?: string;
+  inputClassName?: string;
 };
 
-function cx(...classes: Array<string | undefined | null | false>) {
-  return classes.filter(Boolean).join(" ");
+export function Input({
+  label,
+  hint,
+  error,
+  containerClassName = "",
+  inputClassName = "",
+  ...props
+}: Props) {
+  return (
+    <label className={["block", containerClassName].join(" ")}>
+      {label ? <div className="mb-1 text-sm font-medium text-white/80">{label}</div> : null}
+
+      <input
+        {...props}
+        className={[
+          "w-full rounded-xl border px-3 py-2 text-sm outline-none transition",
+          "border-white/10 bg-white/5 text-white placeholder:text-white/40",
+          "focus:ring-2 focus:ring-[#4CAF50]/35 focus:border-[#4CAF50]/50",
+          error ? "border-red-400/60 focus:ring-red-400/25" : "",
+          inputClassName
+        ].join(" ")}
+      />
+
+      {error ? (
+        <div className="mt-1 text-xs text-red-300">{error}</div>
+      ) : hint ? (
+        <div className="mt-1 text-xs text-white/60">{hint}</div>
+      ) : null}
+    </label>
+  );
 }
-
-export const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, label, hint, error, id, ...props }, ref) => {
-    const autoId = React.useId();
-    const inputId = id ?? autoId;
-
-    return (
-      <div className="space-y-1">
-        {label ? (
-          <label htmlFor={inputId} className="text-sm font-medium">
-            {label}
-          </label>
-        ) : null}
-
-        <input
-          ref={ref}
-          id={inputId}
-          className={cx(
-            "w-full rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm outline-none",
-            "focus:border-fh-accent focus:ring-2 focus:ring-fh-accent/20",
-            error ? "border-red-500 focus:border-red-500 focus:ring-red-500/20" : "",
-            className
-          )}
-          {...props}
-        />
-
-        {error ? (
-          <div className="text-xs text-red-600">{error}</div>
-        ) : hint ? (
-          <div className="text-xs opacity-70">{hint}</div>
-        ) : null}
-      </div>
-    );
-  }
-);
-
-Input.displayName = "Input";

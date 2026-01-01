@@ -1,6 +1,39 @@
 {
-  "app": { "name": "FinHub" },
-  "landing": { "title": "Gestionează-ți finanțele în Olanda", "cta": "Începe" },
-  "auth": { "login": "Autentificare", "register": "Creează cont" },
-  "finny": { "ask": "Întreabă-l pe Finny" }
+  "app": {
+    "name": "FinHub"
+  },
+  "landing": {
+    "title": "Gestioneaz�\u001e�\u0019-��⬺i finan��⬺ele Ò®n Olanda",
+    "cta": "ÒŽncepe",
+    "lead": {
+      "consent": "Sunt de acord să fiu contactat despre noutăți FinHub.",
+      "createAccount": "Creează cont",
+      "email": "Email",
+      "error": "A apărut o problemă. Încearcă din nou.",
+      "fullName": "Nume complet",
+      "interests": "Mă interesează",
+      "phone": "Telefon (opțional)",
+      "submit": "Trimite",
+      "subtitle": "Lasă datele tale și ce te interesează — vom prioritiza în consecință.",
+      "successBody": "Te contactăm când deschidem noi locuri în beta.",
+      "successTitle": "Mulțumim — am primit.",
+      "title": "Primește noutăți (beta)",
+      "interestLabels": {
+        "personal_finance": "Personal finance",
+        "taxes": "Taxes (IB)",
+        "voorlopige_aanslag": "Provisional assessment (voorlopige aanslag)",
+        "toeslagen": "Allowances (toeslagen)",
+        "mortgage": "Ipotecă",
+        "personal_loan": "Personal loan",
+        "insurance": "Asigurări"
+      }
+    }
+  },
+  "auth": {
+    "login": "Autentificare",
+    "register": "Creeaz�\u001e�\u0019 cont"
+  },
+  "finny": {
+    "ask": "ÒŽntreab�\u001e�\u0019-l pe Finny"
+  }
 }

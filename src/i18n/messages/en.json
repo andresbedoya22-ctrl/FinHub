@@ -1,6 +1,39 @@
 {
-  "app": { "name": "FinHub" },
-  "landing": { "title": "Manage your finances in the Netherlands", "cta": "Get started" },
-  "auth": { "login": "Log in", "register": "Create account" },
-  "finny": { "ask": "Ask Finny" }
+  "app": {
+    "name": "FinHub"
+  },
+  "landing": {
+    "title": "Manage your finances in the Netherlands",
+    "cta": "Get started",
+    "lead": {
+      "consent": "I agree to be contacted about FinHub updates.",
+      "createAccount": "Create account",
+      "email": "Email",
+      "error": "Something went wrong. Please try again.",
+      "fullName": "Full name",
+      "interests": "I'm interested in",
+      "phone": "Phone (optional)",
+      "submit": "Send",
+      "subtitle": "Leave your details and what you are interested in — we will prioritize accordingly.",
+      "successBody": "We will reach out when we open the next beta slots.",
+      "successTitle": "Thanks — we got it.",
+      "title": "Get updates (beta)",
+      "interestLabels": {
+        "personal_finance": "Personal finance",
+        "taxes": "Taxes (IB)",
+        "voorlopige_aanslag": "Provisional assessment (voorlopige aanslag)",
+        "toeslagen": "Allowances (toeslagen)",
+        "mortgage": "Mortgage",
+        "personal_loan": "Personal loan",
+        "insurance": "Insurance"
+      }
+    }
+  },
+  "auth": {
+    "login": "Log in",
+    "register": "Create account"
+  },
+  "finny": {
+    "ask": "Ask Finny"
+  }
 }
