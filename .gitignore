@@ -58,3 +58,6 @@ tmp/
 
 # Sentry Config File
 .env.sentry-build-plugin
+# Local debug artifacts
+i18n_bundle_debug.txt
+/messages/

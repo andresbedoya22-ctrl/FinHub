@@ -1,6 +1,39 @@
 {
-  "app": { "name": "FinHub" },
-  "landing": { "title": "Zarządzaj finansami w Holandii", "cta": "Zacznij" },
-  "auth": { "login": "Zaloguj się", "register": "Utwórz konto" },
-  "finny": { "ask": "Zapytaj Finny" }
+  "app": {
+    "name": "FinHub"
+  },
+  "landing": {
+    "title": "Zarz�\u001e⬦dzaj finansami w Holandii",
+    "cta": "Zacznij",
+    "lead": {
+      "consent": "Wyrażam zgodę na kontakt w sprawie aktualizacji FinHub.",
+      "createAccount": "Utwórz konto",
+      "email": "E-mail",
+      "error": "Coś poszło nie tak. Spróbuj ponownie.",
+      "fullName": "Imię i nazwisko",
+      "interests": "Interesuje mnie",
+      "phone": "Telefon (opcjonalnie)",
+      "submit": "Wyślij",
+      "subtitle": "Zostaw swoje dane i wybierz, czym jesteś zainteresowany — nadamy priorytety.",
+      "successBody": "Skontaktujemy się, gdy otworzymy kolejne miejsca w becie.",
+      "successTitle": "Dziękujemy — otrzymaliśmy zgłoszenie.",
+      "title": "Otrzymuj aktualizacje (beta)",
+      "interestLabels": {
+        "personal_finance": "Personal finance",
+        "taxes": "Taxes (IB)",
+        "voorlopige_aanslag": "Provisional assessment (voorlopige aanslag)",
+        "toeslagen": "Allowances (toeslagen)",
+        "mortgage": "Hipoteka",
+        "personal_loan": "Personal loan",
+        "insurance": "Ubezpieczenia"
+      }
+    }
+  },
+  "auth": {
+    "login": "Zaloguj si�\u001e�\u001e�",
+    "register": "UtwÒ³rz konto"
+  },
+  "finny": {
+    "ask": "Zapytaj Finny"
+  }
 }

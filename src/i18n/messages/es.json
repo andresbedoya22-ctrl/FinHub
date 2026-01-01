@@ -1,6 +1,39 @@
 {
-  "app": { "name": "FinHub" },
-  "landing": { "title": "Gestiona tus finanzas en Países Bajos", "cta": "Empezar" },
-  "auth": { "login": "Iniciar sesión", "register": "Crear cuenta" },
-  "finny": { "ask": "Pregúntale a Finny" }
+  "app": {
+    "name": "FinHub"
+  },
+  "landing": {
+    "title": "Gestiona tus finanzas en PaÒ­ses Bajos",
+    "cta": "Empezar",
+    "lead": {
+      "consent": "Acepto que me contacten sobre novedades de FinHub.",
+      "createAccount": "Crear cuenta",
+      "email": "Correo electrónico",
+      "error": "Algo salió mal. Inténtalo de nuevo.",
+      "fullName": "Nombre completo",
+      "interests": "Me interesa",
+      "phone": "Teléfono (opcional)",
+      "submit": "Enviar",
+      "subtitle": "Déjanos tus datos y lo que te interesa — priorizaremos según tu necesidad.",
+      "successBody": "Te contactaremos cuando abramos nuevos cupos de beta.",
+      "successTitle": "Gracias — recibido.",
+      "title": "Recibir novedades (beta)",
+      "interestLabels": {
+        "personal_finance": "Personal finance",
+        "taxes": "Taxes (IB)",
+        "voorlopige_aanslag": "Provisional assessment (voorlopige aanslag)",
+        "toeslagen": "Allowances (toeslagen)",
+        "mortgage": "Hipoteca",
+        "personal_loan": "Personal loan",
+        "insurance": "Seguros"
+      }
+    }
+  },
+  "auth": {
+    "login": "Iniciar sesiÒ³n",
+    "register": "Crear cuenta"
+  },
+  "finny": {
+    "ask": "PregÒºntale a Finny"
+  }
 }

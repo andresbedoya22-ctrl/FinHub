@@ -1,21 +1,24 @@
 ﻿"use client";
 
-import { NextIntlClientProvider } from "next-intl";
-import type { ReactNode } from "react";
-import type { SupportedLocale } from "./config";
-import type { Messages } from "./getMessages";
+import * as React from "react";
+import {NextIntlClientProvider} from "next-intl";
+import type {Locale} from "@/i18n/request";
 
-export function I18nProvider({
-  locale,
-  messages,
-  children,
-}: {
-  locale: SupportedLocale;
+type Messages = Record<string, unknown>;
+
+export function I18nProvider(props: {
+  children: React.ReactNode;
+  locale: Locale | string;
   messages: Messages;
-  children: ReactNode;
+  timeZone?: string;
 }) {
+  const {children, locale, messages, timeZone} = props;
   return (
-    <NextIntlClientProvider locale={locale} messages={messages}>
+    <NextIntlClientProvider
+      locale={locale}
+      messages={messages}
+      timeZone={timeZone ?? "Europe/Amsterdam"}
+    >
       {children}
     </NextIntlClientProvider>
   );

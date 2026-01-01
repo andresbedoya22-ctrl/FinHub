@@ -2,60 +2,71 @@
 
 import React, { useMemo, useState } from "react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { LandingCard } from "./LandingCard";
 import { Input } from "@/ui/components/Input";
 import { Button } from "@/ui/components/Button";
 import { trackProductEvent } from "@/features/observability/productTelemetry";
-import { submitMarketingLead } from "@/features/marketing/leadsClient";
-import { LEAD_INTERESTS } from "@/features/marketing/leadsStore";
-import type { AppLang, LeadInterest } from "@/features/marketing/leadsTypes";
 
-type Strings = {
-  title: string;
-  subtitle: string;
-  name: string;
-  email: string;
-  phone: string;
-  interests: string;
-  consent: string;
-  submit: string;
-  successTitle: string;
-  successBody: string;
-  fail: string;
-  ctaCreateAccount: string;
+export type LeadInterestKey =
+  | "personal_finance"
+  | "taxes"
+  | "voorlopige_aanslag"
+  | "toeslagen"
+  | "mortgage"
+  | "personal_loan"
+  | "insurance";
 
-  interestLabels: Record<LeadInterest, string>;
-};
+const LEAD_INTEREST_KEYS: readonly LeadInterestKey[] = [
+  "personal_finance",
+  "taxes",
+  "voorlopige_aanslag",
+  "toeslagen",
+  "mortgage",
+  "personal_loan",
+  "insurance",
+] as const;
 
-function getLocaleFromHtml(): AppLang {
-  const raw = typeof document !== "undefined" ? document.documentElement.lang : "en";
-  const v = (raw || "en").toLowerCase();
-  if (v.startsWith("es")) return "es";
-  if (v.startsWith("pl")) return "pl";
-  if (v.startsWith("ro")) return "ro";
-  return "en";
+type ApiOk = { ok: true };
+type ApiFail = { ok: false; error?: string };
+type ApiResponse = ApiOk | ApiFail;
+
+function isRecord(x: unknown): x is Record<string, unknown> {
+  return typeof x === "object" && x !== null;
+}
+function readApiResponse(x: unknown): ApiResponse | null {
+  if (!isRecord(x) || typeof x.ok !== "boolean") return null;
+  if (x.ok === true) return { ok: true };
+  const err = typeof x.error === "string" ? x.error : undefined;
+  return { ok: false, error: err };
 }
 
-function readUtm(): Record<string, string | null> {
-  if (typeof window === "undefined") return {};
-  const p = new URLSearchParams(window.location.search);
-  return {
-    utmSource: p.get("utm_source"),
-    utmMedium: p.get("utm_medium"),
-    utmCampaign: p.get("utm_campaign"),
-    utmTerm: p.get("utm_term"),
-    utmContent: p.get("utm_content"),
-  };
-}
+function getLangFromDom(): LeadInterestKey extends never ? never : string {
+  // NOTE: el tipo de retorno real es string porque el API espera string;
+  // internamente normalizamos a los locales soportados.
+  if (typeof document === "undefined") return "en";
+  const raw = (document.documentElement.lang || "en").toLowerCase().trim();
+  const base = (raw.split("-")[0] || "en").trim();
 
-export default function LandingLeadForm({ strings }: { strings: Strings }) {
+  const SUPPORTED = ["en", "es", "pl", "ro"] as const;
+  type Supported = (typeof SUPPORTED)[number];
+
+  function isSupported(x: string): x is Supported {
+    return (SUPPORTED as readonly string[]).includes(x);
+  }
+
+  return isSupported(base) ? base : "en";
+}export default function LandingLeadForm() {
+  const t = useTranslations("landing");
+
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [selected, setSelected] = useState<LeadInterestKey[]>([]);
   const [consent, setConsent] = useState(false);
-  const [hp, setHp] = useState(""); // honeypot
-  const [selected, setSelected] = useState<LeadInterest[]>([]);
+
   const [busy, setBusy] = useState(false);
-  const [doneId, setDoneId] = useState<string | null>(null);
+  const [ok, setOk] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const canSubmit = useMemo(() => {
@@ -63,154 +74,146 @@ export default function LandingLeadForm({ strings }: { strings: Strings }) {
       !busy &&
       fullName.trim().length >= 2 &&
       email.trim().includes("@") &&
-      consent === true &&
-      selected.length >= 1
+      selected.length >= 1 &&
+      consent === true
     );
-  }, [busy, fullName, email, consent, selected.length]);
+  }, [busy, fullName, email, selected.length, consent]);
+
+  function toggle(k: LeadInterestKey) {
+    setSelected((prev) => (prev.includes(k) ? prev.filter((x) => x !== k) : [...prev, k]));
+  }
+
+  function interestLabel(k: LeadInterestKey): string {
+    // Template literal type => sin any y sin hardcodes.
+    return t(`lead.interestLabels.${k}`);
+  }
 
   async function submit() {
     setError(null);
 
-    trackProductEvent("product.marketing.cta.click", {
-      route: "/landing",
-      intent: "lead_form",
-    });
-
     if (!canSubmit) {
-      setError(strings.fail);
+      trackProductEvent("product.marketing.lead.submit.fail", { route: "/landing", reason: "validation" });
+      setError(t("lead.error"));
       return;
     }
 
     setBusy(true);
-    const locale = getLocaleFromHtml();
-    const utm = readUtm();
-
     try {
-      const res = await submitMarketingLead({
-        fullName: fullName.trim(),
-        email: email.trim(),
-        phone: phone.trim() ? phone.trim() : null,
-        locale,
-        source: "landing",
-        interestedIn: selected,
-        consentMarketing: consent,
-        hp: hp || null,
-        ...utm,
+      const res = await fetch("/api/marketing/leads", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          fullName: fullName.trim(),
+          email: email.trim(),
+          phone: phone.trim() || null,
+          locale: getLangFromDom(),
+          interestedIn: selected,
+          consentMarketing: consent,
+          hp: "", // honeypot
+        }),
       });
 
-      if (res.ok) {
-        setDoneId(res.id);
-        trackProductEvent("product.marketing.lead.submit.success", {
-          route: "/landing",
-          interested_count: selected.length,
-        });
+      const json = await res.json().catch(() => null);
+      const api = readApiResponse(json);
+
+      if (!res.ok || api?.ok !== true) {
+        trackProductEvent("product.marketing.lead.submit.fail", { route: "/landing", reason: "server", status: res.status });
+        setError(api && api.ok === false && api.error ? api.error : "Request failed");
+        setOk(false);
       } else {
-        setError(res.error || strings.fail);
-        trackProductEvent("product.marketing.lead.submit.fail", {
-          route: "/landing",
-          reason: res.code ?? "server",
-        });
+        trackProductEvent("product.marketing.lead.submit.success", { route: "/landing" });
+        setOk(true);
       }
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : strings.fail);
-      trackProductEvent("product.marketing.lead.submit.fail", {
-        route: "/landing",
-        reason: "server",
-      });
+      trackProductEvent("product.marketing.lead.submit.fail", { route: "/landing", reason: "exception" });
+      setError(e instanceof Error ? e.message : "Unknown error");
+      setOk(false);
     } finally {
       setBusy(false);
     }
   }
 
-  function toggleInterest(k: LeadInterest) {
-    setSelected((prev) =>
-      prev.includes(k) ? prev.filter((x) => x !== k) : [...prev, k]
-    );
-  }
-
-  if (doneId) {
-    return (
-      <div className="rounded-2xl border border-fh-border bg-white p-6">
-        <div className="text-lg font-semibold">{strings.successTitle}</div>
-        <div className="mt-2 text-sm opacity-80">{strings.successBody}</div>
-        <div className="mt-5">
-          <Link href="/register" className="underline text-sm">
-            {strings.ctaCreateAccount}
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="rounded-2xl border border-fh-border bg-white p-6 space-y-4">
-      <div>
-        <div className="text-lg font-semibold">{strings.title}</div>
-        <div className="text-sm opacity-75">{strings.subtitle}</div>
-      </div>
-
-      {/* honeypot (hidden) */}
-      <div className="hidden">
-        <Input value={hp} onChange={(e) => setHp(e.target.value)} placeholder="Leave empty" />
-      </div>
-
-      <div className="grid gap-3 md:grid-cols-2">
-        <div className="space-y-2">
-          <div className="text-sm font-medium">{strings.name}</div>
-          <Input value={fullName} onChange={(e) => setFullName(e.target.value)} placeholder="John Doe" />
-        </div>
-        <div className="space-y-2">
-          <div className="text-sm font-medium">{strings.email}</div>
-          <Input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@email.com" />
-        </div>
-        <div className="space-y-2 md:col-span-2">
-          <div className="text-sm font-medium">{strings.phone}</div>
-          <Input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+31 6 ..." />
-        </div>
-      </div>
-
+    <LandingCard className="border-white/10 bg-white/5 p-6 text-white shadow-[0_12px_40px_-18px_rgba(0,0,0,0.65)] backdrop-blur-sm">
       <div className="space-y-2">
-        <div className="text-sm font-medium">{strings.interests}</div>
-        <div className="flex flex-wrap gap-2">
-          {LEAD_INTERESTS.sort((a, b) => a.order - b.order).map(({ key }) => {
-            const active = selected.includes(key);
+        <div className="text-xl font-semibold">{t("lead.title")}</div>
+        <div className="text-sm text-white/70">{t("lead.subtitle")}</div>
+      </div>
+
+      <div className="mt-5 grid gap-3 md:grid-cols-2">
+        <Input label={t("lead.fullName")} value={fullName} onChange={(e) => setFullName(e.target.value)} />
+        <Input label={t("lead.email")} value={email} onChange={(e) => setEmail(e.target.value)} />
+        <Input label={t("lead.phone")} value={phone} onChange={(e) => setPhone(e.target.value)} />
+      </div>
+
+      <div className="mt-5">
+        <div className="text-sm font-semibold">{t("lead.interests")}</div>
+        <div className="mt-3 grid gap-2 md:grid-cols-2">
+          {LEAD_INTEREST_KEYS.map((k) => {
+            const active = selected.includes(k);
             return (
               <button
-                key={key}
+                key={k}
                 type="button"
-                onClick={() => toggleInterest(key)}
+                onClick={() => toggle(k)}
+                aria-pressed={active}
                 className={[
-                  "px-3 py-2 rounded-xl border text-sm",
-                  active ? "bg-[#0D1B2A] text-white border-[#0D1B2A]" : "bg-white hover:bg-gray-50",
+                  "rounded-2xl border px-4 py-3 text-left transition",
+                  "border-white/10 bg-white/0 hover:bg-white/5",
+                  "focus:outline-none focus:ring-2 focus:ring-[#4CAF50]/35",
+                  active ? "border-[#4CAF50]/60 bg-[#4CAF50]/10" : "",
                 ].join(" ")}
               >
-                {strings.interestLabels[key]}
+                <div className="text-sm font-semibold text-white">{interestLabel(k)}</div>
+                <div className="mt-1 text-xs text-white/60">{active ? "✓" : ""}</div>
               </button>
             );
           })}
         </div>
       </div>
 
-      <label className="flex items-start gap-3 text-sm">
+      <div className="mt-5 flex items-start gap-3">
         <input
+          id="consent"
           type="checkbox"
+          className="mt-1 h-4 w-4 accent-[#4CAF50]"
           checked={consent}
           onChange={(e) => setConsent(e.target.checked)}
-          className="mt-1"
         />
-        <span className="opacity-85">{strings.consent}</span>
-      </label>
-
-      {error ? <div className="text-sm text-red-600">{error}</div> : null}
-
-      <div className="flex items-center gap-3">
-        <Button onClick={submit} disabled={!canSubmit}>
-          {busy ? "…" : strings.submit}
-        </Button>
-        <Link href="/register" className="text-sm underline opacity-80 hover:opacity-100">
-          {strings.ctaCreateAccount}
-        </Link>
+        <label htmlFor="consent" className="text-sm text-white/70">
+          {t("lead.consent")}
+        </label>
       </div>
-    </div>
+
+      {error ? <div className="mt-4 text-sm text-red-300">{error}</div> : null}
+
+      {ok ? (
+        <div className="mt-5 rounded-2xl border border-white/10 bg-white/5 p-4">
+          <div className="font-semibold text-white">{t("lead.successTitle")}</div>
+          <div className="mt-1 text-sm text-white/70">{t("lead.successBody")}</div>
+          <div className="mt-3">
+            <Link className="text-sm underline text-white/90 hover:text-white" href="/register">
+              {t("lead.createAccount")}
+            </Link>
+          </div>
+        </div>
+      ) : (
+        <div className="mt-5 flex flex-wrap gap-3">
+          <Button onClick={submit} disabled={!canSubmit}>
+            {busy ? "…" : t("lead.submit")}
+          </Button>
+          <Link
+            href="/register"
+            className="rounded-xl border border-white/15 bg-white/0 px-4 py-2 text-sm text-white/90 hover:bg-white/5"
+            onClick={() => trackProductEvent("product.marketing.cta.click", { route: "/landing", intent: "create_account" })}
+          >
+            {t("lead.createAccount")}
+          </Link>
+        </div>
+      )}
+    </LandingCard>
   );
 }
+
+
+
