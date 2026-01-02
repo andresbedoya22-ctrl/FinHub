@@ -14,14 +14,14 @@ const BLOCKED_KEYS = new Set([
 function clampString(v: string): string {
   const s = v.trim();
   if (s.length <= MAX_STR) return s;
-  return s.slice(0, MAX_STR) + "…";
+  return s.slice(0, MAX_STR) + "â€¦";
 }
 
 function isLikelyPiiValue(v: unknown): boolean {
   if (typeof v !== "string") return false;
   const s = v.trim();
   if (!s) return false;
-  // Heurísticas simples: email, tokens largos, JWT-ish
+  // HeurÃ­sticas simples: email, tokens largos, JWT-ish
   if (s.includes("@")) return true;
   if (s.length > 160) return true;
   if (s.split(".").length >= 3 && s.length > 60) return true;
@@ -62,7 +62,8 @@ export type ProductEventName =
   | "product.marketing.landing.view"
   | "product.marketing.cta.click"
   | "product.marketing.lead.submit.success"
-  | "product.marketing.lead.submit.fail";
+  | "product.marketing.lead.submit.fail"
+  | "product.marketing.lead.submit.attempt"
 
 export type ProductEventAttr =
   | "surface"          // e.g. "web"

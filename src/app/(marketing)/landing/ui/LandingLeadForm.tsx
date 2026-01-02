@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useMemo, useState } from "react";
 import Link from "next/link";
@@ -75,11 +75,10 @@ export default function LandingLeadForm() {
     setError(null);
 
     const locale = getLocaleFromDom();
-    trackProductEvent("lead_submit_attempt", { locale, interestsCount: selected.length });
     trackProductEvent("product.marketing.lead.submit.attempt", { route: "/landing", interestsCount: selected.length, locale });
 
     if (!canSubmit) {
-      trackProductEvent("lead_submit_fail", { locale, reason: "validation" });
+      trackProductEvent("product.marketing.lead.submit.fail", { locale, reason: "validation" });
       trackProductEvent("product.marketing.lead.submit.fail", { route: "/landing", reason: "validation", locale });
       setError(t("lead.error"));
       return;
@@ -103,18 +102,18 @@ export default function LandingLeadForm() {
       const api = readApiResponse(json);
 
       if (!res.ok || api?.ok !== true) {
-        trackProductEvent("lead_submit_fail", { locale, reason: "server" });
+        trackProductEvent("product.marketing.lead.submit.fail", { locale, reason: "server" });
         trackProductEvent("product.marketing.lead.submit.fail", { route: "/landing", reason: "server", status: res.status, locale });
         setError(api && api.ok === false && api.error ? api.error : "Request failed");
         setOk(false);
       } else {
-        trackProductEvent("lead_submit_success", { locale });
+        trackProductEvent("product.marketing.lead.submit.success", { locale });
         trackProductEvent("product.marketing.lead.submit.success", { route: "/landing", locale });
         setOk(true);
       }
     } catch (e: unknown) {
       const locale2 = getLocaleFromDom();
-      trackProductEvent("lead_submit_fail", { locale: locale2, reason: "server" });
+      trackProductEvent("product.marketing.lead.submit.fail", { locale: locale2, reason: "server" });
       trackProductEvent("product.marketing.lead.submit.fail", { route: "/landing", reason: "exception", locale: locale2 });
       setError(e instanceof Error ? e.message : "Unknown error");
       setOk(false);
@@ -153,7 +152,7 @@ export default function LandingLeadForm() {
                 ].join(" ")}
               >
                 <div className="text-sm font-semibold text-fh-text">{interestLabel(k)}</div>
-                <div className="mt-1 text-xs text-fh-muted">{active ? "✓" : ""}</div>
+                <div className="mt-1 text-xs text-fh-muted">{active ? "âœ“" : ""}</div>
               </button>
             );
           })}
@@ -188,7 +187,7 @@ export default function LandingLeadForm() {
       ) : (
         <div className="mt-5 flex flex-wrap gap-3">
           <Button onClick={submit} disabled={!canSubmit}>
-            {busy ? "…" : t("lead.submit")}
+            {busy ? "â€¦" : t("lead.submit")}
           </Button>
           <Link
             href="/register"

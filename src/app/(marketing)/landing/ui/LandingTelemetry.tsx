@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect } from "react";
 import { trackProductEvent } from "@/features/observability/productTelemetry";
@@ -29,7 +29,7 @@ export default function LandingTelemetry({ route }: Props) {
     const payload = { locale, path: route, referrerDomain: getReferrerDomain() };
 
     // Canon event (docs/marketing/events-taxonomy.md)
-    trackProductEvent("landing_view", payload);
+    trackProductEvent("product.marketing.landing.view", payload);
 
     // Compat existente (no romper dashboards actuales)
     trackProductEvent("product.marketing.landing.view", { route, locale });

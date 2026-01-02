@@ -1,4 +1,4 @@
-﻿-- marketing_leads v2 (F02 hardening)
+-- marketing_leads v2 (F02 hardening)
 -- - add operational fields
 -- - add consent scope/version
 -- - enforce RLS: insert allowed, select denied publicly
