@@ -75,7 +75,7 @@ export default function LandingLeadForm() {
     setError(null);
 
     const locale = getLocaleFromDom();
-    trackProductEvent("product.marketing.lead.submit.attempt", { route: "/landing", interestsCount: selected.length, locale });
+    trackProductEvent("product.marketing.lead.submit.attempt", { route: "/landing", interested_count: selected.length, locale });
 
     if (!canSubmit) {
       trackProductEvent("product.marketing.lead.submit.fail", { locale, reason: "validation" });
@@ -152,7 +152,7 @@ export default function LandingLeadForm() {
                 ].join(" ")}
               >
                 <div className="text-sm font-semibold text-fh-text">{interestLabel(k)}</div>
-                <div className="mt-1 text-xs text-fh-muted">{active ? "âœ“" : ""}</div>
+                <div className="mt-1 text-xs text-fh-muted">{active ? "Ã¢Å“â€œ" : ""}</div>
               </button>
             );
           })}
@@ -187,7 +187,7 @@ export default function LandingLeadForm() {
       ) : (
         <div className="mt-5 flex flex-wrap gap-3">
           <Button onClick={submit} disabled={!canSubmit}>
-            {busy ? "â€¦" : t("lead.submit")}
+            {busy ? "Ã¢â‚¬Â¦" : t("lead.submit")}
           </Button>
           <Link
             href="/register"
