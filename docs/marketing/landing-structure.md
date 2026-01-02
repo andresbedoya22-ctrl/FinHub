@@ -1,72 +1,49 @@
-﻿# FinHub Landing (F02) — Structure + Copy (Premium)
+﻿# FinHub — Landing Structure (F02.2.1 P0)
 
-## 1) Objetivo (conversión)
-Convertir tráfico frío en:
-- Creación de cuenta (CTA principal)
-- Lead cualificado (CTA secundario) con segmentación por intención
+Objetivo: explicar FinHub en <30s y convertir. Orden fijo P0 (no reordenar sin actualizar eventos).
 
-## 2) Posicionamiento (EN-first)
-**One place to control your money in the Netherlands.**
-FinHub es un “hub” centrado en **Personal Finance Control** del que se desprenden flujos guiados:
-- Taxes (IB) + provisional assessment (voorlopige aanslag)
-- Toeslagen (subsidies)
-- Mortgages
-- Personal loans
-- Insurance
-- Documents + OCR (asistente operativo)
+## Secciones (orden final P0)
 
-## 3) Wireframe textual por secciones (order matters)
-### S1 — Top nav
-- Logo: FinHub
-- Links: Privacy / Terms
-- CTA: Create account (-> /register)
+1) Hero
+- Promesa: claridad fiscal + flujos guiados (sin pedir contraseña DigiD).
+- CTA primario: Create account / Empezar
+- CTA secundario: Ver cómo funciona
 
-### S2 — Hero (above the fold)
-- H1: core promise (EN/ES/PL/RO)
-- 3 bullets (valor inmediato)
-- CTA primary: Create account
-- CTA secondary: Get updates (scroll a Lead Form)
-- Visual: “Hub diagram” (custom SVG) mostrando core + ramas
+2) Trust row
+- Privacidad por diseño
+- OCR + revisión humana cuando aplica
+- Sin credenciales DigiD (solo machtiging/autorización cuando corresponde)
 
-### S3 — “FinHub Core” (hub + branches)
-- Card central: Personal Finance Control
-- 6 cards/ramas (cada una con 1 frase + outcome)
+3) Modules
+- Finanzas (Personal)
+- Negocio (ZZP)
+- Impuestos (IB/BTW)
+- Subsidios / Toeslagen (Huur/Zorg/Kinderopvang)
+- Document Vault
 
-### S4 — How it works (3 pasos, honestos)
-1) Create account
-2) Follow guided flows + upload documents when needed
-3) Get an outcome + human review when it matters (si aplica)
+4) How it works (5 pasos)
+1. Pre-check
+2. Resultado
+3. Checkout (si aplica)
+4. Autorización / machtiging (sin contraseña)
+5. Documentos → Verificación → Revisión humana (si aplica)
 
-### S5 — Pricing (Beta)
-- Subscription: 0 € (Beta)
-- Pay-per-case: 0 € (Beta)
-- Nota: “Pricing will be announced after beta; early users keep benefits.”
+5) Pricing
+- Free: eligibility + info base
+- Plus/Pro: casos + uploads + verificación (según canon)
 
-### S6 — FAQ (Finny Lite)
-- FAQ visible (6–10 preguntas)
-- “Ask Finny” widget (existing FinnyWidget) para dudas rápidas
+6) FAQ
+- Preguntas de fricción + guardrails claros
+- Hook a Finny Lite
 
-### S7 — Lead capture (qualified)
-Campos:
-- Full name (required)
-- Email (required)
-- Phone (optional)
-- Interested in (multi-select)
-- Consent checkbox (required)
+7) Lead capture (fallback)
+- Email + intereses + consentimiento
 
-Acción:
-- Submit -> /api/marketing/leads
-- Success state: “Thanks — we’ll reach out.”
+8) Footer
+- Legal: Privacy/Terms
+- Links: Login/Register
+- Contacto básico (si aplica)
 
-### S8 — Footer
-- Privacy / Terms
-- Small disclaimer (beta)
-
-## 4) Conversion rules
-- CTA principal siempre visible (header + hero).
-- Lead form como CTA secundario con “Get updates”.
-- No claims no verificables (ej: “encryption at rest”) salvo confirmación técnica.
-
-## 5) i18n keys (namespace)
-marketing.landing.*
-marketing.leads.*
+## Notas
+- Todo texto viene de i18n (landing.*).
+- Evitar claims no implementados. Ver claims-and-guardrails.md.
