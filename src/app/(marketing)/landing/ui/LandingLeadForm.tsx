@@ -112,7 +112,6 @@ export default function LandingLeadForm() {
         setOk(true);
       }
     } catch (e: unknown) {
-      const locale2 = getLocaleFromDom();
       trackProductEvent("product.marketing.lead.submit.fail", { route: "/landing" });
       trackProductEvent("product.marketing.lead.submit.fail", { route: "/landing" });
       setError(e instanceof Error ? e.message : "Unknown error");
@@ -192,7 +191,7 @@ export default function LandingLeadForm() {
           <Link
             href="/register"
             className="rounded-xl border border-fh-border bg-transparent px-4 py-2 text-sm text-fh-text hover:bg-fh-surface-2"
-            onClick={() => trackProductEvent("cta_primary_click", { locale: getLocaleFromDom(), placement: "lead", target: "register" })}
+            onClick={() => trackProductEvent("product.marketing.cta.click", { route: "/landing" })}
           >
             {t("lead.createAccount")}
           </Link>
