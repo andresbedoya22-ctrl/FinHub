@@ -1,39 +1,99 @@
 {
-  "app": {
-    "name": "FinHub"
-  },
-  "landing": {
-    "title": "Gestioneaz�\u001e�\u0019-��⬺i finan��⬺ele Ò®n Olanda",
-    "cta": "ÒŽncepe",
-    "lead": {
-      "consent": "Sunt de acord să fiu contactat despre noutăți FinHub.",
-      "createAccount": "Creează cont",
-      "email": "Email",
-      "error": "A apărut o problemă. Încearcă din nou.",
-      "fullName": "Nume complet",
-      "interests": "Mă interesează",
-      "phone": "Telefon (opțional)",
-      "submit": "Trimite",
-      "subtitle": "Lasă datele tale și ce te interesează — vom prioritiza în consecință.",
-      "successBody": "Te contactăm când deschidem noi locuri în beta.",
-      "successTitle": "Mulțumim — am primit.",
-      "title": "Primește noutăți (beta)",
-      "interestLabels": {
-        "personal_finance": "Personal finance",
-        "taxes": "Taxes (IB)",
-        "voorlopige_aanslag": "Provisional assessment (voorlopige aanslag)",
-        "toeslagen": "Allowances (toeslagen)",
-        "mortgage": "Ipotecă",
-        "personal_loan": "Personal loan",
-        "insurance": "Asigurări"
-      }
-    }
-  },
-  "auth": {
-    "login": "Autentificare",
-    "register": "Creeaz�\u001e�\u0019 cont"
-  },
-  "finny": {
-    "ask": "ÒŽntreab�\u001e�\u0019-l pe Finny"
-  }
+    "app":  {
+                "name":  "FinHub"
+            },
+    "landing":  {
+                    "title":  "Gestioneazï¿½\u001eï¿½\u0019-ï¿½ï¿½â¬ºi finanï¿½ï¿½â¬ºele Ã’Â®n Olanda",
+                    "cta":  "Ã’Å½ncepe",
+                    "lead":  {
+                                 "consent":  "Sunt de acord sÄƒ fiu contactat despre noutÄƒÈ›i FinHub.",
+                                 "createAccount":  "CreeazÄƒ cont",
+                                 "email":  "Email",
+                                 "error":  "A apÄƒrut o problemÄƒ. ÃŽncearcÄƒ din nou.",
+                                 "fullName":  "Nume complet",
+                                 "interests":  "MÄƒ intereseazÄƒ",
+                                 "phone":  "Telefon (opÈ›ional)",
+                                 "submit":  "Trimite",
+                                 "subtitle":  "LasÄƒ datele tale È™i ce te intereseazÄƒ â€” vom prioritiza Ã®n consecinÈ›Äƒ.",
+                                 "successBody":  "Te contactÄƒm cÃ¢nd deschidem noi locuri Ã®n beta.",
+                                 "successTitle":  "MulÈ›umim â€” am primit.",
+                                 "title":  "PrimeÈ™te noutÄƒÈ›i (beta)",
+                                 "interestLabels":  {
+                                                        "personal_finance":  "Personal finance",
+                                                        "taxes":  "Taxes (IB)",
+                                                        "voorlopige_aanslag":  "Provisional assessment (voorlopige aanslag)",
+                                                        "toeslagen":  "Allowances (toeslagen)",
+                                                        "mortgage":  "IpotecÄƒ",
+                                                        "personal_loan":  "Personal loan",
+                                                        "insurance":  "AsigurÄƒri"
+                                                    }
+                             }
+                },
+    "auth":  {
+                 "oauth":  {
+                               "google":  "Continua cu Google",
+                               "apple":  "Continua cu Apple"
+                           },
+                 "forgot":  {
+                                "sent":  "Daca emailul exista, vei primi un link de resetare a parolei.",
+                                "title":  "Resetare parola",
+                                "busy":  "Se trimite...",
+                                "submit":  "Trimite link",
+                                "backToLogin":  "Înapoi la autentificare"
+                            },
+                 "reset":  {
+                               "newPassword":  "Parola noua",
+                               "title":  "Seteaza o parola noua",
+                               "busy":  "Se actualizeaza...",
+                               "submit":  "Actualizeaza parola",
+                               "ok":  "Parola a fost actualizata."
+                           },
+                 "common":  {
+                                "email":  "Email",
+                                "error":  "Eroare",
+                                "info":  "Info",
+                                "password":  "Parola"
+                            },
+                 "legal":  {
+                               "and":  "?i",
+                               "continue":  "Continuând accep?i",
+                               "privacy":  "Politica de confiden?ialitate",
+                               "continueRegister":  "Creând un cont accep?i",
+                               "terms":  "Termenii"
+                           },
+                 "login":  {
+                               "emailNotConfirmedHint":  "Emailul nu este confirmat înca. Verifica inboxul sau retrimite confirmarea.",
+                               "goRegister":  "Înregistreaza-te",
+                               "resendBusy":  "Se retrimite...",
+                               "busy":  "Se autentifica...",
+                               "forgot":  "Ai uitat parola?",
+                               "noAccount":  "Nu ai cont?",
+                               "submit":  "Intra",
+                               "title":  "Autentificare",
+                               "resend":  "Retrimite confirmarea",
+                               "resendOk":  "Confirmarea a fost retrimisa. Verifica inboxul."
+                           },
+                 "register":  {
+                                  "busy":  "Se creeaza...",
+                                  "goLogin":  "Autentificare",
+                                  "checkEmail":  "Cont creat. Confirma emailul înainte de autentificare.",
+                                  "submit":  "Creeaza cont",
+                                  "haveAccount":  "Ai deja cont?",
+                                  "title":  "Creeaza cont"
+                              },
+                 "errors":  {
+                                "unknown":  "A aparut o eroare. Încearca din nou.",
+                                "weak_password":  "Parola nu îndepline?te cerin?ele.",
+                                "missing_code":  "Link invalid sau expirat.",
+                                "rate_limited":  "Prea multe încercari. Încearca mai târziu.",
+                                "invalid_request":  "Date invalide. Încearca din nou.",
+                                "email_not_confirmed":  "Email neconfirmat.",
+                                "user_exists":  "Exista deja un cont pentru acest email.",
+                                "invalid_credentials":  "Creden?iale invalide.",
+                                "oauth_failed":  "Autentificarea sociala a e?uat."
+                            }
+             },
+    "finny":  {
+                  "ask":  "Ã’Å½ntreabï¿½\u001eï¿½\u0019-l pe Finny"
+              }
 }

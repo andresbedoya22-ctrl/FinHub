@@ -1,12 +1,12 @@
 ﻿import { Suspense } from "react";
-import { RegisterClient } from "./ui/RegisterClient";
+import { ResetPasswordClient } from "./ui/ResetPasswordClient";
 
 export const dynamic = "force-dynamic";
 
-export default function RegisterPage() {
+export default function ResetPasswordPage() {
   return (
     <Suspense fallback={<div className="p-6" />}>
-      <RegisterClient />
+      <ResetPasswordClient />
     </Suspense>
   );
 }

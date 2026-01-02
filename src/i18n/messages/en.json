@@ -1,39 +1,99 @@
 {
-  "app": {
-    "name": "FinHub"
-  },
-  "landing": {
-    "title": "Manage your finances in the Netherlands",
-    "cta": "Get started",
-    "lead": {
-      "consent": "I agree to be contacted about FinHub updates.",
-      "createAccount": "Create account",
-      "email": "Email",
-      "error": "Something went wrong. Please try again.",
-      "fullName": "Full name",
-      "interests": "I'm interested in",
-      "phone": "Phone (optional)",
-      "submit": "Send",
-      "subtitle": "Leave your details and what you are interested in — we will prioritize accordingly.",
-      "successBody": "We will reach out when we open the next beta slots.",
-      "successTitle": "Thanks — we got it.",
-      "title": "Get updates (beta)",
-      "interestLabels": {
-        "personal_finance": "Personal finance",
-        "taxes": "Taxes (IB)",
-        "voorlopige_aanslag": "Provisional assessment (voorlopige aanslag)",
-        "toeslagen": "Allowances (toeslagen)",
-        "mortgage": "Mortgage",
-        "personal_loan": "Personal loan",
-        "insurance": "Insurance"
-      }
-    }
-  },
-  "auth": {
-    "login": "Log in",
-    "register": "Create account"
-  },
-  "finny": {
-    "ask": "Ask Finny"
-  }
+    "app":  {
+                "name":  "FinHub"
+            },
+    "landing":  {
+                    "title":  "Manage your finances in the Netherlands",
+                    "cta":  "Get started",
+                    "lead":  {
+                                 "consent":  "I agree to be contacted about FinHub updates.",
+                                 "createAccount":  "Create account",
+                                 "email":  "Email",
+                                 "error":  "Something went wrong. Please try again.",
+                                 "fullName":  "Full name",
+                                 "interests":  "I\u0027m interested in",
+                                 "phone":  "Phone (optional)",
+                                 "submit":  "Send",
+                                 "subtitle":  "Leave your details and what you are interested in â€” we will prioritize accordingly.",
+                                 "successBody":  "We will reach out when we open the next beta slots.",
+                                 "successTitle":  "Thanks â€” we got it.",
+                                 "title":  "Get updates (beta)",
+                                 "interestLabels":  {
+                                                        "personal_finance":  "Personal finance",
+                                                        "taxes":  "Taxes (IB)",
+                                                        "voorlopige_aanslag":  "Provisional assessment (voorlopige aanslag)",
+                                                        "toeslagen":  "Allowances (toeslagen)",
+                                                        "mortgage":  "Mortgage",
+                                                        "personal_loan":  "Personal loan",
+                                                        "insurance":  "Insurance"
+                                                    }
+                             }
+                },
+    "auth":  {
+                 "oauth":  {
+                               "google":  "Continue with Google",
+                               "apple":  "Continue with Apple"
+                           },
+                 "forgot":  {
+                                "sent":  "If the email exists, you\u0027ll receive a password reset link.",
+                                "title":  "Reset password",
+                                "busy":  "Sending...",
+                                "submit":  "Send link",
+                                "backToLogin":  "Back to sign in"
+                            },
+                 "reset":  {
+                               "newPassword":  "New password",
+                               "title":  "Set a new password",
+                               "busy":  "Updating...",
+                               "submit":  "Update password",
+                               "ok":  "Password updated."
+                           },
+                 "common":  {
+                                "email":  "Email",
+                                "error":  "Error",
+                                "info":  "Info",
+                                "password":  "Password"
+                            },
+                 "legal":  {
+                               "and":  "and the",
+                               "continue":  "By continuing you accept the",
+                               "privacy":  "Privacy Policy",
+                               "continueRegister":  "By creating an account you accept the",
+                               "terms":  "Terms"
+                           },
+                 "login":  {
+                               "emailNotConfirmedHint":  "Your email is not confirmed yet. Check your inbox or resend verification.",
+                               "goRegister":  "Create one",
+                               "resendBusy":  "Resending...",
+                               "busy":  "Signing in...",
+                               "forgot":  "Forgot your password?",
+                               "noAccount":  "No account?",
+                               "submit":  "Sign in",
+                               "title":  "Sign in",
+                               "resend":  "Resend verification",
+                               "resendOk":  "Verification resent. Check your inbox."
+                           },
+                 "register":  {
+                                  "busy":  "Creating...",
+                                  "goLogin":  "Sign in",
+                                  "checkEmail":  "Account created. Check your inbox to confirm your email before signing in.",
+                                  "submit":  "Create account",
+                                  "haveAccount":  "Already have an account?",
+                                  "title":  "Create account"
+                              },
+                 "errors":  {
+                                "unknown":  "Something went wrong. Please try again.",
+                                "weak_password":  "Password does not meet requirements.",
+                                "missing_code":  "Invalid or expired link.",
+                                "rate_limited":  "Too many attempts. Please try later.",
+                                "invalid_request":  "Invalid input. Please try again.",
+                                "email_not_confirmed":  "Email not confirmed.",
+                                "user_exists":  "An account already exists for this email.",
+                                "invalid_credentials":  "Invalid credentials.",
+                                "oauth_failed":  "Social login failed. Please try again."
+                            }
+             },
+    "finny":  {
+                  "ask":  "Ask Finny"
+              }
 }

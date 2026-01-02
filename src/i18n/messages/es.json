@@ -1,39 +1,99 @@
 {
-  "app": {
-    "name": "FinHub"
-  },
-  "landing": {
-    "title": "Gestiona tus finanzas en PaÒ­ses Bajos",
-    "cta": "Empezar",
-    "lead": {
-      "consent": "Acepto que me contacten sobre novedades de FinHub.",
-      "createAccount": "Crear cuenta",
-      "email": "Correo electrónico",
-      "error": "Algo salió mal. Inténtalo de nuevo.",
-      "fullName": "Nombre completo",
-      "interests": "Me interesa",
-      "phone": "Teléfono (opcional)",
-      "submit": "Enviar",
-      "subtitle": "Déjanos tus datos y lo que te interesa — priorizaremos según tu necesidad.",
-      "successBody": "Te contactaremos cuando abramos nuevos cupos de beta.",
-      "successTitle": "Gracias — recibido.",
-      "title": "Recibir novedades (beta)",
-      "interestLabels": {
-        "personal_finance": "Personal finance",
-        "taxes": "Taxes (IB)",
-        "voorlopige_aanslag": "Provisional assessment (voorlopige aanslag)",
-        "toeslagen": "Allowances (toeslagen)",
-        "mortgage": "Hipoteca",
-        "personal_loan": "Personal loan",
-        "insurance": "Seguros"
-      }
-    }
-  },
-  "auth": {
-    "login": "Iniciar sesiÒ³n",
-    "register": "Crear cuenta"
-  },
-  "finny": {
-    "ask": "PregÒºntale a Finny"
-  }
+    "app":  {
+                "name":  "FinHub"
+            },
+    "landing":  {
+                    "title":  "Gestiona tus finanzas en PaÃ’Â­ses Bajos",
+                    "cta":  "Empezar",
+                    "lead":  {
+                                 "consent":  "Acepto que me contacten sobre novedades de FinHub.",
+                                 "createAccount":  "Crear cuenta",
+                                 "email":  "Correo electrÃ³nico",
+                                 "error":  "Algo saliÃ³ mal. IntÃ©ntalo de nuevo.",
+                                 "fullName":  "Nombre completo",
+                                 "interests":  "Me interesa",
+                                 "phone":  "TelÃ©fono (opcional)",
+                                 "submit":  "Enviar",
+                                 "subtitle":  "DÃ©janos tus datos y lo que te interesa â€” priorizaremos segÃºn tu necesidad.",
+                                 "successBody":  "Te contactaremos cuando abramos nuevos cupos de beta.",
+                                 "successTitle":  "Gracias â€” recibido.",
+                                 "title":  "Recibir novedades (beta)",
+                                 "interestLabels":  {
+                                                        "personal_finance":  "Personal finance",
+                                                        "taxes":  "Taxes (IB)",
+                                                        "voorlopige_aanslag":  "Provisional assessment (voorlopige aanslag)",
+                                                        "toeslagen":  "Allowances (toeslagen)",
+                                                        "mortgage":  "Hipoteca",
+                                                        "personal_loan":  "Personal loan",
+                                                        "insurance":  "Seguros"
+                                                    }
+                             }
+                },
+    "auth":  {
+                 "oauth":  {
+                               "google":  "Continuar con Google",
+                               "apple":  "Continuar con Apple"
+                           },
+                 "forgot":  {
+                                "sent":  "Si el email existe, recibirás un enlace para restablecer tu contraseña.",
+                                "title":  "Recuperar contraseña",
+                                "busy":  "Enviando...",
+                                "submit":  "Enviar enlace",
+                                "backToLogin":  "Volver a login"
+                            },
+                 "reset":  {
+                               "newPassword":  "Nueva contraseña",
+                               "title":  "Restablecer contraseña",
+                               "busy":  "Actualizando...",
+                               "submit":  "Actualizar contraseña",
+                               "ok":  "Contraseña actualizada."
+                           },
+                 "common":  {
+                                "email":  "Email",
+                                "error":  "Error",
+                                "info":  "Info",
+                                "password":  "Contraseña"
+                            },
+                 "legal":  {
+                               "and":  "y la",
+                               "continue":  "Al continuar aceptas los",
+                               "privacy":  "Política de Privacidad",
+                               "continueRegister":  "Al crear una cuenta aceptas los",
+                               "terms":  "Términos"
+                           },
+                 "login":  {
+                               "emailNotConfirmedHint":  "Tu email aún no está verificado. Revisa tu correo o reenvía la verificación.",
+                               "goRegister":  "Regístrate",
+                               "resendBusy":  "Reenviando...",
+                               "busy":  "Entrando...",
+                               "forgot":  "¿Olvidaste tu contraseña?",
+                               "noAccount":  "¿No tienes cuenta?",
+                               "submit":  "Entrar",
+                               "title":  "Iniciar sesión",
+                               "resend":  "Reenviar verificación",
+                               "resendOk":  "Verificación reenviada. Revisa tu correo."
+                           },
+                 "register":  {
+                                  "busy":  "Creando...",
+                                  "goLogin":  "Login",
+                                  "checkEmail":  "Cuenta creada. Revisa tu correo para verificar tu email antes de iniciar sesión.",
+                                  "submit":  "Crear cuenta",
+                                  "haveAccount":  "¿Ya tienes cuenta?",
+                                  "title":  "Crear cuenta"
+                              },
+                 "errors":  {
+                                "unknown":  "Ocurrió un error. Inténtalo de nuevo.",
+                                "weak_password":  "La contraseña no cumple los requisitos.",
+                                "missing_code":  "Enlace inválido o expirado.",
+                                "rate_limited":  "Demasiados intentos. Inténtalo más tarde.",
+                                "invalid_request":  "Datos inválidos. Revisa e inténtalo de nuevo.",
+                                "email_not_confirmed":  "Email no verificado.",
+                                "user_exists":  "Este email ya tiene una cuenta.",
+                                "invalid_credentials":  "Credenciales inválidas.",
+                                "oauth_failed":  "No se pudo completar el login social. Inténtalo de nuevo."
+                            }
+             },
+    "finny":  {
+                  "ask":  "PregÃ’Âºntale a Finny"
+              }
 }

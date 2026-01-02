@@ -1,39 +1,99 @@
 {
-  "app": {
-    "name": "FinHub"
-  },
-  "landing": {
-    "title": "Zarz�\u001e⬦dzaj finansami w Holandii",
-    "cta": "Zacznij",
-    "lead": {
-      "consent": "Wyrażam zgodę na kontakt w sprawie aktualizacji FinHub.",
-      "createAccount": "Utwórz konto",
-      "email": "E-mail",
-      "error": "Coś poszło nie tak. Spróbuj ponownie.",
-      "fullName": "Imię i nazwisko",
-      "interests": "Interesuje mnie",
-      "phone": "Telefon (opcjonalnie)",
-      "submit": "Wyślij",
-      "subtitle": "Zostaw swoje dane i wybierz, czym jesteś zainteresowany — nadamy priorytety.",
-      "successBody": "Skontaktujemy się, gdy otworzymy kolejne miejsca w becie.",
-      "successTitle": "Dziękujemy — otrzymaliśmy zgłoszenie.",
-      "title": "Otrzymuj aktualizacje (beta)",
-      "interestLabels": {
-        "personal_finance": "Personal finance",
-        "taxes": "Taxes (IB)",
-        "voorlopige_aanslag": "Provisional assessment (voorlopige aanslag)",
-        "toeslagen": "Allowances (toeslagen)",
-        "mortgage": "Hipoteka",
-        "personal_loan": "Personal loan",
-        "insurance": "Ubezpieczenia"
-      }
-    }
-  },
-  "auth": {
-    "login": "Zaloguj si�\u001e�\u001e�",
-    "register": "UtwÒ³rz konto"
-  },
-  "finny": {
-    "ask": "Zapytaj Finny"
-  }
+    "app":  {
+                "name":  "FinHub"
+            },
+    "landing":  {
+                    "title":  "Zarzï¿½\u001eâ¬¦dzaj finansami w Holandii",
+                    "cta":  "Zacznij",
+                    "lead":  {
+                                 "consent":  "WyraÅ¼am zgodÄ™ na kontakt w sprawie aktualizacji FinHub.",
+                                 "createAccount":  "UtwÃ³rz konto",
+                                 "email":  "E-mail",
+                                 "error":  "CoÅ› poszÅ‚o nie tak. SprÃ³buj ponownie.",
+                                 "fullName":  "ImiÄ™ i nazwisko",
+                                 "interests":  "Interesuje mnie",
+                                 "phone":  "Telefon (opcjonalnie)",
+                                 "submit":  "WyÅ›lij",
+                                 "subtitle":  "Zostaw swoje dane i wybierz, czym jesteÅ› zainteresowany â€” nadamy priorytety.",
+                                 "successBody":  "Skontaktujemy siÄ™, gdy otworzymy kolejne miejsca w becie.",
+                                 "successTitle":  "DziÄ™kujemy â€” otrzymaliÅ›my zgÅ‚oszenie.",
+                                 "title":  "Otrzymuj aktualizacje (beta)",
+                                 "interestLabels":  {
+                                                        "personal_finance":  "Personal finance",
+                                                        "taxes":  "Taxes (IB)",
+                                                        "voorlopige_aanslag":  "Provisional assessment (voorlopige aanslag)",
+                                                        "toeslagen":  "Allowances (toeslagen)",
+                                                        "mortgage":  "Hipoteka",
+                                                        "personal_loan":  "Personal loan",
+                                                        "insurance":  "Ubezpieczenia"
+                                                    }
+                             }
+                },
+    "auth":  {
+                 "oauth":  {
+                               "google":  "Kontynuuj z Google",
+                               "apple":  "Kontynuuj z Apple"
+                           },
+                 "forgot":  {
+                                "sent":  "Jesli email istnieje, otrzymasz link do resetu hasla.",
+                                "title":  "Reset hasla",
+                                "busy":  "Wysylanie...",
+                                "submit":  "Wyslij link",
+                                "backToLogin":  "Wróc do logowania"
+                            },
+                 "reset":  {
+                               "newPassword":  "Nowe haslo",
+                               "title":  "Ustaw nowe haslo",
+                               "busy":  "Aktualizacja...",
+                               "submit":  "Zaktualizuj haslo",
+                               "ok":  "Haslo zaktualizowane."
+                           },
+                 "common":  {
+                                "email":  "Email",
+                                "error":  "Blad",
+                                "info":  "Informacja",
+                                "password":  "Haslo"
+                            },
+                 "legal":  {
+                               "and":  "oraz",
+                               "continue":  "Kontynuujac akceptujesz",
+                               "privacy":  "Polityke prywatnosci",
+                               "continueRegister":  "Tworzac konto akceptujesz",
+                               "terms":  "Regulamin"
+                           },
+                 "login":  {
+                               "emailNotConfirmedHint":  "Email nie jest jeszcze potwierdzony. Sprawdz skrzynke lub wyslij ponownie weryfikacje.",
+                               "goRegister":  "Zarejestruj sie",
+                               "resendBusy":  "Wysylanie...",
+                               "busy":  "Logowanie...",
+                               "forgot":  "Nie pamietasz hasla?",
+                               "noAccount":  "Nie masz konta?",
+                               "submit":  "Zaloguj",
+                               "title":  "Zaloguj sie",
+                               "resend":  "Wyslij weryfikacje ponownie",
+                               "resendOk":  "Weryfikacja wyslana ponownie. Sprawdz skrzynke."
+                           },
+                 "register":  {
+                                  "busy":  "Tworzenie...",
+                                  "goLogin":  "Zaloguj sie",
+                                  "checkEmail":  "Konto utworzone. Potwierdz email przed logowaniem.",
+                                  "submit":  "Utwórz konto",
+                                  "haveAccount":  "Masz juz konto?",
+                                  "title":  "Utwórz konto"
+                              },
+                 "errors":  {
+                                "unknown":  "Wystapil blad. Spróbuj ponownie.",
+                                "weak_password":  "Haslo nie spelnia wymagan.",
+                                "missing_code":  "Nieprawidlowy lub wygasly link.",
+                                "rate_limited":  "Zbyt wiele prób. Spróbuj pózniej.",
+                                "invalid_request":  "Nieprawidlowe dane. Spróbuj ponownie.",
+                                "email_not_confirmed":  "Email niepotwierdzony.",
+                                "user_exists":  "Konto dla tego emaila juz istnieje.",
+                                "invalid_credentials":  "Nieprawidlowe dane logowania.",
+                                "oauth_failed":  "Logowanie spolecznosciowe nie powiodlo sie."
+                            }
+             },
+    "finny":  {
+                  "ask":  "Zapytaj Finny"
+              }
 }

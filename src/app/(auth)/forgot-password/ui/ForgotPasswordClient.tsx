@@ -1,17 +1,16 @@
 ﻿"use client";
 
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 
 import { Card } from "@/ui/components/Card";
 import { InfoBox } from "@/ui/components/InfoBox";
 import { Button } from "@/ui/components/Button";
 import { Input } from "@/ui/components/Input";
-import { createSupabaseBrowserClient } from "@/lib/supabaseBrowserClient";
 
-type ApiOk = { ok: true; userId?: string | null; code?: string };
+type ApiOk = { ok: true };
 type ApiErr = { ok: false; code?: string };
 type ApiResponse = ApiOk | ApiErr;
 
@@ -24,25 +23,22 @@ function safePath(raw: string | null, fallback = "/app") {
   return s;
 }
 
-export function RegisterClient() {
+export function ForgotPasswordClient() {
   const t = useTranslations("auth");
-  const router = useRouter();
   const sp = useSearchParams();
 
   const redirectToRaw = sp?.get("redirectTo") ?? sp?.get("next");
   const nextUrl = useMemo(() => safePath(redirectToRaw, "/app"), [redirectToRaw]);
 
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
   const [errorCode, setErrorCode] = useState<string | null>(null);
   const [info, setInfo] = useState<string | null>(null);
 
   function errorText(code: string | null): string | null {
     if (!code) return null;
-    const key = `errors.${code}`;
     try {
-      return t(key as never);
+      return t(`errors.${code}` as never);
     } catch {
       return t("errors.unknown");
     }
@@ -55,11 +51,11 @@ export function RegisterClient() {
     setBusy(true);
 
     try {
-      const res = await fetch("/api/auth/register", {
+      const res = await fetch("/api/auth/forgot-password", {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim(), password }),
+        body: JSON.stringify({ email: email.trim() }),
       });
 
       const json = (await res.json().catch(() => null)) as ApiResponse | null;
@@ -70,42 +66,19 @@ export function RegisterClient() {
         return;
       }
 
-      // Confirm email activo: no hay sesión todavía.
-      if (json.code === "email_verification_sent") {
-        setInfo(t("register.verifySent"));
-        return;
-      }
-
-      router.replace(nextUrl);
+      setInfo(t("forgot.sent"));
     } finally {
       setBusy(false);
     }
   }
 
-  async function onOAuth(provider: "google" | "apple") {
-    setInfo(null);
-    setErrorCode(null);
-
-    const supabase = createSupabaseBrowserClient();
-    const origin = window.location.origin;
-    const redirectTo = `${origin}/callback?redirectTo=${encodeURIComponent(nextUrl)}`;
-
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider,
-      options: { redirectTo },
-    });
-
-    if (error) setErrorCode("oauth_failed");
-  }
-
   const errMsg = errorText(errorCode);
-
   const loginHref = redirectToRaw ? `/login?redirectTo=${encodeURIComponent(nextUrl)}` : "/login";
 
   return (
     <div className="mx-auto max-w-md p-6">
       <Card className="space-y-4 p-6">
-        <div className="text-lg font-semibold">{t("register.title")}</div>
+        <div className="text-lg font-semibold">{t("forgot.title")}</div>
 
         {info ? (
           <InfoBox title={t("common.info")} variant="info">
@@ -119,17 +92,6 @@ export function RegisterClient() {
           </InfoBox>
         ) : null}
 
-        <div className="space-y-2">
-          <Button type="button" onClick={() => onOAuth("google")} disabled={busy}>
-            {t("oauth.google")}
-          </Button>
-          <Button type="button" onClick={() => onOAuth("apple")} disabled={busy}>
-            {t("oauth.apple")}
-          </Button>
-        </div>
-
-        <div className="h-px bg-white/10" />
-
         <form className="space-y-3" onSubmit={onSubmit}>
           <Input
             label={t("common.email")}
@@ -139,45 +101,15 @@ export function RegisterClient() {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-          <Input
-            label={t("common.password")}
-            type="password"
-            autoComplete="new-password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-
           <Button type="submit" disabled={busy}>
-            {busy ? t("register.busy") : t("register.submit")}
+            {busy ? t("forgot.busy") : t("forgot.submit")}
           </Button>
         </form>
 
-        {info ? (
-          <div className="text-sm opacity-80">
-            <Link className="underline" href={loginHref}>
-              {t("register.goLoginAfterVerify")}
-            </Link>
-          </div>
-        ) : null}
-
         <div className="text-sm opacity-80">
-          {t("register.haveAccount")}{" "}
           <Link className="underline" href={loginHref}>
-            {t("register.goLogin")}
+            {t("forgot.backToLogin")}
           </Link>
-        </div>
-
-        <div className="text-xs opacity-70">
-          {t("legal.continue")}{" "}
-          <Link className="underline" href="/terms">
-            {t("legal.terms")}
-          </Link>{" "}
-          {t("legal.and")}{" "}
-          <Link className="underline" href="/privacy">
-            {t("legal.privacy")}
-          </Link>
-          .
         </div>
       </Card>
     </div>
