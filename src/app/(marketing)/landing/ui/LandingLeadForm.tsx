@@ -75,11 +75,11 @@ export default function LandingLeadForm() {
     setError(null);
 
     const locale = getLocaleFromDom();
-    trackProductEvent("product.marketing.lead.submit.attempt", { route: "/landing", interested_count: selected.length, locale });
+    trackProductEvent("product.marketing.lead.submit.attempt", { route: "/landing", interested_count: selected.length });
 
     if (!canSubmit) {
-      trackProductEvent("product.marketing.lead.submit.fail", { locale, reason: "validation" });
-      trackProductEvent("product.marketing.lead.submit.fail", { route: "/landing", reason: "validation", locale });
+      trackProductEvent("product.marketing.lead.submit.fail", { route: "/landing" });
+      trackProductEvent("product.marketing.lead.submit.fail", { route: "/landing" });
       setError(t("lead.error"));
       return;
     }
@@ -102,19 +102,19 @@ export default function LandingLeadForm() {
       const api = readApiResponse(json);
 
       if (!res.ok || api?.ok !== true) {
-        trackProductEvent("product.marketing.lead.submit.fail", { locale, reason: "server" });
-        trackProductEvent("product.marketing.lead.submit.fail", { route: "/landing", reason: "server", status: res.status, locale });
+        trackProductEvent("product.marketing.lead.submit.fail", { route: "/landing" });
+        trackProductEvent("product.marketing.lead.submit.fail", { route: "/landing" });
         setError(api && api.ok === false && api.error ? api.error : "Request failed");
         setOk(false);
       } else {
-        trackProductEvent("product.marketing.lead.submit.success", { locale });
-        trackProductEvent("product.marketing.lead.submit.success", { route: "/landing", locale });
+        trackProductEvent("product.marketing.lead.submit.success", { route: "/landing" });
+        trackProductEvent("product.marketing.lead.submit.success", { route: "/landing" });
         setOk(true);
       }
     } catch (e: unknown) {
       const locale2 = getLocaleFromDom();
-      trackProductEvent("product.marketing.lead.submit.fail", { locale: locale2, reason: "server" });
-      trackProductEvent("product.marketing.lead.submit.fail", { route: "/landing", reason: "exception", locale: locale2 });
+      trackProductEvent("product.marketing.lead.submit.fail", { route: "/landing" });
+      trackProductEvent("product.marketing.lead.submit.fail", { route: "/landing" });
       setError(e instanceof Error ? e.message : "Unknown error");
       setOk(false);
     } finally {
