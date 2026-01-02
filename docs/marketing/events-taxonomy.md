@@ -1,16 +1,91 @@
-﻿# Events taxonomy (F02) — Privacy-first
+﻿# FinHub — Events Taxonomy (F02.2.1 P0)
 
-Principio: NO PII en telemetría (no email/name/phone, no utm_*).
+Reglas:
+- Non-PII. Prohibido: email, nombre, documento, teléfono, address.
+- Payload mínimo, estable y versionable.
+- locale siempre incluido.
 
-## Events
-- product.marketing.landing.view
-  attrs: route, locale
-- product.marketing.cta.click
-  attrs: route, locale, intent (create_account | lead_form)
-- product.marketing.lead.submit.success
-  attrs: route, locale, interested_count
-- product.marketing.lead.submit.fail
-  attrs: route, locale, reason (validation | server)
+## Eventos P0 (Landing)
 
-## Notes
-- UTM se guarda en DB (marketing_leads) pero NO se envía a telemetry.
+### landing_view
+Cuándo: al render inicial del landing.
+Payload:
+- locale: en|es|pl|ro
+- path: string (ej. "/landing")
+- referrerDomain: string | null (solo dominio si existe)
+
+### nav_click
+Cuándo: click en links del header (scroll/route).
+Payload:
+- locale
+- target: "modules"|"how"|"pricing"|"faq"|"lead"|"login"|"register"
+
+### cta_primary_click
+Cuándo: CTA principal (Hero/Header).
+Payload:
+- locale
+- placement: "hero"|"header"|"section"
+- target: "register"|"app"|"precheck"
+
+### cta_secondary_click
+Cuándo: CTA secundario.
+Payload:
+- locale
+- placement
+- target: "how"|"pricing"
+
+### pricing_view
+Cuándo: pricing entra en viewport (1a vez).
+Payload:
+- locale
+
+### pricing_select
+Cuándo: selección de plan (sin pago real).
+Payload:
+- locale
+- plan: "free"|"plus"|"pro"
+
+### faq_expand
+Cuándo: expand de item FAQ.
+Payload:
+- locale
+- itemKey: string (key estable)
+
+### finny_lite_open
+Cuándo: abrir widget Finny Lite.
+Payload:
+- locale
+- placement: "faq"|"floating"
+
+### finny_lite_question
+Cuándo: usuario envía pregunta al widget.
+Payload:
+- locale
+- topicKey: string (clasificación, no texto libre)
+
+### lead_submit_attempt
+Cuándo: submit del formulario.
+Payload:
+- locale
+- interestsCount: number
+
+### lead_submit_success
+Cuándo: API ok.
+Payload:
+- locale
+
+### lead_submit_fail
+Cuándo: API fail.
+Payload:
+- locale
+- reason: "validation"|"rate_limit"|"server"
+
+### locale_change
+Cuándo: cambio de idioma desde LanguageSwitcher.
+Payload:
+- from: en|es|pl|ro
+- to: en|es|pl|ro
+- placement: "landing_header"|"app_header"
+
+## Versionado
+- Añadir campo eventVersion si se rompe compatibilidad.
