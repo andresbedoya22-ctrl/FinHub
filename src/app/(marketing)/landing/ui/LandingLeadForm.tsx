@@ -41,27 +41,17 @@ function readApiResponse(x: unknown): ApiResponse | null {
   return { ok: false, error: err };
 }
 
-function getLangFromDom(): LeadInterestKey extends never ? never : string {
-  // NOTE: el tipo de retorno real es string porque el API espera string;
-  // internamente normalizamos a los locales soportados.
+function getLocaleFromDom(): "en" | "es" | "pl" | "ro" {
   if (typeof document === "undefined") return "en";
   const raw = (document.documentElement.lang || "en").toLowerCase().trim();
   const base = (raw.split("-")[0] || "en").trim();
+  return base === "es" || base === "pl" || base === "ro" ? base : "en";
+}
 
-  const SUPPORTED = ["en", "es", "pl", "ro"] as const;
-  type Supported = (typeof SUPPORTED)[number];
-
-  function isSupported(x: string): x is Supported {
-    return (SUPPORTED as readonly string[]).includes(x);
-  }
-
-  return isSupported(base) ? base : "en";
-}export default function LandingLeadForm() {
+export default function LandingLeadForm() {
   const t = useTranslations("landing");
 
-  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
   const [selected, setSelected] = useState<LeadInterestKey[]>([]);
   const [consent, setConsent] = useState(false);
 
@@ -70,29 +60,27 @@ function getLangFromDom(): LeadInterestKey extends never ? never : string {
   const [error, setError] = useState<string | null>(null);
 
   const canSubmit = useMemo(() => {
-    return (
-      !busy &&
-      fullName.trim().length >= 2 &&
-      email.trim().includes("@") &&
-      selected.length >= 1 &&
-      consent === true
-    );
-  }, [busy, fullName, email, selected.length, consent]);
+    return !busy && email.trim().includes("@") && selected.length >= 1 && consent === true;
+  }, [busy, email, selected.length, consent]);
 
   function toggle(k: LeadInterestKey) {
     setSelected((prev) => (prev.includes(k) ? prev.filter((x) => x !== k) : [...prev, k]));
   }
 
   function interestLabel(k: LeadInterestKey): string {
-    // Template literal type => sin any y sin hardcodes.
     return t(`lead.interestLabels.${k}`);
   }
 
   async function submit() {
     setError(null);
 
+    const locale = getLocaleFromDom();
+    trackProductEvent("lead_submit_attempt", { locale, interestsCount: selected.length });
+    trackProductEvent("product.marketing.lead.submit.attempt", { route: "/landing", interestsCount: selected.length, locale });
+
     if (!canSubmit) {
-      trackProductEvent("product.marketing.lead.submit.fail", { route: "/landing", reason: "validation" });
+      trackProductEvent("lead_submit_fail", { locale, reason: "validation" });
+      trackProductEvent("product.marketing.lead.submit.fail", { route: "/landing", reason: "validation", locale });
       setError(t("lead.error"));
       return;
     }
@@ -103,10 +91,8 @@ function getLangFromDom(): LeadInterestKey extends never ? never : string {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
-          fullName: fullName.trim(),
           email: email.trim(),
-          phone: phone.trim() || null,
-          locale: getLangFromDom(),
+          locale,
           interestedIn: selected,
           consentMarketing: consent,
           hp: "", // honeypot
@@ -117,15 +103,19 @@ function getLangFromDom(): LeadInterestKey extends never ? never : string {
       const api = readApiResponse(json);
 
       if (!res.ok || api?.ok !== true) {
-        trackProductEvent("product.marketing.lead.submit.fail", { route: "/landing", reason: "server", status: res.status });
+        trackProductEvent("lead_submit_fail", { locale, reason: "server" });
+        trackProductEvent("product.marketing.lead.submit.fail", { route: "/landing", reason: "server", status: res.status, locale });
         setError(api && api.ok === false && api.error ? api.error : "Request failed");
         setOk(false);
       } else {
-        trackProductEvent("product.marketing.lead.submit.success", { route: "/landing" });
+        trackProductEvent("lead_submit_success", { locale });
+        trackProductEvent("product.marketing.lead.submit.success", { route: "/landing", locale });
         setOk(true);
       }
     } catch (e: unknown) {
-      trackProductEvent("product.marketing.lead.submit.fail", { route: "/landing", reason: "exception" });
+      const locale2 = getLocaleFromDom();
+      trackProductEvent("lead_submit_fail", { locale: locale2, reason: "server" });
+      trackProductEvent("product.marketing.lead.submit.fail", { route: "/landing", reason: "exception", locale: locale2 });
       setError(e instanceof Error ? e.message : "Unknown error");
       setOk(false);
     } finally {
@@ -134,16 +124,14 @@ function getLangFromDom(): LeadInterestKey extends never ? never : string {
   }
 
   return (
-    <LandingCard className="border-white/10 bg-white/5 p-6 text-white shadow-[0_12px_40px_-18px_rgba(0,0,0,0.65)] backdrop-blur-sm">
+    <LandingCard className="border-fh-border bg-fh-surface/60 p-6 text-fh-text shadow-soft backdrop-blur-sm">
       <div className="space-y-2">
         <div className="text-xl font-semibold">{t("lead.title")}</div>
-        <div className="text-sm text-white/70">{t("lead.subtitle")}</div>
+        <div className="text-sm text-fh-muted">{t("lead.subtitle")}</div>
       </div>
 
       <div className="mt-5 grid gap-3 md:grid-cols-2">
-        <Input label={t("lead.fullName")} value={fullName} onChange={(e) => setFullName(e.target.value)} />
         <Input label={t("lead.email")} value={email} onChange={(e) => setEmail(e.target.value)} />
-        <Input label={t("lead.phone")} value={phone} onChange={(e) => setPhone(e.target.value)} />
       </div>
 
       <div className="mt-5">
@@ -159,13 +147,13 @@ function getLangFromDom(): LeadInterestKey extends never ? never : string {
                 aria-pressed={active}
                 className={[
                   "rounded-2xl border px-4 py-3 text-left transition",
-                  "border-white/10 bg-white/0 hover:bg-white/5",
-                  "focus:outline-none focus:ring-2 focus:ring-[#4CAF50]/35",
-                  active ? "border-[#4CAF50]/60 bg-[#4CAF50]/10" : "",
+                  "border-fh-border bg-fh-surface hover:bg-fh-surface-2",
+                  "focus:outline-none focus:ring-2 focus:ring-fh-focus/60",
+                  active ? "border-fh-primary/60 bg-fh-primary/10" : "",
                 ].join(" ")}
               >
-                <div className="text-sm font-semibold text-white">{interestLabel(k)}</div>
-                <div className="mt-1 text-xs text-white/60">{active ? "✓" : ""}</div>
+                <div className="text-sm font-semibold text-fh-text">{interestLabel(k)}</div>
+                <div className="mt-1 text-xs text-fh-muted">{active ? "✓" : ""}</div>
               </button>
             );
           })}
@@ -176,11 +164,11 @@ function getLangFromDom(): LeadInterestKey extends never ? never : string {
         <input
           id="consent"
           type="checkbox"
-          className="mt-1 h-4 w-4 accent-[#4CAF50]"
+          className="mt-1 h-4 w-4 accent-[var(--fh-primary)]"
           checked={consent}
           onChange={(e) => setConsent(e.target.checked)}
         />
-        <label htmlFor="consent" className="text-sm text-white/70">
+        <label htmlFor="consent" className="text-sm text-fh-muted">
           {t("lead.consent")}
         </label>
       </div>
@@ -188,11 +176,11 @@ function getLangFromDom(): LeadInterestKey extends never ? never : string {
       {error ? <div className="mt-4 text-sm text-red-300">{error}</div> : null}
 
       {ok ? (
-        <div className="mt-5 rounded-2xl border border-white/10 bg-white/5 p-4">
-          <div className="font-semibold text-white">{t("lead.successTitle")}</div>
-          <div className="mt-1 text-sm text-white/70">{t("lead.successBody")}</div>
+        <div className="mt-5 rounded-2xl border border-fh-border bg-fh-surface p-4">
+          <div className="font-semibold text-fh-text">{t("lead.successTitle")}</div>
+          <div className="mt-1 text-sm text-fh-muted">{t("lead.successBody")}</div>
           <div className="mt-3">
-            <Link className="text-sm underline text-white/90 hover:text-white" href="/register">
+            <Link className="text-sm underline text-fh-muted hover:text-fh-text" href="/register">
               {t("lead.createAccount")}
             </Link>
           </div>
@@ -204,8 +192,8 @@ function getLangFromDom(): LeadInterestKey extends never ? never : string {
           </Button>
           <Link
             href="/register"
-            className="rounded-xl border border-white/15 bg-white/0 px-4 py-2 text-sm text-white/90 hover:bg-white/5"
-            onClick={() => trackProductEvent("product.marketing.cta.click", { route: "/landing", intent: "create_account" })}
+            className="rounded-xl border border-fh-border bg-transparent px-4 py-2 text-sm text-fh-text hover:bg-fh-surface-2"
+            onClick={() => trackProductEvent("cta_primary_click", { locale: getLocaleFromDom(), placement: "lead", target: "register" })}
           >
             {t("lead.createAccount")}
           </Link>
@@ -214,6 +202,3 @@ function getLangFromDom(): LeadInterestKey extends never ? never : string {
     </LandingCard>
   );
 }
-
-
-
