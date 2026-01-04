@@ -1,20 +1,6 @@
 import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
 
-type CookieToSet = {
-  name: string;
-  value: string;
-  options?: {
-    path?: string;
-    domain?: string;
-    maxAge?: number;
-    expires?: Date;
-    httpOnly?: boolean;
-    secure?: boolean;
-    sameSite?: "lax" | "strict" | "none";
-  };
-};
-
 export function supabaseRouteClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -27,17 +13,15 @@ export function supabaseRouteClient() {
 
   return createServerClient(url, anonKey, {
     cookies: {
-      getAll() {
-        return cookieStore.getAll();
+      get(name) {
+        return cookieStore.get(name)?.value;
       },
-      setAll(cookiesToSet: CookieToSet[]) {
-        for (const c of cookiesToSet) {
-          cookieStore.set({
-            name: c.name,
-            value: c.value,
-            ...(c.options ?? {}),
-          });
-        }
+      set(name, value, options) {
+        cookieStore.set({ name, value, ...(options ?? {}) });
+      },
+      remove(name, options) {
+        // En Next, delete existe, pero para máxima compatibilidad usamos set con expiración.
+        cookieStore.set({ name, value: "", ...(options ?? {}), maxAge: 0 });
       },
     },
   });
