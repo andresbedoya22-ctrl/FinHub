@@ -1,14 +1,18 @@
 import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
 
-type CookieOptions = {
-  path?: string;
-  domain?: string;
-  maxAge?: number;
-  expires?: Date;
-  httpOnly?: boolean;
-  secure?: boolean;
-  sameSite?: "lax" | "strict" | "none";
+type CookieToSet = {
+  name: string;
+  value: string;
+  options?: {
+    path?: string;
+    domain?: string;
+    maxAge?: number;
+    expires?: Date;
+    httpOnly?: boolean;
+    secure?: boolean;
+    sameSite?: "lax" | "strict" | "none";
+  };
 };
 
 export function supabaseRouteClient() {
@@ -23,14 +27,17 @@ export function supabaseRouteClient() {
 
   return createServerClient(url, anonKey, {
     cookies: {
-      get(name: string) {
-        return cookieStore.get(name)?.value;
+      getAll() {
+        return cookieStore.getAll();
       },
-      set(name: string, value: string, options?: CookieOptions) {
-        cookieStore.set({ name, value, ...options });
-      },
-      remove(name: string, options?: CookieOptions) {
-        cookieStore.set({ name, value: "", ...options, maxAge: 0 });
+      setAll(cookiesToSet: CookieToSet[]) {
+        for (const c of cookiesToSet) {
+          cookieStore.set({
+            name: c.name,
+            value: c.value,
+            ...(c.options ?? {}),
+          });
+        }
       },
     },
   });

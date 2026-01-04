@@ -24,13 +24,35 @@ type BootstrapDTO = {
   rules: RulesDTO;
 };
 
+/**
+ * Minimal row shapes (evitar "any" y no depender de tipos generados).
+ * Ajusta nombres SOLO si tu DB usa columnas distintas.
+ */
+type FinanceUserPlanRow = {
+  projected_income_monthly_cents: number | null;
+};
+
+type FinanceFixedBudgetRow = {
+  id: string;
+  label: string;
+  monthly_cents: number | null;
+  is_active: boolean | null;
+  sort_order: number | null;
+};
+
+type FinanceRulesRow = {
+  safe_to_spend_mode: string | null;
+};
+
 const DEFAULT_BUDGETS: FixedBudgetDTO[] = [
   { id: "fb_rent", label: "Alquiler", monthlyCents: 110000, isActive: true },
   { id: "fb_insurance", label: "Seguros", monthlyCents: 20000, isActive: true },
   { id: "fb_utilities", label: "Servicios", monthlyCents: 18000, isActive: true },
 ];
 
-function normalizePlan(input: unknown): { ok: true; plan: PlanDTO; rules: RulesDTO } | { ok: false; error: string } {
+function normalizePlan(
+  input: unknown
+): { ok: true; plan: PlanDTO; rules: RulesDTO } | { ok: false; error: string } {
   if (!input || typeof input !== "object") return { ok: false, error: "Body inválido" };
 
   const body = input as Record<string, unknown>;
@@ -41,15 +63,17 @@ function normalizePlan(input: unknown): { ok: true; plan: PlanDTO; rules: RulesD
   if (!Number.isFinite(projected) || projected < 0) return { ok: false, error: "projectedIncomeMonthlyCents inválido" };
 
   const fixedBudgets = Array.isArray(plan?.fixedBudgets) ? (plan!.fixedBudgets as unknown[]) : [];
-  const mapped: FixedBudgetDTO[] = fixedBudgets.map((x) => {
-    const o = (x ?? {}) as Record<string, unknown>;
-    return {
-      id: String(o.id ?? crypto.randomUUID()),
-      label: String(o.label ?? "Sin nombre"),
-      monthlyCents: Number(o.monthlyCents ?? 0),
-      isActive: Boolean(o.isActive ?? true),
-    };
-  }).filter((b) => Number.isFinite(b.monthlyCents) && b.monthlyCents >= 0);
+  const mapped: FixedBudgetDTO[] = fixedBudgets
+    .map((x) => {
+      const o = (x ?? {}) as Record<string, unknown>;
+      return {
+        id: String(o.id ?? crypto.randomUUID()),
+        label: String(o.label ?? "Sin nombre"),
+        monthlyCents: Number(o.monthlyCents ?? 0),
+        isActive: Boolean(o.isActive ?? true),
+      };
+    })
+    .filter((b) => Number.isFinite(b.monthlyCents) && b.monthlyCents >= 0);
 
   const safeToSpendMode = (rules?.safeToSpendMode ?? "income-expense-fixedRemaining") as RulesDTO["safeToSpendMode"];
   if (safeToSpendMode !== "income-expense-fixedRemaining") return { ok: false, error: "rules.safeToSpendMode inválido" };
@@ -74,21 +98,21 @@ export async function GET() {
   // 1) Plan
   const { data: planRow, error: planErr } = await supabase
     .from("finance_user_plans")
-    .select("*")
+    .select("projected_income_monthly_cents")
     .eq("user_id", userId)
     .maybeSingle();
 
   // 2) Budgets
   const { data: budgetRows, error: budgetErr } = await supabase
     .from("finance_fixed_budgets")
-    .select("*")
+    .select("id,label,monthly_cents,is_active,sort_order")
     .eq("user_id", userId)
     .order("sort_order", { ascending: true });
 
   // 3) Rules
   const { data: rulesRow, error: rulesErr } = await supabase
     .from("finance_rules_v1")
-    .select("*")
+    .select("safe_to_spend_mode")
     .eq("user_id", userId)
     .maybeSingle();
 
@@ -129,29 +153,37 @@ export async function GET() {
     });
   }
 
-  // Re-read after seed (simple and safe)
+  // Re-read after seed
   const { data: plan2 } = await supabase
     .from("finance_user_plans")
-    .select("*")
+    .select("projected_income_monthly_cents")
     .eq("user_id", userId)
     .maybeSingle();
 
   const { data: budgets2 } = await supabase
     .from("finance_fixed_budgets")
-    .select("*")
+    .select("id,label,monthly_cents,is_active,sort_order")
     .eq("user_id", userId)
     .order("sort_order", { ascending: true });
 
   const { data: rules2 } = await supabase
     .from("finance_rules_v1")
-    .select("*")
+    .select("safe_to_spend_mode")
     .eq("user_id", userId)
     .maybeSingle();
 
+  const planTyped = (plan2 ?? null) as unknown as FinanceUserPlanRow | null;
+  const budgetsTyped = (budgets2 ?? []) as unknown as FinanceFixedBudgetRow[];
+  const rulesTyped = (rules2 ?? null) as unknown as FinanceRulesRow | null;
+
+  const safeMode = (rulesTyped?.safe_to_spend_mode ?? "income-expense-fixedRemaining") as RulesDTO["safeToSpendMode"];
+  const normalizedSafeMode: RulesDTO["safeToSpendMode"] =
+    safeMode === "income-expense-fixedRemaining" ? "income-expense-fixedRemaining" : "income-expense-fixedRemaining";
+
   const dto: BootstrapDTO = {
     plan: {
-      projectedIncomeMonthlyCents: Number(plan2?.projected_income_monthly_cents ?? 0),
-      fixedBudgets: (budgets2 ?? []).map((r: any) => ({
+      projectedIncomeMonthlyCents: Number(planTyped?.projected_income_monthly_cents ?? 0),
+      fixedBudgets: budgetsTyped.map((r) => ({
         id: String(r.id),
         label: String(r.label),
         monthlyCents: Number(r.monthly_cents ?? 0),
@@ -160,7 +192,7 @@ export async function GET() {
     },
     rules: {
       version: 1,
-      safeToSpendMode: (rules2?.safe_to_spend_mode ?? "income-expense-fixedRemaining") as RulesDTO["safeToSpendMode"],
+      safeToSpendMode: normalizedSafeMode,
     },
   };
 
