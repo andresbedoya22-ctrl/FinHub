@@ -4,13 +4,12 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
-import { Badge } from "@/components/ui/Badge";
-import { Card } from "@/components/ui/Card";
-import { Header } from "@/components/ui/Header";
-import { InfoBox } from "@/components/ui/InfoBox";
-import { Screen } from "@/components/ui/Screen";
-import { useCases } from "@/features/cases/useCasesStore";
-import type { CaseType } from "@/features/cases/useCasesTypes";
+import { Badge } from "@/ui/components/Badge";
+import { Card } from "@/ui/components/Card";
+import { Header } from "@/ui/components/Header";
+import { InfoBox } from "@/ui/components/InfoBox";
+import { Screen } from "@/ui/components/Screen";
+import { useCases } from "@/features/cases/casesStore";
 import type { FinanceTransaction, FinanceUserPlan } from "@/features/finances/financesTypes";
 import { useFinancesBootstrap } from "@/features/finances/financesBootstrapStore";
 import { useFinancesLedger } from "@/features/finances/financesLedgerStore";
@@ -21,13 +20,6 @@ import { CommandPalette } from "@/features/finances/ui/CommandPalette";
 import { SafeToSpendCard } from "@/features/finances/ui/SafeToSpendCard";
 import { TransactionsInboxTable } from "@/features/finances/ui/TransactionsInboxTable";
 import { buildMockFinancesBundle } from "@/features/finances/ui/mockData";
-
-const MODULES: Array<{ type: CaseType; title: string; subtitle: string; pill: string }> = [
-  { type: "toeslagen", title: "Toeslagen", subtitle: "Eligibility → checkout → docs → revisión.", pill: "Toeslagen" },
-  { type: "tax_ib", title: "IB Aangifte", subtitle: "Intake fiscal para declaración anual (Box 1/2/3).", pill: "Impuestos" },
-  { type: "tax_voorlopige_aanslag", title: "Voorlopige aanslag", subtitle: "Ajuste de pagos anticipados con intake guiado.", pill: "Impuestos" },
-  { type: "document_review", title: "Revisión de documentos", subtitle: "Sube documentos y pasa por verificación / OCR review.", pill: "Documentos" },
-];
 
 const DEFAULT_PLAN: FinanceUserPlan = {
   projectedIncomeMonthlyCents: 0,
@@ -49,6 +41,15 @@ export default function FinancesDashboardClient() {
   const router = useRouter();
   const createCase = useCases((s) => s.createCase);
 
+  type CreateCaseInput = Parameters<typeof createCase>[0];
+
+  const MODULES: Array<{ type: CreateCaseInput; title: string; subtitle: string; pill: string }> = [
+    { type: "toeslagen", title: "Toeslagen", subtitle: "Eligibility â†’ checkout â†’ docs â†’ revisiÃ³n.", pill: "Toeslagen" },
+    { type: "tax_ib", title: "IB Aangifte", subtitle: "Intake fiscal para declaraciÃ³n anual (Box 1/2/3).", pill: "Impuestos" },
+    { type: "tax_voorlopige_aanslag", title: "Voorlopige aanslag", subtitle: "Ajuste de pagos anticipados con intake guiado.", pill: "Impuestos" },
+    { type: "document_review", title: "RevisiÃ³n de documentos", subtitle: "Sube documentos y pasa por verificaciÃ³n / OCR review.", pill: "Documentos" },
+  ];
+
   const loadBootstrap = useFinancesBootstrap((s) => s.load);
   const bootstrapLoading = useFinancesBootstrap((s) => s.loading);
   const bootstrapErr = useFinancesBootstrap((s) => s.error);
@@ -68,7 +69,7 @@ export default function FinancesDashboardClient() {
     void loadLedger(currentMonth());
   }, [loadBootstrap, loadLedger]);
 
-  const [busyType, setBusyType] = useState<CaseType | null>(null);
+  const [busyType, setBusyType] = useState<CreateCaseInput | null>(null);
   const [err, setErr] = useState<string | null>(null);
 
   const mock = useMemo(() => buildMockFinancesBundle(), []);
@@ -107,7 +108,7 @@ export default function FinancesDashboardClient() {
       .slice(0, 40);
   }, [transactions, openCategoryId]);
 
-  async function launch(type: CaseType) {
+  async function launch(type: CreateCaseInput) {
     if (busyType) return;
     setErr(null);
     setBusyType(type);
@@ -191,7 +192,7 @@ export default function FinancesDashboardClient() {
       ) : (
         <Card className="p-4">
           <div className="text-sm font-semibold">Inbox de transacciones</div>
-          <div className="mt-1 text-sm text-fh-muted">Aún no hay transacciones en {month}.</div>
+          <div className="mt-1 text-sm text-fh-muted">AÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âºn no hay transacciones en {month}.</div>
         </Card>
       )}
 
@@ -207,14 +208,14 @@ export default function FinancesDashboardClient() {
           <div className="absolute left-1/2 top-24 w-[92vw] max-w-[720px] -translate-x-1/2 rounded-2xl border border-fh-border bg-fh-surface p-4 shadow-xl">
             <div className="flex items-start justify-between gap-3">
               <div>
-                <div className="text-sm font-semibold">Dividir transacción</div>
-                <div className="text-xs text-fh-muted">{splitTx.merchantName} · {splitTx.occurredOn}</div>
+                <div className="text-sm font-semibold">Dividir transacciÃ³n</div>
+                <div className="text-xs text-fh-muted">{splitTx.merchantName} ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· {splitTx.occurredOn}</div>
               </div>
               <button className="rounded-xl border border-fh-border bg-fh-surface px-3 py-1 text-xs hover:bg-fh-surface-2" onClick={() => setSplitTx(null)}>
                 Cerrar
               </button>
             </div>
-            <div className="mt-4 text-sm text-fh-muted">Persistencia de splits lista vía API (PUT). Editor completo entra en F11.5.</div>
+            <div className="mt-4 text-sm text-fh-muted">Persistencia de splits lista vÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­a API (PUT). Editor completo entra en F11.5.</div>
           </div>
         </div>
       ) : null}

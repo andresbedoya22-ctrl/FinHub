@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { createRouteClient } from "@/lib/supabase/routeClient";
+import { supabaseRouteClient } from "@/lib/supabase/routeClient";
 
 type PatchBody = {
   categoryId?: string | null;
@@ -14,7 +14,7 @@ function isPatchBody(x: unknown): x is PatchBody {
 }
 
 export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }> }) {
-  const supabase = await createRouteClient();
+  const supabase = await supabaseRouteClient();
   const { data: auth, error: authErr } = await supabase.auth.getUser();
   if (authErr || !auth?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
@@ -60,7 +60,7 @@ export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }>
 }
 
 export async function DELETE(_req: Request, ctx: { params: Promise<{ id: string }> }) {
-  const supabase = await createRouteClient();
+  const supabase = await supabaseRouteClient();
   const { data: auth, error: authErr } = await supabase.auth.getUser();
   if (authErr || !auth?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 

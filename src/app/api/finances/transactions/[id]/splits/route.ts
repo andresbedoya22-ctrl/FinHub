@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { createRouteClient } from "@/lib/supabase/routeClient";
+import { supabaseRouteClient } from "@/lib/supabase/routeClient";
 
 type SplitIn = {
   categoryId: string | null;
@@ -19,7 +19,7 @@ function isArrayOfSplits(x: unknown): x is SplitIn[] {
 }
 
 export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> }) {
-  const supabase = await createRouteClient();
+  const supabase = await supabaseRouteClient();
   const { data: auth, error: authErr } = await supabase.auth.getUser();
   if (authErr || !auth?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
@@ -45,7 +45,7 @@ export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> 
 }
 
 export async function PUT(req: Request, ctx: { params: Promise<{ id: string }> }) {
-  const supabase = await createRouteClient();
+  const supabase = await supabaseRouteClient();
   const { data: auth, error: authErr } = await supabase.auth.getUser();
   if (authErr || !auth?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { createRouteClient } from "@/lib/supabase/routeClient";
+import { supabaseRouteClient } from "@/lib/supabase/routeClient";
 
 type LedgerCategory = {
   id: string;
@@ -56,7 +56,7 @@ function monthRange(month: string): { from: string; to: string } {
 }
 
 export async function GET(req: Request) {
-  const supabase = await createRouteClient();
+  const supabase = await supabaseRouteClient();
   const { data: auth, error: authErr } = await supabase.auth.getUser();
   if (authErr || !auth?.user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
