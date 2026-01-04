@@ -81,7 +81,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
   const isAdmin = (profile as Profile | null)?.role === "admin";
 
   const navItems = [
-    { href: "/app", label: "Inicio" },
+    { href: "/app/finances", label: "Finanzas" },
     { href: "/app/cases", label: "Casos" },
     { href: "/app/documents", label: "Documentos" },
     { href: "/app/profile", label: "Perfil" },
@@ -93,7 +93,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
     <div className="min-h-screen bg-fh-bg">
       <header className="sticky top-0 z-10 border-b border-fh-border bg-fh-bg/90 backdrop-blur">
         <div className="fh-container flex items-center justify-between gap-4">
-          <Link href="/app" className="text-sm font-semibold tracking-tight">
+          <Link href="/app/finances" className="text-sm font-semibold tracking-tight">
             FinHub
           </Link>
 
@@ -137,4 +137,6 @@ export default async function DashboardLayout({ children }: { children: ReactNod
     </div>
   );
 }
+
+
 
