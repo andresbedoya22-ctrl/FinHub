@@ -1,4 +1,4 @@
-﻿-- FinHub — F11.1 Finance core schema (EUR-only) + RLS
+-- FinHub — F11.1 Finance core schema (EUR-only) + RLS
 -- Conventions:
 -- - amount_cents signed: expenses negative, income positive
 -- - currency is EUR only
