@@ -49,8 +49,10 @@ export function buildMockFinancesBundle(now = new Date()): MockBundle {
   const catKeys = categories.map((c) => c.key);
 
   function pick<T>(arr: T[]): T {
-    return arr[Math.floor(rng() * arr.length)];
-  }
+  if (arr.length === 0) throw new Error("pick() requires non-empty array");
+  const idx = Math.floor(rng() * arr.length);
+  return arr[idx]!;
+}
 
   const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
   const txs: FinanceTransaction[] = [];
@@ -74,7 +76,7 @@ export function buildMockFinancesBundle(now = new Date()): MockBundle {
     { name: "Alquiler", amount: -Math.round((850 + rng() * 450) * 100), cat: "housing" },
     { name: "Seguro", amount: -Math.round((120 + rng() * 80) * 100), cat: "insurance" },
     { name: "Internet", amount: -Math.round((40 + rng() * 30) * 100), cat: "utilities" },
-    { name: "Móvil", amount: -Math.round((20 + rng() * 40) * 100), cat: "utilities" },
+    { name: "MÃ³vil", amount: -Math.round((20 + rng() * 40) * 100), cat: "utilities" },
   ];
 
   for (const f of fixed) {

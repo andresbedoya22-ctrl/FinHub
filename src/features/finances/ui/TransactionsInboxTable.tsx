@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import type { FinanceCategory, FinanceTransaction } from "../financesTypes";
 import { formatEurFromCents } from "../financesFormat";
@@ -13,9 +13,11 @@ type Props = {
 };
 
 export function TransactionsInboxTable(props: Props) {
+  const { categories, transactions, onChange, onSplit } = props;
+
   const rows = useMemo(
-    () => props.transactions.slice().sort((a, b) => b.occurredOn.localeCompare(a.occurredOn)),
-    [props.transactions]
+    () => transactions.slice().sort((a, b) => b.occurredOn.localeCompare(a.occurredOn)),
+    [transactions]
   );
 
   const [focusedId, setFocusedId] = useState<string | null>(rows[0]?.id ?? null);
@@ -24,36 +26,45 @@ export function TransactionsInboxTable(props: Props) {
 
   const lastClickedIndexRef = useRef<number | null>(null);
 
-  // Fallback sin setState en effect (prohibido por lint): usamos un "effectiveFocusedId"
+  // Sin setState en effects: fallback compute-only
   const effectiveFocusedId = useMemo(() => {
     if (focusedId && rows.some((r) => r.id === focusedId)) return focusedId;
     return rows[0]?.id ?? null;
   }, [focusedId, rows]);
 
-  function toggleSelect(id: string, idx: number, shiftKey: boolean) {
-    if (shiftKey && lastClickedIndexRef.current !== null) {
-      const a = Math.min(lastClickedIndexRef.current, idx);
-      const b = Math.max(lastClickedIndexRef.current, idx);
-      const rangeIds = rows.slice(a, b + 1).map((r) => r.id);
-      const merged = Array.from(new Set([...selectedIds, ...rangeIds]));
-      setSelectedIds(merged);
-    } else {
-      setSelectedIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
-      lastClickedIndexRef.current = idx;
-    }
-    setFocusedId(id);
-  }
+  const patchTx = useCallback(
+    (id: string, patch: Partial<FinanceTransaction>) => {
+      onChange(transactions.map((t) => (t.id === id ? { ...t, ...patch } : t)));
+    },
+    [transactions, onChange]
+  );
 
-  function patchTx(id: string, patch: Partial<FinanceTransaction>) {
-    props.onChange(props.transactions.map((t) => (t.id === id ? { ...t, ...patch } : t)));
-  }
+  const bulkPatch = useCallback(
+    (patch: Partial<FinanceTransaction>) => {
+      if (!selectedIds.length) return;
+      onChange(transactions.map((t) => (selectedIds.includes(t.id) ? { ...t, ...patch } : t)));
+    },
+    [transactions, onChange, selectedIds]
+  );
 
-  function bulkPatch(patch: Partial<FinanceTransaction>) {
-    if (!selectedIds.length) return;
-    props.onChange(props.transactions.map((t) => (selectedIds.includes(t.id) ? { ...t, ...patch } : t)));
-  }
+  const toggleSelect = useCallback(
+    (id: string, idx: number, shiftKey: boolean) => {
+      if (shiftKey && lastClickedIndexRef.current !== null) {
+        const a = Math.min(lastClickedIndexRef.current, idx);
+        const b = Math.max(lastClickedIndexRef.current, idx);
+        const rangeIds = rows.slice(a, b + 1).map((r) => r.id);
+        const merged = Array.from(new Set([...selectedIds, ...rangeIds]));
+        setSelectedIds(merged);
+      } else {
+        setSelectedIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
+        lastClickedIndexRef.current = idx;
+      }
+      setFocusedId(id);
+    },
+    [rows, selectedIds]
+  );
 
-  function approveFocused() {
+  const approveFocused = useCallback(() => {
     if (!effectiveFocusedId) return;
 
     patchTx(effectiveFocusedId, { status: "approved", reviewedAt: new Date().toISOString() });
@@ -61,7 +72,7 @@ export function TransactionsInboxTable(props: Props) {
     const idx = rows.findIndex((r) => r.id === effectiveFocusedId);
     const next = rows[idx + 1]?.id ?? rows[idx]?.id ?? null;
     setFocusedId(next);
-  }
+  }, [effectiveFocusedId, patchTx, rows]);
 
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
@@ -85,15 +96,13 @@ export function TransactionsInboxTable(props: Props) {
 
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [rows, effectiveFocusedId, props.transactions]);
+  }, [rows, effectiveFocusedId, approveFocused]);
 
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between gap-3">
         <div className="text-sm font-semibold">Inbox de transacciones</div>
-        <div className="text-xs text-fh-muted">
-          Pendientes resaltadas — usa A para aprobar, flechas para navegar
-        </div>
+        <div className="text-xs text-fh-muted">Pendientes resaltadas — usa A para aprobar, flechas para navegar</div>
       </div>
 
       <div className="relative rounded-2xl border border-fh-border bg-fh-surface">
@@ -150,7 +159,7 @@ export function TransactionsInboxTable(props: Props) {
                         onClick={(e) => e.stopPropagation()}
                       >
                         <option value="">Sin categoría</option>
-                        {props.categories.map((c) => (
+                        {categories.map((c) => (
                           <option key={c.id} value={c.id}>
                             {c.label}
                           </option>
@@ -191,7 +200,7 @@ export function TransactionsInboxTable(props: Props) {
                 onChange={(e) => setBulkCategoryId(e.target.value)}
               >
                 <option value="">Editar categoría…</option>
-                {props.categories.map((c) => (
+                {categories.map((c) => (
                   <option key={c.id} value={c.id}>
                     {c.label}
                   </option>
@@ -221,17 +230,14 @@ export function TransactionsInboxTable(props: Props) {
                 className="rounded-xl border border-fh-border bg-fh-surface px-3 py-1 text-xs hover:bg-fh-surface-2 disabled:opacity-60"
                 disabled={selectedIds.length !== 1}
                 onClick={() => {
-                  const tx = props.transactions.find((x) => x.id === selectedIds[0]);
-                  if (tx) props.onSplit(tx);
+                  const tx = transactions.find((x) => x.id === selectedIds[0]);
+                  if (tx) onSplit(tx);
                 }}
               >
                 Dividir
               </button>
 
-              <button
-                className="rounded-xl border border-fh-border bg-fh-surface px-3 py-1 text-xs hover:bg-fh-surface-2"
-                onClick={() => setSelectedIds([])}
-              >
+              <button className="rounded-xl border border-fh-border bg-fh-surface px-3 py-1 text-xs hover:bg-fh-surface-2" onClick={() => setSelectedIds([])}>
                 Limpiar
               </button>
             </div>
