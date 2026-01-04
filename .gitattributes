@@ -28,3 +28,5 @@
 *.pdf  binary
 *.docx binary
 *.zip  binary
+* text=auto eol=lf
+

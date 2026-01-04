@@ -1,8 +1,8 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
 
-type Action = {
+export type CommandAction = {
   id: string;
   label: string;
   hint?: string;
@@ -13,14 +13,12 @@ type Action = {
 type Props = {
   open: boolean;
   onOpenChange: (v: boolean) => void;
-  actions: Action[];
+  actions: CommandAction[];
 };
 
 export function CommandPalette(props: Props) {
   const { open, onOpenChange, actions } = props;
 
-  // Como el componente retorna null cuando open=false, al abrir se monta "fresh":
-  // q="" y active=0 sin necesidad de setState() en effects.
   const [q, setQ] = useState("");
   const [active, setActive] = useState(0);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -34,7 +32,6 @@ export function CommandPalette(props: Props) {
     });
   }, [q, actions]);
 
-  // Solo side-effect permitido: focus (sistema externo/DOM).
   useEffect(() => {
     if (!open) return;
     const t = setTimeout(() => inputRef.current?.focus(), 0);
@@ -130,3 +127,4 @@ export function CommandPalette(props: Props) {
     </div>
   );
 }
+

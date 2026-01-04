@@ -1,24 +1,13 @@
-﻿import Link from "next/link";
-import type { ReactNode } from "react";
+﻿import type { ReactNode } from "react";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { createServerClient } from "@supabase/ssr";
 
 import { AppProviders } from "./providers";
+import { AppShell } from "@/ui/components/AppShell";
 import FinnyWidget from "@/features/assistant/finny/ui/FinnyWidget";
 
 type Profile = { role: "user" | "admin" };
-
-function NavLink({ href, label }: { href: string; label: string }) {
-  return (
-    <Link
-      href={href}
-      className="rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm hover:bg-fh-surface-2"
-    >
-      {label}
-    </Link>
-  );
-}
 
 async function createSupabaseServerClientReadOnly() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -90,53 +79,25 @@ export default async function DashboardLayout({ children }: { children: ReactNod
   ];
 
   return (
-    <div className="min-h-screen bg-fh-bg">
-      <header className="sticky top-0 z-10 border-b border-fh-border bg-fh-bg/90 backdrop-blur">
-        <div className="fh-container flex items-center justify-between gap-4">
-          <Link href="/app/finances" className="text-sm font-semibold tracking-tight">
-            FinHub
-          </Link>
-
-          <nav className="hidden md:flex items-center gap-2">
-            {navItems.map((it) => (
-              <NavLink key={it.href} href={it.href} label={it.label} />
-            ))}
-          </nav>
-
-          <div className="flex items-center gap-2">
-            <div className="md:hidden flex items-center gap-2">
-              <NavLink href="/app/profile" label="Perfil" />
-            </div>
-
-            <form action={logoutAction}>
-              <button
-                type="submit"
-                className="rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm hover:bg-fh-surface-2"
-              >
-                Logout
-              </button>
-            </form>
-          </div>
-        </div>
-
-        <div className="md:hidden border-t border-fh-border">
-          <div className="fh-container flex items-center gap-2 overflow-x-auto py-3">
-            {navItems.map((it) => (
-              <NavLink key={it.href} href={it.href} label={it.label} />
-            ))}
-          </div>
-        </div>
-      </header>
-
-      <div className="fh-container py-6">
-        <AppProviders>
-          {children}
-          <FinnyWidget />
-        </AppProviders>
-      </div>
-    </div>
+    <AppShell
+      navItems={navItems}
+      isAdmin={isAdmin}
+      logoutSlot={
+        <form action={logoutAction}>
+          <button
+            type="submit"
+            className="rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm hover:bg-fh-surface-2"
+          >
+            Logout
+          </button>
+        </form>
+      }
+    >
+      <AppProviders>
+        {children}
+        <FinnyWidget />
+      </AppProviders>
+    </AppShell>
   );
 }
-
-
 
