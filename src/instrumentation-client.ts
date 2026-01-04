@@ -4,8 +4,12 @@
 
 import * as Sentry from "@sentry/nextjs";
 
-Sentry.init({
-  dsn: "https://be1b06f87b357b98977a4622906db560@o4510625435156480.ingest.de.sentry.io/4510625435615312",
+const sentryEnabled =
+  process.env.NEXT_PUBLIC_SENTRY_ENABLED === "true" &&
+  !!process.env.NEXT_PUBLIC_SENTRY_DSN;
+if (sentryEnabled) {
+  Sentry.init({
+  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
 
   // Add optional integrations for additional features
   integrations: [Sentry.replayIntegration()],
@@ -27,6 +31,15 @@ Sentry.init({
   // https://docs.sentry.io/platforms/javascript/guides/nextjs/configuration/options/#sendDefaultPii
   sendDefaultPii: true,
 });
+}
+const noop = (...args: unknown[]) => {
+  void args;
+};
 
-export const onRouterTransitionStart = Sentry.captureRouterTransitionStart;
+export const onRouterTransitionStart = sentryEnabled
+  ? Sentry.captureRouterTransitionStart
+  : noop;
+
+
+
 
