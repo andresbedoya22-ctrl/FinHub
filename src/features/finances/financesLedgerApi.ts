@@ -48,3 +48,31 @@ async function safeText(res: Response): Promise<string> {
     return `${res.status} ${res.statusText}`;
   }
 }
+
+export type CreateTransactionInput = {
+  occurredOn: string; // YYYY-MM-DD
+  merchantName: string;
+  categoryId?: string | null;
+  amountCents: number;
+  note?: string | null;
+};
+
+export async function createTransaction(input: CreateTransactionInput): Promise<FinanceTransaction> {
+  const res = await fetch(`/api/finances/transactions`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(input),
+  });
+  if (!res.ok) throw new Error(await safeText(res));
+  return (await res.json()) as FinanceTransaction;
+}
+
+export async function seedLedger(month?: string, count?: number): Promise<{ ok: true; month: string; inserted: number }> {
+  const res = await fetch(`/api/finances/ledger/seed`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ month, count }),
+  });
+  if (!res.ok) throw new Error(await safeText(res));
+  return (await res.json()) as { ok: true; month: string; inserted: number };
+}

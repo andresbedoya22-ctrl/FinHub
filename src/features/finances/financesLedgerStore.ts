@@ -3,7 +3,7 @@
 import { create } from "zustand";
 
 import type { FinanceCategory, FinanceTransaction, FinanceTransactionSplit } from "./financesTypes";
-import { fetchLedger, patchTransaction, type PatchTransaction } from "./financesLedgerApi";
+import { fetchLedger, patchTransaction, createTransaction, seedLedger, type PatchTransaction, type CreateTransactionInput } from "./financesLedgerApi";
 
 type State = {
   month: string | null;
@@ -16,6 +16,8 @@ type State = {
   load: (month?: string) => Promise<void>;
   patchTx: (id: string, patch: PatchTransaction) => Promise<void>;
   bulkPatch: (ids: string[], patch: PatchTransaction) => Promise<void>;
+  createTx: (input: CreateTransactionInput) => Promise<void>;
+  seedDemo: (month?: string) => Promise<void>;
 };
 
 export const useFinancesLedger = create<State>((set, get) => ({
@@ -54,12 +56,35 @@ export const useFinancesLedger = create<State>((set, get) => ({
       const updated = await patchTransaction(id, patch);
       set({ transactions: get().transactions.map((t) => (t.id === id ? updated : t)) });
     } catch (e: unknown) {
-      const msg = e instanceof Error ? e.message : "Error persistiendo transacción";
+      const msg = e instanceof Error ? e.message : "Error persistiendo transacciÃƒÆ’Ã‚Â³n";
       set({ transactions: prev, error: msg });
     }
   },
 
   bulkPatch: async (ids: string[], patch: PatchTransaction) => {
     await Promise.all(ids.map((id) => get().patchTx(id, patch)));
+  },
+  createTx: async (input: CreateTransactionInput) => {
+    set({ loading: true, error: null })
+    try {
+      const created = await createTransaction(input)
+      set({ transactions: [created, ...get().transactions], loading: false })
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : "Error creando transacción"
+      set({ loading: false, error: msg })
+    }
+  },
+
+  seedDemo: async (month?: string) => {
+    set({ loading: true, error: null })
+    try {
+      const target = month ?? get().month ?? undefined
+      await seedLedger(target, 18)
+      await get().load(target ?? undefined)
+      set({ loading: false })
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : "Error sembrando demo"
+      set({ loading: false, error: msg })
+    }
   },
 }));
