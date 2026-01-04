@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -12,6 +12,15 @@ import { InfoBox } from "@/ui/components/InfoBox";
 
 import type { CaseType } from "@/features/cases/casesTypes";
 import { useCases } from "@/features/cases/casesStore";
+
+import type { FinanceUserPlan, FinanceTransaction } from "@/features/finances/financesTypes";
+import { buildMockFinancesBundle } from "@/features/finances/ui/mockData";
+import { SafeToSpendCard } from "@/features/finances/ui/SafeToSpendCard";
+import { BurndownChart } from "@/features/finances/ui/BurndownChart";
+import { TransactionsInboxTable } from "@/features/finances/ui/TransactionsInboxTable";
+import { CategoryGrid } from "@/features/finances/ui/CategoryGrid";
+import { CategoryDrawer } from "@/features/finances/ui/CategoryDrawer";
+import { CommandPalette } from "@/features/finances/ui/CommandPalette";
 
 type Module = {
   type: CaseType;
@@ -40,15 +49,48 @@ export default function FinancesDashboardClient() {
   const [busyType, setBusyType] = useState<CaseType | null>(null);
   const [err, setErr] = useState<string | null>(null);
 
-  const grouped = useMemo(() => {
-    const byPill = new Map<string, Module[]>();
-    for (const m of MODULES) {
-      const list = byPill.get(m.pill) ?? [];
-      list.push(m);
-      byPill.set(m.pill, list);
-    }
-    return Array.from(byPill.entries());
-  }, []);
+  const mock = useMemo(() => buildMockFinancesBundle(), []);
+  const [transactions, setTransactions] = useState<FinanceTransaction[]>(mock.transactions);
+
+  // v1: user-defined plan (no PSD2). UI editable vendrá en F11.4/F11.5.
+  const plan: FinanceUserPlan = useMemo(
+    () => ({
+      projectedIncomeMonthlyCents: 0,
+      fixedBudgets: [
+        { id: "fb_rent", label: "Alquiler", monthlyCents: 110000, isActive: true },
+        { id: "fb_insurance", label: "Seguros", monthlyCents: 20000, isActive: true },
+        { id: "fb_utilities", label: "Servicios", monthlyCents: 18000, isActive: true },
+      ],
+    }),
+    []
+  );
+
+  // Drawer
+  const [openCategoryId, setOpenCategoryId] = useState<string | null>(null);
+
+  // Forecast mode
+  const [forecastMode, setForecastMode] = useState(false);
+  const [forecastExtraOutflowCents, setForecastExtraOutflowCents] = useState(0);
+
+  // Split modal (mock)
+  const [splitTx, setSplitTx] = useState<FinanceTransaction | null>(null);
+
+  // Command palette
+  const [paletteOpen, setPaletteOpen] = useState(false);
+
+  const openCategory = useMemo(() => {
+    if (!openCategoryId) return null;
+    return mock.categories.find((c) => c.id === openCategoryId) ?? null;
+  }, [openCategoryId, mock.categories]);
+
+  const drawerTxs = useMemo(() => {
+    if (!openCategoryId) return [];
+    return transactions
+      .filter((t) => t.categoryId === openCategoryId)
+      .slice()
+      .sort((a, b) => b.occurredOn.localeCompare(a.occurredOn))
+      .slice(0, 40);
+  }, [transactions, openCategoryId]);
 
   async function launch(type: CaseType) {
     if (busyType) return;
@@ -65,16 +107,72 @@ export default function FinancesDashboardClient() {
     }
   }
 
+  // Sin useMemo aquí para evitar el rule preserve-manual-memoization (launch es función local)
+  const paletteActions = [
+    {
+      id: "nav_cases",
+      label: "Ir a Casos",
+      hint: "/app/cases",
+      keywords: ["cases", "casos", "historial"],
+      run: () => router.push("/app/cases"),
+    },
+    {
+      id: "nav_documents",
+      label: "Ir a Documentos",
+      hint: "/app/documents",
+      keywords: ["docs", "documentos", "ocr"],
+      run: () => router.push("/app/documents"),
+    },
+    {
+      id: "nav_profile",
+      label: "Ir a Perfil",
+      hint: "/app/profile",
+      keywords: ["profile", "perfil"],
+      run: () => router.push("/app/profile"),
+    },
+    ...MODULES.map((m) => ({
+      id: `case_${m.type}`,
+      label: `Iniciar: ${m.title}`,
+      hint: m.subtitle,
+      keywords: [m.pill, m.type],
+      run: () => launch(m.type),
+    })),
+  ];
+
+  function openSplit(tx: FinanceTransaction) {
+    setSplitTx(tx);
+  }
+
+  function closeSplit() {
+    setSplitTx(null);
+  }
+
   return (
     <Screen className="space-y-6">
       <Header
         title="Finanzas"
-        subtitle="Centro operativo: inicia servicios (toeslagen, impuestos, revisión de documentos) y gestiona tus casos."
-        right={<Badge>F10</Badge>}
+        subtitle="Command Center (pro): contexto, inbox y accesos a servicios (toeslagen, impuestos, documentos)."
+        right={
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setPaletteOpen(true)}
+              className="rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm hover:bg-fh-surface-2"
+            >
+              Ctrl/Cmd+K
+            </button>
+            <button
+              onClick={() => setForecastMode((v) => !v)}
+              className="rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm hover:bg-fh-surface-2"
+            >
+              Forecast {forecastMode ? "ON" : "OFF"}
+            </button>
+            <Badge>F11.3</Badge>
+          </div>
+        }
       />
 
       <Card className="space-y-3">
-        <InfoBox title="Accesos rápidos" variant="info">
+        <InfoBox title="Accesos (negocio)" variant="info">
           <div className="flex flex-wrap gap-2">
             <Link className="rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm hover:bg-fh-surface-2" href="/app/cases">
               Ver mis casos
@@ -82,9 +180,12 @@ export default function FinancesDashboardClient() {
             <Link className="rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm hover:bg-fh-surface-2" href="/app/documents">
               Documentos
             </Link>
-            <Link className="rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm hover:bg-fh-surface-2" href="/app/cases/new">
-              Nuevo caso (selector)
-            </Link>
+            <button
+              onClick={() => setPaletteOpen(true)}
+              className="rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm hover:bg-fh-surface-2"
+            >
+              Iniciar servicio (Ctrl/Cmd+K)
+            </button>
           </div>
         </InfoBox>
 
@@ -95,36 +196,79 @@ export default function FinancesDashboardClient() {
         ) : null}
       </Card>
 
-      {grouped.map(([pill, items]) => (
-        <div key={pill} className="space-y-3">
-          <div className="flex items-center gap-2">
-            <h2 className="text-sm font-semibold tracking-tight">{pill}</h2>
-            <span className="h-px flex-1 bg-fh-border" />
-          </div>
+      <div className="grid gap-4 lg:grid-cols-4">
+        <div className="lg:col-span-1">
+          <SafeToSpendCard month={mock.month} transactions={transactions} plan={plan} />
+        </div>
+        <div className="lg:col-span-3">
+          <BurndownChart
+            month={mock.month}
+            transactions={transactions}
+            forecastMode={forecastMode}
+            forecastExtraOutflowCents={forecastExtraOutflowCents}
+            onForecastExtraChange={setForecastExtraOutflowCents}
+          />
+        </div>
+      </div>
 
-          <div className="grid gap-3 md:grid-cols-2">
-            {items.map((m) => (
-              <Card key={m.type} className="space-y-3">
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <div className="text-sm font-semibold">{m.title}</div>
-                    <div className="text-sm text-fh-muted">{m.subtitle}</div>
-                  </div>
-                  <Badge>{m.pill}</Badge>
+      <TransactionsInboxTable
+        categories={mock.categories}
+        transactions={transactions}
+        onChange={setTransactions}
+        onSplit={openSplit}
+      />
+
+      <CategoryGrid
+        month={mock.month}
+        categories={mock.categories}
+        transactions={transactions}
+        onOpenCategory={(id) => setOpenCategoryId(id)}
+      />
+
+      <CategoryDrawer
+        open={openCategoryId !== null}
+        title="Inspector"
+        onClose={() => setOpenCategoryId(null)}
+        category={openCategory}
+        transactions={drawerTxs}
+      />
+
+      <CommandPalette open={paletteOpen} onOpenChange={setPaletteOpen} actions={paletteActions} />
+
+      {splitTx ? (
+        <div className="fixed inset-0 z-50">
+          <div className="absolute inset-0 bg-black/40" onClick={closeSplit} />
+          <div className="absolute left-1/2 top-24 w-[92vw] max-w-[720px] -translate-x-1/2 rounded-2xl border border-fh-border bg-fh-surface p-4 shadow-xl">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <div className="text-sm font-semibold">Dividir transacción</div>
+                <div className="text-xs text-fh-muted">
+                  {splitTx.merchantName} · {splitTx.occurredOn}
                 </div>
+              </div>
+              <button className="rounded-xl border border-fh-border bg-fh-surface px-3 py-1 text-xs hover:bg-fh-surface-2" onClick={closeSplit}>
+                Cerrar
+              </button>
+            </div>
 
-                <button
-                  onClick={() => void launch(m.type)}
-                  disabled={busyType !== null}
-                  className="w-full rounded-xl bg-fh-accent px-4 py-2 text-sm font-medium text-white hover:opacity-95 disabled:opacity-60"
-                >
-                  {busyType === m.type ? "Creando..." : "Iniciar"}
-                </button>
-              </Card>
-            ))}
+            <div className="mt-4 text-sm text-fh-muted">
+              Split editor completo entra en F11.4/F11.5 (persistencia). En UI ya está el entrypoint y la UX base.
+            </div>
+
+            <div className="mt-4 flex justify-end gap-2">
+              <button className="rounded-xl border border-fh-border bg-fh-surface px-4 py-2 text-sm hover:bg-fh-surface-2" onClick={closeSplit}>
+                Cancelar
+              </button>
+              <button
+                className="rounded-xl bg-fh-accent px-4 py-2 text-sm font-medium text-white hover:opacity-95"
+                onClick={() => closeSplit()}
+              >
+                Guardar (mock)
+              </button>
+            </div>
           </div>
         </div>
-      ))}
+      ) : null}
     </Screen>
   );
 }
