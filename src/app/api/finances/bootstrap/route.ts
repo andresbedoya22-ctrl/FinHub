@@ -53,14 +53,14 @@ const DEFAULT_BUDGETS: FixedBudgetDTO[] = [
 function normalizePlan(
   input: unknown
 ): { ok: true; plan: PlanDTO; rules: RulesDTO } | { ok: false; error: string } {
-  if (!input || typeof input !== "object") return { ok: false, error: "Body inválido" };
+  if (!input || typeof input !== "object") return { ok: false, error: "Body invÃ¡lido" };
 
   const body = input as Record<string, unknown>;
   const plan = body.plan as Record<string, unknown> | undefined;
   const rules = body.rules as Record<string, unknown> | undefined;
 
   const projected = Number(plan?.projectedIncomeMonthlyCents ?? 0);
-  if (!Number.isFinite(projected) || projected < 0) return { ok: false, error: "projectedIncomeMonthlyCents inválido" };
+  if (!Number.isFinite(projected) || projected < 0) return { ok: false, error: "projectedIncomeMonthlyCents invÃ¡lido" };
 
   const fixedBudgets = Array.isArray(plan?.fixedBudgets) ? (plan!.fixedBudgets as unknown[]) : [];
   const mapped: FixedBudgetDTO[] = fixedBudgets
@@ -76,7 +76,7 @@ function normalizePlan(
     .filter((b) => Number.isFinite(b.monthlyCents) && b.monthlyCents >= 0);
 
   const safeToSpendMode = (rules?.safeToSpendMode ?? "income-expense-fixedRemaining") as RulesDTO["safeToSpendMode"];
-  if (safeToSpendMode !== "income-expense-fixedRemaining") return { ok: false, error: "rules.safeToSpendMode inválido" };
+  if (safeToSpendMode !== "income-expense-fixedRemaining") return { ok: false, error: "rules.safeToSpendMode invÃ¡lido" };
 
   return {
     ok: true,
@@ -86,7 +86,7 @@ function normalizePlan(
 }
 
 export async function GET() {
-  const supabase = supabaseRouteClient();
+  const supabase = await supabaseRouteClient();
   const { data: authData, error: authErr } = await supabase.auth.getUser();
 
   if (authErr || !authData?.user) {
@@ -200,7 +200,7 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  const supabase = supabaseRouteClient();
+  const supabase = await supabaseRouteClient();
   const { data: authData, error: authErr } = await supabase.auth.getUser();
 
   if (authErr || !authData?.user) {
