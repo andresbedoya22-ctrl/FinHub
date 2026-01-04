@@ -5,15 +5,18 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { FinanceCategory, FinanceTransaction } from "../financesTypes";
 import { formatEurFromCents } from "../financesFormat";
 
+type TxPatch = Partial<Pick<FinanceTransaction, "categoryId" | "status" | "note" | "reviewedAt">>;
+
 type Props = {
   categories: FinanceCategory[];
   transactions: FinanceTransaction[];
-  onChange: (next: FinanceTransaction[]) => void;
+  onPatch: (id: string, patch: TxPatch) => void | Promise<void>;
+  onBulkPatch: (ids: string[], patch: TxPatch) => void | Promise<void>;
   onSplit: (tx: FinanceTransaction) => void;
 };
 
 export function TransactionsInboxTable(props: Props) {
-  const { categories, transactions, onChange, onSplit } = props;
+  const { categories, transactions, onPatch, onBulkPatch, onSplit } = props;
 
   const rows = useMemo(
     () => transactions.slice().sort((a, b) => b.occurredOn.localeCompare(a.occurredOn)),
@@ -26,26 +29,10 @@ export function TransactionsInboxTable(props: Props) {
 
   const lastClickedIndexRef = useRef<number | null>(null);
 
-  // Sin setState en effects: fallback compute-only
   const effectiveFocusedId = useMemo(() => {
     if (focusedId && rows.some((r) => r.id === focusedId)) return focusedId;
     return rows[0]?.id ?? null;
   }, [focusedId, rows]);
-
-  const patchTx = useCallback(
-    (id: string, patch: Partial<FinanceTransaction>) => {
-      onChange(transactions.map((t) => (t.id === id ? { ...t, ...patch } : t)));
-    },
-    [transactions, onChange]
-  );
-
-  const bulkPatch = useCallback(
-    (patch: Partial<FinanceTransaction>) => {
-      if (!selectedIds.length) return;
-      onChange(transactions.map((t) => (selectedIds.includes(t.id) ? { ...t, ...patch } : t)));
-    },
-    [transactions, onChange, selectedIds]
-  );
 
   const toggleSelect = useCallback(
     (id: string, idx: number, shiftKey: boolean) => {
@@ -67,12 +54,12 @@ export function TransactionsInboxTable(props: Props) {
   const approveFocused = useCallback(() => {
     if (!effectiveFocusedId) return;
 
-    patchTx(effectiveFocusedId, { status: "approved", reviewedAt: new Date().toISOString() });
+    void onPatch(effectiveFocusedId, { status: "approved", reviewedAt: new Date().toISOString() });
 
     const idx = rows.findIndex((r) => r.id === effectiveFocusedId);
     const next = rows[idx + 1]?.id ?? rows[idx]?.id ?? null;
     setFocusedId(next);
-  }, [effectiveFocusedId, patchTx, rows]);
+  }, [effectiveFocusedId, onPatch, rows]);
 
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
@@ -155,7 +142,7 @@ export function TransactionsInboxTable(props: Props) {
                       <select
                         className="w-full rounded-xl border border-fh-border bg-fh-surface px-2 py-1 text-sm"
                         value={t.categoryId ?? ""}
-                        onChange={(e) => patchTx(t.id, { categoryId: e.target.value || null })}
+                        onChange={(e) => void onPatch(t.id, { categoryId: e.target.value || null })}
                         onClick={(e) => e.stopPropagation()}
                       >
                         <option value="">Sin categoría</option>
@@ -174,7 +161,7 @@ export function TransactionsInboxTable(props: Props) {
                         className="rounded-xl border border-fh-border bg-fh-surface px-3 py-1 text-xs hover:bg-fh-surface-2"
                         onClick={(e) => {
                           e.stopPropagation();
-                          patchTx(t.id, { status: "approved", reviewedAt: new Date().toISOString() });
+                          void onPatch(t.id, { status: "approved", reviewedAt: new Date().toISOString() });
                         }}
                       >
                         Aprobar
@@ -211,7 +198,7 @@ export function TransactionsInboxTable(props: Props) {
                 className="rounded-xl border border-fh-border bg-fh-surface px-3 py-1 text-xs hover:bg-fh-surface-2 disabled:opacity-60"
                 onClick={() => {
                   if (!bulkCategoryId) return;
-                  bulkPatch({ categoryId: bulkCategoryId });
+                  void onBulkPatch(selectedIds, { categoryId: bulkCategoryId });
                   setBulkCategoryId("");
                 }}
                 disabled={!bulkCategoryId}
@@ -221,7 +208,7 @@ export function TransactionsInboxTable(props: Props) {
 
               <button
                 className="rounded-xl border border-fh-border bg-fh-surface px-3 py-1 text-xs hover:bg-fh-surface-2"
-                onClick={() => bulkPatch({ status: "hidden" })}
+                onClick={() => void onBulkPatch(selectedIds, { status: "hidden" })}
               >
                 Ocultar
               </button>
@@ -237,7 +224,10 @@ export function TransactionsInboxTable(props: Props) {
                 Dividir
               </button>
 
-              <button className="rounded-xl border border-fh-border bg-fh-surface px-3 py-1 text-xs hover:bg-fh-surface-2" onClick={() => setSelectedIds([])}>
+              <button
+                className="rounded-xl border border-fh-border bg-fh-surface px-3 py-1 text-xs hover:bg-fh-surface-2"
+                onClick={() => setSelectedIds([])}
+              >
                 Limpiar
               </button>
             </div>
