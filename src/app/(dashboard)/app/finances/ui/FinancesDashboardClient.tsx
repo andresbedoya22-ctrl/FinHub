@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { Screen } from "@/ui/components/Screen";
 import { Header } from "@/ui/components/Header";
@@ -13,7 +13,9 @@ import { InfoBox } from "@/ui/components/InfoBox";
 import type { CaseType } from "@/features/cases/casesTypes";
 import { useCases } from "@/features/cases/casesStore";
 
-import type { FinanceUserPlan, FinanceTransaction } from "@/features/finances/financesTypes";
+import type { FinanceTransaction, FinanceUserPlan } from "@/features/finances/financesTypes";
+import { useFinancesBootstrap } from "@/features/finances/financesBootstrapStore";
+
 import { buildMockFinancesBundle } from "@/features/finances/ui/mockData";
 import { SafeToSpendCard } from "@/features/finances/ui/SafeToSpendCard";
 import { BurndownChart } from "@/features/finances/ui/BurndownChart";
@@ -42,9 +44,27 @@ const MODULES: Module[] = [
   { type: "document_review", title: "Revisión de documentos", subtitle: "Sube documentos y pasa por verificación / OCR review.", pill: "Documentos" },
 ];
 
+const DEFAULT_PLAN: FinanceUserPlan = {
+  projectedIncomeMonthlyCents: 0,
+  fixedBudgets: [
+    { id: "fb_rent", label: "Alquiler", monthlyCents: 110000, isActive: true },
+    { id: "fb_insurance", label: "Seguros", monthlyCents: 20000, isActive: true },
+    { id: "fb_utilities", label: "Servicios", monthlyCents: 18000, isActive: true },
+  ],
+};
+
 export default function FinancesDashboardClient() {
   const router = useRouter();
   const createCase = useCases((s) => s.createCase);
+
+  const loadBootstrap = useFinancesBootstrap((s) => s.load);
+  const bootstrapLoading = useFinancesBootstrap((s) => s.loading);
+  const bootstrapErr = useFinancesBootstrap((s) => s.error);
+  const persistedPlan = useFinancesBootstrap((s) => s.plan);
+
+  useEffect(() => {
+    void loadBootstrap();
+  }, [loadBootstrap]);
 
   const [busyType, setBusyType] = useState<CaseType | null>(null);
   const [err, setErr] = useState<string | null>(null);
@@ -52,18 +72,7 @@ export default function FinancesDashboardClient() {
   const mock = useMemo(() => buildMockFinancesBundle(), []);
   const [transactions, setTransactions] = useState<FinanceTransaction[]>(mock.transactions);
 
-  // v1: user-defined plan (no PSD2). UI editable vendrá en F11.4/F11.5.
-  const plan: FinanceUserPlan = useMemo(
-    () => ({
-      projectedIncomeMonthlyCents: 0,
-      fixedBudgets: [
-        { id: "fb_rent", label: "Alquiler", monthlyCents: 110000, isActive: true },
-        { id: "fb_insurance", label: "Seguros", monthlyCents: 20000, isActive: true },
-        { id: "fb_utilities", label: "Servicios", monthlyCents: 18000, isActive: true },
-      ],
-    }),
-    []
-  );
+  const plan = persistedPlan ?? DEFAULT_PLAN;
 
   // Drawer
   const [openCategoryId, setOpenCategoryId] = useState<string | null>(null);
@@ -107,7 +116,6 @@ export default function FinancesDashboardClient() {
     }
   }
 
-  // Sin useMemo aquí para evitar el rule preserve-manual-memoization (launch es función local)
   const paletteActions = [
     {
       id: "nav_cases",
@@ -135,7 +143,7 @@ export default function FinancesDashboardClient() {
       label: `Iniciar: ${m.title}`,
       hint: m.subtitle,
       keywords: [m.pill, m.type],
-      run: () => launch(m.type),
+      run: () => void launch(m.type),
     })),
   ];
 
@@ -166,7 +174,7 @@ export default function FinancesDashboardClient() {
             >
               Forecast {forecastMode ? "ON" : "OFF"}
             </button>
-            <Badge>F11.3</Badge>
+            <Badge>F11.4.2</Badge>
           </div>
         }
       />
@@ -188,6 +196,16 @@ export default function FinancesDashboardClient() {
             </button>
           </div>
         </InfoBox>
+
+        {bootstrapLoading ? (
+          <div className="text-sm text-fh-muted">Cargando plan persistido…</div>
+        ) : null}
+
+        {bootstrapErr ? (
+          <div className="rounded-xl border border-yellow-500/30 bg-yellow-500/10 px-3 py-2 text-sm">
+            No se pudo cargar persistencia (usando default): {bootstrapErr}
+          </div>
+        ) : null}
 
         {err ? (
           <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm">
@@ -246,17 +264,23 @@ export default function FinancesDashboardClient() {
                   {splitTx.merchantName} · {splitTx.occurredOn}
                 </div>
               </div>
-              <button className="rounded-xl border border-fh-border bg-fh-surface px-3 py-1 text-xs hover:bg-fh-surface-2" onClick={closeSplit}>
+              <button
+                className="rounded-xl border border-fh-border bg-fh-surface px-3 py-1 text-xs hover:bg-fh-surface-2"
+                onClick={closeSplit}
+              >
                 Cerrar
               </button>
             </div>
 
             <div className="mt-4 text-sm text-fh-muted">
-              Split editor completo entra en F11.4/F11.5 (persistencia). En UI ya está el entrypoint y la UX base.
+              Split editor completo entra en F11.5 (persistencia de transactions/splits). En UI ya está el entrypoint y la UX base.
             </div>
 
             <div className="mt-4 flex justify-end gap-2">
-              <button className="rounded-xl border border-fh-border bg-fh-surface px-4 py-2 text-sm hover:bg-fh-surface-2" onClick={closeSplit}>
+              <button
+                className="rounded-xl border border-fh-border bg-fh-surface px-4 py-2 text-sm hover:bg-fh-surface-2"
+                onClick={closeSplit}
+              >
                 Cancelar
               </button>
               <button
