@@ -1,35 +1,50 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 
 import { Card } from "@/ui/components/Card";
 import { InfoBox } from "@/ui/components/InfoBox";
 import { Button } from "@/ui/components/Button";
 import { Input } from "@/ui/components/Input";
+import { safePath } from "@/features/auth/safeRedirect";
 
-type ApiOk = { ok: true };
-type ApiErr = { ok: false; error?: string };
+type ApiOk = { ok: true; userId?: string | null };
+type ApiErr = { ok: false; code?: string };
 type ApiResponse = ApiOk | ApiErr;
 
 export function LoginClient() {
+  const t = useTranslations("auth");
   const router = useRouter();
   const sp = useSearchParams();
 
-  const nextUrl = useMemo(() => {
-    const n = sp?.get("next");
-    return n && n.startsWith("/") ? n : "/app";
-  }, [sp]);
+  const redirectToRaw = sp?.get("redirectTo") ?? sp?.get("next");
+  const nextUrl = useMemo(() => safePath(redirectToRaw, "/app"), [redirectToRaw]);
+  const oauthError = sp?.get("error") === "oauth";
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [errorCode, setErrorCode] = useState<string | null>(oauthError ? "oauth_failed" : null);
+  const [info, setInfo] = useState<string | null>(null);
+  const [busyResend, setBusyResend] = useState(false);
+
+  function errorText(code: string | null): string | null {
+    if (!code) return null;
+    const key = `errors.${code}`;
+    try {
+      return t(key as never);
+    } catch {
+      return t("errors.unknown");
+    }
+  }
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setError(null);
+    setInfo(null);
+    setErrorCode(null);
     setBusy(true);
 
     try {
@@ -43,32 +58,86 @@ export function LoginClient() {
       const json = (await res.json().catch(() => null)) as ApiResponse | null;
 
       if (!res.ok || !json || json.ok !== true) {
-        const msg = json && "error" in json ? json.error : undefined;
-        throw new Error(msg ?? "No se pudo iniciar sesión");
+        const code = json && "code" in json ? json.code : "unknown";
+        setErrorCode(code ?? "unknown");
+        return;
       }
 
       router.replace(nextUrl);
-    } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : "Error desconocido");
     } finally {
       setBusy(false);
     }
   }
 
+  async function onResendVerification() {
+    setBusyResend(true);
+    setInfo(null);
+    setErrorCode(null);
+
+    try {
+      const res = await fetch("/api/auth/resend-verification", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim() }),
+      });
+
+      const json = (await res.json().catch(() => null)) as ApiResponse | null;
+
+      if (!res.ok || !json || json.ok !== true) {
+        const code = json && "code" in json ? json.code : "unknown";
+        setErrorCode(code ?? "unknown");
+        return;
+      }
+
+      setInfo(t("login.resendOk"));
+    } finally {
+      setBusyResend(false);
+    }
+  }
+
+  function onOAuth(provider: "google" | "apple") {
+    setInfo(null);
+    setErrorCode(null);
+
+    const url = `/api/auth/oauth/start?provider=${encodeURIComponent(provider)}&redirectTo=${encodeURIComponent(nextUrl)}`;
+    window.location.href = url;
+  }
+
+  const errMsg = errorText(errorCode);
+  const registerHref = redirectToRaw ? `/register?redirectTo=${encodeURIComponent(nextUrl)}` : "/register";
+
   return (
     <div className="mx-auto max-w-md p-6">
       <Card className="space-y-4 p-6">
-        <div className="text-lg font-semibold">Login</div>
+        <div className="text-lg font-semibold">{t("login.title")}</div>
 
-        {error ? (
-          <InfoBox title="Error" variant="danger">
-            {error}
+        {info ? (
+          <InfoBox title={t("common.info")} variant="info">
+            {info}
           </InfoBox>
         ) : null}
 
+        {errMsg ? (
+          <InfoBox title={t("common.error")} variant="danger">
+            {errMsg}
+          </InfoBox>
+        ) : null}
+
+        <div className="space-y-2">
+          <Button type="button" onClick={() => onOAuth("google")} disabled={busy}>
+            {t("oauth.google")}
+          </Button>
+          <Button type="button" onClick={() => onOAuth("apple")} disabled={busy}>
+            {t("oauth.apple")}
+          </Button>
+        </div>
+
+        <div className="h-px bg-white/10" />
+
         <form className="space-y-3" onSubmit={onSubmit}>
           <Input
-            label="Email"
+            label={t("common.email")}
             type="email"
             autoComplete="email"
             value={email}
@@ -76,7 +145,7 @@ export function LoginClient() {
             required
           />
           <Input
-            label="Contraseña"
+            label={t("common.password")}
             type="password"
             autoComplete="current-password"
             value={password}
@@ -85,25 +154,45 @@ export function LoginClient() {
           />
 
           <Button type="submit" disabled={busy}>
-            {busy ? "Entrando..." : "Entrar"}
+            {busy ? t("login.busy") : t("login.submit")}
           </Button>
         </form>
 
         <div className="text-sm opacity-80">
-          ¿No tienes cuenta?{" "}
-          <Link className="underline" href="/register">
-            Regístrate
+          <Link
+            className="underline"
+            href={redirectToRaw ? `/forgot-password?redirectTo=${encodeURIComponent(nextUrl)}` : "/forgot-password"}
+          >
+            {t("login.forgot")}
+          </Link>
+        </div>
+
+        {errorCode === "email_not_confirmed" ? (
+          <div className="space-y-2">
+            <InfoBox title={t("common.info")} variant="info">
+              {t("login.emailNotConfirmedHint")}
+            </InfoBox>
+            <Button type="button" onClick={onResendVerification} disabled={busyResend || !email.trim()}>
+              {busyResend ? t("login.resendBusy") : t("login.resend")}
+            </Button>
+          </div>
+        ) : null}
+
+        <div className="text-sm opacity-80">
+          {t("login.noAccount")}{" "}
+          <Link className="underline" href={registerHref}>
+            {t("login.goRegister")}
           </Link>
         </div>
 
         <div className="text-xs opacity-70">
-          Al continuar aceptas los{" "}
+          {t("legal.continue")}{" "}
           <Link className="underline" href="/terms">
-            Términos
+            {t("legal.terms")}
           </Link>{" "}
-          y la{" "}
+          {t("legal.and")}{" "}
           <Link className="underline" href="/privacy">
-            Política de Privacidad
+            {t("legal.privacy")}
           </Link>
           .
         </div>

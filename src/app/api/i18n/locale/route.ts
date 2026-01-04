@@ -14,6 +14,7 @@ export async function POST(req: Request) {
 
   res.cookies.set("locale", next, {path: "/", maxAge, sameSite: "lax"});
   res.cookies.set("NEXT_LOCALE", next, {path: "/", maxAge, sameSite: "lax"});
+  res.cookies.set("fh_locale", next, {path: "/", maxAge, sameSite: "lax"});
 
   return res;
 }

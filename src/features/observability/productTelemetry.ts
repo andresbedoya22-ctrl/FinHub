@@ -1,4 +1,4 @@
-import * as Sentry from "@sentry/nextjs";
+﻿import * as Sentry from "@sentry/nextjs";
 
 const ENABLED = process.env.SENTRY_PRODUCT_TELEMETRY_ENABLED === "true";
 const SAMPLE_RATE = Number(process.env.SENTRY_PRODUCT_TELEMETRY_SAMPLE_RATE ?? 0);
@@ -14,17 +14,16 @@ const BLOCKED_KEYS = new Set([
 function clampString(v: string): string {
   const s = v.trim();
   if (s.length <= MAX_STR) return s;
-  return s.slice(0, MAX_STR) + "â€¦";
+  return s.slice(0, MAX_STR) + "...";
 }
 
 function isLikelyPiiValue(v: unknown): boolean {
   if (typeof v !== "string") return false;
   const s = v.trim();
   if (!s) return false;
-  // HeurÃ­sticas simples: email, tokens largos, JWT-ish
   if (s.includes("@")) return true;
   if (s.length > 160) return true;
-  if (s.split(".").length >= 3 && s.length > 60) return true;
+  if (s.split(".").length >= 3 && s.length > 60) return true; // jwt-ish
   return false;
 }
 
@@ -47,6 +46,14 @@ export type ProductEventName =
   | "product.auth.login.fail"
   | "product.auth.register.success"
   | "product.auth.register.fail"
+  | "product.auth.oauth.success"
+  | "product.auth.oauth.fail"
+  | "product.auth.password_reset.request.success"
+  | "product.auth.password_reset.request.fail"
+  | "product.auth.password_reset.update.success"
+  | "product.auth.password_reset.update.fail"
+  | "product.auth.verify.resend.success"
+  | "product.auth.verify.resend.fail"
   | "product.doc.upload.success"
   | "product.doc.upload.fail"
   | "product.ocr.start"
@@ -63,21 +70,20 @@ export type ProductEventName =
   | "product.marketing.cta.click"
   | "product.marketing.lead.submit.success"
   | "product.marketing.lead.submit.fail"
-  | "product.marketing.lead.submit.attempt"
+  | "product.marketing.lead.submit.attempt";
 
 export type ProductEventAttr =
-  | "surface"          // e.g. "web"
-  | "route"            // e.g. "/login"
-  | "result"           // e.g. "ok" | "fail"
-  | "reason"           // e.g. "invalid_credentials" (no texto libre largo)
-  | "docType"          // e.g. "machtigingsregistratie"
-  | "provider"         // e.g. "stripe"
-  | "step"             // e.g. "upload" | "review"
-  | "latencyMs"        // number
-  | "interested_count" // number
-  | "httpStatus"       // number
-  | "build"            // optional build/version string
-  
+  | "surface"
+  | "route"
+  | "result"
+  | "reason"
+  | "docType"
+  | "provider"
+  | "step"
+  | "latencyMs"
+  | "interested_count"
+  | "httpStatus"
+  | "build"
   | "env"
   | "release"
   | "outcome"
@@ -108,7 +114,7 @@ function sanitizeAttrs(attrs: Attrs | undefined): Record<string, string | number
 
     const lk = k.toLowerCase();
     if (BLOCKED_KEYS.has(lk)) continue;
-    if (lk.startsWith("utm_")) continue; // marketing puede traer identificadores
+    if (lk.startsWith("utm_")) continue;
 
     if (v === null || v === undefined) continue;
 
@@ -132,8 +138,6 @@ export function trackProductEvent(name: ProductEventName, attrs?: Attrs) {
 
   const safeAttrs = sanitizeAttrs(attrs);
 
-  // Evento standalone (no breadcrumb) para que llegue aunque no haya error.
-  // Mensaje controlado (sin texto libre).
   Sentry.captureEvent({
     message: `product:${name}`,
     level: "info",
@@ -144,6 +148,7 @@ export function trackProductEvent(name: ProductEventName, attrs?: Attrs) {
     extra: safeAttrs,
   });
 }
+
 export type TelemetryOutcome = "success" | "fail";
 export type LatencyBucket = "lt_250ms" | "lt_1s" | "lt_3s" | "gte_3s";
 
@@ -179,6 +184,3 @@ export function trackProductRoute(
 
   return res;
 }
-
-
-

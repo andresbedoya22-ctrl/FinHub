@@ -39,7 +39,8 @@ export async function getI18nRequestContext() {
   const c = await cookies();
   const h = await headers();
 
-  const fromCookie =
+    const fromCookie =
+    normalizeLocale(c.get("fh_locale")?.value) ??
     normalizeLocale(c.get("locale")?.value) ??
     normalizeLocale(c.get("NEXT_LOCALE")?.value);
 
