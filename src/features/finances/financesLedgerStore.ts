@@ -56,7 +56,7 @@ export const useFinancesLedger = create<State>((set, get) => ({
       const updated = await patchTransaction(id, patch);
       set({ transactions: get().transactions.map((t) => (t.id === id ? updated : t)) });
     } catch (e: unknown) {
-      const msg = e instanceof Error ? e.message : "Error persistiendo transacciÃƒÆ’Ã‚Â³n";
+      const msg = e instanceof Error ? e.message : "Error persistiendo transacción";
       set({ transactions: prev, error: msg });
     }
   },
