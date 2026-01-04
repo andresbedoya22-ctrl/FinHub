@@ -14,8 +14,14 @@ if (process.env.NEXT_RUNTIME === "nodejs") {
   }
 }
 
+const noop = (...args: unknown[]) => {
+  void args;
+};
+
 export const onRequestError = sentryEnabled
   ? Sentry.captureRequestError
-  : ((..._args: any[]) => {});
+  : noop;
+
+
 
 

@@ -32,8 +32,14 @@ if (sentryEnabled) {
   sendDefaultPii: true,
 });
 }
+const noop = (...args: unknown[]) => {
+  void args;
+};
+
 export const onRouterTransitionStart = sentryEnabled
   ? Sentry.captureRouterTransitionStart
-  : ((..._args: any[]) => {});
+  : noop;
+
+
 
 
