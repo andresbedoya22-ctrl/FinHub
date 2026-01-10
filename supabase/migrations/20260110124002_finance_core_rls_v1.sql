@@ -1,4 +1,4 @@
-﻿-- finance_core_rls_v1
+-- finance_core_rls_v1
 -- Strict owner-only RLS for finance tables.
 begin;
 

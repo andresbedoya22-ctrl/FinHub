@@ -1,4 +1,4 @@
-﻿-- finance_core_v1
+-- finance_core_v1
 -- Canon + runtime alignment: creates finance tables required by /api/finances/*
 begin;
 
