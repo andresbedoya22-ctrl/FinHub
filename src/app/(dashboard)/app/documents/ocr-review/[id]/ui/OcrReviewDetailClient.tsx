@@ -35,7 +35,7 @@ function parseExtraJson(s: string): { ok: true; value: Record<string, unknown> }
     }
     return { ok: true, value: v as Record<string, unknown> };
   } catch (e: unknown) {
-    return { ok: false, error: e instanceof Error ? e.message : "JSON invÃƒÂ¡lido" };
+    return { ok: false, error: e instanceof Error ? e.message : "JSON invÃƒÆ’Ã‚Â¡lido" };
   }
 }
 
@@ -58,6 +58,18 @@ function euroToCents(input: string): number | null {
 
 type ErrorResponse = { error?: string };
 
+
+type LedgerCategoryDTO = {
+  id: string;
+  key?: string;
+  label: string;
+  sortOrder?: number;
+  isSystem?: boolean;
+};
+
+type LedgerResponse = {
+  categories?: LedgerCategoryDTO[];
+};
 export default function OcrReviewDetailClient() {
   const params = useParams<{ id: string }>();
   const id = (params?.id ?? "").toString();
@@ -112,7 +124,7 @@ export default function OcrReviewDetailClient() {
       } else {
         setFields(emptyMachtigingsregistratieFieldsV1());
         setExtraText("{}");
-        setError(`Fields invÃƒÂ¡lidos en extracciÃƒÂ³n: ${validated.error}`);
+        setError(`Fields invÃƒÆ’Ã‚Â¡lidos en extracciÃƒÆ’Ã‚Â³n: ${validated.error}`);
       }
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : "Error desconocido");
@@ -157,7 +169,7 @@ export default function OcrReviewDetailClient() {
     if (!id) return;
 
     if (!parsedExtra.ok) {
-      setError(`extra invÃƒÂ¡lido: ${parsedExtra.error}`);
+      setError(`extra invÃƒÆ’Ã‚Â¡lido: ${parsedExtra.error}`);
       return;
     }
 
@@ -184,7 +196,7 @@ export default function OcrReviewDetailClient() {
     if (!id) return;
 
     if (!verifyReady) {
-      setError("No puedes verificar todavÃƒÂ­a: falta activeringscode vÃƒÂ¡lido.");
+      setError("No puedes verificar todavÃƒÆ’Ã‚Â­a: falta activeringscode vÃƒÆ’Ã‚Â¡lido.");
       return;
     }
 
@@ -227,7 +239,7 @@ export default function OcrReviewDetailClient() {
       const j = (jUnknown && typeof jUnknown === "object") ? (jUnknown as LedgerResponse) : {};
       setConvertCats(Array.isArray(j.categories) ? j.categories : []);
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : "Error cargando categorÃƒÂ­as.");
+      setError(e instanceof Error ? e.message : "Error cargando categorÃƒÆ’Ã‚Â­as.");
       setConvertCats([]);
     } finally {
       setConvertLoadingCats(false);
@@ -239,7 +251,7 @@ export default function OcrReviewDetailClient() {
 
     const occurredOn = txDate.trim();
     if (!/^\d{4}-\d{2}-\d{2}$/.test(occurredOn)) {
-      setError("Fecha invÃƒÂ¡lida. Usa YYYY-MM-DD.");
+      setError("Fecha invÃƒÆ’Ã‚Â¡lida. Usa YYYY-MM-DD.");
       return;
     }
 
@@ -251,7 +263,7 @@ export default function OcrReviewDetailClient() {
 
     const centsAbs = euroToCents(txAmountEur);
     if (centsAbs === null) {
-      setError("Monto invÃƒÂ¡lido. Usa un nÃƒÂºmero (ej. 12.34).");
+      setError("Monto invÃƒÆ’Ã‚Â¡lido. Usa un nÃƒÆ’Ã‚Âºmero (ej. 12.34).");
       return;
     }
     if (centsAbs <= 0) {
@@ -279,10 +291,10 @@ export default function OcrReviewDetailClient() {
 
       const txJson = (await txRes.json().catch(() => null)) as unknown;
       if (!txRes.ok) {
-        throw new Error(txJson?.error ?? "No se pudo crear la transacciÃƒÂ³n.");
+        throw new Error(txJson?.error ?? "No se pudo crear la transacciÃƒÆ’Ã‚Â³n.");
       }
       const transactionId = String(txJson?.id ?? "");
-      if (!transactionId) throw new Error("Respuesta invÃƒÂ¡lida: falta transaction id.");
+      if (!transactionId) throw new Error("Respuesta invÃƒÆ’Ã‚Â¡lida: falta transaction id.");
 
       const linkRes = await fetch("/api/finances/receipt-links", {
         method: "POST",
@@ -307,8 +319,8 @@ export default function OcrReviewDetailClient() {
   return (
     <Screen>
       <Header
-        title="OCR Review Ã¢â‚¬â€ Detalle"
-        subtitle={doc ? `${doc.file_name} Ã¢â‚¬â€ status: ${doc.status}` : "Cargando documento..."}
+        title="OCR Review ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Detalle"
+        subtitle={doc ? `${doc.file_name} ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â status: ${doc.status}` : "Cargando documento..."}
         right={
           <Link className="underline text-sm" href="/app/documents/ocr-review">
             Volver
@@ -340,7 +352,7 @@ export default function OcrReviewDetailClient() {
                 {busy === "ocr" ? "Ejecutando..." : "Ejecutar OCR"}
               </Button>
               <Button disabled={busy !== null} onClick={() => void runExtractionAction()}>
-                {busy === "extract" ? "Extrayendo..." : "Ejecutar extracciÃƒÂ³n IA"}
+                {busy === "extract" ? "Extrayendo..." : "Ejecutar extracciÃƒÆ’Ã‚Â³n IA"}
               </Button>
               <Button disabled={busy !== null || !parsedExtra.ok} onClick={() => void saveAction()}>
                 {busy === "save" ? "Guardando..." : "Guardar cambios"}
@@ -352,7 +364,7 @@ export default function OcrReviewDetailClient() {
               <div className="w-full h-px bg-black/10 my-2" />
 
               <Button disabled={busy !== null} onClick={() => void openConvertModal()}>
-                Convertir a transacciÃƒÂ³n
+                Convertir a transacciÃƒÆ’Ã‚Â³n
               </Button>
               <Link className="underline text-sm self-center" href="/app/finances">
                 Ir a Finanzas
@@ -417,7 +429,7 @@ export default function OcrReviewDetailClient() {
                   className="w-full rounded-md border p-2 text-sm"
                   value={(fields.bsn ?? "").toString()}
                   onChange={(e) => setField("bsn", e.target.value)}
-                  placeholder="9 dÃƒÂ­gitos"
+                  placeholder="9 dÃƒÆ’Ã‚Â­gitos"
                 />
               </div>
             </div>
@@ -429,7 +441,7 @@ export default function OcrReviewDetailClient() {
                 value={extraText}
                 onChange={(e) => setExtraText(e.target.value)}
               />
-              {!parsedExtra.ok ? <div className="text-sm">extra invÃƒÂ¡lido: {parsedExtra.error}</div> : null}
+              {!parsedExtra.ok ? <div className="text-sm">extra invÃƒÆ’Ã‚Â¡lido: {parsedExtra.error}</div> : null}
             </div>
           </div>
         )}
@@ -440,7 +452,7 @@ export default function OcrReviewDetailClient() {
           <div className="w-full max-w-xl rounded-xl bg-white p-4 shadow-lg">
             <div className="flex items-start justify-between gap-3">
               <div>
-                <div className="text-base font-semibold">Convertir a transacciÃƒÂ³n</div>
+                <div className="text-base font-semibold">Convertir a transacciÃƒÆ’Ã‚Â³n</div>
                 <div className="text-sm opacity-70">Documento: {id}</div>
               </div>
               <button
@@ -473,7 +485,7 @@ export default function OcrReviewDetailClient() {
                     placeholder="Ej: 12.34"
                     inputMode="decimal"
                   />
-                  <div className="text-xs opacity-70">Se guardarÃƒÂ¡ como gasto (negativo) en P0.</div>
+                  <div className="text-xs opacity-70">Se guardarÃƒÆ’Ã‚Â¡ como gasto (negativo) en P0.</div>
                 </div>
               </div>
 
@@ -488,14 +500,14 @@ export default function OcrReviewDetailClient() {
               </div>
 
               <div className="flex flex-col gap-1">
-                <div className="text-sm font-medium">CategorÃƒÂ­a</div>
+                <div className="text-sm font-medium">CategorÃƒÆ’Ã‚Â­a</div>
                 <select
                   className="w-full rounded-md border p-2 text-sm"
                   value={txCategoryId}
                   onChange={(e) => setTxCategoryId(e.target.value)}
                   disabled={convertLoadingCats}
                 >
-                  <option value="">{convertLoadingCats ? "Cargando..." : "Sin categorÃƒÂ­a"}</option>
+                  <option value="">{convertLoadingCats ? "Cargando..." : "Sin categorÃƒÆ’Ã‚Â­a"}</option>
                   {convertCats.map((c) => (
                     <option key={c.id} value={c.id}>
                       {c.label}
@@ -519,7 +531,7 @@ export default function OcrReviewDetailClient() {
                   Cancelar
                 </Button>
                 <Button disabled={busy !== null} onClick={() => void convertToTransaction()}>
-                  {busy === "convert" ? "Guardando..." : "Crear transacciÃƒÂ³n + vincular"}
+                  {busy === "convert" ? "Guardando..." : "Crear transacciÃƒÆ’Ã‚Â³n + vincular"}
                 </Button>
               </div>
             </div>
