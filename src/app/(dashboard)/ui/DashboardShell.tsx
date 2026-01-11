@@ -1,25 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import type { ReactNode } from "react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { getDashboardRouteMeta, type Breadcrumb } from "./dashboardRouteMeta";
-
-type NavItem = {
-  href: string;
-  label: string;
-  section: "FINANZAS" | "OPERACION" | "CUENTA" | "ADMIN";
-  icon: "finances" | "transactions" | "documents" | "cases" | "profile" | "admin";
-};
-
-type CmdkAction =
-  | { id: string; label: string; kind: "nav"; href: string }
-  | { id: string; label: string; kind: "createTx"; href: string }
-  | { id: string; label: string; kind: "logout" };
-
-const SIDEBAR_KEY = "finhub.dashboard.sidebar.collapsed";
 
 function cx(...xs: Array<string | false | null | undefined>) {
   return xs.filter(Boolean).join(" ");
@@ -31,73 +17,84 @@ function isActive(pathname: string, href: string): boolean {
   return pathname === href || pathname.startsWith(href + "/");
 }
 
-function Icon({ name, className }: { name: NavItem["icon"]; className?: string }) {
+/** Minimal inline icons (no deps) */
+function Icon({ name }: { name: "grid" | "money" | "doc" | "case" | "user" | "shield" | "plus" | "search" }) {
   const common = "w-4 h-4";
-  const cls = cx(common, className);
-
   switch (name) {
-    case "finances":
+    case "grid":
       return (
-        <svg className={cls} viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M4 19V5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+        <svg className={common} viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path
-            d="M7 16l3-4 3 3 4-6"
+            d="M4 4h7v7H4V4zm9 0h7v7h-7V4zM4 13h7v7H4v-7zm9 0h7v7h-7v-7z"
             stroke="currentColor"
-            strokeWidth="1.6"
+            strokeWidth="1.5"
+          />
+        </svg>
+      );
+    case "money":
+      return (
+        <svg className={common} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M3 7h18v10H3V7z" stroke="currentColor" strokeWidth="1.5" />
+          <path d="M7 12h.01M17 12h.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+          <path
+            d="M12 10.2c-1.3 0-2.3.7-2.3 1.8 0 2.2 4.6 1.1 4.6 3.3 0 1.1-1 1.8-2.3 1.8"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
+        </svg>
+      );
+    case "doc":
+      return (
+        <svg className={common} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M7 3h7l3 3v15H7V3z" stroke="currentColor" strokeWidth="1.5" />
+          <path d="M14 3v4h4" stroke="currentColor" strokeWidth="1.5" />
+          <path d="M9 11h6M9 15h6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        </svg>
+      );
+    case "case":
+      return (
+        <svg className={common} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M4 8h16v11H4V8z" stroke="currentColor" strokeWidth="1.5" />
+          <path
+            d="M9 8V6.5A2.5 2.5 0 0 1 11.5 4h1A2.5 2.5 0 0 1 15 6.5V8"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          />
+          <path d="M4 12h16" stroke="currentColor" strokeWidth="1.5" />
+        </svg>
+      );
+    case "user":
+      return (
+        <svg className={common} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4z" stroke="currentColor" strokeWidth="1.5" />
+          <path d="M4 20a8 8 0 0 1 16 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        </svg>
+      );
+    case "shield":
+      return (
+        <svg className={common} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 3l8 4v6c0 5-3.5 8-8 8s-8-3-8-8V7l8-4z" stroke="currentColor" strokeWidth="1.5" />
+          <path
+            d="M9.5 12l1.8 1.8L15 10"
+            stroke="currentColor"
+            strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
-          <path d="M19 9h2v10h-2" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
         </svg>
       );
-    case "transactions":
+    case "plus":
       return (
-        <svg className={cls} viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M7 7h13l-2-2" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M17 17H4l2 2" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M20 7v6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-          <path d="M4 17v-6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+        <svg className={common} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
         </svg>
       );
-    case "documents":
+    case "search":
       return (
-        <svg className={cls} viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path
-            d="M7 3h7l3 3v15a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"
-            stroke="currentColor"
-            strokeWidth="1.6"
-            strokeLinejoin="round"
-          />
-          <path d="M14 3v4a2 2 0 0 0 2 2h4" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
-          <path d="M8 13h8M8 17h8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-        </svg>
-      );
-    case "cases":
-      return (
-        <svg className={cls} viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M8 7h8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-          <path d="M8 12h8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-          <path d="M8 17h5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-          <path d="M6 4h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z" stroke="currentColor" strokeWidth="1.6" />
-        </svg>
-      );
-    case "profile":
-      return (
-        <svg className={cls} viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Z" stroke="currentColor" strokeWidth="1.6" />
-          <path d="M4 21a8 8 0 0 1 16 0" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-        </svg>
-      );
-    case "admin":
-      return (
-        <svg className={cls} viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path
-            d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4Z"
-            stroke="currentColor"
-            strokeWidth="1.6"
-            strokeLinejoin="round"
-          />
-          <path d="M9.5 12l1.8 1.8L15.8 9.3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+        <svg className={common} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M10.5 18a7.5 7.5 0 1 0 0-15 7.5 7.5 0 0 0 0 15z" stroke="currentColor" strokeWidth="1.5" />
+          <path d="M16.5 16.5L21 21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
         </svg>
       );
     default:
@@ -105,43 +102,37 @@ function Icon({ name, className }: { name: NavItem["icon"]; className?: string }
   }
 }
 
-function SectionLabel({ children, collapsed }: { children: string; collapsed: boolean }) {
-  if (collapsed) return null;
-  return <div className="px-3 pt-4 pb-2 text-[11px] tracking-wider text-white/50">{children}</div>;
-}
+type NavItem = { href: string; label: string; icon: Parameters<typeof Icon>[0]["name"] };
+type NavSection = { title: string; items: NavItem[] };
+
+type CmdkAction =
+  | { id: string; label: string; hint?: string; kind: "nav"; href: string }
+  | { id: string; label: string; hint?: string; kind: "tx_new" }
+  | { id: string; label: string; hint?: string; kind: "logout" };
 
 function Breadcrumbs({ items }: { items: Breadcrumb[] }) {
-  if (!items?.length) return null;
+  if (!items.length) return null;
   return (
-    <div className="text-xs text-white/60 truncate">
+    <div className="mt-0.5 flex items-center gap-2 text-xs text-white/60 min-w-0">
       {items.map((b, idx) => (
-        <span key={b.href} className="truncate">
-          {idx > 0 && <span className="px-2 text-white/30">/</span>}
-          <Link href={b.href} className="hover:text-white/80">
+        <div key={b.href + b.label} className="flex items-center gap-2 min-w-0">
+          {idx > 0 && <span className="opacity-60">/</span>}
+          <Link href={b.href} className="hover:text-white/80 truncate">
             {b.label}
           </Link>
-        </span>
+        </div>
       ))}
     </div>
   );
 }
 
-async function doLogout(router: ReturnType<typeof useRouter>) {
-  try {
-    await fetch("/api/auth/logout", { method: "POST" });
-  } finally {
-    router.push("/login");
-  }
-}
-
 export default function DashboardShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const sp = useSearchParams();
 
-  const month = sp.get("month") ?? new Date().toISOString().slice(0, 7);
+  const SIDEBAR_KEY = "finhub.sidebar.collapsed.v1";
 
-  // Persistencia de collapsed SIN setState dentro de useEffect (rule del repo)
+  // Sidebar collapsed: read once from localStorage (no setState in effects)
   const [collapsed, setCollapsed] = useState<boolean>(() => {
     if (typeof window === "undefined") return false;
     try {
@@ -151,32 +142,7 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
     }
   });
 
-  const [accountOpen, setAccountOpen] = useState(false);
-
-  // CmdK
-  const [cmdkOpen, setCmdkOpen] = useState(false);
-  const [cmdkQ, setCmdkQ] = useState("");
-  const [cmdkIdx, setCmdkIdx] = useState(0);
-  const cmdkInputRef = useRef<HTMLInputElement | null>(null);
-
-  const meta = useMemo(() => getDashboardRouteMeta(pathname), [pathname]);
-
-  const nav: NavItem[] = useMemo(
-    () => [
-      { href: "/app/finances", label: "Finanzas", section: "FINANZAS", icon: "finances" },
-      { href: "/app/finances/transactions", label: "Transacciones", section: "FINANZAS", icon: "transactions" },
-
-      { href: "/app/documents", label: "Documentos", section: "OPERACION", icon: "documents" },
-      { href: "/app/cases", label: "Casos", section: "OPERACION", icon: "cases" },
-
-      { href: "/app/profile", label: "Perfil", section: "CUENTA", icon: "profile" },
-
-      { href: "/app/admin", label: "Admin", section: "ADMIN", icon: "admin" },
-    ],
-    [],
-  );
-
-  // Persist collapsed (solo side-effect externo, sin setState)
+  // Persist collapsed
   useEffect(() => {
     try {
       window.localStorage.setItem(SIDEBAR_KEY, collapsed ? "1" : "0");
@@ -185,72 +151,188 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
     }
   }, [collapsed]);
 
+  const meta = useMemo(() => getDashboardRouteMeta(pathname), [pathname]);
+
+  const navSections: NavSection[] = useMemo(
+    () => [
+      {
+        title: "Finanzas",
+        items: [
+          { href: "/app/finances", label: "Overview", icon: "money" },
+          { href: "/app/finances/transactions", label: "Transacciones", icon: "grid" },
+        ],
+      },
+      {
+        title: "Operación",
+        items: [
+          { href: "/app/documents", label: "Documentos", icon: "doc" },
+          { href: "/app/cases", label: "Casos", icon: "case" },
+        ],
+      },
+      {
+        title: "Cuenta",
+        items: [{ href: "/app/profile", label: "Perfil", icon: "user" }],
+      },
+      {
+        title: "Admin",
+        items: [{ href: "/app/admin", label: "Admin", icon: "shield" }],
+      },
+    ],
+    [],
+  );
+
+  // CmdK
+  const [cmdkOpen, setCmdkOpen] = useState(false);
+  const [cmdkQ, setCmdkQ] = useState("");
+  const [cmdkIdx, setCmdkIdx] = useState(0);
+  const cmdkInputRef = useRef<HTMLInputElement | null>(null);
+
+  const openCmdk = useCallback(() => {
+    setCmdkQ("");
+    setCmdkIdx(0);
+    setCmdkOpen(true);
+  }, []);
+
+  const closeCmdk = useCallback(() => {
+    setCmdkOpen(false);
+  }, []);
+
   const actions: CmdkAction[] = useMemo(
     () => [
-      { id: "go-finances", label: "Ir a Finanzas", kind: "nav", href: "/app/finances" },
-      { id: "go-tx", label: "Ir a Transacciones", kind: "nav", href: "/app/finances/transactions" },
-      { id: "new-tx", label: "Nueva transacción", kind: "createTx", href: `/app/finances/transactions/new?month=${encodeURIComponent(month)}` },
-      { id: "go-docs", label: "Ir a Documentos", kind: "nav", href: "/app/documents" },
-      { id: "go-cases", label: "Ir a Casos", kind: "nav", href: "/app/cases" },
-      { id: "go-profile", label: "Ir a Perfil", kind: "nav", href: "/app/profile" },
-      { id: "go-admin", label: "Ir a Admin", kind: "nav", href: "/app/admin" },
-      { id: "logout", label: "Cerrar sesión", kind: "logout" },
+      { id: "nav-finances", kind: "nav", href: "/app/finances", label: "Ir a Finanzas", hint: "/app/finances" },
+      { id: "nav-tx", kind: "nav", href: "/app/finances/transactions", label: "Ir a Transacciones", hint: "/app/finances/transactions" },
+      { id: "tx-new", kind: "tx_new", label: "Nueva transacción", hint: "/app/finances/transactions/new" },
+      { id: "nav-docs", kind: "nav", href: "/app/documents", label: "Ir a Documentos", hint: "/app/documents" },
+      { id: "nav-cases", kind: "nav", href: "/app/cases", label: "Ir a Casos", hint: "/app/cases" },
+      { id: "nav-profile", kind: "nav", href: "/app/profile", label: "Ir a Perfil", hint: "/app/profile" },
+      { id: "logout", kind: "logout", label: "Cerrar sesión", hint: "POST /api/auth/logout" },
     ],
-    [month],
+    [],
   );
 
   const filteredActions = useMemo(() => {
     const q = cmdkQ.trim().toLowerCase();
     if (!q) return actions;
-    return actions.filter((a) => a.label.toLowerCase().includes(q));
+    return actions.filter((a) => (a.label + " " + (a.hint ?? "")).toLowerCase().includes(q));
   }, [actions, cmdkQ]);
 
-  const maxIdx = Math.max(0, filteredActions.length - 1);
-  const activeIdx = Math.min(cmdkIdx, maxIdx);
+  const boundedIdx = useMemo(() => {
+    if (filteredActions.length === 0) return 0;
+    if (cmdkIdx < 0) return 0;
+    if (cmdkIdx >= filteredActions.length) return filteredActions.length - 1;
+    return cmdkIdx;
+  }, [cmdkIdx, filteredActions.length]);
 
-  const openCmdk = () => {
-    setAccountOpen(false);
-    setCmdkQ("");
-    setCmdkIdx(0);
-    setCmdkOpen(true);
-  };
+  const filteredRef = useRef<CmdkAction[]>([]);
+  const idxRef = useRef<number>(0);
+  const runActionRef = useRef<(a: CmdkAction) => void>(() => {});
 
-  const closeCmdk = () => setCmdkOpen(false);
+  const runAction = useCallback(
+    async (a: CmdkAction) => {
+      if (a.kind === "nav") {
+        closeCmdk();
+        router.push(a.href);
+        return;
+      }
 
-  // Cmd/Ctrl+K (setState ocurre en handler del evento, no en body del effect)
+      if (a.kind === "tx_new") {
+        closeCmdk();
+        router.push("/app/finances/transactions/new");
+        return;
+      }
+
+      // logout
+      closeCmdk();
+      try {
+        await fetch("/api/auth/logout", { method: "POST" });
+      } catch {
+        // ignore
+      }
+      router.push("/login");
+    },
+    [closeCmdk, router],
+  );
+
+  useEffect(() => {
+    filteredRef.current = filteredActions;
+    idxRef.current = boundedIdx;
+  }, [filteredActions, boundedIdx]);
+
+  useEffect(() => {
+    runActionRef.current = (a: CmdkAction) => {
+      void runAction(a);
+    };
+  }, [runAction]);
+
+  // Global key handling (Cmd/Ctrl+K + navigation inside palette)
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       const isK = e.key.toLowerCase() === "k";
-      if ((e.ctrlKey || e.metaKey) && isK) {
+      const hasMod = e.metaKey || e.ctrlKey;
+
+      if (hasMod && isK) {
         e.preventDefault();
-        openCmdk();
+        if (cmdkOpen) closeCmdk();
+        else openCmdk();
         return;
       }
+
+      if (!cmdkOpen) return;
+
       if (e.key === "Escape") {
+        e.preventDefault();
         closeCmdk();
-        setAccountOpen(false);
+        return;
+      }
+
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        const len = filteredRef.current.length;
+        if (len <= 0) return;
+        setCmdkIdx((v) => Math.min(len - 1, v + 1));
+        return;
+      }
+
+      if (e.key === "ArrowUp") {
+        e.preventDefault();
+        setCmdkIdx((v) => Math.max(0, v - 1));
+        return;
+      }
+
+      if (e.key === "Enter") {
+        e.preventDefault();
+        const list = filteredRef.current;
+        const idx = idxRef.current;
+        const a = list[idx];
+        if (a) runActionRef.current(a);
       }
     };
+
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [month]);
+  }, [cmdkOpen, openCmdk, closeCmdk]);
 
-  // Focus input (sin setState dentro del effect)
+  // Focus input when palette opens (no setState here)
   useEffect(() => {
     if (!cmdkOpen) return;
     const t = window.setTimeout(() => cmdkInputRef.current?.focus(), 0);
     return () => window.clearTimeout(t);
   }, [cmdkOpen]);
 
-  const runAction = async (a: CmdkAction) => {
-    closeCmdk();
-    if (a.kind === "logout") {
-      await doLogout(router);
-      return;
-    }
-    router.push(a.href);
-  };
+  // Account menu
+  const [accountOpen, setAccountOpen] = useState(false);
+  const accountRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const onDoc = (e: MouseEvent) => {
+      if (!accountOpen) return;
+      const t = e.target as Node | null;
+      if (!t) return;
+      if (accountRef.current && !accountRef.current.contains(t)) setAccountOpen(false);
+    };
+    document.addEventListener("mousedown", onDoc);
+    return () => document.removeEventListener("mousedown", onDoc);
+  }, [accountOpen]);
 
   return (
     <div className="min-h-dvh bg-[#0B1220] text-white">
@@ -266,120 +348,68 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
         <aside
           className={cx(
             "sticky top-0 h-dvh border-r border-white/10 bg-white/5 backdrop-blur",
-            collapsed ? "w-[76px]" : "w-[280px]",
+            collapsed ? "w-[72px]" : "w-[276px]",
           )}
         >
           <div className="h-14 px-4 flex items-center justify-between border-b border-white/10">
             <Link href="/app/finances" className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded bg-emerald-500/90" />
+              <div className="w-7 h-7 rounded bg-emerald-500/90" aria-hidden="true" />
               {!collapsed && <div className="font-semibold tracking-wide">FinHub</div>}
             </Link>
 
             <button
-              className="h-9 w-9 rounded-md border border-white/10 hover:bg-white/10 flex items-center justify-center"
+              className="text-xs px-2 py-1 rounded border border-white/10 hover:bg-white/10"
               onClick={() => setCollapsed((v) => !v)}
               aria-label="Toggle sidebar"
               type="button"
             >
-              <svg className={cx("w-4 h-4 transition-transform", collapsed && "rotate-180")} viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M9 6l6 6-6 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
+              {collapsed ? "»" : "«"}
             </button>
           </div>
 
-          <nav className="pb-3">
-            <SectionLabel collapsed={collapsed}>FINANZAS</SectionLabel>
-            {nav.filter((n) => n.section === "FINANZAS").map((it) => {
-              const active = isActive(pathname, it.href);
-              return (
-                <Link
-                  key={it.href}
-                  href={it.href}
-                  title={collapsed ? it.label : undefined}
-                  className={cx(
-                    "mx-2 my-1 relative flex items-center gap-3 rounded-md px-3 py-2 text-sm border",
-                    active ? "bg-white/10 border-white/15" : "bg-transparent border-transparent hover:bg-white/5 hover:border-white/10",
-                  )}
-                >
-                  <span className={cx("absolute left-0 top-1/2 -translate-y-1/2 h-6 w-[3px] rounded-r", active ? "bg-emerald-400" : "bg-transparent")} />
-                  <span className="w-8 flex items-center justify-center text-white/85">
-                    <Icon name={it.icon} />
-                  </span>
-                  {!collapsed && <span className="truncate">{it.label}</span>}
-                </Link>
-              );
-            })}
-
-            <SectionLabel collapsed={collapsed}>OPERACIÓN</SectionLabel>
-            {nav.filter((n) => n.section === "OPERACION").map((it) => {
-              const active = isActive(pathname, it.href);
-              return (
-                <Link
-                  key={it.href}
-                  href={it.href}
-                  title={collapsed ? it.label : undefined}
-                  className={cx(
-                    "mx-2 my-1 relative flex items-center gap-3 rounded-md px-3 py-2 text-sm border",
-                    active ? "bg-white/10 border-white/15" : "bg-transparent border-transparent hover:bg-white/5 hover:border-white/10",
-                  )}
-                >
-                  <span className={cx("absolute left-0 top-1/2 -translate-y-1/2 h-6 w-[3px] rounded-r", active ? "bg-emerald-400" : "bg-transparent")} />
-                  <span className="w-8 flex items-center justify-center text-white/85">
-                    <Icon name={it.icon} />
-                  </span>
-                  {!collapsed && <span className="truncate">{it.label}</span>}
-                </Link>
-              );
-            })}
-
-            <SectionLabel collapsed={collapsed}>CUENTA</SectionLabel>
-            {nav.filter((n) => n.section === "CUENTA").map((it) => {
-              const active = isActive(pathname, it.href);
-              return (
-                <Link
-                  key={it.href}
-                  href={it.href}
-                  title={collapsed ? it.label : undefined}
-                  className={cx(
-                    "mx-2 my-1 relative flex items-center gap-3 rounded-md px-3 py-2 text-sm border",
-                    active ? "bg-white/10 border-white/15" : "bg-transparent border-transparent hover:bg-white/5 hover:border-white/10",
-                  )}
-                >
-                  <span className={cx("absolute left-0 top-1/2 -translate-y-1/2 h-6 w-[3px] rounded-r", active ? "bg-emerald-400" : "bg-transparent")} />
-                  <span className="w-8 flex items-center justify-center text-white/85">
-                    <Icon name={it.icon} />
-                  </span>
-                  {!collapsed && <span className="truncate">{it.label}</span>}
-                </Link>
-              );
-            })}
-
-            <SectionLabel collapsed={collapsed}>ADMIN</SectionLabel>
-            {nav.filter((n) => n.section === "ADMIN").map((it) => {
-              const active = isActive(pathname, it.href);
-              return (
-                <Link
-                  key={it.href}
-                  href={it.href}
-                  title={collapsed ? it.label : undefined}
-                  className={cx(
-                    "mx-2 my-1 relative flex items-center gap-3 rounded-md px-3 py-2 text-sm border",
-                    active ? "bg-white/10 border-white/15" : "bg-transparent border-transparent hover:bg-white/5 hover:border-white/10",
-                  )}
-                >
-                  <span className={cx("absolute left-0 top-1/2 -translate-y-1/2 h-6 w-[3px] rounded-r", active ? "bg-emerald-400" : "bg-transparent")} />
-                  <span className="w-8 flex items-center justify-center text-white/85">
-                    <Icon name={it.icon} />
-                  </span>
-                  {!collapsed && <span className="truncate">{it.label}</span>}
-                </Link>
-              );
-            })}
-
-            <div className={cx("mt-4 px-3 text-xs text-white/50", collapsed && "hidden")}>
-              Sidebar P0: secciones + iconos + persistencia
-            </div>
+          <nav className="p-3 space-y-4">
+            {navSections.map((sec) => (
+              <div key={sec.title}>
+                {!collapsed && <div className="px-2 text-[11px] uppercase tracking-wider text-white/50">{sec.title}</div>}
+                <div className="mt-2 space-y-1">
+                  {sec.items.map((it) => {
+                    const active = isActive(pathname, it.href);
+                    return (
+                      <Link
+                        key={it.href}
+                        href={it.href}
+                        title={collapsed ? it.label : undefined}
+                        className={cx(
+                          "group flex items-center gap-3 rounded-md px-3 py-2 text-sm border relative",
+                          active
+                            ? "bg-white/10 border-white/15"
+                            : "bg-transparent border-transparent hover:bg-white/5 hover:border-white/10",
+                        )}
+                      >
+                        <span
+                          className={cx(
+                            "absolute left-0 top-1/2 -translate-y-1/2 h-6 w-[3px] rounded-r",
+                            active ? "bg-emerald-400" : "bg-transparent",
+                          )}
+                          aria-hidden="true"
+                        />
+                        <span className={cx("text-white/70 group-hover:text-white", active && "text-white")}>
+                          <Icon name={it.icon} />
+                        </span>
+                        {!collapsed && <span className="min-w-0 truncate">{it.label}</span>}
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
           </nav>
+
+          {!collapsed && (
+            <div className="absolute bottom-0 left-0 right-0 p-3 border-t border-white/10">
+              <div className="text-xs opacity-70">Dashboard shell P0 (premium sidebar)</div>
+            </div>
+          )}
         </aside>
 
         {/* Main */}
@@ -393,43 +423,44 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
               </div>
 
               <div className="flex-1 min-w-0">
-                <div className="max-w-[720px]">
+                <div className="max-w-[760px] mx-auto">
                   <button
-                    className="w-full h-9 rounded-md bg-black/20 border border-white/10 px-3 text-sm text-left text-white/70 hover:border-white/20"
                     type="button"
                     onClick={openCmdk}
-                    aria-label="Abrir Command Palette"
+                    className="w-full h-9 rounded-md bg-black/20 border border-white/10 px-3 text-sm text-left flex items-center justify-between hover:border-white/20"
+                    aria-label="Buscar o ejecutar comando"
                   >
-                    Buscar… <span className="ml-2 text-white/35">Cmd/Ctrl+K</span>
+                    <span className="flex items-center gap-2 text-white/70">
+                      <Icon name="search" />
+                      <span>Buscar o ejecutar…</span>
+                    </span>
+                    <span className="text-xs text-white/50">Cmd/Ctrl+K</span>
                   </button>
                 </div>
               </div>
 
               <div className="flex items-center gap-2">
-                <button
-                  className="h-9 px-3 rounded-md border border-white/10 bg-black/20 text-sm hover:bg-white/5"
-                  type="button"
-                  aria-label="Idioma"
+                <Link
+                  href="/app/finances/transactions/new"
+                  className="h-9 px-3 rounded-md border border-white/10 bg-black/20 hover:bg-white/5 flex items-center gap-2 text-sm"
                 >
-                  EN
-                </button>
+                  <Icon name="plus" />
+                  <span className="hidden md:inline">Nueva</span>
+                </Link>
 
-                <div className="relative">
+                <div className="relative" ref={accountRef}>
                   <button
                     className="h-9 px-3 rounded-md border border-white/10 bg-black/20 hover:bg-white/5 flex items-center gap-2"
                     type="button"
                     aria-label="Cuenta"
                     onClick={() => setAccountOpen((v) => !v)}
                   >
-                    <span className="w-6 h-6 rounded-full bg-white/15" />
+                    <span className="w-6 h-6 rounded-full bg-white/20" aria-hidden="true" />
                     <span className="text-sm opacity-80 hidden md:inline">Cuenta</span>
-                    <svg className="w-4 h-4 text-white/60" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                      <path d="M7 10l5 5 5-5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
                   </button>
 
                   {accountOpen && (
-                    <div className="absolute right-0 mt-2 w-52 rounded-md border border-white/10 bg-[#0B1220] shadow-lg overflow-hidden">
+                    <div className="absolute right-0 mt-2 w-48 rounded-md border border-white/10 bg-[#0B1220] shadow-lg overflow-hidden">
                       <Link
                         href="/app/profile"
                         className="block px-3 py-2 text-sm hover:bg-white/5"
@@ -438,11 +469,11 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
                         Perfil
                       </Link>
                       <button
-                        className="w-full text-left px-3 py-2 text-sm hover:bg-white/5 text-white/90"
                         type="button"
-                        onClick={async () => {
+                        className="w-full text-left px-3 py-2 text-sm hover:bg-white/5"
+                        onClick={() => {
                           setAccountOpen(false);
-                          await doLogout(router);
+                          void runActionRef.current({ id: "logout", kind: "logout", label: "Cerrar sesión" });
                         }}
                       >
                         Cerrar sesión
@@ -460,19 +491,19 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
         </div>
       </div>
 
-      {/* CmdK modal */}
+      {/* CmdK */}
       {cmdkOpen && (
         <div
-          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-start justify-center pt-24"
+          className="fixed inset-0 z-50"
           role="dialog"
           aria-modal="true"
-          aria-label="Command Palette"
-          onMouseDown={closeCmdk}
+          aria-label="Command palette"
+          onMouseDown={(e) => {
+            if (e.target === e.currentTarget) closeCmdk();
+          }}
         >
-          <div
-            className="w-[720px] max-w-[92vw] rounded-xl border border-white/10 bg-[#0B1220] shadow-2xl overflow-hidden"
-            onMouseDown={(e) => e.stopPropagation()}
-          >
+          <div className="absolute inset-0 bg-black/60" />
+          <div className="relative mx-auto mt-[12vh] w-[min(720px,92vw)] rounded-xl border border-white/10 bg-[#0B1220] shadow-2xl overflow-hidden">
             <div className="p-3 border-b border-white/10">
               <input
                 ref={cmdkInputRef}
@@ -481,54 +512,46 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
                   setCmdkQ(e.target.value);
                   setCmdkIdx(0);
                 }}
-                onKeyDown={(e) => {
-                  if (e.key === "ArrowDown") {
-                    e.preventDefault();
-                    setCmdkIdx((v) => Math.min(v + 1, maxIdx));
-                  }
-                  if (e.key === "ArrowUp") {
-                    e.preventDefault();
-                    setCmdkIdx((v) => Math.max(v - 1, 0));
-                  }
-                  if (e.key === "Enter") {
-                    e.preventDefault();
-                    const a = filteredActions[activeIdx];
-                    if (a) void runAction(a);
-                  }
-                  if (e.key === "Escape") {
-                    e.preventDefault();
-                    closeCmdk();
-                  }
-                }}
                 className="w-full h-10 rounded-md bg-black/20 border border-white/10 px-3 text-sm outline-none focus:border-white/25"
                 placeholder="Escribe para buscar acciones…"
                 aria-label="Buscar acciones"
               />
             </div>
 
-            <div className="max-h-[360px] overflow-auto">
+            <div className="max-h-[360px] overflow-auto p-2">
               {filteredActions.length === 0 ? (
-                <div className="p-4 text-sm text-white/60">Sin resultados.</div>
+                <div className="px-3 py-6 text-sm text-white/60">Sin resultados.</div>
               ) : (
-                filteredActions.map((a, idx) => (
-                  <button
-                    key={a.id}
-                    type="button"
-                    onClick={() => void runAction(a)}
-                    className={cx(
-                      "w-full text-left px-3 py-3 text-sm flex items-center justify-between",
-                      idx === activeIdx ? "bg-white/10" : "hover:bg-white/5",
-                    )}
-                  >
-                    <span className="text-white/90">{a.label}</span>
-                    <span className="text-xs text-white/40">{a.kind === "logout" ? "Auth" : "Nav"}</span>
-                  </button>
-                ))
+                <div className="space-y-1">
+                  {filteredActions.map((a, idx) => {
+                    const active = idx === boundedIdx;
+                    return (
+                      <button
+                        key={a.id}
+                        type="button"
+                        onMouseEnter={() => setCmdkIdx(idx)}
+                        onClick={() => runActionRef.current(a)}
+                        className={cx(
+                          "w-full text-left px-3 py-2 rounded-md border flex items-center justify-between gap-3",
+                          active
+                            ? "bg-white/10 border-white/15"
+                            : "bg-transparent border-transparent hover:bg-white/5 hover:border-white/10",
+                        )}
+                      >
+                        <div className="min-w-0">
+                          <div className="text-sm truncate">{a.label}</div>
+                          {a.hint && <div className="text-xs text-white/50 truncate">{a.hint}</div>}
+                        </div>
+                        <div className="text-xs text-white/40">Enter</div>
+                      </button>
+                    );
+                  })}
+                </div>
               )}
             </div>
 
-            <div className="p-3 border-t border-white/10 text-xs text-white/50 flex justify-between">
-              <span>Enter: ejecutar · ↑/↓: navegar · Esc: cerrar</span>
+            <div className="px-3 py-2 border-t border-white/10 flex items-center justify-between text-xs text-white/50">
+              <span>↑/↓: navegar · Esc: cerrar</span>
               <span>Cmd/Ctrl+K</span>
             </div>
           </div>

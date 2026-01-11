@@ -1,134 +1,110 @@
-export type Breadcrumb = { label: string; href?: string };
+export type Breadcrumb = { href: string; label: string };
 
 export type RouteMeta = {
-  section?: string;
   title: string;
-  crumbs: Breadcrumb[];
+  breadcrumbs: Breadcrumb[];
 };
 
-function isPrefix(pathname: string, prefix: string) {
-  return pathname === prefix || pathname.startsWith(prefix + "/");
+function mk(title: string, breadcrumbs: Breadcrumb[]): RouteMeta {
+  return { title, breadcrumbs };
 }
 
-export function getRouteMeta(pathname: string): RouteMeta {
-  // Finances
-  if (isPrefix(pathname, "/app/finances/transactions/new")) {
-    return {
-      section: "Finanzas",
-      title: "Nueva transacción",
-      crumbs: [
-        { label: "Finanzas", href: "/app/finances" },
-        { label: "Transacciones", href: "/app/finances/transactions" },
-        { label: "Nueva" },
-      ],
-    };
+function byPathname(pathname: string): RouteMeta {
+  if (!pathname.startsWith("/app")) {
+    return mk("Dashboard", [{ href: "/app/finances", label: "Finanzas" }]);
+  }
+
+  // Finanzas
+  if (pathname === "/app/finances") {
+    return mk("Finanzas", [{ href: "/app/finances", label: "Finanzas" }]);
+  }
+
+  if (pathname === "/app/finances/transactions") {
+    return mk("Transacciones", [
+      { href: "/app/finances", label: "Finanzas" },
+      { href: "/app/finances/transactions", label: "Transacciones" },
+    ]);
+  }
+
+  if (pathname === "/app/finances/transactions/new") {
+    return mk("Nueva transacción", [
+      { href: "/app/finances", label: "Finanzas" },
+      { href: "/app/finances/transactions", label: "Transacciones" },
+      { href: "/app/finances/transactions/new", label: "Nueva" },
+    ]);
   }
 
   if (pathname.startsWith("/app/finances/transactions/")) {
-    return {
-      section: "Finanzas",
-      title: "Detalle de transacción",
-      crumbs: [
-        { label: "Finanzas", href: "/app/finances" },
-        { label: "Transacciones", href: "/app/finances/transactions" },
-        { label: "Detalle" },
-      ],
-    };
+    return mk("Detalle de transacción", [
+      { href: "/app/finances", label: "Finanzas" },
+      { href: "/app/finances/transactions", label: "Transacciones" },
+      { href: pathname, label: "Detalle" },
+    ]);
   }
 
-  if (isPrefix(pathname, "/app/finances/transactions")) {
-    return {
-      section: "Finanzas",
-      title: "Transacciones",
-      crumbs: [
-        { label: "Finanzas", href: "/app/finances" },
-        { label: "Transacciones" },
-      ],
-    };
+  // Documentos
+  if (pathname === "/app/documents") {
+    return mk("Documentos", [
+      { href: "/app/finances", label: "Finanzas" },
+      { href: "/app/documents", label: "Documentos" },
+    ]);
   }
 
-  if (isPrefix(pathname, "/app/finances")) {
-    return {
-      section: "Finanzas",
-      title: "Finanzas",
-      crumbs: [{ label: "Finanzas" }],
-    };
+  if (pathname.startsWith("/app/documents/")) {
+    return mk("Documentos", [
+      { href: "/app/finances", label: "Finanzas" },
+      { href: "/app/documents", label: "Documentos" },
+      { href: pathname, label: "Detalle" },
+    ]);
   }
 
-  // Documents
-  if (pathname.startsWith("/app/documents/ocr-review/")) {
-    return {
-      section: "Documentos",
-      title: "OCR review",
-      crumbs: [
-        { label: "Documentos", href: "/app/documents" },
-        { label: "OCR review" },
-      ],
-    };
-  }
-
-  if (isPrefix(pathname, "/app/documents/ocr-review")) {
-    return {
-      section: "Documentos",
-      title: "OCR review",
-      crumbs: [{ label: "Documentos", href: "/app/documents" }, { label: "OCR review" }],
-    };
-  }
-
-  if (isPrefix(pathname, "/app/documents")) {
-    return {
-      section: "Documentos",
-      title: "Documentos",
-      crumbs: [{ label: "Documentos" }],
-    };
-  }
-
-  // Cases
-  if (pathname.startsWith("/app/cases/new")) {
-    return {
-      section: "Casos",
-      title: "Nuevo caso",
-      crumbs: [{ label: "Casos", href: "/app/cases" }, { label: "Nuevo" }],
-    };
+  // Casos
+  if (pathname === "/app/cases") {
+    return mk("Casos", [
+      { href: "/app/finances", label: "Finanzas" },
+      { href: "/app/cases", label: "Casos" },
+    ]);
   }
 
   if (pathname.startsWith("/app/cases/")) {
-    return {
-      section: "Casos",
-      title: "Detalle de caso",
-      crumbs: [{ label: "Casos", href: "/app/cases" }, { label: "Detalle" }],
-    };
+    return mk("Caso", [
+      { href: "/app/finances", label: "Finanzas" },
+      { href: "/app/cases", label: "Casos" },
+      { href: pathname, label: "Detalle" },
+    ]);
   }
 
-  if (isPrefix(pathname, "/app/cases")) {
-    return {
-      section: "Casos",
-      title: "Casos",
-      crumbs: [{ label: "Casos" }],
-    };
+  // Perfil / Admin
+  if (pathname === "/app/profile") {
+    return mk("Perfil", [
+      { href: "/app/finances", label: "Finanzas" },
+      { href: "/app/profile", label: "Perfil" },
+    ]);
   }
 
-  // Profile
-  if (isPrefix(pathname, "/app/profile")) {
-    return {
-      section: "Cuenta",
-      title: "Perfil",
-      crumbs: [{ label: "Perfil" }],
-    };
+  if (pathname === "/app/admin") {
+    return mk("Admin", [
+      { href: "/app/finances", label: "Finanzas" },
+      { href: "/app/admin", label: "Admin" },
+    ]);
   }
 
-  // Admin
-  if (isPrefix(pathname, "/app/admin")) {
-    return {
-      section: "Admin",
-      title: "Admin",
-      crumbs: [{ label: "Admin" }],
-    };
+  if (pathname.startsWith("/app/admin/")) {
+    return mk("Admin", [
+      { href: "/app/finances", label: "Finanzas" },
+      { href: "/app/admin", label: "Admin" },
+      { href: pathname, label: "Detalle" },
+    ]);
   }
 
-  // Fallback
-  return {
-    title: "Dashboard",
-    crumbs: [{ label: "Dashboard" }],
-  };
+  return mk("Dashboard", [{ href: "/app/finances", label: "Finanzas" }]);
+}
+
+export function getDashboardRouteMeta(pathname: string): RouteMeta {
+  return byPathname(pathname);
+}
+
+// Alias defensivo por compatibilidad
+export function getRouteMeta(pathname: string): RouteMeta {
+  return byPathname(pathname);
 }
