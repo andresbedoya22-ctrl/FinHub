@@ -8,14 +8,38 @@ type SplitIn = {
   note: string | null;
 };
 
-function isArrayOfSplits(x: unknown): x is SplitIn[] {
-  if (!Array.isArray(x)) return false;
-  for (const it of x) {
-    if (!it || typeof it !== "object") return false;
-    const o = it as Record<string, unknown>;
-    if (!("splitAmountCents" in o) || typeof o.splitAmountCents !== "number") return false;
-  }
+function isSplitIn(x: unknown): x is SplitIn {
+  if (!x || typeof x !== "object") return false;
+  const o = x as Record<string, unknown>;
+  if (!("splitAmountCents" in o) || typeof o.splitAmountCents !== "number") return false;
+  if ("categoryId" in o && o.categoryId !== null && typeof o.categoryId !== "string") return false;
+  if ("note" in o && o.note !== null && typeof o.note !== "string") return false;
   return true;
+}
+
+function normalizeSplitsBody(raw: unknown): SplitIn[] | null {
+  // Accept:
+  // 1) [ { splitAmountCents, categoryId?, note? }, ... ]
+  // 2) { splits: [ ... ] }
+  let candidate: unknown = raw;
+
+  if (raw && typeof raw === "object" && !Array.isArray(raw)) {
+    const o = raw as Record<string, unknown>;
+    if ("splits" in o) candidate = o.splits;
+  }
+
+  if (!Array.isArray(candidate)) return null;
+
+  const out: SplitIn[] = [];
+  for (const it of candidate) {
+    if (!isSplitIn(it)) return null;
+    out.push({
+      categoryId: it.categoryId ?? null,
+      splitAmountCents: it.splitAmountCents,
+      note: it.note ?? null,
+    });
+  }
+  return out;
 }
 
 export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> }) {
@@ -52,7 +76,8 @@ export async function PUT(req: Request, ctx: { params: Promise<{ id: string }> }
   const { id } = await ctx.params;
 
   const raw = (await req.json().catch(() => null)) as unknown;
-  if (!isArrayOfSplits(raw)) return NextResponse.json({ error: "Invalid body" }, { status: 400 });
+  const splits = normalizeSplitsBody(raw);
+  if (!splits) return NextResponse.json({ error: "Invalid body" }, { status: 400 });
 
   const { error: delErr } = await supabase
     .from("finance_transaction_splits")
@@ -62,9 +87,11 @@ export async function PUT(req: Request, ctx: { params: Promise<{ id: string }> }
 
   if (delErr) return NextResponse.json({ error: delErr.message }, { status: 500 });
 
-  if (!raw.length) return NextResponse.json({ ok: true, splits: [] });
+  if (!splits.length) {
+    return NextResponse.json({ ok: true, splits: [] });
+  }
 
-  const rows = raw.map((s) => ({
+  const rows = splits.map((s) => ({
     user_id: auth.user.id,
     transaction_id: id,
     category_id: s.categoryId ?? null,
