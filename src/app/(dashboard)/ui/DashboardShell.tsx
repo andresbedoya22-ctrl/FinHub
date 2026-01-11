@@ -35,12 +35,14 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-dvh bg-[#0B1220] text-white">
-      <a href="#content" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:px-3 focus:py-2 focus:rounded-md focus:bg-white focus:text-black">
+      <a
+        href="#content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:px-3 focus:py-2 focus:rounded-md focus:bg-white focus:text-black"
+      >
         Saltar al contenido
       </a>
 
       <div className="flex">
-        {/* Sidebar */}
         <aside
           className={cx(
             "sticky top-0 h-dvh border-r border-white/10 bg-white/5 backdrop-blur",
@@ -77,7 +79,9 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
                       : "bg-transparent border-transparent hover:bg-white/5 hover:border-white/10",
                   )}
                 >
-                  <span className={cx("inline-block w-2 h-2 rounded-full", active ? "bg-emerald-400" : "bg-white/30")} />
+                  <span
+                    className={cx("inline-block w-2 h-2 rounded-full", active ? "bg-emerald-400" : "bg-white/30")}
+                  />
                   {!collapsed && <span>{it.label}</span>}
                 </Link>
               );
@@ -85,15 +89,11 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
           </nav>
 
           <div className="absolute bottom-0 left-0 right-0 p-3 border-t border-white/10">
-            <div className={cx("text-xs opacity-70", collapsed && "hidden")}>
-              Shell P0: header + sidebar
-            </div>
+            <div className={cx("text-xs opacity-70", collapsed && "hidden")}>Shell P0: header + sidebar</div>
           </div>
         </aside>
 
-        {/* Main */}
         <div className="flex-1 min-w-0">
-          {/* Header */}
           <header className="sticky top-0 z-10 h-14 border-b border-white/10 bg-white/5 backdrop-blur">
             <div className="h-full px-4 flex items-center gap-3">
               <div className="font-medium">Dashboard</div>
@@ -109,7 +109,6 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
               </div>
 
               <div className="flex items-center gap-2">
-                {/* Locale placeholder (P0 UI) */}
                 <button
                   className="h-9 px-3 rounded-md border border-white/10 bg-black/20 text-sm hover:bg-white/5"
                   type="button"
@@ -118,16 +117,14 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
                   EN
                 </button>
 
-                {/* Bell placeholder */}
                 <button
                   className="h-9 w-9 rounded-md border border-white/10 bg-black/20 hover:bg-white/5"
                   type="button"
                   aria-label="Notificaciones"
                 >
-                  <span className="text-sm">🔔</span>
+                  <span className="text-sm">N</span>
                 </button>
 
-                {/* Avatar/menu placeholder */}
                 <button
                   className="h-9 px-3 rounded-md border border-white/10 bg-black/20 hover:bg-white/5 flex items-center gap-2"
                   type="button"
