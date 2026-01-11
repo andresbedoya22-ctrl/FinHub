@@ -1,5 +1,5 @@
-import TransactionsPageClient from "./ui/TransactionsPageClient";
+import TransactionsListClient from "./ui/TransactionsListClient";
 
-export default function TransactionsPage() {
-  return <TransactionsPageClient />;
+export default function Page() {
+  return <TransactionsListClient />;
 }
