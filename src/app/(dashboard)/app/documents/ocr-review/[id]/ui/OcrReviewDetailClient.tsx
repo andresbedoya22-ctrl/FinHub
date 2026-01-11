@@ -110,7 +110,7 @@ export default function OcrReviewDetailClient() {
       } else {
         setFields(emptyMachtigingsregistratieFieldsV1());
         setExtraText("{}");
-        setError(Fields inválidos en extracción: );
+        setError(`Fields inválidos en extracción: ${validated.error}`);
       }
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : "Error desconocido");
@@ -155,7 +155,7 @@ export default function OcrReviewDetailClient() {
     if (!id) return;
 
     if (!parsedExtra.ok) {
-      setError(extra inválido: );
+      setError(`extra inválido: ${parsedExtra.error}`);
       return;
     }
 
@@ -208,14 +208,14 @@ export default function OcrReviewDetailClient() {
     setTxMerchant(doc?.file_name ? doc.file_name.replace(/\.[^/.]+$/, "") : "Recibo");
     setTxAmountEur("");
     setTxCategoryId("");
-    setTxNote(doc:);
+    setTxNote(`doc:${id}`);
 
     setConvertOpen(true);
 
     setConvertLoadingCats(true);
     try {
       const month = monthFromIsoDate(todayIso());
-      const res = await fetch(/api/finances/ledger?month=, { method: "GET" });
+      const res = await fetch(`/api/finances/ledger?month=${encodeURIComponent(month)}`, { method: "GET" });
       if (!res.ok) {
         const j = (await res.json().catch(() => null)) as any;
         throw new Error(j?.error ?? "No se pudo cargar ledger.");
@@ -303,7 +303,7 @@ export default function OcrReviewDetailClient() {
     <Screen>
       <Header
         title="OCR Review — Detalle"
-        subtitle={doc ? ${doc.file_name} — status:  : "Cargando documento..."}
+        subtitle={doc ? `${doc.file_name} — status: ${doc.status}` : "Cargando documento..."}
         right={
           <Link className="underline text-sm" href="/app/documents/ocr-review">
             Volver
