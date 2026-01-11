@@ -35,7 +35,7 @@ function parseExtraJson(s: string): { ok: true; value: Record<string, unknown> }
     }
     return { ok: true, value: v as Record<string, unknown> };
   } catch (e: unknown) {
-    return { ok: false, error: e instanceof Error ? e.message : "JSON invÃ¡lido" };
+    return { ok: false, error: e instanceof Error ? e.message : "JSON invÃƒÂ¡lido" };
   }
 }
 
@@ -55,6 +55,8 @@ function euroToCents(input: string): number | null {
   if (!Number.isFinite(n)) return null;
   return Math.round(n * 100);
 }
+
+type ErrorResponse = { error?: string };
 
 export default function OcrReviewDetailClient() {
   const params = useParams<{ id: string }>();
@@ -110,7 +112,7 @@ export default function OcrReviewDetailClient() {
       } else {
         setFields(emptyMachtigingsregistratieFieldsV1());
         setExtraText("{}");
-        setError(`Fields invÃ¡lidos en extracciÃ³n: ${validated.error}`);
+        setError(`Fields invÃƒÂ¡lidos en extracciÃƒÂ³n: ${validated.error}`);
       }
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : "Error desconocido");
@@ -155,7 +157,7 @@ export default function OcrReviewDetailClient() {
     if (!id) return;
 
     if (!parsedExtra.ok) {
-      setError(`extra invÃ¡lido: ${parsedExtra.error}`);
+      setError(`extra invÃƒÂ¡lido: ${parsedExtra.error}`);
       return;
     }
 
@@ -182,7 +184,7 @@ export default function OcrReviewDetailClient() {
     if (!id) return;
 
     if (!verifyReady) {
-      setError("No puedes verificar todavÃ­a: falta activeringscode vÃ¡lido.");
+      setError("No puedes verificar todavÃƒÂ­a: falta activeringscode vÃƒÂ¡lido.");
       return;
     }
 
@@ -225,7 +227,7 @@ export default function OcrReviewDetailClient() {
       const j = (jUnknown && typeof jUnknown === "object") ? (jUnknown as LedgerResponse) : {};
       setConvertCats(Array.isArray(j.categories) ? j.categories : []);
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : "Error cargando categorÃ­as.");
+      setError(e instanceof Error ? e.message : "Error cargando categorÃƒÂ­as.");
       setConvertCats([]);
     } finally {
       setConvertLoadingCats(false);
@@ -237,7 +239,7 @@ export default function OcrReviewDetailClient() {
 
     const occurredOn = txDate.trim();
     if (!/^\d{4}-\d{2}-\d{2}$/.test(occurredOn)) {
-      setError("Fecha invÃ¡lida. Usa YYYY-MM-DD.");
+      setError("Fecha invÃƒÂ¡lida. Usa YYYY-MM-DD.");
       return;
     }
 
@@ -249,7 +251,7 @@ export default function OcrReviewDetailClient() {
 
     const centsAbs = euroToCents(txAmountEur);
     if (centsAbs === null) {
-      setError("Monto invÃ¡lido. Usa un nÃºmero (ej. 12.34).");
+      setError("Monto invÃƒÂ¡lido. Usa un nÃƒÂºmero (ej. 12.34).");
       return;
     }
     if (centsAbs <= 0) {
@@ -277,10 +279,10 @@ export default function OcrReviewDetailClient() {
 
       const txJson = (await txRes.json().catch(() => null)) as unknown;
       if (!txRes.ok) {
-        throw new Error(txJson?.error ?? "No se pudo crear la transacciÃ³n.");
+        throw new Error(txJson?.error ?? "No se pudo crear la transacciÃƒÂ³n.");
       }
       const transactionId = String(txJson?.id ?? "");
-      if (!transactionId) throw new Error("Respuesta invÃ¡lida: falta transaction id.");
+      if (!transactionId) throw new Error("Respuesta invÃƒÂ¡lida: falta transaction id.");
 
       const linkRes = await fetch("/api/finances/receipt-links", {
         method: "POST",
@@ -305,8 +307,8 @@ export default function OcrReviewDetailClient() {
   return (
     <Screen>
       <Header
-        title="OCR Review â€” Detalle"
-        subtitle={doc ? `${doc.file_name} â€” status: ${doc.status}` : "Cargando documento..."}
+        title="OCR Review Ã¢â‚¬â€ Detalle"
+        subtitle={doc ? `${doc.file_name} Ã¢â‚¬â€ status: ${doc.status}` : "Cargando documento..."}
         right={
           <Link className="underline text-sm" href="/app/documents/ocr-review">
             Volver
@@ -338,7 +340,7 @@ export default function OcrReviewDetailClient() {
                 {busy === "ocr" ? "Ejecutando..." : "Ejecutar OCR"}
               </Button>
               <Button disabled={busy !== null} onClick={() => void runExtractionAction()}>
-                {busy === "extract" ? "Extrayendo..." : "Ejecutar extracciÃ³n IA"}
+                {busy === "extract" ? "Extrayendo..." : "Ejecutar extracciÃƒÂ³n IA"}
               </Button>
               <Button disabled={busy !== null || !parsedExtra.ok} onClick={() => void saveAction()}>
                 {busy === "save" ? "Guardando..." : "Guardar cambios"}
@@ -350,7 +352,7 @@ export default function OcrReviewDetailClient() {
               <div className="w-full h-px bg-black/10 my-2" />
 
               <Button disabled={busy !== null} onClick={() => void openConvertModal()}>
-                Convertir a transacciÃ³n
+                Convertir a transacciÃƒÂ³n
               </Button>
               <Link className="underline text-sm self-center" href="/app/finances">
                 Ir a Finanzas
@@ -415,7 +417,7 @@ export default function OcrReviewDetailClient() {
                   className="w-full rounded-md border p-2 text-sm"
                   value={(fields.bsn ?? "").toString()}
                   onChange={(e) => setField("bsn", e.target.value)}
-                  placeholder="9 dÃ­gitos"
+                  placeholder="9 dÃƒÂ­gitos"
                 />
               </div>
             </div>
@@ -427,7 +429,7 @@ export default function OcrReviewDetailClient() {
                 value={extraText}
                 onChange={(e) => setExtraText(e.target.value)}
               />
-              {!parsedExtra.ok ? <div className="text-sm">extra invÃ¡lido: {parsedExtra.error}</div> : null}
+              {!parsedExtra.ok ? <div className="text-sm">extra invÃƒÂ¡lido: {parsedExtra.error}</div> : null}
             </div>
           </div>
         )}
@@ -438,7 +440,7 @@ export default function OcrReviewDetailClient() {
           <div className="w-full max-w-xl rounded-xl bg-white p-4 shadow-lg">
             <div className="flex items-start justify-between gap-3">
               <div>
-                <div className="text-base font-semibold">Convertir a transacciÃ³n</div>
+                <div className="text-base font-semibold">Convertir a transacciÃƒÂ³n</div>
                 <div className="text-sm opacity-70">Documento: {id}</div>
               </div>
               <button
@@ -471,7 +473,7 @@ export default function OcrReviewDetailClient() {
                     placeholder="Ej: 12.34"
                     inputMode="decimal"
                   />
-                  <div className="text-xs opacity-70">Se guardarÃ¡ como gasto (negativo) en P0.</div>
+                  <div className="text-xs opacity-70">Se guardarÃƒÂ¡ como gasto (negativo) en P0.</div>
                 </div>
               </div>
 
@@ -486,14 +488,14 @@ export default function OcrReviewDetailClient() {
               </div>
 
               <div className="flex flex-col gap-1">
-                <div className="text-sm font-medium">CategorÃ­a</div>
+                <div className="text-sm font-medium">CategorÃƒÂ­a</div>
                 <select
                   className="w-full rounded-md border p-2 text-sm"
                   value={txCategoryId}
                   onChange={(e) => setTxCategoryId(e.target.value)}
                   disabled={convertLoadingCats}
                 >
-                  <option value="">{convertLoadingCats ? "Cargando..." : "Sin categorÃ­a"}</option>
+                  <option value="">{convertLoadingCats ? "Cargando..." : "Sin categorÃƒÂ­a"}</option>
                   {convertCats.map((c) => (
                     <option key={c.id} value={c.id}>
                       {c.label}
@@ -517,7 +519,7 @@ export default function OcrReviewDetailClient() {
                   Cancelar
                 </Button>
                 <Button disabled={busy !== null} onClick={() => void convertToTransaction()}>
-                  {busy === "convert" ? "Guardando..." : "Crear transacciÃ³n + vincular"}
+                  {busy === "convert" ? "Guardando..." : "Crear transacciÃƒÂ³n + vincular"}
                 </Button>
               </div>
             </div>
