@@ -3,18 +3,9 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import type { ReactNode } from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { getRouteMeta } from "./dashboardRouteMeta";
-
-type NavItem = { href: string; label: string };
-
-type Command = {
-  id: string;
-  label: string;
-  keywords: string[];
-  run: () => void;
-};
+import { getDashboardRouteMeta, type Breadcrumb } from "./dashboardRouteMeta";
 
 function cx(...xs: Array<string | false | null | undefined>) {
   return xs.filter(Boolean).join(" ");
@@ -26,98 +17,263 @@ function isActive(pathname: string, href: string): boolean {
   return pathname === href || pathname.startsWith(href + "/");
 }
 
-function norm(s: string) {
-  return s.toLowerCase().trim();
+/** Minimal inline icons (no deps) */
+function Icon({ name }: { name: "grid" | "money" | "doc" | "case" | "user" | "shield" | "plus" | "search" }) {
+  const common = "w-4 h-4";
+  switch (name) {
+    case "grid":
+      return (
+        <svg className={common} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path
+            d="M4 4h7v7H4V4zm9 0h7v7h-7V4zM4 13h7v7H4v-7zm9 0h7v7h-7v-7z"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          />
+        </svg>
+      );
+    case "money":
+      return (
+        <svg className={common} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M3 7h18v10H3V7z" stroke="currentColor" strokeWidth="1.5" />
+          <path d="M7 12h.01M17 12h.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+          <path
+            d="M12 10.2c-1.3 0-2.3.7-2.3 1.8 0 2.2 4.6 1.1 4.6 3.3 0 1.1-1 1.8-2.3 1.8"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
+        </svg>
+      );
+    case "doc":
+      return (
+        <svg className={common} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M7 3h7l3 3v15H7V3z" stroke="currentColor" strokeWidth="1.5" />
+          <path d="M14 3v4h4" stroke="currentColor" strokeWidth="1.5" />
+          <path d="M9 11h6M9 15h6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        </svg>
+      );
+    case "case":
+      return (
+        <svg className={common} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M4 8h16v11H4V8z" stroke="currentColor" strokeWidth="1.5" />
+          <path
+            d="M9 8V6.5A2.5 2.5 0 0 1 11.5 4h1A2.5 2.5 0 0 1 15 6.5V8"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          />
+          <path d="M4 12h16" stroke="currentColor" strokeWidth="1.5" />
+        </svg>
+      );
+    case "user":
+      return (
+        <svg className={common} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4z" stroke="currentColor" strokeWidth="1.5" />
+          <path d="M4 20a8 8 0 0 1 16 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        </svg>
+      );
+    case "shield":
+      return (
+        <svg className={common} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 3l8 4v6c0 5-3.5 8-8 8s-8-3-8-8V7l8-4z" stroke="currentColor" strokeWidth="1.5" />
+          <path
+            d="M9.5 12l1.8 1.8L15 10"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      );
+    case "plus":
+      return (
+        <svg className={common} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        </svg>
+      );
+    case "search":
+      return (
+        <svg className={common} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M10.5 18a7.5 7.5 0 1 0 0-15 7.5 7.5 0 0 0 0 15z" stroke="currentColor" strokeWidth="1.5" />
+          <path d="M16.5 16.5L21 21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        </svg>
+      );
+    default:
+      return null;
+  }
 }
 
-function matchCmd(q: string, cmd: Command) {
-  const qq = norm(q);
-  if (!qq) return true;
-  const hay = [cmd.label, ...cmd.keywords].map(norm).join(" ");
-  return hay.includes(qq);
+type NavItem = { href: string; label: string; icon: Parameters<typeof Icon>[0]["name"] };
+type NavSection = { title: string; items: NavItem[] };
+
+type CmdkAction =
+  | { id: string; label: string; hint?: string; kind: "nav"; href: string }
+  | { id: string; label: string; hint?: string; kind: "tx_new" }
+  | { id: string; label: string; hint?: string; kind: "logout" };
+
+function Breadcrumbs({ items }: { items: Breadcrumb[] }) {
+  if (!items.length) return null;
+  return (
+    <div className="mt-0.5 flex items-center gap-2 text-xs text-white/60 min-w-0">
+      {items.map((b, idx) => (
+        <div key={b.href + b.label} className="flex items-center gap-2 min-w-0">
+          {idx > 0 && <span className="opacity-60">/</span>}
+          <Link href={b.href} className="hover:text-white/80 truncate">
+            {b.label}
+          </Link>
+        </div>
+      ))}
+    </div>
+  );
 }
 
 export default function DashboardShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
 
-  const meta = useMemo(() => getRouteMeta(pathname || "/app"), [pathname]);
+  const SIDEBAR_KEY = "finhub.sidebar.collapsed.v1";
 
-  const [collapsed, setCollapsed] = useState(false);
+  // Sidebar collapsed: read once from localStorage (no setState in effects)
+  const [collapsed, setCollapsed] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    try {
+      return window.localStorage.getItem(SIDEBAR_KEY) === "1";
+    } catch {
+      return false;
+    }
+  });
 
-  // CmdK palette
-  const [cmdkOpen, setCmdkOpen] = useState(false);
-  const [cmdkQuery, setCmdkQuery] = useState("");
-  const [cmdkIdx, setCmdkIdx] = useState(0);
+  // Persist collapsed
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(SIDEBAR_KEY, collapsed ? "1" : "0");
+    } catch {
+      // ignore
+    }
+  }, [collapsed]);
 
-  const nav: NavItem[] = useMemo(
+  const meta = useMemo(() => getDashboardRouteMeta(pathname), [pathname]);
+
+  const navSections: NavSection[] = useMemo(
     () => [
-      { href: "/app/finances", label: "Finanzas" },
-      { href: "/app/finances/transactions", label: "Transacciones" },
-      { href: "/app/documents", label: "Documentos" },
-      { href: "/app/cases", label: "Casos" },
-      { href: "/app/profile", label: "Perfil" },
-      { href: "/app/admin", label: "Admin" },
+      {
+        title: "Finanzas",
+        items: [
+          { href: "/app/finances", label: "Overview", icon: "money" },
+          { href: "/app/finances/transactions", label: "Transacciones", icon: "grid" },
+        ],
+      },
+      {
+        title: "Operación",
+        items: [
+          { href: "/app/documents", label: "Documentos", icon: "doc" },
+          { href: "/app/cases", label: "Casos", icon: "case" },
+        ],
+      },
+      {
+        title: "Cuenta",
+        items: [{ href: "/app/profile", label: "Perfil", icon: "user" }],
+      },
+      {
+        title: "Admin",
+        items: [{ href: "/app/admin", label: "Admin", icon: "shield" }],
+      },
     ],
     [],
   );
 
-  const commands: Command[] = useMemo(() => {
-    const go = (href: string) => () => {
-      setCmdkOpen(false);
-      setCmdkQuery("");
-      setCmdkIdx(0);
-      router.push(href);
-    };
+  // CmdK
+  const [cmdkOpen, setCmdkOpen] = useState(false);
+  const [cmdkQ, setCmdkQ] = useState("");
+  const [cmdkIdx, setCmdkIdx] = useState(0);
+  const cmdkInputRef = useRef<HTMLInputElement | null>(null);
 
-    const logout = async () => {
-      try {
-        await fetch("/api/auth/logout", { method: "POST" }).catch(() => null);
-      } finally {
-        setCmdkOpen(false);
-        setCmdkQuery("");
-        setCmdkIdx(0);
-        router.push("/login");
-        router.refresh();
+  const openCmdk = useCallback(() => {
+    setCmdkQ("");
+    setCmdkIdx(0);
+    setCmdkOpen(true);
+  }, []);
+
+  const closeCmdk = useCallback(() => {
+    setCmdkOpen(false);
+  }, []);
+
+  const actions: CmdkAction[] = useMemo(
+    () => [
+      { id: "nav-finances", kind: "nav", href: "/app/finances", label: "Ir a Finanzas", hint: "/app/finances" },
+      { id: "nav-tx", kind: "nav", href: "/app/finances/transactions", label: "Ir a Transacciones", hint: "/app/finances/transactions" },
+      { id: "tx-new", kind: "tx_new", label: "Nueva transacción", hint: "/app/finances/transactions/new" },
+      { id: "nav-docs", kind: "nav", href: "/app/documents", label: "Ir a Documentos", hint: "/app/documents" },
+      { id: "nav-cases", kind: "nav", href: "/app/cases", label: "Ir a Casos", hint: "/app/cases" },
+      { id: "nav-profile", kind: "nav", href: "/app/profile", label: "Ir a Perfil", hint: "/app/profile" },
+      { id: "logout", kind: "logout", label: "Cerrar sesión", hint: "POST /api/auth/logout" },
+    ],
+    [],
+  );
+
+  const filteredActions = useMemo(() => {
+    const q = cmdkQ.trim().toLowerCase();
+    if (!q) return actions;
+    return actions.filter((a) => (a.label + " " + (a.hint ?? "")).toLowerCase().includes(q));
+  }, [actions, cmdkQ]);
+
+  const boundedIdx = useMemo(() => {
+    if (filteredActions.length === 0) return 0;
+    if (cmdkIdx < 0) return 0;
+    if (cmdkIdx >= filteredActions.length) return filteredActions.length - 1;
+    return cmdkIdx;
+  }, [cmdkIdx, filteredActions.length]);
+
+  const filteredRef = useRef<CmdkAction[]>([]);
+  const idxRef = useRef<number>(0);
+  const runActionRef = useRef<(a: CmdkAction) => void>(() => {});
+
+  const runAction = useCallback(
+    async (a: CmdkAction) => {
+      if (a.kind === "nav") {
+        closeCmdk();
+        router.push(a.href);
+        return;
       }
+
+      if (a.kind === "tx_new") {
+        closeCmdk();
+        router.push("/app/finances/transactions/new");
+        return;
+      }
+
+      // logout
+      closeCmdk();
+      try {
+        await fetch("/api/auth/logout", { method: "POST" });
+      } catch {
+        // ignore
+      }
+      router.push("/login");
+    },
+    [closeCmdk, router],
+  );
+
+  useEffect(() => {
+    filteredRef.current = filteredActions;
+    idxRef.current = boundedIdx;
+  }, [filteredActions, boundedIdx]);
+
+  useEffect(() => {
+    runActionRef.current = (a: CmdkAction) => {
+      void runAction(a);
     };
+  }, [runAction]);
 
-    return [
-      { id: "go-finances", label: "Ir a Finanzas", keywords: ["finances", "dashboard", "home"], run: go("/app/finances") },
-      {
-        id: "go-transactions",
-        label: "Ir a Transacciones",
-        keywords: ["transactions", "inbox", "ledger"],
-        run: go("/app/finances/transactions"),
-      },
-      {
-        id: "new-transaction",
-        label: "Nueva transacción",
-        keywords: ["create", "manual", "add transaction"],
-        run: go("/app/finances/transactions/new"),
-      },
-      { id: "go-documents", label: "Ir a Documentos", keywords: ["documents", "ocr"], run: go("/app/documents") },
-      { id: "go-cases", label: "Ir a Casos", keywords: ["cases"], run: go("/app/cases") },
-      { id: "go-profile", label: "Ir a Perfil", keywords: ["account", "settings"], run: go("/app/profile") },
-      { id: "go-admin", label: "Ir a Admin", keywords: ["admin"], run: go("/app/admin") },
-      { id: "logout", label: "Cerrar sesión", keywords: ["logout", "sign out"], run: logout },
-    ];
-  }, [router]);
-
-  const visibleCommands = useMemo(() => commands.filter((c) => matchCmd(cmdkQuery, c)), [commands, cmdkQuery]);
-
+  // Global key handling (Cmd/Ctrl+K + navigation inside palette)
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       const isK = e.key.toLowerCase() === "k";
-      const mod = e.metaKey || e.ctrlKey;
+      const hasMod = e.metaKey || e.ctrlKey;
 
-      if (mod && isK) {
+      if (hasMod && isK) {
         e.preventDefault();
-        setCmdkOpen(true);
-        setTimeout(() => {
-          const el = document.getElementById("cmdk-input") as HTMLInputElement | null;
-          el?.focus();
-        }, 0);
+        if (cmdkOpen) closeCmdk();
+        else openCmdk();
         return;
       }
 
@@ -125,15 +281,15 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
 
       if (e.key === "Escape") {
         e.preventDefault();
-        setCmdkOpen(false);
-        setCmdkQuery("");
-        setCmdkIdx(0);
+        closeCmdk();
         return;
       }
 
       if (e.key === "ArrowDown") {
         e.preventDefault();
-        setCmdkIdx((v) => Math.min(v + 1, Math.max(0, visibleCommands.length - 1)));
+        const len = filteredRef.current.length;
+        if (len <= 0) return;
+        setCmdkIdx((v) => Math.min(len - 1, v + 1));
         return;
       }
 
@@ -145,28 +301,38 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
 
       if (e.key === "Enter") {
         e.preventDefault();
-        const cmd = visibleCommands[cmdkIdx];
-        cmd?.run();
+        const list = filteredRef.current;
+        const idx = idxRef.current;
+        const a = list[idx];
+        if (a) runActionRef.current(a);
       }
     };
 
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [cmdkOpen, cmdkIdx, visibleCommands]);
+  }, [cmdkOpen, openCmdk, closeCmdk]);
+
+  // Focus input when palette opens (no setState here)
+  useEffect(() => {
+    if (!cmdkOpen) return;
+    const t = window.setTimeout(() => cmdkInputRef.current?.focus(), 0);
+    return () => window.clearTimeout(t);
+  }, [cmdkOpen]);
+
+  // Account menu
+  const [accountOpen, setAccountOpen] = useState(false);
+  const accountRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    // Reset índice al cambiar filtro
-    setCmdkIdx(0);
-  }, [cmdkQuery]);
-
-  const onLogout = async () => {
-    try {
-      await fetch("/api/auth/logout", { method: "POST" }).catch(() => null);
-    } finally {
-      router.push("/login");
-      router.refresh();
-    }
-  };
+    const onDoc = (e: MouseEvent) => {
+      if (!accountOpen) return;
+      const t = e.target as Node | null;
+      if (!t) return;
+      if (accountRef.current && !accountRef.current.contains(t)) setAccountOpen(false);
+    };
+    document.addEventListener("mousedown", onDoc);
+    return () => document.removeEventListener("mousedown", onDoc);
+  }, [accountOpen]);
 
   return (
     <div className="min-h-dvh bg-[#0B1220] text-white">
@@ -182,12 +348,12 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
         <aside
           className={cx(
             "sticky top-0 h-dvh border-r border-white/10 bg-white/5 backdrop-blur",
-            collapsed ? "w-[72px]" : "w-[260px]",
+            collapsed ? "w-[72px]" : "w-[276px]",
           )}
         >
           <div className="h-14 px-4 flex items-center justify-between border-b border-white/10">
             <Link href="/app/finances" className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded bg-emerald-500/90" />
+              <div className="w-7 h-7 rounded bg-emerald-500/90" aria-hidden="true" />
               {!collapsed && <div className="font-semibold tracking-wide">FinHub</div>}
             </Link>
 
@@ -201,30 +367,49 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
             </button>
           </div>
 
-          <nav className="p-3 space-y-1">
-            {nav.map((it) => {
-              const active = isActive(pathname, it.href);
-              return (
-                <Link
-                  key={it.href}
-                  href={it.href}
-                  className={cx(
-                    "flex items-center gap-3 rounded-md px-3 py-2 text-sm border",
-                    active
-                      ? "bg-white/10 border-white/15"
-                      : "bg-transparent border-transparent hover:bg-white/5 hover:border-white/10",
-                  )}
-                >
-                  <span className={cx("inline-block w-2 h-2 rounded-full", active ? "bg-emerald-400" : "bg-white/30")} />
-                  {!collapsed && <span>{it.label}</span>}
-                </Link>
-              );
-            })}
+          <nav className="p-3 space-y-4">
+            {navSections.map((sec) => (
+              <div key={sec.title}>
+                {!collapsed && <div className="px-2 text-[11px] uppercase tracking-wider text-white/50">{sec.title}</div>}
+                <div className="mt-2 space-y-1">
+                  {sec.items.map((it) => {
+                    const active = isActive(pathname, it.href);
+                    return (
+                      <Link
+                        key={it.href}
+                        href={it.href}
+                        title={collapsed ? it.label : undefined}
+                        className={cx(
+                          "group flex items-center gap-3 rounded-md px-3 py-2 text-sm border relative",
+                          active
+                            ? "bg-white/10 border-white/15"
+                            : "bg-transparent border-transparent hover:bg-white/5 hover:border-white/10",
+                        )}
+                      >
+                        <span
+                          className={cx(
+                            "absolute left-0 top-1/2 -translate-y-1/2 h-6 w-[3px] rounded-r",
+                            active ? "bg-emerald-400" : "bg-transparent",
+                          )}
+                          aria-hidden="true"
+                        />
+                        <span className={cx("text-white/70 group-hover:text-white", active && "text-white")}>
+                          <Icon name={it.icon} />
+                        </span>
+                        {!collapsed && <span className="min-w-0 truncate">{it.label}</span>}
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
           </nav>
 
-          <div className="absolute bottom-0 left-0 right-0 p-3 border-t border-white/10">
-            <div className={cx("text-xs opacity-70", collapsed && "hidden")}>Shell P0: header + sidebar (route-aware + CmdK)</div>
-          </div>
+          {!collapsed && (
+            <div className="absolute bottom-0 left-0 right-0 p-3 border-t border-white/10">
+              <div className="text-xs opacity-70">Dashboard shell P0 (premium sidebar)</div>
+            </div>
+          )}
         </aside>
 
         {/* Main */}
@@ -233,76 +418,69 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
           <header className="sticky top-0 z-10 h-14 border-b border-white/10 bg-white/5 backdrop-blur">
             <div className="h-full px-4 flex items-center gap-3">
               <div className="min-w-0">
-                <div className="text-[11px] opacity-70 truncate">
-                  {meta.crumbs.map((c, i) => (
-                    <span key={c.label + i}>
-                      {c.href ? (
-                        <Link href={c.href} className="hover:underline">
-                          {c.label}
-                        </Link>
-                      ) : (
-                        <span>{c.label}</span>
-                      )}
-                      {i < meta.crumbs.length - 1 ? <span className="mx-2 opacity-50">/</span> : null}
-                    </span>
-                  ))}
-                </div>
-                <div className="font-medium leading-tight truncate">{meta.title}</div>
+                <div className="text-sm font-medium truncate">{meta.title}</div>
+                <Breadcrumbs items={meta.breadcrumbs} />
               </div>
 
               <div className="flex-1 min-w-0">
                 <div className="max-w-[760px] mx-auto">
                   <button
                     type="button"
-                    onClick={() => setCmdkOpen(true)}
-                    className="w-full h-9 rounded-md bg-black/20 border border-white/10 px-3 text-sm text-left outline-none hover:border-white/25"
-                    aria-label="Abrir Command Palette"
+                    onClick={openCmdk}
+                    className="w-full h-9 rounded-md bg-black/20 border border-white/10 px-3 text-sm text-left flex items-center justify-between hover:border-white/20"
+                    aria-label="Buscar o ejecutar comando"
                   >
-                    <span className="opacity-80">Buscar o ejecutar…</span>
-                    <span className="float-right opacity-60">Ctrl/Cmd + K</span>
+                    <span className="flex items-center gap-2 text-white/70">
+                      <Icon name="search" />
+                      <span>Buscar o ejecutar…</span>
+                    </span>
+                    <span className="text-xs text-white/50">Cmd/Ctrl+K</span>
                   </button>
                 </div>
               </div>
 
               <div className="flex items-center gap-2">
-                {/* Locale placeholder (P0 UI) */}
-                <button
-                  className="h-9 px-3 rounded-md border border-white/10 bg-black/20 text-sm hover:bg-white/5"
-                  type="button"
-                  aria-label="Idioma"
+                <Link
+                  href="/app/finances/transactions/new"
+                  className="h-9 px-3 rounded-md border border-white/10 bg-black/20 hover:bg-white/5 flex items-center gap-2 text-sm"
                 >
-                  EN
-                </button>
+                  <Icon name="plus" />
+                  <span className="hidden md:inline">Nueva</span>
+                </Link>
 
-                {/* Bell placeholder */}
-                <button
-                  className="h-9 w-9 rounded-md border border-white/10 bg-black/20 hover:bg-white/5"
-                  type="button"
-                  aria-label="Notificaciones"
-                >
-                  <span className="text-sm">🔔</span>
-                </button>
+                <div className="relative" ref={accountRef}>
+                  <button
+                    className="h-9 px-3 rounded-md border border-white/10 bg-black/20 hover:bg-white/5 flex items-center gap-2"
+                    type="button"
+                    aria-label="Cuenta"
+                    onClick={() => setAccountOpen((v) => !v)}
+                  >
+                    <span className="w-6 h-6 rounded-full bg-white/20" aria-hidden="true" />
+                    <span className="text-sm opacity-80 hidden md:inline">Cuenta</span>
+                  </button>
 
-                {/* Account menu */}
-                <details className="relative">
-                  <summary className="list-none h-9 px-3 rounded-md border border-white/10 bg-black/20 hover:bg-white/5 flex items-center gap-2 cursor-pointer">
-                    <span className="w-6 h-6 rounded-full bg-white/20" />
-                    <span className="text-sm opacity-80">Cuenta</span>
-                  </summary>
-
-                  <div className="absolute right-0 mt-2 w-56 rounded-md border border-white/10 bg-[#0B1220] shadow-lg overflow-hidden">
-                    <Link href="/app/profile" className="block px-3 py-2 text-sm hover:bg-white/5">
-                      Perfil
-                    </Link>
-                    <button
-                      type="button"
-                      className="w-full text-left px-3 py-2 text-sm hover:bg-white/5"
-                      onClick={onLogout}
-                    >
-                      Cerrar sesión
-                    </button>
-                  </div>
-                </details>
+                  {accountOpen && (
+                    <div className="absolute right-0 mt-2 w-48 rounded-md border border-white/10 bg-[#0B1220] shadow-lg overflow-hidden">
+                      <Link
+                        href="/app/profile"
+                        className="block px-3 py-2 text-sm hover:bg-white/5"
+                        onClick={() => setAccountOpen(false)}
+                      >
+                        Perfil
+                      </Link>
+                      <button
+                        type="button"
+                        className="w-full text-left px-3 py-2 text-sm hover:bg-white/5"
+                        onClick={() => {
+                          setAccountOpen(false);
+                          void runActionRef.current({ id: "logout", kind: "logout", label: "Cerrar sesión" });
+                        }}
+                      >
+                        Cerrar sesión
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </header>
@@ -313,67 +491,72 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
         </div>
       </div>
 
-      {/* CmdK Modal */}
-      {cmdkOpen ? (
+      {/* CmdK */}
+      {cmdkOpen && (
         <div
-          className="fixed inset-0 z-50 bg-black/60 flex items-start justify-center p-4"
+          className="fixed inset-0 z-50"
           role="dialog"
           aria-modal="true"
-          aria-label="Command Palette"
+          aria-label="Command palette"
           onMouseDown={(e) => {
-            if (e.target === e.currentTarget) {
-              setCmdkOpen(false);
-              setCmdkQuery("");
-              setCmdkIdx(0);
-            }
+            if (e.target === e.currentTarget) closeCmdk();
           }}
         >
-          <div className="w-full max-w-[720px] mt-16 rounded-xl border border-white/10 bg-[#0B1220] overflow-hidden">
+          <div className="absolute inset-0 bg-black/60" />
+          <div className="relative mx-auto mt-[12vh] w-[min(720px,92vw)] rounded-xl border border-white/10 bg-[#0B1220] shadow-2xl overflow-hidden">
             <div className="p-3 border-b border-white/10">
               <input
-                id="cmdk-input"
+                ref={cmdkInputRef}
+                value={cmdkQ}
+                onChange={(e) => {
+                  setCmdkQ(e.target.value);
+                  setCmdkIdx(0);
+                }}
                 className="w-full h-10 rounded-md bg-black/20 border border-white/10 px-3 text-sm outline-none focus:border-white/25"
-                placeholder="Escribe para buscar… (Enter para ejecutar, Esc para cerrar)"
-                value={cmdkQuery}
-                onChange={(e) => setCmdkQuery(e.target.value)}
-                autoComplete="off"
+                placeholder="Escribe para buscar acciones…"
+                aria-label="Buscar acciones"
               />
             </div>
 
-            <div className="max-h-[360px] overflow-auto">
-              {visibleCommands.length === 0 ? (
-                <div className="p-4 text-sm opacity-70">Sin resultados.</div>
+            <div className="max-h-[360px] overflow-auto p-2">
+              {filteredActions.length === 0 ? (
+                <div className="px-3 py-6 text-sm text-white/60">Sin resultados.</div>
               ) : (
-                <ul className="p-2">
-                  {visibleCommands.map((c, i) => {
-                    const active = i === cmdkIdx;
+                <div className="space-y-1">
+                  {filteredActions.map((a, idx) => {
+                    const active = idx === boundedIdx;
                     return (
-                      <li key={c.id}>
-                        <button
-                          type="button"
-                          onClick={() => c.run()}
-                          className={cx(
-                            "w-full text-left px-3 py-2 rounded-md text-sm border",
-                            active ? "bg-white/10 border-white/15" : "bg-transparent border-transparent hover:bg-white/5 hover:border-white/10",
-                          )}
-                        >
-                          {c.label}
-                        </button>
-                      </li>
+                      <button
+                        key={a.id}
+                        type="button"
+                        onMouseEnter={() => setCmdkIdx(idx)}
+                        onClick={() => runActionRef.current(a)}
+                        className={cx(
+                          "w-full text-left px-3 py-2 rounded-md border flex items-center justify-between gap-3",
+                          active
+                            ? "bg-white/10 border-white/15"
+                            : "bg-transparent border-transparent hover:bg-white/5 hover:border-white/10",
+                        )}
+                      >
+                        <div className="min-w-0">
+                          <div className="text-sm truncate">{a.label}</div>
+                          {a.hint && <div className="text-xs text-white/50 truncate">{a.hint}</div>}
+                        </div>
+                        <div className="text-xs text-white/40">Enter</div>
+                      </button>
                     );
                   })}
-                </ul>
+                </div>
               )}
             </div>
 
-            <div className="px-3 py-2 border-t border-white/10 text-xs opacity-60 flex justify-between">
-              <span>↑/↓ navegar</span>
-              <span>Enter ejecutar</span>
-              <span>Esc cerrar</span>
+            <div className="px-3 py-2 border-t border-white/10 flex items-center justify-between text-xs text-white/50">
+              <span>↑/↓: navegar · Esc: cerrar</span>
+              <span>Cmd/Ctrl+K</span>
             </div>
           </div>
         </div>
-      ) : null}
+      )}
     </div>
   );
 }
