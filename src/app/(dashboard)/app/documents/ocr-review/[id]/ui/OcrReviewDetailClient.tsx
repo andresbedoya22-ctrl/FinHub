@@ -3,11 +3,13 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
+
 import { Screen } from "@/ui/components/Screen";
 import { Header } from "@/ui/components/Header";
 import { Card } from "@/ui/components/Card";
 import { Button } from "@/ui/components/Button";
 import { InfoBox } from "@/ui/components/InfoBox";
+
 import {
   requestOcr,
   runExtraction,
@@ -18,6 +20,7 @@ import {
   type ApiDocumentRow,
   type ApiExtractionRow,
 } from "@/features/documents/ocrApiClient";
+
 import {
   emptyMachtigingsregistratieFieldsV1,
   validateForSaveMachtigingsregistratieFieldsV1,
@@ -25,8 +28,123 @@ import {
   type MachtigingsregistratieFieldsV1,
 } from "@/features/documents/machtigingsregistratieSchema";
 
-type LedgerCategory = { id: string; key: string; label: string; sortOrder: number; isSystem: boolean };
+/**
+ * ----------------------------
+ * JSON parsing helpers (NO any)
+ * ----------------------------
+ */
+type JsonObject = Record<string, unknown>;
 
+function isJsonObject(x: unknown): x is JsonObject {
+  return x !== null && typeof x === "object" && !Array.isArray(x);
+}
+
+function getString(o: JsonObject, key: string): string | null {
+  const v = o[key];
+  return typeof v === "string" ? v : null;
+}
+
+function getNumber(o: JsonObject, key: string): number | null {
+  const v = o[key];
+  return typeof v === "number" && Number.isFinite(v) ? v : null;
+}
+
+function getBoolean(o: JsonObject, key: string): boolean | null {
+  const v = o[key];
+  return typeof v === "boolean" ? v : null;
+}
+
+async function safeReadJson(res: Response): Promise<unknown> {
+  try {
+    return (await res.json()) as unknown;
+  } catch {
+    return null;
+  }
+}
+
+function extractErrorMessage(payload: unknown): string | null {
+  if (!isJsonObject(payload)) return null;
+  const err = getString(payload, "error");
+  if (err) return err;
+
+  // Optional: details could exist
+  const details = payload["details"];
+  if (typeof details === "string") return details;
+
+  return null;
+}
+
+/**
+ * ----------------------------
+ * Finance types + parsing
+ * ----------------------------
+ */
+type LedgerCategory = {
+  id: string;
+  key: string;
+  label: string;
+  sortOrder: number;
+  isSystem: boolean;
+};
+
+function parseLedgerCategories(payload: unknown): LedgerCategory[] {
+  if (!isJsonObject(payload)) return [];
+  const catsUnknown = payload["categories"];
+  if (!Array.isArray(catsUnknown)) return [];
+
+  const out: LedgerCategory[] = [];
+  for (const item of catsUnknown) {
+    if (!isJsonObject(item)) continue;
+
+    const id = getString(item, "id");
+    const key = getString(item, "key");
+    const label = getString(item, "label");
+    const sortOrder = getNumber(item, "sortOrder");
+    const isSystem = getBoolean(item, "isSystem");
+
+    if (!id || !key || !label) continue;
+
+    out.push({
+      id,
+      key,
+      label,
+      sortOrder: sortOrder ?? 0,
+      isSystem: isSystem ?? false,
+    });
+  }
+
+  // stable sort: sortOrder then label
+  out.sort((a, b) => {
+    if (a.sortOrder !== b.sortOrder) return a.sortOrder - b.sortOrder;
+    return a.label.localeCompare(b.label);
+  });
+
+  return out;
+}
+
+type CreateTransactionResponse = { id: string };
+
+function parseCreateTransactionResponse(payload: unknown): CreateTransactionResponse | null {
+  if (!isJsonObject(payload)) return null;
+  const id = getString(payload, "id");
+  if (!id) return null;
+  return { id };
+}
+
+/**
+ * Receipt link API: we only need "ok: true" but tolerate different shapes.
+ */
+function isOkResponse(payload: unknown): boolean {
+  if (!isJsonObject(payload)) return false;
+  const ok = payload["ok"];
+  return ok === true;
+}
+
+/**
+ * ----------------------------
+ * Machtigingsregistratie extra JSON parsing
+ * ----------------------------
+ */
 function parseExtraJson(s: string): { ok: true; value: Record<string, unknown> } | { ok: false; error: string } {
   try {
     const v: unknown = JSON.parse(s);
@@ -35,7 +153,7 @@ function parseExtraJson(s: string): { ok: true; value: Record<string, unknown> }
     }
     return { ok: true, value: v as Record<string, unknown> };
   } catch (e: unknown) {
-    return { ok: false, error: e instanceof Error ? e.message : "JSON invÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡lido" };
+    return { ok: false, error: e instanceof Error ? e.message : "JSON inválido" };
   }
 }
 
@@ -43,25 +161,23 @@ function todayIso(): string {
   return new Date().toISOString().slice(0, 10);
 }
 
-function monthFromIsoDate(iso: string): string {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(iso)) return new Date().toISOString().slice(0, 7);
-  return iso.slice(0, 7);
+function monthNow(): string {
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  return `${y}-${m}`;
 }
 
-function euroToCents(input: string): number | null {
-  const s = input.trim().replace(",", ".");
-  if (!s) return null;
-  const n = Number(s);
+function eurosToCents(input: string): number | null {
+  const normalized = input.replace(",", ".").trim();
+  if (!normalized) return null;
+  const n = Number(normalized);
   if (!Number.isFinite(n)) return null;
+  // allow negatives (outflows) if user wants
   return Math.round(n * 100);
 }
 
-type ErrorResponse = { error?: string };
-
-
-type LedgerResponse = {
-  categories?: LedgerCategory[];
-};export default function OcrReviewDetailClient() {
+export default function OcrReviewDetailClient() {
   const params = useParams<{ id: string }>();
   const id = (params?.id ?? "").toString();
 
@@ -75,16 +191,16 @@ type LedgerResponse = {
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
 
-  // --- Convert to transaction (F11.5) ---
-  const [convertOpen, setConvertOpen] = useState(false);
+  /**
+   * Finance conversion UI state
+   */
   const [convertCats, setConvertCats] = useState<LedgerCategory[]>([]);
-  const [convertLoadingCats, setConvertLoadingCats] = useState(false);
-
-  const [txDate, setTxDate] = useState<string>(todayIso());
-  const [txMerchant, setTxMerchant] = useState<string>("Recibo");
-  const [txAmountEur, setTxAmountEur] = useState<string>("");
-  const [txCategoryId, setTxCategoryId] = useState<string>("");
-  const [txNote, setTxNote] = useState<string>("");
+  const [convertMonth, setConvertMonth] = useState<string>(monthNow());
+  const [convertOccurredOn, setConvertOccurredOn] = useState<string>(todayIso());
+  const [convertMerchant, setConvertMerchant] = useState<string>("Recibo");
+  const [convertAmountEur, setConvertAmountEur] = useState<string>("");
+  const [convertCategoryId, setConvertCategoryId] = useState<string>("");
+  const [convertNote, setConvertNote] = useState<string>("");
 
   const parsedExtra = useMemo(() => parseExtraJson(extraText), [extraText]);
 
@@ -104,6 +220,12 @@ type LedgerResponse = {
       const d = await getDocument(id);
       setDoc(d);
 
+      // Default conversion merchant based on document name (if usable)
+      if (d?.file_name && typeof d.file_name === "string") {
+        const base = d.file_name.replace(/\.[^/.]+$/, "").trim();
+        if (base) setConvertMerchant(base.slice(0, 80));
+      }
+
       const ex = await getLatestExtraction(id);
       setExtraction(ex);
 
@@ -115,7 +237,7 @@ type LedgerResponse = {
       } else {
         setFields(emptyMachtigingsregistratieFieldsV1());
         setExtraText("{}");
-        setError(`Fields invÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡lidos en extracciÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³n: ${validated.error}`);
+        setError(`Fields inválidos en extracción: ${validated.error}`);
       }
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : "Error desconocido");
@@ -127,6 +249,29 @@ type LedgerResponse = {
   useEffect(() => {
     void refresh();
   }, [refresh]);
+
+  const loadLedgerCategories = useCallback(async () => {
+    setError(null);
+    try {
+      const res = await fetch(`/api/finances/ledger?month=${encodeURIComponent(convertMonth)}`, { method: "GET" });
+      const payload = await safeReadJson(res);
+      if (!res.ok) {
+        const msg = extractErrorMessage(payload) ?? "No se pudo cargar categorías del ledger.";
+        throw new Error(msg);
+      }
+      const cats = parseLedgerCategories(payload);
+      setConvertCats(cats);
+      if (!convertCategoryId && cats.length) setConvertCategoryId(cats[0]!.id);
+    } catch (e: unknown) {
+      setConvertCats([]);
+      setError(e instanceof Error ? e.message : "Error cargando categorías.");
+    }
+  }, [convertMonth, convertCategoryId]);
+
+  useEffect(() => {
+    void loadLedgerCategories();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [convertMonth]);
 
   async function runOcrAction() {
     if (!id) return;
@@ -160,7 +305,7 @@ type LedgerResponse = {
     if (!id) return;
 
     if (!parsedExtra.ok) {
-      setError(`extra invÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡lido: ${parsedExtra.error}`);
+      setError(`extra inválido: ${parsedExtra.error}`);
       return;
     }
 
@@ -187,7 +332,7 @@ type LedgerResponse = {
     if (!id) return;
 
     if (!verifyReady) {
-      setError("No puedes verificar todavÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­a: falta activeringscode vÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡lido.");
+      setError("No puedes verificar todavía: falta activeringscode válido.");
       return;
     }
 
@@ -207,111 +352,101 @@ type LedgerResponse = {
     setFields((prev) => ({ ...prev, [key]: value }));
   }
 
-  async function openConvertModal() {
-    setError(null);
-    setTxDate(todayIso());
-    setTxMerchant(doc?.file_name ? doc.file_name.replace(/\.[^/.]+$/, "") : "Recibo");
-    setTxAmountEur("");
-    setTxCategoryId("");
-    setTxNote(`doc:${id}`);
-
-    setConvertOpen(true);
-
-    setConvertLoadingCats(true);
-    try {
-      const month = monthFromIsoDate(todayIso());
-      const res = await fetch(`/api/finances/ledger?month=${encodeURIComponent(month)}`, { method: "GET" });
-      if (!res.ok) {
-        const errUnknown = (await res.json().catch(() => null)) as unknown;
-        const errJson = (errUnknown && typeof errUnknown === "object") ? (errUnknown as ErrorResponse) : {};
-        throw new Error(errJson.error ?? "No se pudo cargar ledger.");
-      }
-      const jUnknown = (await res.json().catch(() => null)) as unknown;
-      const j = (jUnknown && typeof jUnknown === "object") ? (jUnknown as LedgerResponse) : {};
-      setConvertCats(Array.isArray(j.categories) ? j.categories : []);
-    } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : "Error cargando categorÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­as.");
-      setConvertCats([]);
-    } finally {
-      setConvertLoadingCats(false);
-    }
-  }
-
-  async function convertToTransaction() {
+  async function convertToTransactionAction() {
     if (!id) return;
 
-    const occurredOn = txDate.trim();
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(occurredOn)) {
-      setError("Fecha invÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡lida. Usa YYYY-MM-DD.");
+    // Basic validation
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(convertOccurredOn)) {
+      setError("Fecha inválida: occurredOn debe ser YYYY-MM-DD.");
       return;
     }
-
-    const merchantName = txMerchant.trim();
+    const merchantName = convertMerchant.trim();
     if (!merchantName) {
-      setError("Merchant requerido.");
+      setError("merchantName requerido.");
       return;
     }
-
-    const centsAbs = euroToCents(txAmountEur);
-    if (centsAbs === null) {
-      setError("Monto invÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡lido. Usa un nÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âºmero (ej. 12.34).");
+    const amountCents = eurosToCents(convertAmountEur);
+    if (amountCents === null) {
+      setError("Monto inválido. Usa un número, ej: 12.34");
       return;
     }
-    if (centsAbs <= 0) {
-      setError("Monto debe ser > 0.");
-      return;
-    }
-
-    const amountCents = -Math.abs(centsAbs);
 
     setBusy("convert");
     setError(null);
 
     try {
+      // 1) Create transaction
       const txRes = await fetch("/api/finances/transactions", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
-          occurredOn,
+          occurredOn: convertOccurredOn,
           merchantName,
-          categoryId: txCategoryId ? txCategoryId : null,
+          categoryId: convertCategoryId || null,
           amountCents,
-          note: txNote ? txNote : null,
+          note: convertNote.trim() || null,
         }),
       });
 
-      const txJson = (await txRes.json().catch(() => null)) as unknown;
-      if (!txRes.ok) {
-        throw new Error(txJson?.error ?? "No se pudo crear la transacciÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³n.");
-      }
-      const transactionId = String(txJson?.id ?? "");
-      if (!transactionId) throw new Error("Respuesta invÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡lida: falta transaction id.");
+      const txPayload = await safeReadJson(txRes);
 
+      if (!txRes.ok) {
+        const msg = extractErrorMessage(txPayload) ?? "No se pudo crear la transacción.";
+        throw new Error(msg);
+      }
+
+      const created = parseCreateTransactionResponse(txPayload);
+      if (!created) {
+        throw new Error("Respuesta inválida al crear transacción: falta id.");
+      }
+
+      // 2) Link receipt -> transaction
       const linkRes = await fetch("/api/finances/receipt-links", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ documentId: id, transactionId }),
+        body: JSON.stringify({
+          documentId: id,
+          transactionId: created.id,
+        }),
       });
-      const linkUnknown = (await linkRes.json().catch(() => null)) as unknown;
-      const linkJson = (linkUnknown && typeof linkUnknown === "object") ? (linkUnknown as ReceiptLinkResponse) : {};
+
+      const linkPayload = await safeReadJson(linkRes);
       if (!linkRes.ok) {
-        throw new Error(linkJson.error ?? "No se pudo vincular el recibo.");
+        const msg = extractErrorMessage(linkPayload) ?? "No se pudo vincular el documento a la transacción.";
+        throw new Error(msg);
       }
 
-      setConvertOpen(false);
+      // tolerate different ok shapes, but prefer ok=true
+      if (linkPayload !== null && !isOkResponse(linkPayload)) {
+        // not fatal: some APIs might not return ok
+      }
+
+      // Done
       setError(null);
+      // small UX: reset amount/note, keep category
+      setConvertAmountEur("");
+      setConvertNote("");
+      await refresh();
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : "Error desconocido");
+      setError(e instanceof Error ? e.message : "Error convirtiendo a transacción.");
     } finally {
       setBusy(null);
     }
   }
 
+  const canShowConversion = useMemo(() => {
+    // We only show the conversion panel if this looks like a receipt-type document.
+    // We do NOT assume OCR kind. This prevents confusing UX on machtigingsregistratie.
+    const t = (doc?.type ?? "").toString().toLowerCase();
+    const k = (doc?.ocr_kind ?? "").toString().toLowerCase();
+    return t.includes("receipt") || t.includes("bon") || k.includes("receipt") || k.includes("bon");
+  }, [doc]);
+
   return (
     <Screen>
       <Header
-        title="OCR Review ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â Detalle"
-        subtitle={doc ? `${doc.file_name} ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â status: ${doc.status}` : "Cargando documento..."}
+        title="OCR Review — Detalle"
+        subtitle={doc ? `${doc.file_name} — status: ${doc.status}` : "Cargando documento..."}
         right={
           <Link className="underline text-sm" href="/app/documents/ocr-review">
             Volver
@@ -343,7 +478,7 @@ type LedgerResponse = {
                 {busy === "ocr" ? "Ejecutando..." : "Ejecutar OCR"}
               </Button>
               <Button disabled={busy !== null} onClick={() => void runExtractionAction()}>
-                {busy === "extract" ? "Extrayendo..." : "Ejecutar extracciÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³n IA"}
+                {busy === "extract" ? "Extrayendo..." : "Ejecutar extracción IA"}
               </Button>
               <Button disabled={busy !== null || !parsedExtra.ok} onClick={() => void saveAction()}>
                 {busy === "save" ? "Guardando..." : "Guardar cambios"}
@@ -351,15 +486,6 @@ type LedgerResponse = {
               <Button disabled={busy !== null || !verifyReady} onClick={() => void verifyAction()}>
                 {busy === "verify" ? "Verificando..." : "Marcar verificado"}
               </Button>
-
-              <div className="w-full h-px bg-black/10 my-2" />
-
-              <Button disabled={busy !== null} onClick={() => void openConvertModal()}>
-                Convertir a transacciÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³n
-              </Button>
-              <Link className="underline text-sm self-center" href="/app/finances">
-                Ir a Finanzas
-              </Link>
             </div>
 
             <div className="grid gap-3 md:grid-cols-2">
@@ -420,7 +546,7 @@ type LedgerResponse = {
                   className="w-full rounded-md border p-2 text-sm"
                   value={(fields.bsn ?? "").toString()}
                   onChange={(e) => setField("bsn", e.target.value)}
-                  placeholder="9 dÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­gitos"
+                  placeholder="9 dígitos"
                 />
               </div>
             </div>
@@ -432,103 +558,109 @@ type LedgerResponse = {
                 value={extraText}
                 onChange={(e) => setExtraText(e.target.value)}
               />
-              {!parsedExtra.ok ? <div className="text-sm">extra invÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡lido: {parsedExtra.error}</div> : null}
+              {!parsedExtra.ok ? <div className="text-sm">extra inválido: {parsedExtra.error}</div> : null}
             </div>
+
+            {/* Finance conversion panel (guarded to receipt-like docs) */}
+            {canShowConversion ? (
+              <Card>
+                <div className="flex flex-col gap-3">
+                  <div className="text-sm font-semibold">Convertir a transacción (Finanzas)</div>
+
+                  <div className="grid gap-3 md:grid-cols-2">
+                    <div className="flex flex-col gap-1">
+                      <div className="text-sm font-medium">Mes (para cargar categorías)</div>
+                      <input
+                        className="w-full rounded-md border p-2 text-sm"
+                        value={convertMonth}
+                        onChange={(e) => setConvertMonth(e.target.value)}
+                        placeholder="YYYY-MM"
+                      />
+                      <div className="text-xs opacity-70">Ej: 2026-01. Se usa para /api/finances/ledger.</div>
+                    </div>
+
+                    <div className="flex flex-col gap-1">
+                      <div className="text-sm font-medium">Fecha (occurredOn)</div>
+                      <input
+                        className="w-full rounded-md border p-2 text-sm"
+                        value={convertOccurredOn}
+                        onChange={(e) => setConvertOccurredOn(e.target.value)}
+                        placeholder="YYYY-MM-DD"
+                      />
+                    </div>
+
+                    <div className="flex flex-col gap-1">
+                      <div className="text-sm font-medium">Comercio (merchantName)</div>
+                      <input
+                        className="w-full rounded-md border p-2 text-sm"
+                        value={convertMerchant}
+                        onChange={(e) => setConvertMerchant(e.target.value)}
+                        placeholder="Ej: Albert Heijn"
+                      />
+                    </div>
+
+                    <div className="flex flex-col gap-1">
+                      <div className="text-sm font-medium">Monto (€) (se convierte a cents)</div>
+                      <input
+                        className="w-full rounded-md border p-2 text-sm"
+                        value={convertAmountEur}
+                        onChange={(e) => setConvertAmountEur(e.target.value)}
+                        placeholder="Ej: -12.34"
+                      />
+                      <div className="text-xs opacity-70">Usa negativo para gasto, positivo para ingreso.</div>
+                    </div>
+
+                    <div className="flex flex-col gap-1 md:col-span-2">
+                      <div className="text-sm font-medium">Categoría</div>
+                      <select
+                        className="w-full rounded-md border p-2 text-sm"
+                        value={convertCategoryId}
+                        onChange={(e) => setConvertCategoryId(e.target.value)}
+                      >
+                        {convertCats.length === 0 ? (
+                          <option value="">(sin categorías)</option>
+                        ) : (
+                          convertCats.map((c) => (
+                            <option key={c.id} value={c.id}>
+                              {c.label} ({c.key})
+                            </option>
+                          ))
+                        )}
+                      </select>
+                    </div>
+
+                    <div className="flex flex-col gap-1 md:col-span-2">
+                      <div className="text-sm font-medium">Nota</div>
+                      <input
+                        className="w-full rounded-md border p-2 text-sm"
+                        value={convertNote}
+                        onChange={(e) => setConvertNote(e.target.value)}
+                        placeholder="Opcional"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2">
+                    <Button disabled={busy !== null} onClick={() => void loadLedgerCategories()}>
+                      {busy === "cats" ? "Cargando..." : "Recargar categorías"}
+                    </Button>
+                    <Button disabled={busy !== null} onClick={() => void convertToTransactionAction()}>
+                      {busy === "convert" ? "Convirtiendo..." : "Crear transacción y vincular documento"}
+                    </Button>
+                    <Link className="underline text-sm self-center" href="/app/finances">
+                      Ir a Finanzas
+                    </Link>
+                  </div>
+                </div>
+              </Card>
+            ) : (
+              <div className="text-xs opacity-60">
+                Conversión a transacción: disponible solo para documentos tipo recibo/bon (para evitar confusión en machtigingsregistratie).
+              </div>
+            )}
           </div>
         )}
       </Card>
-
-      {convertOpen ? (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-          <div className="w-full max-w-xl rounded-xl bg-white p-4 shadow-lg">
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <div className="text-base font-semibold">Convertir a transacciÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³n</div>
-                <div className="text-sm opacity-70">Documento: {id}</div>
-              </div>
-              <button
-                className="rounded-md border px-3 py-1 text-sm"
-                onClick={() => setConvertOpen(false)}
-                disabled={busy !== null}
-              >
-                Cerrar
-              </button>
-            </div>
-
-            <div className="mt-4 grid gap-3">
-              <div className="grid gap-2 md:grid-cols-2">
-                <div className="flex flex-col gap-1">
-                  <div className="text-sm font-medium">Fecha</div>
-                  <input
-                    className="w-full rounded-md border p-2 text-sm"
-                    value={txDate}
-                    onChange={(e) => setTxDate(e.target.value)}
-                    placeholder="YYYY-MM-DD"
-                  />
-                </div>
-
-                <div className="flex flex-col gap-1">
-                  <div className="text-sm font-medium">Monto (EUR)</div>
-                  <input
-                    className="w-full rounded-md border p-2 text-sm"
-                    value={txAmountEur}
-                    onChange={(e) => setTxAmountEur(e.target.value)}
-                    placeholder="Ej: 12.34"
-                    inputMode="decimal"
-                  />
-                  <div className="text-xs opacity-70">Se guardarÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ como gasto (negativo) en P0.</div>
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <div className="text-sm font-medium">Merchant</div>
-                <input
-                  className="w-full rounded-md border p-2 text-sm"
-                  value={txMerchant}
-                  onChange={(e) => setTxMerchant(e.target.value)}
-                  placeholder="Ej: Albert Heijn"
-                />
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <div className="text-sm font-medium">CategorÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­a</div>
-                <select
-                  className="w-full rounded-md border p-2 text-sm"
-                  value={txCategoryId}
-                  onChange={(e) => setTxCategoryId(e.target.value)}
-                  disabled={convertLoadingCats}
-                >
-                  <option value="">{convertLoadingCats ? "Cargando..." : "Sin categorÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­a"}</option>
-                  {convertCats.map((c) => (
-                    <option key={c.id} value={c.id}>
-                      {c.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <div className="text-sm font-medium">Nota</div>
-                <input
-                  className="w-full rounded-md border p-2 text-sm"
-                  value={txNote}
-                  onChange={(e) => setTxNote(e.target.value)}
-                  placeholder="Opcional"
-                />
-              </div>
-
-              <div className="mt-2 flex flex-wrap justify-end gap-2">
-                <Button disabled={busy !== null} onClick={() => setConvertOpen(false)}>
-                  Cancelar
-                </Button>
-                <Button disabled={busy !== null} onClick={() => void convertToTransaction()}>
-                  {busy === "convert" ? "Guardando..." : "Crear transacciÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³n + vincular"}
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : null}
     </Screen>
   );
 }
