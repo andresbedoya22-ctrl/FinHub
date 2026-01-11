@@ -19,6 +19,13 @@ function isCreateTxBody(x: unknown): x is CreateTxBody {
   return true;
 }
 
+function unwrapInput(raw: unknown): unknown {
+  if (!raw || typeof raw !== "object") return raw;
+  const o = raw as Record<string, unknown>;
+  if ("input" in o) return o.input;
+  return raw;
+}
+
 function normMerchant(s: string): string {
   return s.trim().toLowerCase().replace(/\s+/g, " ");
 }
@@ -28,11 +35,14 @@ export async function POST(req: Request) {
   const { data: auth, error: authErr } = await supabase.auth.getUser();
   if (authErr || !auth?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const raw = (await req.json().catch(() => null)) as unknown;
+  const raw0 = (await req.json().catch(() => null)) as unknown;
+  const raw = unwrapInput(raw0);
+
   if (!isCreateTxBody(raw)) return NextResponse.json({ error: "Invalid body" }, { status: 400 });
 
   const occurredOn = raw.occurredOn;
   const merchantName = raw.merchantName.trim();
+
   if (!/^\d{4}-\d{2}-\d{2}$/.test(occurredOn)) {
     return NextResponse.json({ error: "occurredOn must be YYYY-MM-DD" }, { status: 400 });
   }
