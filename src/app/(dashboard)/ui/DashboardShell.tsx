@@ -5,33 +5,18 @@ import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import { useMemo, useState } from "react";
 
-type NavItem = { href: string; label: string };
+import CommandPalette from "./CommandPalette";
+import { DASHBOARD_NAV, getHeaderMeta, isActivePath } from "./dashboardNav";
 
 function cx(...xs: Array<string | false | null | undefined>) {
   return xs.filter(Boolean).join(" ");
-}
-
-function isActive(pathname: string, href: string): boolean {
-  if (href === "/app") return pathname === "/app";
-  if (href === "/app/finances") return pathname === "/app/finances" || pathname.startsWith("/app/finances/");
-  return pathname === href || pathname.startsWith(href + "/");
 }
 
 export default function DashboardShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
 
-  const nav: NavItem[] = useMemo(
-    () => [
-      { href: "/app/finances", label: "Finanzas" },
-      { href: "/app/finances/transactions", label: "Transacciones" },
-      { href: "/app/documents", label: "Documentos" },
-      { href: "/app/cases", label: "Casos" },
-      { href: "/app/profile", label: "Perfil" },
-      { href: "/app/admin", label: "Admin" },
-    ],
-    [],
-  );
+  const header = useMemo(() => getHeaderMeta(pathname), [pathname]);
 
   return (
     <div className="min-h-dvh bg-[#0B1220] text-white">
@@ -42,7 +27,10 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
         Saltar al contenido
       </a>
 
+      <CommandPalette items={DASHBOARD_NAV} />
+
       <div className="flex">
+        {/* Sidebar */}
         <aside
           className={cx(
             "sticky top-0 h-dvh border-r border-white/10 bg-white/5 backdrop-blur",
@@ -66,8 +54,8 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
           </div>
 
           <nav className="p-3 space-y-1">
-            {nav.map((it) => {
-              const active = isActive(pathname, it.href);
+            {DASHBOARD_NAV.map((it) => {
+              const active = isActivePath(pathname, it.href);
               return (
                 <Link
                   key={it.href}
@@ -78,10 +66,9 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
                       ? "bg-white/10 border-white/15"
                       : "bg-transparent border-transparent hover:bg-white/5 hover:border-white/10",
                   )}
+                  title={collapsed ? it.label : undefined}
                 >
-                  <span
-                    className={cx("inline-block w-2 h-2 rounded-full", active ? "bg-emerald-400" : "bg-white/30")}
-                  />
+                  <span className={cx("inline-block w-2 h-2 rounded-full", active ? "bg-emerald-400" : "bg-white/30")} />
                   {!collapsed && <span>{it.label}</span>}
                 </Link>
               );
@@ -89,21 +76,29 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
           </nav>
 
           <div className="absolute bottom-0 left-0 right-0 p-3 border-t border-white/10">
-            <div className={cx("text-xs opacity-70", collapsed && "hidden")}>Shell P0: header + sidebar</div>
+            <div className={cx("text-xs opacity-70", collapsed && "hidden")}>
+              Tip: Cmd/Ctrl+K
+            </div>
           </div>
         </aside>
 
+        {/* Main */}
         <div className="flex-1 min-w-0">
+          {/* Header */}
           <header className="sticky top-0 z-10 h-14 border-b border-white/10 bg-white/5 backdrop-blur">
             <div className="h-full px-4 flex items-center gap-3">
-              <div className="font-medium">Dashboard</div>
+              <div className="min-w-0">
+                <div className="font-medium leading-tight truncate">{header.title}</div>
+                {header.subtitle && <div className="text-xs opacity-70 leading-tight truncate">{header.subtitle}</div>}
+              </div>
 
               <div className="flex-1 min-w-0">
                 <div className="max-w-[720px]">
                   <input
                     className="w-full h-9 rounded-md bg-black/20 border border-white/10 px-3 text-sm outline-none focus:border-white/25"
-                    placeholder="Buscar… (Cmd+K)"
+                    placeholder="Buscar… (Cmd/Ctrl+K)"
                     aria-label="Buscar"
+                    readOnly
                   />
                 </div>
               </div>
@@ -113,6 +108,7 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
                   className="h-9 px-3 rounded-md border border-white/10 bg-black/20 text-sm hover:bg-white/5"
                   type="button"
                   aria-label="Idioma"
+                  title="Locale (P0 UI)"
                 >
                   EN
                 </button>
@@ -121,14 +117,16 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
                   className="h-9 w-9 rounded-md border border-white/10 bg-black/20 hover:bg-white/5"
                   type="button"
                   aria-label="Notificaciones"
+                  title="Notificaciones (P0 UI)"
                 >
-                  <span className="text-sm">N</span>
+                  <span className="text-sm">🔔</span>
                 </button>
 
                 <button
                   className="h-9 px-3 rounded-md border border-white/10 bg-black/20 hover:bg-white/5 flex items-center gap-2"
                   type="button"
                   aria-label="Usuario"
+                  title="Cuenta (P0 UI)"
                 >
                   <span className="w-6 h-6 rounded-full bg-white/20" />
                   <span className="text-sm opacity-80">Cuenta</span>
