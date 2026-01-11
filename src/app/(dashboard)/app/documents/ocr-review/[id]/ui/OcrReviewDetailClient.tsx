@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -25,6 +25,8 @@ import {
   type MachtigingsregistratieFieldsV1,
 } from "@/features/documents/machtigingsregistratieSchema";
 
+type LedgerCategory = { id: string; key: string; label: string; sortOrder: number; isSystem: boolean };
+
 function parseExtraJson(s: string): { ok: true; value: Record<string, unknown> } | { ok: false; error: string } {
   try {
     const v: unknown = JSON.parse(s);
@@ -35,6 +37,23 @@ function parseExtraJson(s: string): { ok: true; value: Record<string, unknown> }
   } catch (e: unknown) {
     return { ok: false, error: e instanceof Error ? e.message : "JSON inválido" };
   }
+}
+
+function todayIso(): string {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function monthFromIsoDate(iso: string): string {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(iso)) return new Date().toISOString().slice(0, 7);
+  return iso.slice(0, 7);
+}
+
+function euroToCents(input: string): number | null {
+  const s = input.trim().replace(",", ".");
+  if (!s) return null;
+  const n = Number(s);
+  if (!Number.isFinite(n)) return null;
+  return Math.round(n * 100);
 }
 
 export default function OcrReviewDetailClient() {
@@ -50,6 +69,17 @@ export default function OcrReviewDetailClient() {
 
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
+
+  // --- Convert to transaction (F11.5) ---
+  const [convertOpen, setConvertOpen] = useState(false);
+  const [convertCats, setConvertCats] = useState<LedgerCategory[]>([]);
+  const [convertLoadingCats, setConvertLoadingCats] = useState(false);
+
+  const [txDate, setTxDate] = useState<string>(todayIso());
+  const [txMerchant, setTxMerchant] = useState<string>("Recibo");
+  const [txAmountEur, setTxAmountEur] = useState<string>("");
+  const [txCategoryId, setTxCategoryId] = useState<string>("");
+  const [txNote, setTxNote] = useState<string>("");
 
   const parsedExtra = useMemo(() => parseExtraJson(extraText), [extraText]);
 
@@ -78,10 +108,9 @@ export default function OcrReviewDetailClient() {
         setFields({ ...emptyMachtigingsregistratieFieldsV1(), ...validated.value });
         setExtraText(JSON.stringify(validated.value.extra ?? {}, null, 2));
       } else {
-        // Si hay basura en DB, no rompemos UI; mostramos error pero dejamos editable.
         setFields(emptyMachtigingsregistratieFieldsV1());
         setExtraText("{}");
-        setError(`Fields inválidos en extracción: ${validated.error}`);
+        setError(Fields inválidos en extracción: );
       }
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : "Error desconocido");
@@ -126,7 +155,7 @@ export default function OcrReviewDetailClient() {
     if (!id) return;
 
     if (!parsedExtra.ok) {
-      setError(`extra inválido: ${parsedExtra.error}`);
+      setError(extra inválido: );
       return;
     }
 
@@ -173,11 +202,108 @@ export default function OcrReviewDetailClient() {
     setFields((prev) => ({ ...prev, [key]: value }));
   }
 
+  async function openConvertModal() {
+    setError(null);
+    setTxDate(todayIso());
+    setTxMerchant(doc?.file_name ? doc.file_name.replace(/\.[^/.]+$/, "") : "Recibo");
+    setTxAmountEur("");
+    setTxCategoryId("");
+    setTxNote(doc:);
+
+    setConvertOpen(true);
+
+    setConvertLoadingCats(true);
+    try {
+      const month = monthFromIsoDate(todayIso());
+      const res = await fetch(/api/finances/ledger?month=, { method: "GET" });
+      if (!res.ok) {
+        const j = (await res.json().catch(() => null)) as any;
+        throw new Error(j?.error ?? "No se pudo cargar ledger.");
+      }
+      const j = (await res.json()) as { categories?: LedgerCategory[] };
+      setConvertCats(Array.isArray(j.categories) ? j.categories : []);
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : "Error cargando categorías.");
+      setConvertCats([]);
+    } finally {
+      setConvertLoadingCats(false);
+    }
+  }
+
+  async function convertToTransaction() {
+    if (!id) return;
+
+    const occurredOn = txDate.trim();
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(occurredOn)) {
+      setError("Fecha inválida. Usa YYYY-MM-DD.");
+      return;
+    }
+
+    const merchantName = txMerchant.trim();
+    if (!merchantName) {
+      setError("Merchant requerido.");
+      return;
+    }
+
+    const centsAbs = euroToCents(txAmountEur);
+    if (centsAbs === null) {
+      setError("Monto inválido. Usa un número (ej. 12.34).");
+      return;
+    }
+    if (centsAbs <= 0) {
+      setError("Monto debe ser > 0.");
+      return;
+    }
+
+    const amountCents = -Math.abs(centsAbs);
+
+    setBusy("convert");
+    setError(null);
+
+    try {
+      const txRes = await fetch("/api/finances/transactions", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          occurredOn,
+          merchantName,
+          categoryId: txCategoryId ? txCategoryId : null,
+          amountCents,
+          note: txNote ? txNote : null,
+        }),
+      });
+
+      const txJson = (await txRes.json().catch(() => null)) as any;
+      if (!txRes.ok) {
+        throw new Error(txJson?.error ?? "No se pudo crear la transacción.");
+      }
+      const transactionId = String(txJson?.id ?? "");
+      if (!transactionId) throw new Error("Respuesta inválida: falta transaction id.");
+
+      const linkRes = await fetch("/api/finances/receipt-links", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ documentId: id, transactionId }),
+      });
+      const linkJson = (await linkRes.json().catch(() => null)) as any;
+      if (!linkRes.ok) {
+        throw new Error(linkJson?.error ?? "No se pudo vincular el recibo.");
+      }
+
+      setConvertOpen(false);
+      setError(null);
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : "Error desconocido");
+    } finally {
+      setBusy(null);
+    }
+  }
+
   return (
     <Screen>
       <Header
         title="OCR Review — Detalle"
-        subtitle={doc ? `${doc.file_name} — status: ${doc.status}` : "Cargando documento..."}
+        subtitle={doc ? ${doc.file_name} — status:  : "Cargando documento..."}
         right={
           <Link className="underline text-sm" href="/app/documents/ocr-review">
             Volver
@@ -193,7 +319,9 @@ export default function OcrReviewDetailClient() {
         ) : !doc ? (
           <div>No encontrado.</div>
         ) : doc.ocr_kind !== "machtigingsregistratie" ? (
-          <div>Este documento no es ocr_kind <b>machtigingsregistratie</b>.</div>
+          <div>
+            Este documento no es ocr_kind <b>machtigingsregistratie</b>.
+          </div>
         ) : (
           <div className="flex flex-col gap-4">
             <div className="text-sm opacity-70">Document ID: {id}</div>
@@ -215,6 +343,15 @@ export default function OcrReviewDetailClient() {
               <Button disabled={busy !== null || !verifyReady} onClick={() => void verifyAction()}>
                 {busy === "verify" ? "Verificando..." : "Marcar verificado"}
               </Button>
+
+              <div className="w-full h-px bg-black/10 my-2" />
+
+              <Button disabled={busy !== null} onClick={() => void openConvertModal()}>
+                Convertir a transacción
+              </Button>
+              <Link className="underline text-sm self-center" href="/app/finances">
+                Ir a Finanzas
+              </Link>
             </div>
 
             <div className="grid gap-3 md:grid-cols-2">
@@ -292,7 +429,98 @@ export default function OcrReviewDetailClient() {
           </div>
         )}
       </Card>
+
+      {convertOpen ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+          <div className="w-full max-w-xl rounded-xl bg-white p-4 shadow-lg">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <div className="text-base font-semibold">Convertir a transacción</div>
+                <div className="text-sm opacity-70">Documento: {id}</div>
+              </div>
+              <button
+                className="rounded-md border px-3 py-1 text-sm"
+                onClick={() => setConvertOpen(false)}
+                disabled={busy !== null}
+              >
+                Cerrar
+              </button>
+            </div>
+
+            <div className="mt-4 grid gap-3">
+              <div className="grid gap-2 md:grid-cols-2">
+                <div className="flex flex-col gap-1">
+                  <div className="text-sm font-medium">Fecha</div>
+                  <input
+                    className="w-full rounded-md border p-2 text-sm"
+                    value={txDate}
+                    onChange={(e) => setTxDate(e.target.value)}
+                    placeholder="YYYY-MM-DD"
+                  />
+                </div>
+
+                <div className="flex flex-col gap-1">
+                  <div className="text-sm font-medium">Monto (EUR)</div>
+                  <input
+                    className="w-full rounded-md border p-2 text-sm"
+                    value={txAmountEur}
+                    onChange={(e) => setTxAmountEur(e.target.value)}
+                    placeholder="Ej: 12.34"
+                    inputMode="decimal"
+                  />
+                  <div className="text-xs opacity-70">Se guardará como gasto (negativo) en P0.</div>
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <div className="text-sm font-medium">Merchant</div>
+                <input
+                  className="w-full rounded-md border p-2 text-sm"
+                  value={txMerchant}
+                  onChange={(e) => setTxMerchant(e.target.value)}
+                  placeholder="Ej: Albert Heijn"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <div className="text-sm font-medium">Categoría</div>
+                <select
+                  className="w-full rounded-md border p-2 text-sm"
+                  value={txCategoryId}
+                  onChange={(e) => setTxCategoryId(e.target.value)}
+                  disabled={convertLoadingCats}
+                >
+                  <option value="">{convertLoadingCats ? "Cargando..." : "Sin categoría"}</option>
+                  {convertCats.map((c) => (
+                    <option key={c.id} value={c.id}>
+                      {c.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <div className="text-sm font-medium">Nota</div>
+                <input
+                  className="w-full rounded-md border p-2 text-sm"
+                  value={txNote}
+                  onChange={(e) => setTxNote(e.target.value)}
+                  placeholder="Opcional"
+                />
+              </div>
+
+              <div className="mt-2 flex flex-wrap justify-end gap-2">
+                <Button disabled={busy !== null} onClick={() => setConvertOpen(false)}>
+                  Cancelar
+                </Button>
+                <Button disabled={busy !== null} onClick={() => void convertToTransaction()}>
+                  {busy === "convert" ? "Guardando..." : "Crear transacción + vincular"}
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </Screen>
   );
 }
-
