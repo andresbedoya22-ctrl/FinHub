@@ -14,6 +14,9 @@ export default [
       "**/docs/~$*",
       "**/*.bak",
       "**/*.old",
+      "**/.tmp/**",
+      ".tmp/**",
+      ".next/**",
     ],
   },
   // Reglas base de JS
@@ -50,6 +53,14 @@ export default [
 
   // Ignorados
   {
-    ignores: [".next/**", "out/**", "dist/**", "node_modules/**"],
+    ignores: [
+      ".next/**",
+      "out/**",
+      "dist/**",
+      "node_modules/**",
+      "**/.tmp/**",
+      ".tmp/**",
+      "**/.next/**",
+    ],
   },
 ];
