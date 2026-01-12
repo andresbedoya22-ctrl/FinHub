@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -43,10 +43,10 @@ export default function FinancesDashboardClient() {
   type CreateCaseInput = Parameters<typeof createCase>[0];
 
   const MODULES: Array<{ type: CreateCaseInput; title: string; subtitle: string; pill: string }> = [
-    { type: "toeslag_huur", title: "Toeslagen", subtitle: "Eligibility  checkout  docs  revisión.", pill: "Toeslagen" },
-    { type: "tax_ib", title: "IB Aangifte", subtitle: "Intake fiscal para declaración anual (Box 1/2/3).", pill: "Impuestos" },
+    { type: "toeslag_huur", title: "Toeslagen", subtitle: "Eligibility  checkout  docs  revisiÃ³n.", pill: "Toeslagen" },
+    { type: "tax_ib", title: "IB Aangifte", subtitle: "Intake fiscal para declaraciÃ³n anual (Box 1/2/3).", pill: "Impuestos" },
     { type: "tax_voorlopige_aanslag", title: "Voorlopige aanslag", subtitle: "Ajuste de pagos anticipados con intake guiado.", pill: "Impuestos" },
-    { type: "document_review", title: "Revisión de documentos", subtitle: "Sube documentos y pasa por verificación / OCR review.", pill: "Documentos" },
+    { type: "document_review", title: "RevisiÃ³n de documentos", subtitle: "Sube documentos y pasa por verificaciÃ³n / OCR review.", pill: "Documentos" },
   ];
 
   const loadBootstrap = useFinancesBootstrap((s) => s.load);
@@ -65,7 +65,7 @@ export default function FinancesDashboardClient() {
   const seedDemo = useFinancesLedger((s) => s.seedDemo);
   const createTx = useFinancesLedger((s) => s.createTx);
 
-  // Fuente única: stores. No hacemos fetch aquí.
+  // Fuente Ãºnica: stores. No hacemos fetch aquÃ­.
   useEffect(() => {
     void loadBootstrap();
     void loadLedger(currentMonth());
@@ -157,11 +157,13 @@ export default function FinancesDashboardClient() {
             <button onClick={() => setForecastMode((v) => !v)} className="rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm hover:bg-fh-surface-2">
               Forecast {forecastMode ? "ON" : "OFF"}
             </button>
-            <button onClick={() => void seedDemo(month)} className="rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm hover:bg-fh-surface-2">
-              Seed demo
-            </button>
+            {process.env.NODE_ENV !== "production" ? (
+              <button onClick={() => void seedDemo(month)} className="rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm hover:bg-fh-surface-2">
+                Seed demo
+              </button>
+            ) : null}
             <button onClick={() => setCreateOpen(true)} className="rounded-xl bg-fh-accent px-3 py-2 text-sm font-medium text-white hover:opacity-95">
-              Nueva transacción
+              Nueva transacciÃ³n
             </button>
             <Badge>F11.4.3</Badge>
           </div>
@@ -232,7 +234,7 @@ export default function FinancesDashboardClient() {
       ) : (
         <Card className="p-4">
           <div className="text-sm font-semibold">Inbox de transacciones</div>
-          <div className="mt-1 text-sm text-fh-muted">Aún no hay transacciones en {month}.</div>
+          <div className="mt-1 text-sm text-fh-muted">AÃºn no hay transacciones en {month}.</div>
         </Card>
       )}
 
@@ -248,7 +250,7 @@ export default function FinancesDashboardClient() {
           <div className="absolute left-1/2 top-24 w-[92vw] max-w-[720px] -translate-x-1/2 rounded-2xl border border-fh-border bg-fh-surface p-4 shadow-xl">
             <div className="flex items-start justify-between gap-3">
               <div>
-                <div className="text-sm font-semibold">Dividir transacción</div>
+                <div className="text-sm font-semibold">Dividir transacciÃ³n</div>
                 <div className="text-xs text-fh-muted">
                   {splitTx.merchantName}  {splitTx.occurredOn}
                 </div>
@@ -257,7 +259,7 @@ export default function FinancesDashboardClient() {
                 Cerrar
               </button>
             </div>
-            <div className="mt-4 text-sm text-fh-muted">Persistencia de splits lista vía API (PUT). Editor completo entra en F11.5.</div>
+            <div className="mt-4 text-sm text-fh-muted">Persistencia de splits lista vÃ­a API (PUT). Editor completo entra en F11.5.</div>
           </div>
         </div>
       ) : null}
@@ -268,8 +270,8 @@ export default function FinancesDashboardClient() {
           <div className="absolute left-1/2 top-24 w-[92vw] max-w-[720px] -translate-x-1/2 rounded-2xl border border-fh-border bg-fh-surface p-4 shadow-xl">
             <div className="flex items-start justify-between gap-3">
               <div>
-                <div className="text-sm font-semibold">Nueva transacción (manual)</div>
-                <div className="text-xs text-fh-muted">MVP: crea una transacción pending en tu ledger.</div>
+                <div className="text-sm font-semibold">Nueva transacciÃ³n (manual)</div>
+                <div className="text-xs text-fh-muted">MVP: crea una transacciÃ³n pending en tu ledger.</div>
               </div>
               <button className="rounded-xl border border-fh-border bg-fh-surface px-3 py-1 text-xs hover:bg-fh-surface-2" onClick={() => setCreateOpen(false)}>
                 Cerrar
@@ -308,9 +310,9 @@ export default function FinancesDashboardClient() {
               </div>
 
               <div>
-                <div className="text-xs text-fh-muted">Categoría</div>
+                <div className="text-xs text-fh-muted">CategorÃ­a</div>
                 <select className="mt-1 w-full rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm" value={cCategoryId} onChange={(e) => setCCategoryId(e.target.value)}>
-                  <option value="">Sin Categoría</option>
+                  <option value="">Sin CategorÃ­a</option>
                   {effectiveCategories.map((c) => (
                     <option key={c.id} value={c.id}>
                       {c.label}
