@@ -151,7 +151,7 @@ export default function LandingLeadForm() {
                 ].join(" ")}
               >
                 <div className="text-sm font-semibold text-fh-text">{interestLabel(k)}</div>
-                <div className="mt-1 text-xs text-fh-muted">{active ? "Ã¢Å“â€œ" : ""}</div>
+                <div className="mt-1 text-xs text-fh-muted">{active ? "✓" : ""}</div>
               </button>
             );
           })}
@@ -186,7 +186,7 @@ export default function LandingLeadForm() {
       ) : (
         <div className="mt-5 flex flex-wrap gap-3">
           <Button onClick={submit} disabled={!canSubmit}>
-            {busy ? "Ã¢â‚¬Â¦" : t("lead.submit")}
+            {busy ? "…" : t("lead.submit")}
           </Button>
           <Link
             href="/register"

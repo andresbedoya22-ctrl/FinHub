@@ -1,5 +1,5 @@
-import FinancesOverviewClient from "./FinancesOverviewClient";
+import FinancesOverviewProClient from "./FinancesOverviewProClient";
 
 export default function FinancesPage() {
-  return <FinancesOverviewClient />;
+  return <FinancesOverviewProClient />;
 }

@@ -1,4 +1,4 @@
-﻿import type { ReactNode } from "react";
+import type { ReactNode } from "react";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { createServerClient } from "@supabase/ssr";
@@ -74,7 +74,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
     { href: "/app/cases", label: "Casos" },
     { href: "/app/documents", label: "Documentos" },
     { href: "/app/profile", label: "Perfil" },
-    { href: "/app/ui-kit", label: "UI Kit" },
+    ...(isAdmin && process.env.NODE_ENV !== "production" ? [{ href: "/app/ui-kit", label: "UI Kit" }] : []),
     ...(isAdmin ? [{ href: "/app/admin", label: "Admin" }] : []),
   ];
 
