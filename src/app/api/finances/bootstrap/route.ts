@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { supabaseRouteClient } from "@/lib/supabase/routeClient";
+import type { FinanceRulesV1, FinancesBootstrap } from "@/features/finances/financesTypes";
 
 type FixedBudgetDTO = {
   id: string;
@@ -9,24 +10,12 @@ type FixedBudgetDTO = {
   isActive: boolean;
 };
 
-type PlanDTO = {
-  projectedIncomeMonthlyCents: number;
-  fixedBudgets: FixedBudgetDTO[];
-};
-
-type RulesDTO = {
-  version: 1;
-  safeToSpendMode: "income-expense-fixedRemaining";
-};
-
-type BootstrapDTO = {
-  plan: PlanDTO;
-  rules: RulesDTO;
-};
+type PlanDTO = FinancesBootstrap["plan"];
+type RulesDTO = FinanceRulesV1;
 
 /**
- * Minimal row shapes (evitar "any" y no depender de tipos generados).
- * Ajusta nombres SOLO si tu DB usa columnas distintas.
+ * Minimal row shapes (avoid "any" and no dependency on generated types).
+ * Adjust column names if your DB differs.
  */
 type FinanceUserPlanRow = {
   projected_income_monthly_cents: number | null;
@@ -53,14 +42,16 @@ const DEFAULT_BUDGETS: FixedBudgetDTO[] = [
 function normalizePlan(
   input: unknown
 ): { ok: true; plan: PlanDTO; rules: RulesDTO } | { ok: false; error: string } {
-  if (!input || typeof input !== "object") return { ok: false, error: "Body invÃ¡lido" };
+  if (!input || typeof input !== "object") return { ok: false, error: "Invalid body" };
 
   const body = input as Record<string, unknown>;
   const plan = body.plan as Record<string, unknown> | undefined;
   const rules = body.rules as Record<string, unknown> | undefined;
 
   const projected = Number(plan?.projectedIncomeMonthlyCents ?? 0);
-  if (!Number.isFinite(projected) || projected < 0) return { ok: false, error: "projectedIncomeMonthlyCents invÃ¡lido" };
+  if (!Number.isFinite(projected) || projected < 0) {
+    return { ok: false, error: "projectedIncomeMonthlyCents invalid" };
+  }
 
   const fixedBudgets = Array.isArray(plan?.fixedBudgets) ? (plan!.fixedBudgets as unknown[]) : [];
   const mapped: FixedBudgetDTO[] = fixedBudgets
@@ -68,7 +59,7 @@ function normalizePlan(
       const o = (x ?? {}) as Record<string, unknown>;
       return {
         id: String(o.id ?? crypto.randomUUID()),
-        label: String(o.label ?? "Sin nombre"),
+        label: String(o.label ?? "Unnamed"),
         monthlyCents: Number(o.monthlyCents ?? 0),
         isActive: Boolean(o.isActive ?? true),
       };
@@ -76,7 +67,9 @@ function normalizePlan(
     .filter((b) => Number.isFinite(b.monthlyCents) && b.monthlyCents >= 0);
 
   const safeToSpendMode = (rules?.safeToSpendMode ?? "income-expense-fixedRemaining") as RulesDTO["safeToSpendMode"];
-  if (safeToSpendMode !== "income-expense-fixedRemaining") return { ok: false, error: "rules.safeToSpendMode invÃ¡lido" };
+  if (safeToSpendMode !== "income-expense-fixedRemaining") {
+    return { ok: false, error: "rules.safeToSpendMode invalid" };
+  }
 
   return {
     ok: true,
@@ -95,21 +88,18 @@ export async function GET() {
 
   const userId = authData.user.id;
 
-  // 1) Plan
   const { data: planRow, error: planErr } = await supabase
     .from("finance_user_plans")
     .select("projected_income_monthly_cents")
     .eq("user_id", userId)
     .maybeSingle();
 
-  // 2) Budgets
   const { data: budgetRows, error: budgetErr } = await supabase
     .from("finance_fixed_budgets")
     .select("id,label,monthly_cents,is_active,sort_order")
     .eq("user_id", userId)
     .order("sort_order", { ascending: true });
 
-  // 3) Rules
   const { data: rulesRow, error: rulesErr } = await supabase
     .from("finance_rules_v1")
     .select("safe_to_spend_mode")
@@ -123,7 +113,6 @@ export async function GET() {
     );
   }
 
-  // Seed defaults if missing
   if (!planRow) {
     await supabase.from("finance_user_plans").insert({
       user_id: userId,
@@ -136,7 +125,7 @@ export async function GET() {
     await supabase.from("finance_fixed_budgets").insert(
       DEFAULT_BUDGETS.map((b, i) => ({
         user_id: userId,
-        id: b.id, // stable ids for UX
+        id: b.id,
         label: b.label,
         monthly_cents: b.monthlyCents,
         is_active: b.isActive,
@@ -153,7 +142,6 @@ export async function GET() {
     });
   }
 
-  // Re-read after seed
   const { data: plan2 } = await supabase
     .from("finance_user_plans")
     .select("projected_income_monthly_cents")
@@ -180,7 +168,7 @@ export async function GET() {
   const normalizedSafeMode: RulesDTO["safeToSpendMode"] =
     safeMode === "income-expense-fixedRemaining" ? "income-expense-fixedRemaining" : "income-expense-fixedRemaining";
 
-  const dto: BootstrapDTO = {
+  const dto: FinancesBootstrap = {
     plan: {
       projectedIncomeMonthlyCents: Number(planTyped?.projected_income_monthly_cents ?? 0),
       fixedBudgets: budgetsTyped.map((r) => ({
@@ -221,7 +209,6 @@ export async function POST(req: Request) {
 
   const { plan, rules } = parsed;
 
-  // Plan upsert
   const upPlan = await supabase.from("finance_user_plans").upsert(
     {
       user_id: userId,
@@ -233,7 +220,6 @@ export async function POST(req: Request) {
 
   if (upPlan.error) return NextResponse.json({ error: upPlan.error.message }, { status: 500 });
 
-  // Replace budgets (simple v1)
   const delBudgets = await supabase.from("finance_fixed_budgets").delete().eq("user_id", userId);
   if (delBudgets.error) return NextResponse.json({ error: delBudgets.error.message }, { status: 500 });
 
@@ -251,7 +237,6 @@ export async function POST(req: Request) {
     if (insBudgets.error) return NextResponse.json({ error: insBudgets.error.message }, { status: 500 });
   }
 
-  // Rules upsert
   const upRules = await supabase.from("finance_rules_v1").upsert(
     {
       user_id: userId,
