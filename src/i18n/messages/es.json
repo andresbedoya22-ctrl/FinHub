@@ -3,20 +3,20 @@
                 "name":  "FinHub"
             },
     "landing":  {
-                    "title":  "Gestiona tus finanzas en PaÃ’Â­ses Bajos",
+                    "title":  "Gestiona tus finanzas en Países Bajos",
                     "cta":  "Empezar",
                     "lead":  {
                                  "consent":  "Acepto que me contacten sobre novedades de FinHub.",
                                  "createAccount":  "Crear cuenta",
-                                 "email":  "Correo electrÃ³nico",
-                                 "error":  "Algo saliÃ³ mal. IntÃ©ntalo de nuevo.",
+                                 "email":  "Correo electrónico",
+                                 "error":  "Algo salió mal. Inténtalo de nuevo.",
                                  "fullName":  "Nombre completo",
                                  "interests":  "Me interesa",
-                                 "phone":  "TelÃ©fono (opcional)",
+                                 "phone":  "Teléfono (opcional)",
                                  "submit":  "Enviar",
-                                 "subtitle":  "DÃ©janos tus datos y lo que te interesa â€” priorizaremos segÃºn tu necesidad.",
+                                 "subtitle":  "Déjanos tus datos y lo que te interesa — priorizaremos según tu necesidad.",
                                  "successBody":  "Te contactaremos cuando abramos nuevos cupos de beta.",
-                                 "successTitle":  "Gracias â€” recibido.",
+                                 "successTitle":  "Gracias — recibido.",
                                  "title":  "Recibir novedades (beta)",
                                  "interestLabels":  {
                                                         "personal_finance":  "Personal finance",
@@ -94,7 +94,7 @@
                             }
              },
     "finny":  {
-                  "ask":  "PregÃ’Âºntale a Finny"
+                  "ask":  "Pregúntale a Finny"
               },
     "shell":  {
                   "skipToContent":  "Saltar al contenido",
@@ -176,11 +176,11 @@
                                                   },
                                        "actions":  {
                                                        "viewAll":  "Ver todas",
-                                                       "newTransaction":  "Nueva transacciÃ³n",
+                                                       "newTransaction":  "Nueva transacción",
                                                        "review":  "Revisar"
                                                    },
                                        "nav":  {
-                                                   "title":  "Navegaci?n",
+                                                   "title":  "Navegación",
                                                    "finances":  "Finanzas",
                                                    "cases":  "Casos",
                                                    "documents":  "Documentos",
@@ -192,23 +192,23 @@
                                                     "incomeReceived":  "Ingresos recibidos",
                                                     "billsPaid":  "Facturas pagadas",
                                                     "budgetUsed":  "Presupuesto usado",
-                                                    "safeHint":  "Despu?s de costos fijos",
+                                                    "safeHint":  "Después de costos fijos",
                                                     "monthHint":  "Este mes ({month})",
-                                                    "outflowHint":  "Salidas de este per?odo",
+                                                    "outflowHint":  "Salidas de este período",
                                                     "budgetHint":  "Usado vs plan"
                                                 },
                                        "inbox":  {
                                                      "title":  "Bandeja de transacciones",
                                                      "subtitle":  "Actividad reciente",
                                                      "viewAll":  "Ver todas",
-                                                     "emptyTitle":  "A?n no hay transacciones",
-                                                     "emptyBody":  "Agrega tu primera transacci?n para desbloquear insights.",
-                                                     "emptyCta":  "Agregar primera transacci?n"
+                                                     "emptyTitle":  "Aún no hay transacciones",
+                                                     "emptyBody":  "Agrega tu primera transacción para desbloquear insights.",
+                                                     "emptyCta":  "Agregar primera transacción"
                                                  },
                                        "table":  {
                                                      "date":  "Fecha",
                                                      "merchant":  "Comercio",
-                                                     "category":  "Categor?a",
+                                                     "category":  "Categoría",
                                                      "status":  "Estado",
                                                      "amount":  "Monto"
                                                  },
@@ -216,21 +216,21 @@
                                                        "groceries":  "Supermercado",
                                                        "transport":  "Transporte",
                                                        "entertainment":  "Entretenimiento",
-                                                       "uncategorized":  "Sin categor?a"
+                                                       "uncategorized":  "Sin categoría"
                                                    },
                                        "status":  {
                                                      "approved":  "Aprobado",
                                                      "flagged":  "Marcado"
                                                  },
                                        "burndown":  {
-                                                       "title":  "Evoluci?n mensual",
+                                                       "title":  "Evolución mensual",
                                                        "subtitle":  "Balance neto en el tiempo",
                                                        "currency":  "EUR",
                                                        "emptyTitle":  "Datos insuficientes",
-                                                       "emptyBody":  "A?n no hay datos suficientes para graficar."
+                                                       "emptyBody":  "Aún no hay datos suficientes para graficar."
                                                    },
                                        "budgets":  {
-                                                      "title":  "Presupuestos por categor?a",
+                                                      "title":  "Presupuestos por categoría",
                                                       "subtitle":  "Presupuestos activos para {month}",
                                                       "used":  "Usado",
                                                       "remaining":  "Restante",
@@ -239,7 +239,7 @@
                                                       "emptyCta":  "Revisar transacciones",
                                                       "status":  {
                                                                      "ok":  "En orden",
-                                                                     "warn":  "Atenci?n",
+                                                                     "warn":  "Atención",
                                                                      "risk":  "En riesgo"
                                                                  }
                                                   },
