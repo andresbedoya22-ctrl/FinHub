@@ -74,21 +74,22 @@ export default function FinancesDashboardClient() {
   const [busyType, setBusyType] = useState<CreateCaseInput | null>(null);
   const [err, setErr] = useState<string | null>(null);
 
-  const mock = useMemo(() => buildMockFinancesBundle(), []);
+  const allowMock = process.env.NODE_ENV === "development" && process.env.NEXT_PUBLIC_FH_USE_MOCK_FINANCES === "1";
+  const mock = useMemo(() => (allowMock ? buildMockFinancesBundle() : null), [allowMock]);
   const plan = persistedPlan ?? DEFAULT_PLAN;
 
-  const month = ledgerMonth ?? mock.month;
+  const month = ledgerMonth ?? mock?.month ?? currentMonth();
   const transactions: FinanceTransaction[] = useMemo(() => {
     if (persistedTx.length) return persistedTx;
-    if (ledgerErr) return mock.transactions;
+    if (ledgerErr && allowMock) return mock?.transactions ?? [];
     return persistedTx;
-  }, [persistedTx, ledgerErr, mock.transactions]);
+  }, [persistedTx, ledgerErr, allowMock, mock?.transactions]);
 
   const effectiveCategories = useMemo(() => {
     if (categories.length) return categories;
-    if (ledgerErr) return mock.categories;
+    if (ledgerErr && allowMock) return mock?.categories ?? [];
     return categories;
-  }, [categories, ledgerErr, mock.categories]);
+  }, [categories, ledgerErr, allowMock, mock?.categories]);
 
   const [openCategoryId, setOpenCategoryId] = useState<string | null>(null);
   const [forecastMode, setForecastMode] = useState(false);
@@ -152,12 +153,14 @@ export default function FinancesDashboardClient() {
             <button onClick={() => setForecastMode((v) => !v)} className="rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm hover:bg-fh-surface-2">
               Forecast {forecastMode ? "ON" : "OFF"}
             </button>
-            <button
-              onClick={() => void seedDemo(month)}
-              className="rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm hover:bg-fh-surface-2"
-            >
-              Seed demo
-            </button>
+            {allowMock ? (
+              <button
+                onClick={() => void seedDemo(month)}
+                className="rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm hover:bg-fh-surface-2"
+              >
+                Seed demo
+              </button>
+            ) : null}
             <button
               onClick={() => setCreateOpen(true)}
               className="rounded-xl bg-fh-accent px-3 py-2 text-sm font-medium text-white hover:opacity-95"
@@ -347,5 +350,4 @@ export default function FinancesDashboardClient() {
     </Screen>
   );
 }
-
 

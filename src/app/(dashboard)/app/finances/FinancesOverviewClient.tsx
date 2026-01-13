@@ -1,14 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { Badge } from "@/ui/components/Badge";
 import { Button } from "@/ui/components/Button";
 import { Card } from "@/ui/components/Card";
-import { LanguageSwitcher } from "@/ui/components/LanguageSwitcher";
 import { cn } from "@/ui/cn";
 import { FinancesBurndownChart, type BurndownPoint } from "./FinancesBurndownChart";
 import type { FinancesLedgerResponse } from "@/features/finances/financesLedgerApi";
@@ -46,14 +45,6 @@ const STATUS_BAR: Record<BudgetStatus, string> = {
   warn: "bg-amber-400/80",
   risk: "bg-rose-400/80",
 };
-
-const NAV_ITEMS = [
-  { id: "finances", href: "/app/finances", icon: DashboardIcon },
-  { id: "cases", href: "/app/cases", icon: CasesIcon },
-  { id: "documents", href: "/app/documents", icon: DocumentsIcon },
-  { id: "profile", href: "/app/profile", icon: ProfileIcon },
-  { id: "uiKit", href: "/app/ui-kit", icon: UiKitIcon },
-];
 
 function currentMonth(): string {
   const now = new Date();
@@ -244,73 +235,9 @@ function SkeletonLine({ className }: { className?: string }) {
   return <div className={cn("h-3 rounded bg-white/10 animate-pulse", className)} />;
 }
 
-function DashboardIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="1.5">
-      <path d="M4 4h7v7H4zM13 4h7v4h-7zM13 10h7v10h-7zM4 13h7v7H4z" />
-    </svg>
-  );
-}
-
-function CasesIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="1.5">
-      <path d="M4 6h16v12H4z" />
-      <path d="M8 6V4h8v2" />
-      <path d="M7 10h10M7 14h6" />
-    </svg>
-  );
-}
-
-function DocumentsIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="1.5">
-      <path d="M7 4h7l5 5v11H7z" />
-      <path d="M14 4v5h5" />
-      <path d="M9 13h6M9 17h6" />
-    </svg>
-  );
-}
-
-function ProfileIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="1.5">
-      <circle cx="12" cy="8" r="3" />
-      <path d="M5 20c2-4 12-4 14 0" />
-    </svg>
-  );
-}
-
-function UiKitIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="1.5">
-      <path d="M5 5h14v6H5zM5 13h6v6H5zM13 13h6v6h-6z" />
-    </svg>
-  );
-}
-
-function SearchIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="1.5">
-      <circle cx="11" cy="11" r="6" />
-      <path d="M16 16l4 4" />
-    </svg>
-  );
-}
-
-function BellIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="1.5">
-      <path d="M6 9a6 6 0 1 1 12 0c0 5 2 5 2 7H4c0-2 2-2 2-7" />
-      <path d="M9.5 18a2.5 2.5 0 0 0 5 0" />
-    </svg>
-  );
-}
-
 export default function FinancesOverviewClient() {
   const t = useTranslations("finances.dashboard");
   const locale = useLocale();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const monthParam = searchParams.get("month");
@@ -436,276 +363,239 @@ export default function FinancesOverviewClient() {
   const inboxRows = useMemo(() => transactions.slice(0, 8), [transactions]);
   const burndownPoints = useMemo(() => buildBurndownPoints(transactions), [transactions]);
 
-  const topActions = (
-    <div className="flex flex-wrap items-center gap-2">
-      <button
-        type="button"
-        className="flex items-center gap-2 rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm text-fh-muted hover:bg-fh-surface-2"
-        aria-label={t("topbar.search")}
-      >
-        <SearchIcon className="h-4 w-4 text-fh-muted" />
-        <span className="hidden sm:inline">{t("topbar.searchPlaceholder")}</span>
-        <span className="ml-2 text-xs text-fh-muted"> {t("topbar.cmdk")} </span>
-      </button>
-
-      <LanguageSwitcher />
-
-      <button
-        type="button"
-        className="rounded-xl border border-fh-border bg-fh-surface p-2 text-fh-muted hover:bg-fh-surface-2"
-        aria-label={t("topbar.notifications")}
-      >
-        <BellIcon className="h-5 w-5" />
-      </button>
-
-      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-fh-surface-2 text-xs font-semibold">
-        FH
-      </div>
-    </div>
-  );
-
   return (
     <div className="space-y-6">
-      <Card className="bg-[radial-gradient(circle_at_top,_rgba(76,175,80,0.12),_transparent_60%)]">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <div className="text-xs uppercase tracking-[0.2em] text-fh-muted">{t("topbar.eyebrow")}</div>
-            <div className="mt-2 text-2xl font-semibold">{t("topbar.title")}</div>
-            <div className="text-sm text-fh-muted">{t("topbar.subtitle")}</div>
-          </div>
-          {topActions}
+      <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+        <div>
+          <div className="text-xs uppercase tracking-[0.2em] text-fh-muted">{t("header.kicker")}</div>
+          <div className="mt-2 text-2xl font-semibold">{t("header.title")}</div>
+          <div className="text-sm text-fh-muted">{t("header.subtitle")}</div>
         </div>
-      </Card>
-
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[220px,1fr]">
-        <Card className="h-fit">
-          <div className="text-xs text-fh-muted">{t("nav.title")}</div>
-          <nav className="mt-3 space-y-1">
-            {NAV_ITEMS.map((item) => {
-              const active = pathname === item.href || pathname?.startsWith(item.href);
-              const Icon = item.icon;
-              return (
-                <Link
-                  key={item.id}
-                  href={item.href}
-                  className={cn(
-                    "flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition",
-                    active ? "bg-fh-surface-2 text-fh-text" : "text-fh-muted hover:bg-fh-surface-2"
-                  )}
-                >
-                  <Icon className="h-4 w-4" />
-                  <span>{t(`nav.${item.id}`)}</span>
-                </Link>
-              );
-            })}
-          </nav>
-        </Card>
-
-        <div className="space-y-6">
-          {state === "error" ? (
-            <Card>
-              <div className="text-sm font-semibold">{t("states.errorTitle")}</div>
-              <div className="mt-1 text-xs text-fh-muted">{error ?? t("states.errorBody")}</div>
-              <Button className="mt-3" variant="secondary" onClick={retry}>
-                {t("states.retry")}
-              </Button>
-            </Card>
-          ) : null}
-
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-            {state === "loading"
-              ? Array.from({ length: 4 }, (_, idx) => (
-                  <Card key={`kpi-${idx}`} className="space-y-3">
-                    <SkeletonLine className="w-28" />
-                    <SkeletonLine className="h-6 w-32" />
-                    <SkeletonLine className="w-20" />
-                  </Card>
-                ))
-              : kpis.map((kpi) => (
-                  <Card key={kpi.id}>
-                    <div className="text-xs text-fh-muted">{kpi.title}</div>
-                    <div
-                      className={cn(
-                        "mt-2 text-xl font-semibold tracking-tight",
-                        kpi.trend === "negative" ? "text-rose-300" : "text-emerald-300"
-                      )}
-                    >
-                      {kpi.value}
-                    </div>
-                    <div className="mt-1 text-xs text-fh-muted">{kpi.hint}</div>
-                  </Card>
-                ))}
-          </div>
-
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
-            <div className="lg:col-span-8 space-y-6">
-              <Card>
-                <div className="flex items-center justify-between gap-3">
-                  <div>
-                    <div className="text-sm font-semibold">{t("inbox.title")}</div>
-                    <div className="text-xs text-fh-muted">{t("inbox.subtitle")}</div>
-                  </div>
-                  <Link className="text-xs text-fh-muted hover:text-fh-text" href="/app/finances/transactions">
-                    {t("inbox.viewAll")}
-                  </Link>
-                </div>
-
-                {state === "loading" ? (
-                  <div className="mt-4 space-y-3">
-                    {Array.from({ length: 5 }, (_, idx) => (
-                      <div key={`row-${idx}`} className="flex items-center justify-between gap-4">
-                        <SkeletonLine className="h-4 w-24" />
-                        <SkeletonLine className="h-4 w-40" />
-                        <SkeletonLine className="h-4 w-24" />
-                      </div>
-                    ))}
-                  </div>
-                ) : inboxRows.length ? (
-                  <div className="mt-4">
-                    <div className="hidden md:grid md:grid-cols-[110px,1.5fr,1fr,120px,120px] text-xs text-fh-muted">
-                      <div>{t("table.date")}</div>
-                      <div>{t("table.merchant")}</div>
-                      <div>{t("table.category")}</div>
-                      <div>{t("table.status")}</div>
-                      <div className="text-right">{t("table.amount")}</div>
-                    </div>
-
-                    <div className="mt-2 divide-y divide-white/5">
-                      {inboxRows.map((tx) => {
-                        const categoryLabel =
-                          (tx.categoryId && categoryLabelById.get(tx.categoryId)) || t("category.uncategorized");
-                        const badgeMeta = resolveCategoryBadge(categoryLabel, t);
-                        const statusLabel = tx.status === "approved" ? t("status.approved") : t("status.flagged");
-                        const statusVariant = tx.status === "approved" ? "success" : "danger";
-                        return (
-                          <div
-                            key={tx.id}
-                            className="grid grid-cols-1 gap-2 py-3 md:grid-cols-[110px,1.5fr,1fr,120px,120px] md:items-center"
-                          >
-                            <div className="text-xs text-fh-muted md:text-sm">
-                              {formatDateLabel(locale, tx.occurredOn)}
-                            </div>
-                            <div className="min-w-0">
-                              <div className="truncate text-sm font-medium">{tx.merchantName}</div>
-                              <div className="md:hidden mt-1 flex flex-wrap gap-2">
-                                <Badge variant={badgeMeta.variant}>{badgeMeta.label}</Badge>
-                                <Badge variant={statusVariant}>{statusLabel}</Badge>
-                              </div>
-                            </div>
-                            <div className="hidden md:block">
-                              <Badge variant={badgeMeta.variant}>{badgeMeta.label}</Badge>
-                            </div>
-                            <div className="hidden md:block">
-                              <Badge variant={statusVariant}>{statusLabel}</Badge>
-                            </div>
-                            <div
-                              className={cn(
-                                "text-right text-sm font-semibold tabular-nums",
-                                tx.amountCents < 0 ? "text-fh-text" : "text-emerald-300"
-                              )}
-                            >
-                              {formatCurrencyFromCents(locale, tx.amountCents)}
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                ) : (
-                  <div className="mt-6 rounded-2xl border border-dashed border-white/10 bg-fh-surface-2 p-6 text-center">
-                    <div className="text-sm font-semibold">{t("inbox.emptyTitle")}</div>
-                    <div className="mt-2 text-sm text-fh-muted">{t("inbox.emptyBody")}</div>
-                    <Link
-                      className="mt-4 inline-flex items-center justify-center rounded-xl bg-fh-primary px-4 py-2 text-sm font-medium text-fh-primaryFg hover:opacity-90"
-                      href="/app/finances/transactions/new"
-                    >
-                      {t("inbox.emptyCta")}
-                    </Link>
-                  </div>
-                )}
-              </Card>
-            </div>
-
-            <div className="lg:col-span-4 space-y-6">
-              {state === "loading" ? (
-                <Card className="h-[260px] space-y-3">
-                  <SkeletonLine className="w-36" />
-                  <SkeletonLine className="w-24" />
-                  <div className="mt-6 h-36 rounded-xl bg-white/10 animate-pulse" />
-                </Card>
-              ) : (
-                <FinancesBurndownChart
-                  points={burndownPoints}
-                  title={t("burndown.title")}
-                  subtitle={t("burndown.subtitle")}
-                  currencyLabel={t("burndown.currency")}
-                  emptyTitle={t("burndown.emptyTitle")}
-                  emptyBody={t("burndown.emptyBody")}
-                  formatCurrency={(value) => formatCurrencyFromEur(locale, value)}
-                />
-              )}
-
-              <Card>
-                <div className="text-sm font-semibold">{t("budgets.title")}</div>
-                <div className="text-xs text-fh-muted">{t("budgets.subtitle", { month: monthLabel })}</div>
-
-                {state === "loading" ? (
-                  <div className="mt-4 space-y-4">
-                    {Array.from({ length: 3 }, (_, idx) => (
-                      <div key={`budget-skel-${idx}`} className="space-y-2">
-                        <SkeletonLine className="w-40" />
-                        <SkeletonLine className="w-28" />
-                        <div className="h-2 w-full rounded-full bg-white/10 animate-pulse" />
-                      </div>
-                    ))}
-                  </div>
-                ) : budgets.length ? (
-                  <div className="mt-4 space-y-4">
-                    {budgets.map((budget) => {
-                      const remaining = Math.max(budget.budgetCents - budget.spentCents, 0);
-                      return (
-                        <div key={budget.id} className="rounded-xl border border-white/10 bg-fh-surface-2 p-3">
-                          <div className="flex items-center justify-between gap-3">
-                            <div className="text-sm font-medium">{budget.label}</div>
-                            <Badge variant={STATUS_VARIANTS[budget.status]}>
-                              {t(`budgets.status.${budget.status}`)}
-                            </Badge>
-                          </div>
-                          <div className="mt-2 flex items-center justify-between text-xs text-fh-muted">
-                            <span>
-                              {t("budgets.used")} {formatCurrencyFromCents(locale, budget.spentCents)}
-                            </span>
-                            <span>
-                              {t("budgets.remaining")} {formatCurrencyFromCents(locale, remaining)}
-                            </span>
-                          </div>
-                          <div className="mt-2 h-2 w-full rounded-full bg-white/10">
-                            <div
-                              className={cn("h-2 rounded-full", STATUS_BAR[budget.status])}
-                              style={{ width: `${Math.min(budget.percent * 100, 100)}%` }}
-                            />
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                ) : (
-                  <div className="mt-4 rounded-xl border border-dashed border-white/10 bg-fh-surface-2 p-4">
-                    <div className="text-sm font-semibold">{t("budgets.emptyTitle")}</div>
-                    <div className="mt-1 text-sm text-fh-muted">{t("budgets.emptyBody")}</div>
-                    <Link
-                      className="mt-3 inline-flex items-center justify-center rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-xs hover:bg-fh-surface-2"
-                      href="/app/finances/transactions"
-                    >
-                      {t("budgets.emptyCta")}
-                    </Link>
-                  </div>
-                )}
-              </Card>
-            </div>
-          </div>
+        <div className="flex flex-wrap gap-2">
+          <Link
+            className="inline-flex items-center justify-center rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm hover:bg-fh-surface-2"
+            href="/app/finances/transactions"
+          >
+            {t("actions.viewAll")}
+          </Link>
+          <Link
+            className="inline-flex items-center justify-center rounded-xl bg-fh-primary px-3 py-2 text-sm font-medium text-fh-primaryFg hover:opacity-90"
+            href="/app/finances/transactions/new"
+          >
+            {t("actions.newTransaction")}
+          </Link>
         </div>
       </div>
+
+      {state === "error" ? (
+        <Card>
+          <div className="text-sm font-semibold">{t("states.errorTitle")}</div>
+          <div className="mt-1 text-xs text-fh-muted">{error ?? t("states.errorBody")}</div>
+          <Button className="mt-3" variant="secondary" onClick={retry}>
+            {t("states.retry")}
+          </Button>
+        </Card>
+      ) : null}
+
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        {state === "loading"
+          ? Array.from({ length: 4 }, (_, idx) => (
+              <Card key={`kpi-${idx}`} className="space-y-3">
+                <SkeletonLine className="w-28" />
+                <SkeletonLine className="h-6 w-32" />
+                <SkeletonLine className="w-20" />
+              </Card>
+            ))
+          : kpis.map((kpi) => (
+              <Card key={kpi.id}>
+                <div className="text-xs text-fh-muted">{kpi.title}</div>
+                <div
+                  className={cn(
+                    "mt-2 text-xl font-semibold tracking-tight",
+                    kpi.trend === "negative" ? "text-rose-300" : "text-emerald-300"
+                  )}
+                >
+                  {kpi.value}
+                </div>
+                <div className="mt-1 text-xs text-fh-muted">{kpi.hint}</div>
+              </Card>
+            ))}
+      </div>
+
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+        <div className="lg:col-span-8 space-y-6">
+          <Card>
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <div className="text-sm font-semibold">{t("inbox.title")}</div>
+                <div className="text-xs text-fh-muted">{t("inbox.subtitle")}</div>
+              </div>
+              <Link className="text-xs text-fh-muted hover:text-fh-text" href="/app/finances/transactions">
+                {t("inbox.viewAll")}
+              </Link>
+            </div>
+
+            {state === "loading" ? (
+              <div className="mt-4 space-y-3">
+                {Array.from({ length: 5 }, (_, idx) => (
+                  <div key={`row-${idx}`} className="flex items-center justify-between gap-4">
+                    <SkeletonLine className="h-4 w-24" />
+                    <SkeletonLine className="h-4 w-40" />
+                    <SkeletonLine className="h-4 w-24" />
+                  </div>
+                ))}
+              </div>
+            ) : inboxRows.length ? (
+              <div className="mt-4">
+                <div className="hidden md:grid md:grid-cols-[110px,1.5fr,1fr,120px,120px] text-xs text-fh-muted">
+                  <div>{t("table.date")}</div>
+                  <div>{t("table.merchant")}</div>
+                  <div>{t("table.category")}</div>
+                  <div>{t("table.status")}</div>
+                  <div className="text-right">{t("table.amount")}</div>
+                </div>
+
+                <div className="mt-2 divide-y divide-white/5">
+                  {inboxRows.map((tx) => {
+                    const categoryLabel =
+                      (tx.categoryId && categoryLabelById.get(tx.categoryId)) || t("category.uncategorized");
+                    const badgeMeta = resolveCategoryBadge(categoryLabel, t);
+                    const statusLabel = tx.status === "approved" ? t("status.approved") : t("status.flagged");
+                    const statusVariant = tx.status === "approved" ? "success" : "danger";
+                    return (
+                      <div
+                        key={tx.id}
+                        className="grid grid-cols-1 gap-2 py-3 md:grid-cols-[110px,1.5fr,1fr,120px,120px] md:items-center"
+                      >
+                        <div className="text-xs text-fh-muted md:text-sm">
+                          {formatDateLabel(locale, tx.occurredOn)}
+                        </div>
+                        <div className="min-w-0">
+                          <div className="truncate text-sm font-medium">{tx.merchantName}</div>
+                          <div className="md:hidden mt-1 flex flex-wrap gap-2">
+                            <Badge variant={badgeMeta.variant}>{badgeMeta.label}</Badge>
+                            <Badge variant={statusVariant}>{statusLabel}</Badge>
+                          </div>
+                        </div>
+                        <div className="hidden md:block">
+                          <Badge variant={badgeMeta.variant}>{badgeMeta.label}</Badge>
+                        </div>
+                        <div className="hidden md:block">
+                          <Badge variant={statusVariant}>{statusLabel}</Badge>
+                        </div>
+                        <div
+                          className={cn(
+                            "text-right text-sm font-semibold tabular-nums",
+                            tx.amountCents < 0 ? "text-fh-text" : "text-emerald-300"
+                          )}
+                        >
+                          {formatCurrencyFromCents(locale, tx.amountCents)}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ) : (
+              <div className="mt-6 rounded-2xl border border-dashed border-white/10 bg-fh-surface-2 p-6 text-center">
+                <div className="text-sm font-semibold">{t("inbox.emptyTitle")}</div>
+                <div className="mt-2 text-sm text-fh-muted">{t("inbox.emptyBody")}</div>
+                <Link
+                  className="mt-4 inline-flex items-center justify-center rounded-xl bg-fh-primary px-4 py-2 text-sm font-medium text-fh-primaryFg hover:opacity-90"
+                  href="/app/finances/transactions/new"
+                >
+                  {t("inbox.emptyCta")}
+                </Link>
+              </div>
+            )}
+          </Card>
+        </div>
+
+        <div className="lg:col-span-4 space-y-6">
+          {state === "loading" ? (
+            <Card className="h-[260px] space-y-3">
+              <SkeletonLine className="w-36" />
+              <SkeletonLine className="w-24" />
+              <div className="mt-6 h-36 rounded-xl bg-white/10 animate-pulse" />
+            </Card>
+          ) : (
+            <FinancesBurndownChart
+              points={burndownPoints}
+              title={t("burndown.title")}
+              subtitle={t("burndown.subtitle")}
+              currencyLabel={t("burndown.currency")}
+              emptyTitle={t("burndown.emptyTitle")}
+              emptyBody={t("burndown.emptyBody")}
+              formatCurrency={(value) => formatCurrencyFromEur(locale, value)}
+            />
+          )}
+        </div>
+      </div>
+
+      <Card>
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <div className="text-sm font-semibold">{t("budgets.title")}</div>
+            <div className="text-xs text-fh-muted">{t("budgets.subtitle", { month: monthLabel })}</div>
+          </div>
+          <Link className="text-xs text-fh-muted hover:text-fh-text" href="/app/finances/transactions">
+            {t("actions.review")}
+          </Link>
+        </div>
+
+        {state === "loading" ? (
+          <div className="mt-4 space-y-4">
+            {Array.from({ length: 3 }, (_, idx) => (
+              <div key={`budget-skel-${idx}`} className="space-y-2">
+                <SkeletonLine className="w-40" />
+                <SkeletonLine className="w-28" />
+                <div className="h-2 w-full rounded-full bg-white/10 animate-pulse" />
+              </div>
+            ))}
+          </div>
+        ) : budgets.length ? (
+          <div className="mt-4 grid gap-4 lg:grid-cols-2">
+            {budgets.map((budget) => {
+              const remaining = Math.max(budget.budgetCents - budget.spentCents, 0);
+              return (
+                <div key={budget.id} className="rounded-xl border border-white/10 bg-fh-surface-2 p-3">
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="text-sm font-medium">{budget.label}</div>
+                    <Badge variant={STATUS_VARIANTS[budget.status]}>
+                      {t(`budgets.status.${budget.status}`)}
+                    </Badge>
+                  </div>
+                  <div className="mt-2 flex items-center justify-between text-xs text-fh-muted">
+                    <span>
+                      {t("budgets.used")} {formatCurrencyFromCents(locale, budget.spentCents)}
+                    </span>
+                    <span>
+                      {t("budgets.remaining")} {formatCurrencyFromCents(locale, remaining)}
+                    </span>
+                  </div>
+                  <div className="mt-2 h-2 w-full rounded-full bg-white/10">
+                    <div
+                      className={cn("h-2 rounded-full", STATUS_BAR[budget.status])}
+                      style={{ width: `${Math.min(budget.percent * 100, 100)}%` }}
+                    />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="mt-4 rounded-xl border border-dashed border-white/10 bg-fh-surface-2 p-4">
+            <div className="text-sm font-semibold">{t("budgets.emptyTitle")}</div>
+            <div className="mt-1 text-sm text-fh-muted">{t("budgets.emptyBody")}</div>
+            <Link
+              className="mt-3 inline-flex items-center justify-center rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-xs hover:bg-fh-surface-2"
+              href="/app/finances/transactions"
+            >
+              {t("budgets.emptyCta")}
+            </Link>
+          </div>
+        )}
+      </Card>
     </div>
   );
 }

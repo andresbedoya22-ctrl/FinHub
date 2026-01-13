@@ -107,6 +107,16 @@
                                                       "cmdk":  "Cmd+K",
                                                       "notifications":  "Notific?ri"
                                                   },
+                                       "header":  {
+                                                      "kicker":  "Dashboard",
+                                                      "title":  "Finan?e",
+                                                      "subtitle":  "Centru de Comand? Financiar"
+                                                  },
+                                       "actions":  {
+                                                       "viewAll":  "Vezi toate",
+                                                       "newTransaction":  "Tranzac?ie nou?",
+                                                       "review":  "Revizuie?te"
+                                                   },
                                        "nav":  {
                                                    "title":  "Navigare",
                                                    "finances":  "Finan?e",

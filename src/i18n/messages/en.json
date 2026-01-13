@@ -107,6 +107,16 @@
                                                       "cmdk":  "Cmd+K",
                                                       "notifications":  "Notifications"
                                                   },
+                                       "header":  {
+                                                      "kicker":  "Dashboard",
+                                                      "title":  "Finances",
+                                                      "subtitle":  "Finances Command Center"
+                                                  },
+                                       "actions":  {
+                                                       "viewAll":  "View all",
+                                                       "newTransaction":  "New transaction",
+                                                       "review":  "Review"
+                                                   },
                                        "nav":  {
                                                    "title":  "Navigation",
                                                    "finances":  "Finances",

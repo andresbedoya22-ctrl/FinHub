@@ -107,6 +107,16 @@
                                                       "cmdk":  "Cmd+K",
                                                       "notifications":  "Powiadomienia"
                                                   },
+                                       "header":  {
+                                                      "kicker":  "Dashboard",
+                                                      "title":  "Finanse",
+                                                      "subtitle":  "Centrum Finansowe"
+                                                  },
+                                       "actions":  {
+                                                       "viewAll":  "Zobacz wszystkie",
+                                                       "newTransaction":  "Nowa transakcja",
+                                                       "review":  "Przegl?d"
+                                                   },
                                        "nav":  {
                                                    "title":  "Nawigacja",
                                                    "finances":  "Finanse",
