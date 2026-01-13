@@ -365,28 +365,6 @@ export default function FinancesOverviewClient() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-        <div>
-          <div className="text-xs uppercase tracking-[0.2em] text-fh-muted">{t("header.kicker")}</div>
-          <div className="mt-2 text-2xl font-semibold">{t("header.title")}</div>
-          <div className="text-sm text-fh-muted">{t("header.subtitle")}</div>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          <Link
-            className="inline-flex items-center justify-center rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm hover:bg-fh-surface-2"
-            href="/app/finances/transactions"
-          >
-            {t("actions.viewAll")}
-          </Link>
-          <Link
-            className="inline-flex items-center justify-center rounded-xl bg-fh-primary px-3 py-2 text-sm font-medium text-fh-primaryFg hover:opacity-90"
-            href="/app/finances/transactions/new"
-          >
-            {t("actions.newTransaction")}
-          </Link>
-        </div>
-      </div>
-
       {state === "error" ? (
         <Card>
           <div className="text-sm font-semibold">{t("states.errorTitle")}</div>
