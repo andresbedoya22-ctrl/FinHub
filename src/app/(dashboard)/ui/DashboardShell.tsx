@@ -132,15 +132,20 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
 
   const SIDEBAR_KEY = "finhub.sidebar.collapsed.v1";
 
-  // Sidebar collapsed: read once from localStorage (no setState in effects)
-  const [collapsed, setCollapsed] = useState<boolean>(() => {
-    if (typeof window === "undefined") return false;
+  // Sidebar collapsed: keep initial render deterministic for SSR + hydration
+  const [collapsed, setCollapsed] = useState(false);
+
+  useEffect(() => {
     try {
-      return window.localStorage.getItem(SIDEBAR_KEY) === "1";
+      const stored = window.localStorage.getItem(SIDEBAR_KEY);
+      if (stored === "1") {
+        const id = window.setTimeout(() => setCollapsed(true), 0);
+        return () => window.clearTimeout(id);
+      }
     } catch {
-      return false;
+      // ignore
     }
-  });
+  }, []);
 
   // Persist collapsed
   useEffect(() => {
