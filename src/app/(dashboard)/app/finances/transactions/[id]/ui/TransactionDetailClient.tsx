@@ -653,7 +653,7 @@ export default function TransactionDetailClient() {
             </div>
 
             <div className="rounded-md border p-4">
-              <div className="font-medium">Acciones</div>
+              <div className="font-medium">Opciones</div>
               <div className="mt-2 text-sm space-y-2">
                 <button className="w-full px-3 py-2 rounded-md border text-sm disabled:opacity-50" disabled={!tx || !dirty || saving} onClick={onSave}>
                   {saving ? "Guardando..." : "Guardar cambios"}
