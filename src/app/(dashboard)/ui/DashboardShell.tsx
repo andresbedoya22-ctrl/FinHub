@@ -6,6 +6,7 @@ import type { ReactNode } from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { getDashboardRouteMeta, type Breadcrumb } from "./dashboardRouteMeta";
+import { LanguageSwitcher } from "@/ui/components/LanguageSwitcher";
 
 function cx(...xs: Array<string | false | null | undefined>) {
   return xs.filter(Boolean).join(" ");
@@ -18,7 +19,7 @@ function isActive(pathname: string, href: string): boolean {
 }
 
 /** Minimal inline icons (no deps) */
-function Icon({ name }: { name: "grid" | "money" | "doc" | "case" | "user" | "shield" | "plus" | "search" }) {
+function Icon({ name }: { name: "grid" | "money" | "doc" | "case" | "user" | "shield" | "plus" | "search" | "bell" }) {
   const common = "w-4 h-4";
   switch (name) {
     case "grid":
@@ -97,6 +98,13 @@ function Icon({ name }: { name: "grid" | "money" | "doc" | "case" | "user" | "sh
           <path d="M16.5 16.5L21 21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
         </svg>
       );
+    case "bell":
+      return (
+        <svg className={common} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M6 9a6 6 0 1 1 12 0c0 5 2 5 2 7H4c0-2 2-2 2-7" stroke="currentColor" strokeWidth="1.5" />
+          <path d="M9.5 18a2.5 2.5 0 0 0 5 0" stroke="currentColor" strokeWidth="1.5" />
+        </svg>
+      );
     default:
       return null;
   }
@@ -168,7 +176,7 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
         ],
       },
       {
-        title: "Operación",
+        title: "Operacion",
         items: [
           { href: "/app/documents", label: "Documentos", icon: "doc" },
           { href: "/app/cases", label: "Casos", icon: "case" },
@@ -206,11 +214,12 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
     () => [
       { id: "nav-finances", kind: "nav", href: "/app/finances", label: "Ir a Finanzas", hint: "/app/finances" },
       { id: "nav-tx", kind: "nav", href: "/app/finances/transactions", label: "Ir a Transacciones", hint: "/app/finances/transactions" },
-      { id: "tx-new", kind: "tx_new", label: "Nueva transacción", hint: "/app/finances/transactions/new" },
+      { id: "tx-new", kind: "tx_new", label: "Nueva transaccion", hint: "/app/finances/transactions/new" },
       { id: "nav-docs", kind: "nav", href: "/app/documents", label: "Ir a Documentos", hint: "/app/documents" },
       { id: "nav-cases", kind: "nav", href: "/app/cases", label: "Ir a Casos", hint: "/app/cases" },
       { id: "nav-profile", kind: "nav", href: "/app/profile", label: "Ir a Perfil", hint: "/app/profile" },
-      { id: "logout", kind: "logout", label: "Cerrar sesión", hint: "POST /api/auth/logout" },
+      { id: "nav-ui-kit", kind: "nav", href: "/app/ui-kit", label: "Ir a UI Kit", hint: "/app/ui-kit" },
+      { id: "logout", kind: "logout", label: "Cerrar sesion", hint: "POST /api/auth/logout" },
     ],
     [],
   );
@@ -352,7 +361,7 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
         {/* Sidebar */}
         <aside
           className={cx(
-            "sticky top-0 h-dvh border-r border-white/10 bg-white/5 backdrop-blur",
+            "sticky top-0 h-dvh border-r border-white/10 bg-white/5 backdrop-blur transition-[width] duration-200",
             collapsed ? "w-[72px]" : "w-[276px]",
           )}
         >
@@ -368,7 +377,7 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
               aria-label="Toggle sidebar"
               type="button"
             >
-              {collapsed ? "»" : "«"}
+              {collapsed ? ">>" : "<<"}
             </button>
           </div>
 
@@ -410,18 +419,13 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
             ))}
           </nav>
 
-          {!collapsed && (
-            <div className="absolute bottom-0 left-0 right-0 p-3 border-t border-white/10">
-              <div className="text-xs opacity-70">Dashboard shell P0 (premium sidebar)</div>
-            </div>
-          )}
         </aside>
 
         {/* Main */}
         <div className="flex-1 min-w-0">
           {/* Header */}
           <header className="sticky top-0 z-10 h-14 border-b border-white/10 bg-white/5 backdrop-blur">
-            <div className="h-full px-4 flex items-center gap-3">
+            <div className="h-full px-6 flex items-center gap-3">
               <div className="min-w-0">
                 <div className="text-sm font-medium truncate">{meta.title}</div>
                 <Breadcrumbs items={meta.breadcrumbs} />
@@ -437,7 +441,7 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
                   >
                     <span className="flex items-center gap-2 text-white/70">
                       <Icon name="search" />
-                      <span>Buscar o ejecutar…</span>
+                      <span>Buscar o ejecutar...</span>
                     </span>
                     <span className="text-xs text-white/50">Cmd/Ctrl+K</span>
                   </button>
@@ -445,6 +449,14 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
               </div>
 
               <div className="flex items-center gap-2">
+                <LanguageSwitcher />
+                <button
+                  type="button"
+                  className="h-9 w-9 rounded-md border border-white/10 bg-black/20 hover:bg-white/5 flex items-center justify-center"
+                  aria-label="Notificaciones"
+                >
+                  <Icon name="bell" />
+                </button>
                 <Link
                   href="/app/finances/transactions/new"
                   className="h-9 px-3 rounded-md border border-white/10 bg-black/20 hover:bg-white/5 flex items-center gap-2 text-sm"
@@ -478,10 +490,10 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
                         className="w-full text-left px-3 py-2 text-sm hover:bg-white/5"
                         onClick={() => {
                           setAccountOpen(false);
-                          void runActionRef.current({ id: "logout", kind: "logout", label: "Cerrar sesión" });
+                          void runActionRef.current({ id: "logout", kind: "logout", label: "Cerrar sesion" });
                         }}
                       >
-                        Cerrar sesión
+                        Cerrar sesion
                       </button>
                     </div>
                   )}
@@ -518,7 +530,7 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
                   setCmdkIdx(0);
                 }}
                 className="w-full h-10 rounded-md bg-black/20 border border-white/10 px-3 text-sm outline-none focus:border-white/25"
-                placeholder="Escribe para buscar acciones…"
+                placeholder="Escribe para buscar acciones..."
                 aria-label="Buscar acciones"
               />
             </div>
@@ -556,7 +568,7 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
             </div>
 
             <div className="px-3 py-2 border-t border-white/10 flex items-center justify-between text-xs text-white/50">
-              <span>↑/↓: navegar · Esc: cerrar</span>
+              <span>Up/Down: navegar - Esc: cerrar</span>
               <span>Cmd/Ctrl+K</span>
             </div>
           </div>
@@ -565,3 +577,8 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
     </div>
   );
 }
+
+
+
+
+
