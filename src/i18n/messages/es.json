@@ -96,6 +96,68 @@
     "finny":  {
                   "ask":  "PregÃ’Âºntale a Finny"
               },
+    "shell":  {
+                  "skipToContent":  "Saltar al contenido",
+                  "sidebar":  {
+                                  "toggleAria":  "Alternar barra lateral"
+                              },
+                  "section":  {
+                                   "finances":  "Finanzas",
+                                   "operations":  "Operaciones",
+                                   "account":  "Cuenta",
+                                   "admin":  "Admin"
+                               },
+                  "nav":  {
+                              "overview":  "Resumen",
+                              "transactions":  "Transacciones",
+                              "documents":  "Documentos",
+                              "cases":  "Casos",
+                              "profile":  "Perfil",
+                              "uikit":  "UI Kit",
+                              "admin":  "Admin"
+                          },
+                  "search":  {
+                                 "placeholder":  "Buscar o ejecutar...",
+                                 "ariaLabel":  "Buscar o ejecutar comando",
+                                 "hint":  "Cmd/Ctrl+K"
+                             },
+                  "notifications":  {
+                                        "label":  "Notificaciones"
+                                    },
+                  "account":  {
+                                  "label":  "Cuenta",
+                                  "logout":  "Cerrar sesión"
+                              },
+                  "cmdk":  {
+                               "ariaLabel":  "Paleta de comandos",
+                               "inputPlaceholder":  "Escribe para buscar acciones...",
+                               "inputAriaLabel":  "Buscar acciones",
+                               "empty":  "Sin resultados.",
+                               "enterHint":  "Enter",
+                               "footerHint":  "Arriba/Abajo: navegar - Esc: cerrar",
+                               "goToFinances":  "Ir a Finanzas",
+                               "goToTransactions":  "Ir a Transacciones",
+                               "goToDocuments":  "Ir a Documentos",
+                               "goToCases":  "Ir a Casos",
+                               "goToProfile":  "Ir a Perfil",
+                               "goToUiKit":  "Ir a UI Kit",
+                               "logoutHint":  "POST /api/auth/logout"
+                           },
+                  "route":  {
+                                "dashboard":  "Dashboard",
+                                "finances":  "Finanzas",
+                                "transactions":  "Transacciones",
+                                "newTransaction":  "Nueva transacción",
+                                "transactionDetail":  "Detalle de transacción",
+                                "documents":  "Documentos",
+                                "cases":  "Casos",
+                                "case":  "Caso",
+                                "profile":  "Perfil",
+                                "admin":  "Admin",
+                                "detail":  "Detalle",
+                                "new":  "Nueva"
+                            }
+              },
     "finances":  {
                      "dashboard":  {
                                        "topbar":  {

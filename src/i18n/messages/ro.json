@@ -96,6 +96,68 @@
     "finny":  {
                   "ask":  "Ã’Å½ntreabï¿½\u001eï¿½\u0019-l pe Finny"
               },
+    "shell":  {
+                  "skipToContent":  "Sari la conținut",
+                  "sidebar":  {
+                                  "toggleAria":  "Comută bara laterală"
+                              },
+                  "section":  {
+                                   "finances":  "Finanțe",
+                                   "operations":  "Operațiuni",
+                                   "account":  "Cont",
+                                   "admin":  "Admin"
+                               },
+                  "nav":  {
+                              "overview":  "Prezentare generală",
+                              "transactions":  "Tranzacții",
+                              "documents":  "Documente",
+                              "cases":  "Dosare",
+                              "profile":  "Profil",
+                              "uikit":  "UI Kit",
+                              "admin":  "Admin"
+                          },
+                  "search":  {
+                                 "placeholder":  "Caută sau execută...",
+                                 "ariaLabel":  "Caută sau execută o comandă",
+                                 "hint":  "Cmd/Ctrl+K"
+                             },
+                  "notifications":  {
+                                        "label":  "Notificări"
+                                    },
+                  "account":  {
+                                  "label":  "Cont",
+                                  "logout":  "Deconectare"
+                              },
+                  "cmdk":  {
+                               "ariaLabel":  "Paletă de comenzi",
+                               "inputPlaceholder":  "Tastează pentru a căuta acțiuni...",
+                               "inputAriaLabel":  "Caută acțiuni",
+                               "empty":  "Fără rezultate.",
+                               "enterHint":  "Enter",
+                               "footerHint":  "Sus/Jos: navighează - Esc: închide",
+                               "goToFinances":  "Mergi la Finanțe",
+                               "goToTransactions":  "Mergi la Tranzacții",
+                               "goToDocuments":  "Mergi la Documente",
+                               "goToCases":  "Mergi la Dosare",
+                               "goToProfile":  "Mergi la Profil",
+                               "goToUiKit":  "Mergi la UI Kit",
+                               "logoutHint":  "POST /api/auth/logout"
+                           },
+                  "route":  {
+                                "dashboard":  "Tablou de bord",
+                                "finances":  "Finanțe",
+                                "transactions":  "Tranzacții",
+                                "newTransaction":  "Tranzacție nouă",
+                                "transactionDetail":  "Detalii tranzacție",
+                                "documents":  "Documente",
+                                "cases":  "Dosare",
+                                "case":  "Dosar",
+                                "profile":  "Profil",
+                                "admin":  "Admin",
+                                "detail":  "Detaliu",
+                                "new":  "Nouă"
+                            }
+              },
     "finances":  {
                      "dashboard":  {
                                        "topbar":  {

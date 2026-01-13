@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import type { ReactNode } from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 
 import { getDashboardRouteMeta, type Breadcrumb } from "./dashboardRouteMeta";
 import { LanguageSwitcher } from "@/ui/components/LanguageSwitcher";
@@ -137,6 +138,7 @@ function Breadcrumbs({ items }: { items: Breadcrumb[] }) {
 export default function DashboardShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
+  const t = useTranslations("shell");
 
   const SIDEBAR_KEY = "finhub.sidebar.collapsed.v1";
 
@@ -164,34 +166,37 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
     }
   }, [collapsed]);
 
-  const meta = useMemo(() => getDashboardRouteMeta(pathname), [pathname]);
+  const meta = useMemo(() => getDashboardRouteMeta(pathname, t), [pathname, t]);
 
   const navSections: NavSection[] = useMemo(
     () => [
       {
-        title: "Finanzas",
+        title: t("section.finances"),
         items: [
-          { href: "/app/finances", label: "Overview", icon: "money" },
-          { href: "/app/finances/transactions", label: "Transacciones", icon: "grid" },
+          { href: "/app/finances", label: t("nav.overview"), icon: "money" },
+          { href: "/app/finances/transactions", label: t("nav.transactions"), icon: "grid" },
         ],
       },
       {
-        title: "Operacion",
+        title: t("section.operations"),
         items: [
-          { href: "/app/documents", label: "Documentos", icon: "doc" },
-          { href: "/app/cases", label: "Casos", icon: "case" },
+          { href: "/app/documents", label: t("nav.documents"), icon: "doc" },
+          { href: "/app/cases", label: t("nav.cases"), icon: "case" },
         ],
       },
       {
-        title: "Cuenta",
-        items: [{ href: "/app/profile", label: "Perfil", icon: "user" }],
+        title: t("section.account"),
+        items: [{ href: "/app/profile", label: t("nav.profile"), icon: "user" }],
       },
       {
-        title: "Admin",
-        items: [{ href: "/app/admin", label: "Admin", icon: "shield" }],
+        title: t("section.admin"),
+        items: [
+          { href: "/app/admin", label: t("nav.admin"), icon: "shield" },
+          { href: "/app/ui-kit", label: t("nav.uikit"), icon: "grid" },
+        ],
       },
     ],
-    [],
+    [t],
   );
 
   // CmdK
@@ -212,16 +217,16 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
 
   const actions: CmdkAction[] = useMemo(
     () => [
-      { id: "nav-finances", kind: "nav", href: "/app/finances", label: "Ir a Finanzas", hint: "/app/finances" },
-      { id: "nav-tx", kind: "nav", href: "/app/finances/transactions", label: "Ir a Transacciones", hint: "/app/finances/transactions" },
-      { id: "tx-new", kind: "tx_new", label: "Nueva transaccion", hint: "/app/finances/transactions/new" },
-      { id: "nav-docs", kind: "nav", href: "/app/documents", label: "Ir a Documentos", hint: "/app/documents" },
-      { id: "nav-cases", kind: "nav", href: "/app/cases", label: "Ir a Casos", hint: "/app/cases" },
-      { id: "nav-profile", kind: "nav", href: "/app/profile", label: "Ir a Perfil", hint: "/app/profile" },
-      { id: "nav-ui-kit", kind: "nav", href: "/app/ui-kit", label: "Ir a UI Kit", hint: "/app/ui-kit" },
-      { id: "logout", kind: "logout", label: "Cerrar sesion", hint: "POST /api/auth/logout" },
+      { id: "nav-finances", kind: "nav", href: "/app/finances", label: t("cmdk.goToFinances"), hint: "/app/finances" },
+      { id: "nav-tx", kind: "nav", href: "/app/finances/transactions", label: t("cmdk.goToTransactions"), hint: "/app/finances/transactions" },
+      { id: "tx-new", kind: "tx_new", label: t("route.newTransaction"), hint: "/app/finances/transactions/new" },
+      { id: "nav-docs", kind: "nav", href: "/app/documents", label: t("cmdk.goToDocuments"), hint: "/app/documents" },
+      { id: "nav-cases", kind: "nav", href: "/app/cases", label: t("cmdk.goToCases"), hint: "/app/cases" },
+      { id: "nav-profile", kind: "nav", href: "/app/profile", label: t("cmdk.goToProfile"), hint: "/app/profile" },
+      { id: "nav-ui-kit", kind: "nav", href: "/app/ui-kit", label: t("cmdk.goToUiKit"), hint: "/app/ui-kit" },
+      { id: "logout", kind: "logout", label: t("account.logout"), hint: t("cmdk.logoutHint") },
     ],
-    [],
+    [t],
   );
 
   const filteredActions = useMemo(() => {
@@ -354,7 +359,7 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
         href="#content"
         className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:px-3 focus:py-2 focus:rounded-md focus:bg-white focus:text-black"
       >
-        Saltar al contenido
+        {t("skipToContent")}
       </a>
 
       <div className="flex">
@@ -374,7 +379,7 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
             <button
               className="text-xs px-2 py-1 rounded border border-white/10 hover:bg-white/10"
               onClick={() => setCollapsed((v) => !v)}
-              aria-label="Toggle sidebar"
+              aria-label={t("sidebar.toggleAria")}
               type="button"
             >
               {collapsed ? ">>" : "<<"}
@@ -437,13 +442,13 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
                     type="button"
                     onClick={openCmdk}
                     className="w-full h-9 rounded-md bg-black/20 border border-white/10 px-3 text-sm text-left flex items-center justify-between hover:border-white/20"
-                    aria-label="Buscar o ejecutar comando"
+                    aria-label={t("search.ariaLabel")}
                   >
                     <span className="flex items-center gap-2 text-white/70">
                       <Icon name="search" />
-                      <span>Buscar o ejecutar...</span>
+                      <span>{t("search.placeholder")}</span>
                     </span>
-                    <span className="text-xs text-white/50">Cmd/Ctrl+K</span>
+                    <span className="text-xs text-white/50">{t("search.hint")}</span>
                   </button>
                 </div>
               </div>
@@ -453,7 +458,7 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
                 <button
                   type="button"
                   className="h-9 w-9 rounded-md border border-white/10 bg-black/20 hover:bg-white/5 flex items-center justify-center"
-                  aria-label="Notificaciones"
+                  aria-label={t("notifications.label")}
                 >
                   <Icon name="bell" />
                 </button>
@@ -462,18 +467,18 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
                   className="h-9 px-3 rounded-md border border-white/10 bg-black/20 hover:bg-white/5 flex items-center gap-2 text-sm"
                 >
                   <Icon name="plus" />
-                  <span className="hidden md:inline">Nueva</span>
+                  <span className="hidden md:inline">{t("route.new")}</span>
                 </Link>
 
                 <div className="relative" ref={accountRef}>
                   <button
                     className="h-9 px-3 rounded-md border border-white/10 bg-black/20 hover:bg-white/5 flex items-center gap-2"
                     type="button"
-                    aria-label="Cuenta"
+                    aria-label={t("account.label")}
                     onClick={() => setAccountOpen((v) => !v)}
                   >
                     <span className="w-6 h-6 rounded-full bg-white/20" aria-hidden="true" />
-                    <span className="text-sm opacity-80 hidden md:inline">Cuenta</span>
+                    <span className="text-sm opacity-80 hidden md:inline">{t("account.label")}</span>
                   </button>
 
                   {accountOpen && (
@@ -483,17 +488,17 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
                         className="block px-3 py-2 text-sm hover:bg-white/5"
                         onClick={() => setAccountOpen(false)}
                       >
-                        Perfil
+                        {t("nav.profile")}
                       </Link>
                       <button
                         type="button"
                         className="w-full text-left px-3 py-2 text-sm hover:bg-white/5"
                         onClick={() => {
                           setAccountOpen(false);
-                          void runActionRef.current({ id: "logout", kind: "logout", label: "Cerrar sesion" });
+                          void runActionRef.current({ id: "logout", kind: "logout", label: t("account.logout") });
                         }}
                       >
-                        Cerrar sesion
+                        {t("account.logout")}
                       </button>
                     </div>
                   )}
@@ -514,7 +519,7 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
           className="fixed inset-0 z-50"
           role="dialog"
           aria-modal="true"
-          aria-label="Command palette"
+          aria-label={t("cmdk.ariaLabel")}
           onMouseDown={(e) => {
             if (e.target === e.currentTarget) closeCmdk();
           }}
@@ -530,14 +535,14 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
                   setCmdkIdx(0);
                 }}
                 className="w-full h-10 rounded-md bg-black/20 border border-white/10 px-3 text-sm outline-none focus:border-white/25"
-                placeholder="Escribe para buscar acciones..."
-                aria-label="Buscar acciones"
+                placeholder={t("cmdk.inputPlaceholder")}
+                aria-label={t("cmdk.inputAriaLabel")}
               />
             </div>
 
             <div className="max-h-[360px] overflow-auto p-2">
               {filteredActions.length === 0 ? (
-                <div className="px-3 py-6 text-sm text-white/60">Sin resultados.</div>
+                <div className="px-3 py-6 text-sm text-white/60">{t("cmdk.empty")}</div>
               ) : (
                 <div className="space-y-1">
                   {filteredActions.map((a, idx) => {
@@ -559,7 +564,7 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
                           <div className="text-sm truncate">{a.label}</div>
                           {a.hint && <div className="text-xs text-white/50 truncate">{a.hint}</div>}
                         </div>
-                        <div className="text-xs text-white/40">Enter</div>
+                        <div className="text-xs text-white/40">{t("cmdk.enterHint")}</div>
                       </button>
                     );
                   })}
@@ -568,8 +573,8 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
             </div>
 
             <div className="px-3 py-2 border-t border-white/10 flex items-center justify-between text-xs text-white/50">
-              <span>Up/Down: navegar - Esc: cerrar</span>
-              <span>Cmd/Ctrl+K</span>
+              <span>{t("cmdk.footerHint")}</span>
+              <span>{t("search.hint")}</span>
             </div>
           </div>
         </div>

@@ -96,6 +96,68 @@
     "finny":  {
                   "ask":  "Ask Finny"
               },
+    "shell":  {
+                  "skipToContent":  "Skip to content",
+                  "sidebar":  {
+                                  "toggleAria":  "Toggle sidebar"
+                              },
+                  "section":  {
+                                   "finances":  "Finances",
+                                   "operations":  "Operations",
+                                   "account":  "Account",
+                                   "admin":  "Admin"
+                               },
+                  "nav":  {
+                              "overview":  "Overview",
+                              "transactions":  "Transactions",
+                              "documents":  "Documents",
+                              "cases":  "Cases",
+                              "profile":  "Profile",
+                              "uikit":  "UI Kit",
+                              "admin":  "Admin"
+                          },
+                  "search":  {
+                                 "placeholder":  "Search or run...",
+                                 "ariaLabel":  "Search or run command",
+                                 "hint":  "Cmd/Ctrl+K"
+                             },
+                  "notifications":  {
+                                        "label":  "Notifications"
+                                    },
+                  "account":  {
+                                  "label":  "Account",
+                                  "logout":  "Log out"
+                              },
+                  "cmdk":  {
+                               "ariaLabel":  "Command palette",
+                               "inputPlaceholder":  "Type to search actions...",
+                               "inputAriaLabel":  "Search actions",
+                               "empty":  "No results.",
+                               "enterHint":  "Enter",
+                               "footerHint":  "Up/Down: navigate - Esc: close",
+                               "goToFinances":  "Go to Finances",
+                               "goToTransactions":  "Go to Transactions",
+                               "goToDocuments":  "Go to Documents",
+                               "goToCases":  "Go to Cases",
+                               "goToProfile":  "Go to Profile",
+                               "goToUiKit":  "Go to UI Kit",
+                               "logoutHint":  "POST /api/auth/logout"
+                           },
+                  "route":  {
+                                "dashboard":  "Dashboard",
+                                "finances":  "Finances",
+                                "transactions":  "Transactions",
+                                "newTransaction":  "New transaction",
+                                "transactionDetail":  "Transaction details",
+                                "documents":  "Documents",
+                                "cases":  "Cases",
+                                "case":  "Case",
+                                "profile":  "Profile",
+                                "admin":  "Admin",
+                                "detail":  "Detail",
+                                "new":  "New"
+                            }
+              },
     "finances":  {
                      "dashboard":  {
                                        "topbar":  {

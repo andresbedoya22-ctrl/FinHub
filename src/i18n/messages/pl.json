@@ -96,6 +96,68 @@
     "finny":  {
                   "ask":  "Zapytaj Finny"
               },
+    "shell":  {
+                  "skipToContent":  "Przejdź do treści",
+                  "sidebar":  {
+                                  "toggleAria":  "Przełącz pasek boczny"
+                              },
+                  "section":  {
+                                   "finances":  "Finanse",
+                                   "operations":  "Operacje",
+                                   "account":  "Konto",
+                                   "admin":  "Admin"
+                               },
+                  "nav":  {
+                              "overview":  "Przegląd",
+                              "transactions":  "Transakcje",
+                              "documents":  "Dokumenty",
+                              "cases":  "Sprawy",
+                              "profile":  "Profil",
+                              "uikit":  "UI Kit",
+                              "admin":  "Admin"
+                          },
+                  "search":  {
+                                 "placeholder":  "Szukaj lub wykonaj...",
+                                 "ariaLabel":  "Szukaj lub wykonaj polecenie",
+                                 "hint":  "Cmd/Ctrl+K"
+                             },
+                  "notifications":  {
+                                        "label":  "Powiadomienia"
+                                    },
+                  "account":  {
+                                  "label":  "Konto",
+                                  "logout":  "Wyloguj"
+                              },
+                  "cmdk":  {
+                               "ariaLabel":  "Paleta poleceń",
+                               "inputPlaceholder":  "Wpisz, aby wyszukać akcje...",
+                               "inputAriaLabel":  "Szukaj akcji",
+                               "empty":  "Brak wyników.",
+                               "enterHint":  "Enter",
+                               "footerHint":  "Góra/Dół: nawiguj - Esc: zamknij",
+                               "goToFinances":  "Przejdź do Finansów",
+                               "goToTransactions":  "Przejdź do Transakcji",
+                               "goToDocuments":  "Przejdź do Dokumentów",
+                               "goToCases":  "Przejdź do Spraw",
+                               "goToProfile":  "Przejdź do Profilu",
+                               "goToUiKit":  "Przejdź do UI Kit",
+                               "logoutHint":  "POST /api/auth/logout"
+                           },
+                  "route":  {
+                                "dashboard":  "Pulpit",
+                                "finances":  "Finanse",
+                                "transactions":  "Transakcje",
+                                "newTransaction":  "Nowa transakcja",
+                                "transactionDetail":  "Szczegóły transakcji",
+                                "documents":  "Dokumenty",
+                                "cases":  "Sprawy",
+                                "case":  "Sprawa",
+                                "profile":  "Profil",
+                                "admin":  "Admin",
+                                "detail":  "Szczegóły",
+                                "new":  "Nowa"
+                            }
+              },
     "finances":  {
                      "dashboard":  {
                                        "topbar":  {
