@@ -20,7 +20,7 @@ function isActive(pathname: string, href: string): boolean {
 }
 
 /** Minimal inline icons (no deps) */
-function Icon({ name }: { name: "grid" | "money" | "doc" | "case" | "user" | "shield" | "plus" | "search" | "bell" }) {
+function Icon({ name }: { name: "grid" | "money" | "doc" | "case" | "user" | "shield" | "search" | "bell" }) {
   const common = "w-4 h-4";
   switch (name) {
     case "grid":
@@ -86,12 +86,6 @@ function Icon({ name }: { name: "grid" | "money" | "doc" | "case" | "user" | "sh
           />
         </svg>
       );
-    case "plus":
-      return (
-        <svg className={common} viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-        </svg>
-      );
     case "search":
       return (
         <svg className={common} viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -116,7 +110,6 @@ type NavSection = { title: string; items: NavItem[] };
 
 type CmdkAction =
   | { id: string; label: string; hint?: string; kind: "nav"; href: string }
-  | { id: string; label: string; hint?: string; kind: "tx_new" }
   | { id: string; label: string; hint?: string; kind: "logout" };
 
 function Breadcrumbs({ items }: { items: Breadcrumb[] }) {
@@ -219,7 +212,6 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
     () => [
       { id: "nav-finances", kind: "nav", href: "/app/finances", label: t("cmdk.goToFinances"), hint: "/app/finances" },
       { id: "nav-tx", kind: "nav", href: "/app/finances/transactions", label: t("cmdk.goToTransactions"), hint: "/app/finances/transactions" },
-      { id: "tx-new", kind: "tx_new", label: t("route.newTransaction"), hint: "/app/finances/transactions/new" },
       { id: "nav-docs", kind: "nav", href: "/app/documents", label: t("cmdk.goToDocuments"), hint: "/app/documents" },
       { id: "nav-cases", kind: "nav", href: "/app/cases", label: t("cmdk.goToCases"), hint: "/app/cases" },
       { id: "nav-profile", kind: "nav", href: "/app/profile", label: t("cmdk.goToProfile"), hint: "/app/profile" },
@@ -251,12 +243,6 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
       if (a.kind === "nav") {
         closeCmdk();
         router.push(a.href);
-        return;
-      }
-
-      if (a.kind === "tx_new") {
-        closeCmdk();
-        router.push("/app/finances/transactions/new");
         return;
       }
 
@@ -462,13 +448,6 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
                 >
                   <Icon name="bell" />
                 </button>
-                <Link
-                  href="/app/finances/transactions/new"
-                  className="h-9 px-3 rounded-md border border-white/10 bg-black/20 hover:bg-white/5 flex items-center gap-2 text-sm"
-                >
-                  <Icon name="plus" />
-                  <span className="hidden md:inline">{t("route.new")}</span>
-                </Link>
 
                 <div className="relative" ref={accountRef}>
                   <button
