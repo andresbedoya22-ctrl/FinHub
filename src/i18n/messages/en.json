@@ -95,5 +95,87 @@
              },
     "finny":  {
                   "ask":  "Ask Finny"
-              }
+              },
+    "finances":  {
+                     "dashboard":  {
+                                       "topbar":  {
+                                                      "eyebrow":  "Dashboard",
+                                                      "title":  "Finances",
+                                                      "subtitle":  "Finances Command Center",
+                                                      "search":  "Search",
+                                                      "searchPlaceholder":  "Search or jump to...",
+                                                      "cmdk":  "Cmd+K",
+                                                      "notifications":  "Notifications"
+                                                  },
+                                       "nav":  {
+                                                   "title":  "Navigation",
+                                                   "finances":  "Finances",
+                                                   "cases":  "Cases",
+                                                   "documents":  "Documents",
+                                                   "profile":  "Profile",
+                                                   "uiKit":  "UI Kit"
+                                               },
+                                       "kpis":  {
+                                                    "safeToSpend":  "Safe to spend",
+                                                    "incomeReceived":  "Income received",
+                                                    "billsPaid":  "Bills paid",
+                                                    "budgetUsed":  "Budget used",
+                                                    "safeHint":  "After fixed costs",
+                                                    "monthHint":  "This month ({month})",
+                                                    "outflowHint":  "Outflows this period",
+                                                    "budgetHint":  "Used vs plan"
+                                                },
+                                       "inbox":  {
+                                                     "title":  "Transactions inbox",
+                                                     "subtitle":  "Latest activity",
+                                                     "viewAll":  "View all",
+                                                     "emptyTitle":  "No transactions yet",
+                                                     "emptyBody":  "Add your first transaction to unlock insights.",
+                                                     "emptyCta":  "Add first transaction"
+                                                 },
+                                       "table":  {
+                                                     "date":  "Date",
+                                                     "merchant":  "Merchant",
+                                                     "category":  "Category",
+                                                     "status":  "Status",
+                                                     "amount":  "Amount"
+                                                 },
+                                       "category":  {
+                                                       "groceries":  "Groceries",
+                                                       "transport":  "Transport",
+                                                       "entertainment":  "Entertainment",
+                                                       "uncategorized":  "Uncategorized"
+                                                   },
+                                       "status":  {
+                                                     "approved":  "Approved",
+                                                     "flagged":  "Flagged"
+                                                 },
+                                       "burndown":  {
+                                                       "title":  "Monthly burndown",
+                                                       "subtitle":  "Net balance over time",
+                                                       "currency":  "EUR",
+                                                       "emptyTitle":  "Not enough data",
+                                                       "emptyBody":  "Not enough data to render this chart yet."
+                                                   },
+                                       "budgets":  {
+                                                      "title":  "Category budgets",
+                                                      "subtitle":  "Active budgets for {month}",
+                                                      "used":  "Used",
+                                                      "remaining":  "Remaining",
+                                                      "emptyTitle":  "No budgets yet",
+                                                      "emptyBody":  "Define budgets or add transactions to create a baseline.",
+                                                      "emptyCta":  "Review transactions",
+                                                      "status":  {
+                                                                     "ok":  "On track",
+                                                                     "warn":  "Watch",
+                                                                     "risk":  "At risk"
+                                                                 }
+                                                  },
+                                       "states":  {
+                                                     "errorTitle":  "We could not load finances",
+                                                     "errorBody":  "Please retry in a moment.",
+                                                     "retry":  "Retry"
+                                                 }
+                                   }
+                 }
 }

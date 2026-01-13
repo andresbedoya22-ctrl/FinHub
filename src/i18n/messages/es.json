@@ -95,5 +95,87 @@
              },
     "finny":  {
                   "ask":  "PregÃ’Âºntale a Finny"
-              }
+              },
+    "finances":  {
+                     "dashboard":  {
+                                       "topbar":  {
+                                                      "eyebrow":  "Dashboard",
+                                                      "title":  "Finanzas",
+                                                      "subtitle":  "Centro de Comando de Finanzas",
+                                                      "search":  "Buscar",
+                                                      "searchPlaceholder":  "Buscar o saltar a...",
+                                                      "cmdk":  "Cmd+K",
+                                                      "notifications":  "Notificaciones"
+                                                  },
+                                       "nav":  {
+                                                   "title":  "Navegaci?n",
+                                                   "finances":  "Finanzas",
+                                                   "cases":  "Casos",
+                                                   "documents":  "Documentos",
+                                                   "profile":  "Perfil",
+                                                   "uiKit":  "UI Kit"
+                                               },
+                                       "kpis":  {
+                                                    "safeToSpend":  "Disponible para gastar",
+                                                    "incomeReceived":  "Ingresos recibidos",
+                                                    "billsPaid":  "Facturas pagadas",
+                                                    "budgetUsed":  "Presupuesto usado",
+                                                    "safeHint":  "Despu?s de costos fijos",
+                                                    "monthHint":  "Este mes ({month})",
+                                                    "outflowHint":  "Salidas de este per?odo",
+                                                    "budgetHint":  "Usado vs plan"
+                                                },
+                                       "inbox":  {
+                                                     "title":  "Bandeja de transacciones",
+                                                     "subtitle":  "Actividad reciente",
+                                                     "viewAll":  "Ver todas",
+                                                     "emptyTitle":  "A?n no hay transacciones",
+                                                     "emptyBody":  "Agrega tu primera transacci?n para desbloquear insights.",
+                                                     "emptyCta":  "Agregar primera transacci?n"
+                                                 },
+                                       "table":  {
+                                                     "date":  "Fecha",
+                                                     "merchant":  "Comercio",
+                                                     "category":  "Categor?a",
+                                                     "status":  "Estado",
+                                                     "amount":  "Monto"
+                                                 },
+                                       "category":  {
+                                                       "groceries":  "Supermercado",
+                                                       "transport":  "Transporte",
+                                                       "entertainment":  "Entretenimiento",
+                                                       "uncategorized":  "Sin categor?a"
+                                                   },
+                                       "status":  {
+                                                     "approved":  "Aprobado",
+                                                     "flagged":  "Marcado"
+                                                 },
+                                       "burndown":  {
+                                                       "title":  "Evoluci?n mensual",
+                                                       "subtitle":  "Balance neto en el tiempo",
+                                                       "currency":  "EUR",
+                                                       "emptyTitle":  "Datos insuficientes",
+                                                       "emptyBody":  "A?n no hay datos suficientes para graficar."
+                                                   },
+                                       "budgets":  {
+                                                      "title":  "Presupuestos por categor?a",
+                                                      "subtitle":  "Presupuestos activos para {month}",
+                                                      "used":  "Usado",
+                                                      "remaining":  "Restante",
+                                                      "emptyTitle":  "Sin presupuestos",
+                                                      "emptyBody":  "Define presupuestos o agrega transacciones para crear una base.",
+                                                      "emptyCta":  "Revisar transacciones",
+                                                      "status":  {
+                                                                     "ok":  "En orden",
+                                                                     "warn":  "Atenci?n",
+                                                                     "risk":  "En riesgo"
+                                                                 }
+                                                  },
+                                       "states":  {
+                                                     "errorTitle":  "No se pudieron cargar las finanzas",
+                                                     "errorBody":  "Intenta de nuevo en un momento.",
+                                                     "retry":  "Reintentar"
+                                                 }
+                                   }
+                 }
 }

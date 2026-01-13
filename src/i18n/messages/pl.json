@@ -95,5 +95,87 @@
              },
     "finny":  {
                   "ask":  "Zapytaj Finny"
-              }
+              },
+    "finances":  {
+                     "dashboard":  {
+                                       "topbar":  {
+                                                      "eyebrow":  "Dashboard",
+                                                      "title":  "Finanse",
+                                                      "subtitle":  "Centrum Finansowe",
+                                                      "search":  "Szukaj",
+                                                      "searchPlaceholder":  "Szukaj lub przejd? do...",
+                                                      "cmdk":  "Cmd+K",
+                                                      "notifications":  "Powiadomienia"
+                                                  },
+                                       "nav":  {
+                                                   "title":  "Nawigacja",
+                                                   "finances":  "Finanse",
+                                                   "cases":  "Sprawy",
+                                                   "documents":  "Dokumenty",
+                                                   "profile":  "Profil",
+                                                   "uiKit":  "UI Kit"
+                                               },
+                                       "kpis":  {
+                                                    "safeToSpend":  "Do wydania",
+                                                    "incomeReceived":  "Otrzymane przychody",
+                                                    "billsPaid":  "Op?acone rachunki",
+                                                    "budgetUsed":  "Wykorzystany bud?et",
+                                                    "safeHint":  "Po kosztach sta?ych",
+                                                    "monthHint":  "W tym miesi?cu ({month})",
+                                                    "outflowHint":  "Wydatki w tym okresie",
+                                                    "budgetHint":  "Wykorzystanie planu"
+                                                },
+                                       "inbox":  {
+                                                     "title":  "Skrzynka transakcji",
+                                                     "subtitle":  "Ostatnia aktywno??",
+                                                     "viewAll":  "Zobacz wszystkie",
+                                                     "emptyTitle":  "Brak transakcji",
+                                                     "emptyBody":  "Dodaj pierwsz? transakcj?, aby odblokowa? analizy.",
+                                                     "emptyCta":  "Dodaj pierwsz? transakcj?"
+                                                 },
+                                       "table":  {
+                                                     "date":  "Data",
+                                                     "merchant":  "Sklep",
+                                                     "category":  "Kategoria",
+                                                     "status":  "Status",
+                                                     "amount":  "Kwota"
+                                                 },
+                                       "category":  {
+                                                       "groceries":  "Zakupy",
+                                                       "transport":  "Transport",
+                                                       "entertainment":  "Rozrywka",
+                                                       "uncategorized":  "Bez kategorii"
+                                                   },
+                                       "status":  {
+                                                     "approved":  "Zatwierdzone",
+                                                     "flagged":  "Oznaczone"
+                                                 },
+                                       "burndown":  {
+                                                       "title":  "Miesi?czny wykres",
+                                                       "subtitle":  "Saldo netto w czasie",
+                                                       "currency":  "EUR",
+                                                       "emptyTitle":  "Za ma?o danych",
+                                                       "emptyBody":  "Za ma?o danych, aby narysowa? wykres."
+                                                   },
+                                       "budgets":  {
+                                                      "title":  "Bud?ety kategorii",
+                                                      "subtitle":  "Aktywne bud?ety na {month}",
+                                                      "used":  "Wykorzystane",
+                                                      "remaining":  "Pozosta?o",
+                                                      "emptyTitle":  "Brak bud?et?w",
+                                                      "emptyBody":  "Zdefiniuj bud?ety lub dodaj transakcje, aby zbudowa? baz?.",
+                                                      "emptyCta":  "Przejrzyj transakcje",
+                                                      "status":  {
+                                                                     "ok":  "Na dobrej drodze",
+                                                                     "warn":  "Uwaga",
+                                                                     "risk":  "Ryzyko"
+                                                                 }
+                                                  },
+                                       "states":  {
+                                                     "errorTitle":  "Nie mo?na za?adowa? finans?w",
+                                                     "errorBody":  "Spr?buj ponownie za chwil?.",
+                                                     "retry":  "Spr?buj ponownie"
+                                                 }
+                                   }
+                 }
 }

@@ -95,5 +95,87 @@
              },
     "finny":  {
                   "ask":  "Ã’Å½ntreabï¿½\u001eï¿½\u0019-l pe Finny"
-              }
+              },
+    "finances":  {
+                     "dashboard":  {
+                                       "topbar":  {
+                                                      "eyebrow":  "Dashboard",
+                                                      "title":  "Finan?e",
+                                                      "subtitle":  "Centru de Comand? Financiar",
+                                                      "search":  "Caut?",
+                                                      "searchPlaceholder":  "Caut? sau sari la...",
+                                                      "cmdk":  "Cmd+K",
+                                                      "notifications":  "Notific?ri"
+                                                  },
+                                       "nav":  {
+                                                   "title":  "Navigare",
+                                                   "finances":  "Finan?e",
+                                                   "cases":  "Dosare",
+                                                   "documents":  "Documente",
+                                                   "profile":  "Profil",
+                                                   "uiKit":  "UI Kit"
+                                               },
+                                       "kpis":  {
+                                                    "safeToSpend":  "Disponibil de cheltuit",
+                                                    "incomeReceived":  "Venituri ?ncasate",
+                                                    "billsPaid":  "Facturi pl?tite",
+                                                    "budgetUsed":  "Buget folosit",
+                                                    "safeHint":  "Dup? costurile fixe",
+                                                    "monthHint":  "Luna aceasta ({month})",
+                                                    "outflowHint":  "Ie?iri ?n perioad?",
+                                                    "budgetHint":  "Folosire vs plan"
+                                                },
+                                       "inbox":  {
+                                                     "title":  "Inbox tranzac?ii",
+                                                     "subtitle":  "Activitate recent?",
+                                                     "viewAll":  "Vezi toate",
+                                                     "emptyTitle":  "Nu exist? tranzac?ii",
+                                                     "emptyBody":  "Adaug? prima tranzac?ie pentru a debloca insight-uri.",
+                                                     "emptyCta":  "Adaug? prima tranzac?ie"
+                                                 },
+                                       "table":  {
+                                                     "date":  "Data",
+                                                     "merchant":  "Comerciant",
+                                                     "category":  "Categorie",
+                                                     "status":  "Status",
+                                                     "amount":  "Sum?"
+                                                 },
+                                       "category":  {
+                                                       "groceries":  "Alimente",
+                                                       "transport":  "Transport",
+                                                       "entertainment":  "Divertisment",
+                                                       "uncategorized":  "F?r? categorie"
+                                                   },
+                                       "status":  {
+                                                     "approved":  "Aprobat",
+                                                     "flagged":  "Marcat"
+                                                 },
+                                       "burndown":  {
+                                                       "title":  "Evolu?ie lunar?",
+                                                       "subtitle":  "Sold net ?n timp",
+                                                       "currency":  "EUR",
+                                                       "emptyTitle":  "Date insuficiente",
+                                                       "emptyBody":  "Nu sunt suficiente date pentru grafic."
+                                                   },
+                                       "budgets":  {
+                                                      "title":  "Bugete pe categorii",
+                                                      "subtitle":  "Bugete active pentru {month}",
+                                                      "used":  "Folosit",
+                                                      "remaining":  "R?mas",
+                                                      "emptyTitle":  "F?r? bugete",
+                                                      "emptyBody":  "Define?te bugete sau adaug? tranzac?ii pentru o baz?.",
+                                                      "emptyCta":  "Revizuie?te tranzac?iile",
+                                                      "status":  {
+                                                                     "ok":  "?n grafic",
+                                                                     "warn":  "Aten?ie",
+                                                                     "risk":  "Risc"
+                                                                 }
+                                                  },
+                                       "states":  {
+                                                     "errorTitle":  "Nu s-au putut ?nc?rca finan?ele",
+                                                     "errorBody":  "?ncearc? din nou ?n c?teva momente.",
+                                                     "retry":  "Re?ncearc?"
+                                                 }
+                                   }
+                 }
 }

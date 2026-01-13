@@ -10,6 +10,7 @@ export default [
     ignores: [
       "**/node_modules/**",
       "**/.next/**",
+      "**/.tmp/**",
       "**/_archive_fix/**",
       "**/docs/~$*",
       "**/*.bak",
@@ -50,6 +51,6 @@ export default [
 
   // Ignorados
   {
-    ignores: [".next/**", "out/**", "dist/**", "node_modules/**"],
+    ignores: [".next/**", ".tmp/**", "out/**", "dist/**", "node_modules/**"],
   },
 ];
