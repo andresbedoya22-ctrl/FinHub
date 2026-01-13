@@ -248,6 +248,195 @@
                                                      "errorBody":  "?ncearc? din nou ?n c?teva momente.",
                                                      "retry":  "Re?ncearc?"
                                                  }
-                                   }
+                                   },
+                     "transactions":  {
+                                         "breadcrumbs":  {
+                                                             "finances":  "Finanțe",
+                                                             "transactions":  "Tranzacții"
+                                                         },
+                                         "title":  "Tranzacții",
+                                         "monthLabel":  "Luna: {month}",
+                                         "actions":  {
+                                                         "backToFinances":  "Înapoi la Finanțe",
+                                                         "newTransaction":  "Tranzacție nouă"
+                                                     },
+                                         "summary":  {
+                                                         "count":  "{count} tranzacții"
+                                                     },
+                                         "loading":  "Se încarcă...",
+                                         "errors":  {
+                                                        "title":  "A apărut o problemă",
+                                                        "updateStatus":  "Nu s-a putut actualiza statusul."
+                                                    },
+                                         "table":  {
+                                                       "title":  "Inbox tranzacții",
+                                                       "subtitle":  "Activitate ledger și editări rapide",
+                                                       "date":  "Data",
+                                                       "merchant":  "Comerciant",
+                                                       "category":  "Categorie",
+                                                       "amount":  "Sumă",
+                                                       "status":  "Status",
+                                                       "actions":  "Acțiuni",
+                                                       "open":  "Deschide",
+                                                       "statusAria":  "Actualizează statusul",
+                                                       "saving":  "Se salvează..."
+                                                   },
+                                         "status":  {
+                                                       "pending":  "În așteptare",
+                                                       "approved":  "Aprobat",
+                                                       "hidden":  "Ascuns"
+                                                   },
+                                         "category":  {
+                                                         "uncategorized":  "Fără categorie"
+                                                     },
+                                         "empty":  {
+                                                       "title":  "Nu există tranzacții",
+                                                       "body":  "Tranzacțiile vor apărea aici după creare sau import.",
+                                                       "cta":  "Creează o tranzacție"
+                                                   },
+                                         "detail":  {
+                                                       "breadcrumb":  "Detalii",
+                                                       "title":  "Detalii tranzacție",
+                                                       "monthLabel":  "Luna: {month}",
+                                                       "actions":  {
+                                                                       "backToList":  "Înapoi la listă",
+                                                                       "save":  "Salvează modificările",
+                                                                       "saving":  "Se salvează..."
+                                                                   },
+                                                       "save":  {
+                                                                    "title":  "Salvat",
+                                                                    "ok":  "Modificări salvate.",
+                                                                    "error":  "Nu s-au putut salva modificările."
+                                                                },
+                                                       "notFound":  {
+                                                                       "title":  "Tranzacția nu a fost găsită pentru această lună.",
+                                                                       "body":  "Dacă ai deschis URL-ul direct, revino la listă pentru a alinia luna și ledger-ul."
+                                                                   },
+                                                       "invalidId":  {
+                                                                        "title":  "ID tranzacție invalid",
+                                                                        "body":  "Nu am putut citi ID-ul tranzacției din URL."
+                                                                    },
+                                                       "merchant":  {
+                                                                        "label":  "Comerciant"
+                                                                    },
+                                                       "amount":  {
+                                                                      "label":  "Sumă"
+                                                                  },
+                                                       "date":  {
+                                                                    "label":  "Data"
+                                                                },
+                                                       "status":  {
+                                                                      "label":  "Status"
+                                                                  },
+                                                       "category":  {
+                                                                        "label":  "Categorie",
+                                                                        "none":  "Fără categorie"
+                                                                    },
+                                                       "note":  {
+                                                                    "label":  "Notă",
+                                                                    "placeholder":  "Opțional...",
+                                                                    "helper":  "Adaugă context pentru această tranzacție."
+                                                                },
+                                                       "splits":  {
+                                                                      "title":  "Împărțiri",
+                                                                      "subtitle":  "Împarte tranzacția pe categorii.",
+                                                                      "actions":  {
+                                                                                      "add":  "Adaugă împărțire",
+                                                                                      "reset":  "Resetează",
+                                                                                      "save":  "Salvează împărțiri",
+                                                                                      "saving":  "Se salvează...",
+                                                                                      "remove":  "Elimină"
+                                                                                  },
+                                                                      "totals":  {
+                                                                                    "total":  "Total tranzacție",
+                                                                                    "sum":  "Total împărțiri",
+                                                                                    "delta":  "Diferență"
+                                                                                },
+                                                                      "loadError":  "Nu s-au putut încărca împărțirile (HTTP {status}).",
+                                                                      "loadErrorFallback":  "Nu s-au putut încărca împărțirile.",
+                                                                      "saveError":  "Nu s-au putut salva împărțirile (HTTP {status}).",
+                                                                      "saveErrorFallback":  "Nu s-au putut salva împărțirile.",
+                                                                      "saveOk":  "Împărțiri salvate.",
+                                                                      "saveTitle":  "Împărțiri actualizate",
+                                                                      "loading":  "Se încarcă împărțirile...",
+                                                                      "empty":  "Fără împărțiri. Adaugă una.",
+                                                                      "deltaError":  "Împărțirile trebuie să fie egale cu suma tranzacției. Diferență: {delta}.",
+                                                                      "table":  {
+                                                                                    "category":  "Categorie",
+                                                                                    "amount":  "Sumă (EUR)",
+                                                                                    "note":  "Notă",
+                                                                                    "amountPlaceholder":  "ex: 12.34",
+                                                                                    "notePlaceholder":  "Opțional..."
+                                                                                },
+                                                                      "rowError":  "Rând {index}: {error}",
+                                                                      "errors":  {
+                                                                                    "required":  "Suma este obligatorie.",
+                                                                                    "format":  "Format invalid (folosește 12.34).",
+                                                                                    "invalidNumber":  "Număr invalid.",
+                                                                                    "invalidDecimals":  "Zecimale invalide."
+                                                                                }
+                                                                  },
+                                                       "metadata":  {
+                                                                       "title":  "Metadate",
+                                                                       "source":  "Sursă",
+                                                                       "merchantNorm":  "Comerciant normalizat",
+                                                                       "reviewedAt":  "Revizuit la"
+                                                                   },
+                                                       "ledger":  {
+                                                                     "title":  "Stare ledger",
+                                                                     "loading":  "Se încarcă",
+                                                                     "month":  "Luna ledger",
+                                                                     "count":  "Tranzacții"
+                                                                 }
+                                                   }
+                                     },
+                     "newTransaction":  {
+                                            "breadcrumbs":  {
+                                                                "finances":  "Finanțe",
+                                                                "transactions":  "Tranzacții",
+                                                                "new":  "Nouă"
+                                                            },
+                                            "title":  "Tranzacție nouă",
+                                            "monthLabel":  "Luna: {month}",
+                                            "actions":  {
+                                                            "backToList":  "Înapoi la listă",
+                                                            "create":  "Creează tranzacție",
+                                                            "creating":  "Se creează..."
+                                                        },
+                                            "errors":  {
+                                                           "title":  "A apărut o problemă",
+                                                           "create":  "Nu s-a putut crea tranzacția."
+                                                       },
+                                            "form":  {
+                                                         "date":  {
+                                                                     "label":  "Data",
+                                                                     "placeholder":  "YYYY-MM-DD",
+                                                                     "helper":  "Folosește data tranzacției.",
+                                                                     "error":  "Introdu o dată ISO validă."
+                                                                 },
+                                                         "merchant":  {
+                                                                         "label":  "Comerciant",
+                                                                         "placeholder":  "Albert Heijn, NS, Bol.com...",
+                                                                         "helper":  "Introdu comerciantul sau beneficiar.",
+                                                                         "error":  "Comerciantul este obligatoriu."
+                                                                     },
+                                                         "amount":  {
+                                                                       "label":  "Sumă (EUR)",
+                                                                       "placeholder":  "12.34",
+                                                                       "helper":  "Folosește valori negative pentru ieșiri.",
+                                                                       "error":  "Introdu o sumă diferită de zero."
+                                                                   },
+                                                         "category":  {
+                                                                         "label":  "Categorie",
+                                                                         "helper":  "Alege o categorie pentru un buget ordonat.",
+                                                                         "none":  "Fără categorie"
+                                                                     },
+                                                         "note":  {
+                                                                     "label":  "Notă",
+                                                                     "placeholder":  "Opțional...",
+                                                                     "helper":  "Adaugă context pentru revizuiri."
+                                                                 }
+                                                     }
+                                        }
                  }
 }

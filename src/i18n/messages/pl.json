@@ -248,6 +248,195 @@
                                                      "errorBody":  "Spr?buj ponownie za chwil?.",
                                                      "retry":  "Spr?buj ponownie"
                                                  }
-                                   }
+                                   },
+                     "transactions":  {
+                                         "breadcrumbs":  {
+                                                             "finances":  "Finanse",
+                                                             "transactions":  "Transakcje"
+                                                         },
+                                         "title":  "Transakcje",
+                                         "monthLabel":  "Miesiąc: {month}",
+                                         "actions":  {
+                                                         "backToFinances":  "Wróć do Finansów",
+                                                         "newTransaction":  "Nowa transakcja"
+                                                     },
+                                         "summary":  {
+                                                         "count":  "{count} transakcji"
+                                                     },
+                                         "loading":  "Ładowanie...",
+                                         "errors":  {
+                                                        "title":  "Coś poszło nie tak",
+                                                        "updateStatus":  "Nie udało się zaktualizować statusu."
+                                                    },
+                                         "table":  {
+                                                       "title":  "Skrzynka transakcji",
+                                                       "subtitle":  "Aktywność w ledgerze i szybkie edycje",
+                                                       "date":  "Data",
+                                                       "merchant":  "Sprzedawca",
+                                                       "category":  "Kategoria",
+                                                       "amount":  "Kwota",
+                                                       "status":  "Status",
+                                                       "actions":  "Akcje",
+                                                       "open":  "Otwórz",
+                                                       "statusAria":  "Zaktualizuj status",
+                                                       "saving":  "Zapisywanie..."
+                                                   },
+                                         "status":  {
+                                                       "pending":  "Oczekujące",
+                                                       "approved":  "Zatwierdzone",
+                                                       "hidden":  "Ukryte"
+                                                   },
+                                         "category":  {
+                                                         "uncategorized":  "Bez kategorii"
+                                                     },
+                                         "empty":  {
+                                                       "title":  "Brak transakcji",
+                                                       "body":  "Transakcje pojawią się tutaj po utworzeniu lub imporcie.",
+                                                       "cta":  "Utwórz transakcję"
+                                                   },
+                                         "detail":  {
+                                                       "breadcrumb":  "Szczegóły",
+                                                       "title":  "Szczegóły transakcji",
+                                                       "monthLabel":  "Miesiąc: {month}",
+                                                       "actions":  {
+                                                                       "backToList":  "Wróć do listy",
+                                                                       "save":  "Zapisz zmiany",
+                                                                       "saving":  "Zapisywanie..."
+                                                                   },
+                                                       "save":  {
+                                                                    "title":  "Zapisano",
+                                                                    "ok":  "Zmiany zapisane.",
+                                                                    "error":  "Nie udało się zapisać zmian."
+                                                                },
+                                                       "notFound":  {
+                                                                       "title":  "Nie znaleziono transakcji w tym miesiącu.",
+                                                                       "body":  "Jeśli otworzyłeś adres bezpośrednio, wróć do listy, aby zsynchronizować miesiąc i ledger."
+                                                                   },
+                                                       "invalidId":  {
+                                                                        "title":  "Nieprawidłowy ID transakcji",
+                                                                        "body":  "Nie mogliśmy odczytać ID transakcji z URL."
+                                                                    },
+                                                       "merchant":  {
+                                                                        "label":  "Sprzedawca"
+                                                                    },
+                                                       "amount":  {
+                                                                      "label":  "Kwota"
+                                                                  },
+                                                       "date":  {
+                                                                    "label":  "Data"
+                                                                },
+                                                       "status":  {
+                                                                      "label":  "Status"
+                                                                  },
+                                                       "category":  {
+                                                                        "label":  "Kategoria",
+                                                                        "none":  "Bez kategorii"
+                                                                    },
+                                                       "note":  {
+                                                                    "label":  "Notatka",
+                                                                    "placeholder":  "Opcjonalnie...",
+                                                                    "helper":  "Dodaj kontekst dla tej transakcji."
+                                                                },
+                                                       "splits":  {
+                                                                      "title":  "Podziały",
+                                                                      "subtitle":  "Podziel transakcję na kategorie.",
+                                                                      "actions":  {
+                                                                                      "add":  "Dodaj podział",
+                                                                                      "reset":  "Resetuj",
+                                                                                      "save":  "Zapisz podziały",
+                                                                                      "saving":  "Zapisywanie...",
+                                                                                      "remove":  "Usuń"
+                                                                                  },
+                                                                      "totals":  {
+                                                                                    "total":  "Suma transakcji",
+                                                                                    "sum":  "Suma podziałów",
+                                                                                    "delta":  "Różnica"
+                                                                                },
+                                                                      "loadError":  "Nie udało się wczytać podziałów (HTTP {status}).",
+                                                                      "loadErrorFallback":  "Nie udało się wczytać podziałów.",
+                                                                      "saveError":  "Nie udało się zapisać podziałów (HTTP {status}).",
+                                                                      "saveErrorFallback":  "Nie udało się zapisać podziałów.",
+                                                                      "saveOk":  "Podziały zapisane.",
+                                                                      "saveTitle":  "Podziały zaktualizowane",
+                                                                      "loading":  "Ładowanie podziałów...",
+                                                                      "empty":  "Brak podziałów. Dodaj pierwszy.",
+                                                                      "deltaError":  "Suma podziałów musi równać się kwocie transakcji. Różnica: {delta}.",
+                                                                      "table":  {
+                                                                                    "category":  "Kategoria",
+                                                                                    "amount":  "Kwota (EUR)",
+                                                                                    "note":  "Notatka",
+                                                                                    "amountPlaceholder":  "np. 12.34",
+                                                                                    "notePlaceholder":  "Opcjonalnie..."
+                                                                                },
+                                                                      "rowError":  "Wiersz {index}: {error}",
+                                                                      "errors":  {
+                                                                                    "required":  "Kwota jest wymagana.",
+                                                                                    "format":  "Nieprawidłowy format (użyj 12.34).",
+                                                                                    "invalidNumber":  "Nieprawidłowa liczba.",
+                                                                                    "invalidDecimals":  "Nieprawidłowe miejsca dziesiętne."
+                                                                                }
+                                                                  },
+                                                       "metadata":  {
+                                                                       "title":  "Metadane",
+                                                                       "source":  "Źródło",
+                                                                       "merchantNorm":  "Znormalizowany sprzedawca",
+                                                                       "reviewedAt":  "Zweryfikowano"
+                                                                   },
+                                                       "ledger":  {
+                                                                     "title":  "Status ledgera",
+                                                                     "loading":  "Ładowanie",
+                                                                     "month":  "Miesiąc ledgera",
+                                                                     "count":  "Transakcje"
+                                                                 }
+                                                   }
+                                     },
+                     "newTransaction":  {
+                                            "breadcrumbs":  {
+                                                                "finances":  "Finanse",
+                                                                "transactions":  "Transakcje",
+                                                                "new":  "Nowa"
+                                                            },
+                                            "title":  "Nowa transakcja",
+                                            "monthLabel":  "Miesiąc: {month}",
+                                            "actions":  {
+                                                            "backToList":  "Wróć do listy",
+                                                            "create":  "Utwórz transakcję",
+                                                            "creating":  "Tworzenie..."
+                                                        },
+                                            "errors":  {
+                                                           "title":  "Coś poszło nie tak",
+                                                           "create":  "Nie udało się utworzyć transakcji."
+                                                       },
+                                            "form":  {
+                                                         "date":  {
+                                                                     "label":  "Data",
+                                                                     "placeholder":  "YYYY-MM-DD",
+                                                                     "helper":  "Użyj daty transakcji.",
+                                                                     "error":  "Podaj poprawną datę ISO."
+                                                                 },
+                                                         "merchant":  {
+                                                                         "label":  "Sprzedawca",
+                                                                         "placeholder":  "Albert Heijn, NS, Bol.com...",
+                                                                         "helper":  "Wpisz sprzedawcę lub odbiorcę.",
+                                                                         "error":  "Sprzedawca jest wymagany."
+                                                                     },
+                                                         "amount":  {
+                                                                       "label":  "Kwota (EUR)",
+                                                                       "placeholder":  "12.34",
+                                                                       "helper":  "Użyj wartości ujemnych dla wydatków.",
+                                                                       "error":  "Podaj kwotę różną od zera."
+                                                                   },
+                                                         "category":  {
+                                                                         "label":  "Kategoria",
+                                                                         "helper":  "Wybierz kategorię, aby uporządkować budżet.",
+                                                                         "none":  "Bez kategorii"
+                                                                     },
+                                                         "note":  {
+                                                                     "label":  "Notatka",
+                                                                     "placeholder":  "Opcjonalnie...",
+                                                                     "helper":  "Dodaj kontekst na przyszłość."
+                                                                 }
+                                                     }
+                                        }
                  }
 }

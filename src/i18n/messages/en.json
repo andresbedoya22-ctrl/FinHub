@@ -248,6 +248,195 @@
                                                      "errorBody":  "Please retry in a moment.",
                                                      "retry":  "Retry"
                                                  }
-                                   }
+                                   },
+                     "transactions":  {
+                                         "breadcrumbs":  {
+                                                             "finances":  "Finances",
+                                                             "transactions":  "Transactions"
+                                                         },
+                                         "title":  "Transactions",
+                                         "monthLabel":  "Month: {month}",
+                                         "actions":  {
+                                                         "backToFinances":  "Back to Finances",
+                                                         "newTransaction":  "New transaction"
+                                                     },
+                                         "summary":  {
+                                                         "count":  "{count} transactions"
+                                                     },
+                                         "loading":  "Loading...",
+                                         "errors":  {
+                                                        "title":  "Something went wrong",
+                                                        "updateStatus":  "Could not update status."
+                                                    },
+                                         "table":  {
+                                                       "title":  "Transactions inbox",
+                                                       "subtitle":  "Ledger activity and quick edits",
+                                                       "date":  "Date",
+                                                       "merchant":  "Merchant",
+                                                       "category":  "Category",
+                                                       "amount":  "Amount",
+                                                       "status":  "Status",
+                                                       "actions":  "Actions",
+                                                       "open":  "Open",
+                                                       "statusAria":  "Update status",
+                                                       "saving":  "Saving..."
+                                                   },
+                                         "status":  {
+                                                       "pending":  "Pending",
+                                                       "approved":  "Approved",
+                                                       "hidden":  "Hidden"
+                                                   },
+                                         "category":  {
+                                                         "uncategorized":  "Uncategorized"
+                                                     },
+                                         "empty":  {
+                                                       "title":  "No transactions yet",
+                                                       "body":  "Transactions will appear here once they are created or imported.",
+                                                       "cta":  "Create a transaction"
+                                                   },
+                                         "detail":  {
+                                                       "breadcrumb":  "Details",
+                                                       "title":  "Transaction details",
+                                                       "monthLabel":  "Month: {month}",
+                                                       "actions":  {
+                                                                       "backToList":  "Back to list",
+                                                                       "save":  "Save changes",
+                                                                       "saving":  "Saving..."
+                                                                   },
+                                                       "save":  {
+                                                                    "title":  "Saved",
+                                                                    "ok":  "Changes saved.",
+                                                                    "error":  "Could not save changes."
+                                                                },
+                                                       "notFound":  {
+                                                                       "title":  "Transaction not found for this month.",
+                                                                       "body":  "If you opened the URL directly, go back to the list so the month and ledger align."
+                                                                   },
+                                                       "invalidId":  {
+                                                                        "title":  "Invalid transaction ID",
+                                                                        "body":  "We couldn't read the transaction ID from the URL."
+                                                                    },
+                                                       "merchant":  {
+                                                                        "label":  "Merchant"
+                                                                    },
+                                                       "amount":  {
+                                                                      "label":  "Amount"
+                                                                  },
+                                                       "date":  {
+                                                                    "label":  "Date"
+                                                                },
+                                                       "status":  {
+                                                                      "label":  "Status"
+                                                                  },
+                                                       "category":  {
+                                                                        "label":  "Category",
+                                                                        "none":  "Uncategorized"
+                                                                    },
+                                                       "note":  {
+                                                                    "label":  "Note",
+                                                                    "placeholder":  "Optional...",
+                                                                    "helper":  "Add context for this transaction."
+                                                                },
+                                                       "splits":  {
+                                                                      "title":  "Splits",
+                                                                      "subtitle":  "Split the transaction across categories.",
+                                                                      "actions":  {
+                                                                                      "add":  "Add split",
+                                                                                      "reset":  "Reset",
+                                                                                      "save":  "Save splits",
+                                                                                      "saving":  "Saving...",
+                                                                                      "remove":  "Remove"
+                                                                                  },
+                                                                      "totals":  {
+                                                                                    "total":  "Transaction total",
+                                                                                    "sum":  "Splits total",
+                                                                                    "delta":  "Difference"
+                                                                                },
+                                                                      "loadError":  "Could not load splits (HTTP {status}).",
+                                                                      "loadErrorFallback":  "Could not load splits.",
+                                                                      "saveError":  "Could not save splits (HTTP {status}).",
+                                                                      "saveErrorFallback":  "Could not save splits.",
+                                                                      "saveOk":  "Splits saved.",
+                                                                      "saveTitle":  "Splits updated",
+                                                                      "loading":  "Loading splits...",
+                                                                      "empty":  "No splits yet. Add one to continue.",
+                                                                      "deltaError":  "Splits must match the transaction amount. Difference: {delta}.",
+                                                                      "table":  {
+                                                                                    "category":  "Category",
+                                                                                    "amount":  "Amount (EUR)",
+                                                                                    "note":  "Note",
+                                                                                    "amountPlaceholder":  "e.g. 12.34",
+                                                                                    "notePlaceholder":  "Optional..."
+                                                                                },
+                                                                      "rowError":  "Row {index}: {error}",
+                                                                      "errors":  {
+                                                                                    "required":  "Amount required.",
+                                                                                    "format":  "Invalid format (use 12.34).",
+                                                                                    "invalidNumber":  "Invalid number.",
+                                                                                    "invalidDecimals":  "Invalid decimals."
+                                                                                }
+                                                                  },
+                                                       "metadata":  {
+                                                                       "title":  "Metadata",
+                                                                       "source":  "Source",
+                                                                       "merchantNorm":  "Merchant norm",
+                                                                       "reviewedAt":  "Reviewed at"
+                                                                   },
+                                                       "ledger":  {
+                                                                     "title":  "Ledger status",
+                                                                     "loading":  "Loading",
+                                                                     "month":  "Ledger month",
+                                                                     "count":  "Transactions"
+                                                                 }
+                                                   }
+                                     },
+                     "newTransaction":  {
+                                            "breadcrumbs":  {
+                                                                "finances":  "Finances",
+                                                                "transactions":  "Transactions",
+                                                                "new":  "New"
+                                                            },
+                                            "title":  "New transaction",
+                                            "monthLabel":  "Month: {month}",
+                                            "actions":  {
+                                                            "backToList":  "Back to list",
+                                                            "create":  "Create transaction",
+                                                            "creating":  "Creating..."
+                                                        },
+                                            "errors":  {
+                                                           "title":  "Something went wrong",
+                                                           "create":  "Could not create transaction."
+                                                       },
+                                            "form":  {
+                                                         "date":  {
+                                                                     "label":  "Date",
+                                                                     "placeholder":  "YYYY-MM-DD",
+                                                                     "helper":  "Use the transaction date.",
+                                                                     "error":  "Enter a valid ISO date."
+                                                                 },
+                                                         "merchant":  {
+                                                                         "label":  "Merchant",
+                                                                         "placeholder":  "Albert Heijn, NS, Bol.com...",
+                                                                         "helper":  "Add the merchant or payee name.",
+                                                                         "error":  "Merchant is required."
+                                                                     },
+                                                         "amount":  {
+                                                                       "label":  "Amount (EUR)",
+                                                                       "placeholder":  "12.34",
+                                                                       "helper":  "Use negative values for outflows.",
+                                                                       "error":  "Enter a non-zero amount."
+                                                                   },
+                                                         "category":  {
+                                                                         "label":  "Category",
+                                                                         "helper":  "Pick a category to keep budgets tidy.",
+                                                                         "none":  "Uncategorized"
+                                                                     },
+                                                         "note":  {
+                                                                     "label":  "Note",
+                                                                     "placeholder":  "Optional...",
+                                                                     "helper":  "Add context for future reviews."
+                                                                 }
+                                                     }
+                                        }
                  }
 }

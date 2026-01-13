@@ -2,11 +2,18 @@
 
 import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useMemo, useState } from "react";
 
 import { useFinancesLedger } from "@/features/finances/financesLedgerStore";
 import type { FinanceTransactionSplit } from "@/features/finances/financesTypes";
 import type { PatchTransaction } from "@/features/finances/financesLedgerApi";
+import { Badge } from "@/ui/components/Badge";
+import { Button } from "@/ui/components/Button";
+import { Card } from "@/ui/components/Card";
+import { InfoBox } from "@/ui/components/InfoBox";
+import { Screen } from "@/ui/components/Screen";
+import { cn } from "@/ui/cn";
 
 type TxStatus = "pending" | "approved" | "hidden";
 
@@ -18,12 +25,13 @@ type SplitDraftRow = {
   note: string;
 };
 
+type ParseError = "required" | "format" | "invalidNumber" | "invalidDecimals";
+
 function asString(v: unknown): string {
   return typeof v === "string" ? v : String(v ?? "");
 }
 
 function isoMonthNow(): string {
-  // YYYY-MM
   return new Date().toISOString().slice(0, 7);
 }
 
@@ -31,21 +39,28 @@ function isTxStatus(x: unknown): x is TxStatus {
   return x === "pending" || x === "approved" || x === "hidden";
 }
 
-function formatEurFromCents(cents: number): string {
+function formatEurFromCents(locale: string, cents: number): string {
   const v = (Number.isFinite(cents) ? cents : 0) / 100;
-  return new Intl.NumberFormat(undefined, { style: "currency", currency: "EUR" }).format(v);
+  return new Intl.NumberFormat(locale, { style: "currency", currency: "EUR" }).format(v);
 }
 
 function eurInputFromCents(cents: number): string {
   const v = (Number.isFinite(cents) ? cents : 0) / 100;
-  // keep dot decimal for predictable parsing; user can still type comma
   return v.toFixed(2);
 }
 
-function parseEurToCents(input: string): { ok: true; cents: number } | { ok: false; error: string } {
+function toMonthLabel(locale: string, month: string): string {
+  const [year, monthStr] = month.split("-");
+  const y = Number(year);
+  const m = Number(monthStr);
+  if (!Number.isFinite(y) || !Number.isFinite(m)) return month;
+  return new Intl.DateTimeFormat(locale, { month: "long", year: "numeric" }).format(new Date(y, m - 1, 1));
+}
+
+function parseEurToCents(input: string): { ok: true; cents: number } | { ok: false; error: ParseError } {
   const raw = input.trim().replace(",", ".");
-  if (!raw) return { ok: false, error: "Importe requerido" };
-  if (!/^-?\d+(\.\d{0,2})?$/.test(raw)) return { ok: false, error: "Formato inválido (usa 12.34)" };
+  if (!raw) return { ok: false, error: "required" };
+  if (!/^-?\d+(\.\d{0,2})?$/.test(raw)) return { ok: false, error: "format" };
 
   const parts = raw.split(".");
   const intPart = parts[0] ?? "0";
@@ -53,11 +68,11 @@ function parseEurToCents(input: string): { ok: true; cents: number } | { ok: fal
 
   const sign = intPart.startsWith("-") ? -1 : 1;
   const absInt = Math.abs(Number(intPart));
-  if (!Number.isFinite(absInt)) return { ok: false, error: "Número inválido" };
+  if (!Number.isFinite(absInt)) return { ok: false, error: "invalidNumber" };
 
   const dec2 = (decPart + "00").slice(0, 2);
   const dec = Number(dec2);
-  if (!Number.isFinite(dec)) return { ok: false, error: "Decimales inválidos" };
+  if (!Number.isFinite(dec)) return { ok: false, error: "invalidDecimals" };
 
   const cents = sign * (absInt * 100 + dec);
   return { ok: true, cents };
@@ -69,7 +84,6 @@ function normalizeReviewedAt(prevReviewedAt: string | null, nextStatus: TxStatus
 }
 
 function newKey(): string {
-  // crypto.randomUUID is available in modern browsers; fallback for safety
   const rnd = typeof crypto !== "undefined" && "randomUUID" in crypto ? (crypto.randomUUID as () => string)() : `${Date.now()}_${Math.random()}`;
   return `k_${rnd}`;
 }
@@ -84,21 +98,25 @@ function splitsToDraftRows(splits: FinanceTransactionSplit[]): SplitDraftRow[] {
   }));
 }
 
-function normalizeDraftForCompare(rows: SplitDraftRow[]): Array<{ categoryId: string | null; splitAmountCents: number; note: string | null }> | null {
+function normalizeDraftForCompare(
+  rows: SplitDraftRow[]
+): { ok: true; value: Array<{ categoryId: string | null; splitAmountCents: number; note: string | null }> } | { ok: false; error: ParseError } {
   const out: Array<{ categoryId: string | null; splitAmountCents: number; note: string | null }> = [];
   for (const r of rows) {
     const parsed = parseEurToCents(r.amountEur);
-    if (!parsed.ok) return null;
+    if (!parsed.ok) return { ok: false, error: parsed.error };
     out.push({
       categoryId: r.categoryId ?? null,
       splitAmountCents: parsed.cents,
       note: r.note.trim() ? r.note.trim() : null,
     });
   }
-  return out;
+  return { ok: true, value: out };
 }
 
 export default function TransactionDetailClient() {
+  const t = useTranslations("finances.transactions");
+  const locale = useLocale();
   const params = useParams();
   const sp = useSearchParams();
 
@@ -111,6 +129,7 @@ export default function TransactionDetailClient() {
 
   const monthFromQuery = sp.get("month") ?? "";
   const month = monthFromQuery || isoMonthNow();
+  const monthLabel = useMemo(() => toMonthLabel(locale, month), [locale, month]);
 
   const loadLedger = useFinancesLedger((s) => s.load);
   const ledgerMonth = useFinancesLedger((s) => s.month);
@@ -131,7 +150,6 @@ export default function TransactionDetailClient() {
   const [splitsSaveError, setSplitsSaveError] = useState<string | null>(null);
   const [splitsSaveOk, setSplitsSaveOk] = useState<string | null>(null);
 
-  // Draft fields (tx)
   const [draftStatus, setDraftStatus] = useState<TxStatus>("pending");
   const [draftCategoryId, setDraftCategoryId] = useState<string | null>(null);
   const [draftNote, setDraftNote] = useState<string>("");
@@ -140,14 +158,12 @@ export default function TransactionDetailClient() {
   const [saveError, setSaveError] = useState<string | null>(null);
   const [saveOk, setSaveOk] = useState<string | null>(null);
 
-  // Load ledger (needed to find tx + categories)
   useEffect(() => {
     if (!month) return;
     if (ledgerMonth === month && transactions.length > 0) return;
     void loadLedger(month);
   }, [month, ledgerMonth, transactions.length, loadLedger]);
 
-  // Sync drafts when tx changes
   useEffect(() => {
     if (!tx) return;
     setDraftStatus(isTxStatus(tx.status) ? tx.status : "pending");
@@ -157,7 +173,6 @@ export default function TransactionDetailClient() {
     setSaveOk(null);
   }, [tx]);
 
-  // Load splits
   useEffect(() => {
     if (!id) return;
     setSplits([]);
@@ -177,7 +192,7 @@ export default function TransactionDetailClient() {
           const msg =
             jsonUnknown && typeof jsonUnknown === "object" && "error" in (jsonUnknown as Record<string, unknown>)
               ? asString((jsonUnknown as Record<string, unknown>).error)
-              : `Error cargando splits (${res.status})`;
+              : t("detail.splits.loadError", { status: res.status });
           throw new Error(msg);
         }
 
@@ -199,22 +214,22 @@ export default function TransactionDetailClient() {
         setSplits(parsed);
         setSplitsDraft(splitsToDraftRows(parsed));
       } catch (e: unknown) {
-        setSplitsError(e instanceof Error ? e.message : "Error cargando splits");
+        setSplitsError(e instanceof Error ? e.message : t("detail.splits.loadErrorFallback"));
       } finally {
         setSplitsLoading(false);
       }
     };
 
     void run();
-  }, [id]);
+  }, [id, t]);
 
   const categoryOptions = useMemo(() => {
-    const base = [{ id: "", label: "Sin categoría" }];
+    const base = [{ id: "", label: t("detail.category.none") }];
     const mapped = (categories ?? [])
       .filter((c) => typeof c.id === "string" && c.id.length > 0)
       .map((c) => ({ id: c.id, label: c.label || c.key || c.id }));
     return [...base, ...mapped];
-  }, [categories]);
+  }, [categories, t]);
 
   const dirty = useMemo(() => {
     if (!tx) return false;
@@ -228,15 +243,15 @@ export default function TransactionDetailClient() {
   const splitsCompareDraft = useMemo(() => normalizeDraftForCompare(splitsDraft), [splitsDraft]);
 
   const splitsDirty = useMemo(() => {
-    if (!splitsCompareBase || !splitsCompareDraft) return true; // invalid draft => treat as dirty
-    return JSON.stringify(splitsCompareBase) !== JSON.stringify(splitsCompareDraft);
+    if (!splitsCompareBase.ok || !splitsCompareDraft.ok) return true;
+    return JSON.stringify(splitsCompareBase.value) !== JSON.stringify(splitsCompareDraft.value);
   }, [splitsCompareBase, splitsCompareDraft]);
 
   const splitsSum = useMemo(() => {
     const norm = normalizeDraftForCompare(splitsDraft);
-    if (!norm) return { ok: false as const, sumCents: 0, error: "Hay importes inválidos en splits" };
-    const sumCents = norm.reduce((acc, s) => acc + s.splitAmountCents, 0);
-    return { ok: true as const, sumCents, norm };
+    if (!norm.ok) return { ok: false as const, sumCents: 0, error: norm.error };
+    const sumCents = norm.value.reduce((acc, s) => acc + s.splitAmountCents, 0);
+    return { ok: true as const, sumCents, norm: norm.value };
   }, [splitsDraft]);
 
   const splitsDelta = useMemo(() => {
@@ -244,6 +259,8 @@ export default function TransactionDetailClient() {
     const sum = splitsSum.ok ? splitsSum.sumCents : 0;
     return tx.amountCents - sum;
   }, [tx, splitsSum]);
+
+  const parseErrorLabel = (err: ParseError) => t(`detail.splits.errors.${err}`);
 
   const onSave = async () => {
     if (!tx) return;
@@ -260,9 +277,9 @@ export default function TransactionDetailClient() {
       };
 
       await patchTx(tx.id, patch);
-      setSaveOk("Guardado.");
+      setSaveOk(t("detail.save.ok"));
     } catch (e: unknown) {
-      setSaveError(e instanceof Error ? e.message : "Error guardando");
+      setSaveError(e instanceof Error ? e.message : t("detail.save.error"));
     } finally {
       setSaving(false);
     }
@@ -304,11 +321,11 @@ export default function TransactionDetailClient() {
     setSplitsSaveOk(null);
 
     try {
-      if (!splitsSum.ok) throw new Error(splitsSum.error);
+      if (!splitsSum.ok) throw new Error(parseErrorLabel(splitsSum.error));
 
       const delta = tx.amountCents - splitsSum.sumCents;
       if (delta !== 0) {
-        throw new Error(`El total de splits debe cuadrar con el importe. Diferencia: ${formatEurFromCents(delta)}`);
+        throw new Error(t("detail.splits.deltaError", { delta: formatEurFromCents(locale, delta) }));
       }
 
       const payload = splitsSum.norm;
@@ -326,11 +343,10 @@ export default function TransactionDetailClient() {
         const msg =
           jsonUnknown && typeof jsonUnknown === "object" && "error" in (jsonUnknown as Record<string, unknown>)
             ? asString((jsonUnknown as Record<string, unknown>).error)
-            : `Error guardando splits (${res.status})`;
+            : t("detail.splits.saveError", { status: res.status });
         throw new Error(msg);
       }
 
-      // Expected: { ok: true, splits: [...] }
       const obj = jsonUnknown && typeof jsonUnknown === "object" ? (jsonUnknown as Record<string, unknown>) : null;
       const arr = obj && "splits" in obj && Array.isArray(obj.splits) ? (obj.splits as unknown[]) : [];
 
@@ -350,9 +366,9 @@ export default function TransactionDetailClient() {
 
       setSplits(parsed);
       setSplitsDraft(splitsToDraftRows(parsed));
-      setSplitsSaveOk("Splits guardados.");
+      setSplitsSaveOk(t("detail.splits.saveOk"));
     } catch (e: unknown) {
-      setSplitsSaveError(e instanceof Error ? e.message : "Error guardando splits");
+      setSplitsSaveError(e instanceof Error ? e.message : t("detail.splits.saveErrorFallback"));
     } finally {
       setSplitsSaving(false);
     }
@@ -360,92 +376,114 @@ export default function TransactionDetailClient() {
 
   if (!id) {
     return (
-      <div className="p-6">
-        <div className="text-sm opacity-80">ID inválido.</div>
-        <Link className="underline text-sm" href="/app/finances/transactions">
-          Volver
+      <Screen className="space-y-4">
+        <InfoBox variant="warning" title={t("detail.invalidId.title")}>
+          {t("detail.invalidId.body")}
+        </InfoBox>
+        <Link className="text-sm text-fh-muted hover:text-fh-text" href="/app/finances/transactions">
+          {t("detail.actions.backToList")}
         </Link>
-      </div>
+      </Screen>
     );
   }
 
   return (
-    <div className="p-6 space-y-6">
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <div className="text-xs opacity-70">Finanzas · Transacciones</div>
-          <h1 className="text-xl font-semibold">Detalle</h1>
-          <div className="text-xs opacity-70">
-            Mes: <span className="font-mono">{month}</span>
+    <Screen className="space-y-6">
+      <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+        <div className="space-y-1">
+          <div className="text-xs text-fh-muted">
+            <Link className="hover:text-fh-text" href="/app/finances">
+              {t("breadcrumbs.finances")}
+            </Link>
+            <span className="mx-2 text-white/20">/</span>
+            <Link className="hover:text-fh-text" href="/app/finances/transactions">
+              {t("breadcrumbs.transactions")}
+            </Link>
+            <span className="mx-2 text-white/20">/</span>
+            <span>{t("detail.breadcrumb")}</span>
           </div>
+          <h1 className="text-2xl font-semibold tracking-tight">{t("detail.title")}</h1>
+          <div className="text-xs text-fh-muted">{t("detail.monthLabel", { month: monthLabel })}</div>
         </div>
 
-        <div className="flex gap-3">
-          <Link className="underline text-sm self-center" href={`/app/finances/transactions?month=${encodeURIComponent(month)}`}>
-            Volver al listado
+        <div className="flex flex-wrap gap-2">
+          <Link
+            className="inline-flex items-center justify-center rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm font-medium text-fh-text hover:bg-fh-surface-2"
+            href={`/app/finances/transactions?month=${encodeURIComponent(month)}`}
+          >
+            {t("detail.actions.backToList")}
           </Link>
-          <button className="px-3 py-2 rounded-md border text-sm disabled:opacity-50" disabled={!tx || !dirty || saving} onClick={onSave}>
-            {saving ? "Guardando..." : "Guardar cambios"}
-          </button>
+          <Button disabled={!tx || !dirty || saving} onClick={onSave}>
+            {saving ? t("detail.actions.saving") : t("detail.actions.save")}
+          </Button>
         </div>
       </div>
 
       {(ledgerError || saveError) && (
-        <div className="p-3 rounded-md border border-red-500/40 bg-red-500/10 text-sm">{saveError ?? ledgerError}</div>
+        <InfoBox variant="danger" title={t("errors.title")}>
+          {saveError ?? ledgerError}
+        </InfoBox>
       )}
-      {saveOk && <div className="p-3 rounded-md border border-emerald-500/40 bg-emerald-500/10 text-sm">{saveOk}</div>}
+      {saveOk && (
+        <InfoBox variant="info" title={t("detail.save.title")}>
+          {saveOk}
+        </InfoBox>
+      )}
 
       {!tx ? (
-        <div className="p-4 rounded-md border">
-          <div className="text-sm font-medium">No se encontró la transacción en este mes.</div>
-          <div className="text-xs opacity-70 mt-1">
-            Si entraste directo por URL, abre el listado y navega desde ahí (así el mes y el ledger quedan alineados).
-          </div>
-        </div>
+        <Card>
+          <div className="text-sm font-semibold">{t("detail.notFound.title")}</div>
+          <div className="mt-2 text-sm text-fh-muted">{t("detail.notFound.body")}</div>
+        </Card>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          <div className="lg:col-span-2 space-y-4">
-            <div className="rounded-md border p-4 space-y-3">
-              <div className="flex justify-between gap-4">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+          <div className="lg:col-span-2 space-y-6">
+            <Card className="space-y-4">
+              <div className="flex flex-wrap items-start justify-between gap-4">
                 <div>
-                  <div className="text-xs opacity-70">Merchant</div>
-                  <div className="font-medium">{tx.merchantName}</div>
-                  <div className="text-xs opacity-70 font-mono">{tx.id}</div>
+                  <div className="text-xs text-fh-muted">{t("detail.merchant.label")}</div>
+                  <div className="text-lg font-semibold">{tx.merchantName}</div>
+                  <div className="text-xs text-fh-muted font-mono">{tx.id}</div>
                 </div>
                 <div className="text-right">
-                  <div className="text-xs opacity-70">Importe</div>
-                  <div className="text-lg font-semibold">{formatEurFromCents(tx.amountCents)}</div>
-                  <div className="text-xs opacity-70">{tx.currency}</div>
+                  <div className="text-xs text-fh-muted">{t("detail.amount.label")}</div>
+                  <div className="text-2xl font-semibold">{formatEurFromCents(locale, tx.amountCents)}</div>
+                  <div className="text-xs text-fh-muted">{tx.currency}</div>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                 <div>
-                  <div className="text-xs opacity-70 mb-1">Fecha</div>
+                  <div className="text-xs text-fh-muted mb-2">{t("detail.date.label")}</div>
                   <div className="font-mono text-sm">{tx.occurredOn}</div>
                 </div>
 
                 <div>
-                  <label className="text-xs opacity-70 block mb-1">Estado</label>
-                  <select
-                    className="w-full border rounded-md px-2 py-2 text-sm bg-transparent"
-                    value={draftStatus}
-                    onChange={(e) => {
-                      const v = e.target.value;
-                      setDraftStatus(isTxStatus(v) ? v : "pending");
-                      setSaveOk(null);
-                    }}
-                  >
-                    <option value="pending">pending</option>
-                    <option value="approved">approved</option>
-                    <option value="hidden">hidden</option>
-                  </select>
+                  <label className="text-xs text-fh-muted block mb-2">{t("detail.status.label")}</label>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <Badge variant={draftStatus === "approved" ? "success" : draftStatus === "pending" ? "warning" : "neutral"}>
+                      {t(`status.${draftStatus}`)}
+                    </Badge>
+                    <select
+                      className="w-full rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm"
+                      value={draftStatus}
+                      onChange={(e) => {
+                        const v = e.target.value;
+                        setDraftStatus(isTxStatus(v) ? v : "pending");
+                        setSaveOk(null);
+                      }}
+                    >
+                      <option value="pending">{t("status.pending")}</option>
+                      <option value="approved">{t("status.approved")}</option>
+                      <option value="hidden">{t("status.hidden")}</option>
+                    </select>
+                  </div>
                 </div>
 
                 <div>
-                  <label className="text-xs opacity-70 block mb-1">Categoría</label>
+                  <label className="text-xs text-fh-muted block mb-2">{t("detail.category.label")}</label>
                   <select
-                    className="w-full border rounded-md px-2 py-2 text-sm bg-transparent"
+                    className="w-full rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm"
                     value={draftCategoryId ?? ""}
                     onChange={(e) => {
                       const v = e.target.value;
@@ -463,98 +501,106 @@ export default function TransactionDetailClient() {
               </div>
 
               <div>
-                <label className="text-xs opacity-70 block mb-1">Nota</label>
+                <label className="text-xs text-fh-muted block mb-2">{t("detail.note.label")}</label>
                 <textarea
-                  className="w-full border rounded-md px-2 py-2 text-sm bg-transparent min-h-[96px]"
+                  className="w-full rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm min-h-[120px]"
                   value={draftNote}
                   onChange={(e) => {
                     setDraftNote(e.target.value);
                     setSaveOk(null);
                   }}
-                  placeholder="Opcional…"
+                  placeholder={t("detail.note.placeholder")}
                 />
+                <div className="mt-2 text-xs text-fh-muted">{t("detail.note.helper")}</div>
               </div>
+            </Card>
 
-              <div className="text-xs opacity-70">
-                reviewedAt: <span className="font-mono">{tx.reviewedAt ?? "null"}</span>
-              </div>
-            </div>
-
-            <div className="rounded-md border p-4">
-              <div className="flex items-center justify-between gap-3">
-                <div className="font-medium">Splits</div>
-                <div className="flex gap-2">
-                  <button className="px-3 py-2 rounded-md border text-sm" onClick={onAddSplit} disabled={splitsLoading || splitsSaving}>
-                    Añadir split
-                  </button>
-                  <button className="px-3 py-2 rounded-md border text-sm" onClick={onResetSplits} disabled={splitsLoading || splitsSaving}>
-                    Reset
-                  </button>
-                  <button
-                    className="px-3 py-2 rounded-md border text-sm disabled:opacity-50"
+            <Card className="space-y-4">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <div className="text-sm font-semibold">{t("detail.splits.title")}</div>
+                  <div className="text-xs text-fh-muted">{t("detail.splits.subtitle")}</div>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <Button variant="secondary" onClick={onAddSplit} disabled={splitsLoading || splitsSaving}>
+                    {t("detail.splits.actions.add")}
+                  </Button>
+                  <Button variant="secondary" onClick={onResetSplits} disabled={splitsLoading || splitsSaving}>
+                    {t("detail.splits.actions.reset")}
+                  </Button>
+                  <Button
+                    variant="primary"
                     onClick={onSaveSplits}
                     disabled={splitsLoading || splitsSaving || !splitsDirty || !splitsSum.ok || splitsDelta !== 0}
                   >
-                    {splitsSaving ? "Guardando..." : "Guardar splits"}
-                  </button>
+                    {splitsSaving ? t("detail.splits.actions.saving") : t("detail.splits.actions.save")}
+                  </Button>
                 </div>
               </div>
 
-              <div className="mt-3 grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
-                <div className="rounded-md border p-3">
-                  <div className="text-xs opacity-70">Total tx</div>
-                  <div className="font-medium">{formatEurFromCents(tx.amountCents)}</div>
+              <div className="grid grid-cols-1 gap-3 md:grid-cols-3 text-sm">
+                <div className="rounded-xl border border-fh-border bg-fh-surface-2 p-3">
+                  <div className="text-xs text-fh-muted">{t("detail.splits.totals.total")}</div>
+                  <div className="font-medium">{formatEurFromCents(locale, tx.amountCents)}</div>
                 </div>
-                <div className="rounded-md border p-3">
-                  <div className="text-xs opacity-70">Suma splits</div>
-                  <div className="font-medium">{formatEurFromCents(splitsSum.ok ? splitsSum.sumCents : 0)}</div>
+                <div className="rounded-xl border border-fh-border bg-fh-surface-2 p-3">
+                  <div className="text-xs text-fh-muted">{t("detail.splits.totals.sum")}</div>
+                  <div className="font-medium">{formatEurFromCents(locale, splitsSum.ok ? splitsSum.sumCents : 0)}</div>
                 </div>
-                <div className="rounded-md border p-3">
-                  <div className="text-xs opacity-70">Diferencia</div>
-                  <div className={`font-medium ${splitsDelta === 0 ? "" : "text-red-600"}`}>{formatEurFromCents(splitsDelta)}</div>
+                <div className="rounded-xl border border-fh-border bg-fh-surface-2 p-3">
+                  <div className="text-xs text-fh-muted">{t("detail.splits.totals.delta")}</div>
+                  <div className={cn("font-medium", splitsDelta === 0 ? "" : "text-rose-300")}>
+                    {formatEurFromCents(locale, splitsDelta)}
+                  </div>
                 </div>
               </div>
 
               {splitsError && (
-                <div className="mt-3 p-3 rounded-md border border-red-500/40 bg-red-500/10 text-sm">{splitsError}</div>
+                <InfoBox variant="danger" title={t("errors.title")}>
+                  {splitsError}
+                </InfoBox>
               )}
               {splitsSaveError && (
-                <div className="mt-3 p-3 rounded-md border border-red-500/40 bg-red-500/10 text-sm">{splitsSaveError}</div>
+                <InfoBox variant="danger" title={t("errors.title")}>
+                  {splitsSaveError}
+                </InfoBox>
               )}
               {splitsSaveOk && (
-                <div className="mt-3 p-3 rounded-md border border-emerald-500/40 bg-emerald-500/10 text-sm">{splitsSaveOk}</div>
+                <InfoBox variant="info" title={t("detail.splits.saveTitle")}>
+                  {splitsSaveOk}
+                </InfoBox>
               )}
 
               {splitsLoading ? (
-                <div className="mt-3 text-sm opacity-70">Cargando splits…</div>
+                <div className="text-sm text-fh-muted">{t("detail.splits.loading")}</div>
               ) : (
-                <div className="mt-3 overflow-auto">
+                <div className="overflow-auto">
                   <table className="w-full text-sm">
-                    <thead className="text-left opacity-70">
+                    <thead className="text-left text-xs uppercase tracking-wide text-fh-muted">
                       <tr>
-                        <th className="py-2 pr-3">Categoría</th>
-                        <th className="py-2 pr-3">Importe (EUR)</th>
-                        <th className="py-2 pr-3">Nota</th>
+                        <th className="py-2 pr-3">{t("detail.splits.table.category")}</th>
+                        <th className="py-2 pr-3">{t("detail.splits.table.amount")}</th>
+                        <th className="py-2 pr-3">{t("detail.splits.table.note")}</th>
                         <th className="py-2 pr-3"></th>
                       </tr>
                     </thead>
                     <tbody>
                       {splitsDraft.length === 0 ? (
                         <tr>
-                          <td className="py-3 opacity-70" colSpan={4}>
-                            Sin splits. Puedes añadirlos arriba.
+                          <td className="py-3 text-fh-muted" colSpan={4}>
+                            {t("detail.splits.empty")}
                           </td>
                         </tr>
                       ) : (
                         splitsDraft.map((r, idx) => {
                           const parsed = parseEurToCents(r.amountEur);
-                          const amountErr = parsed.ok ? null : parsed.error;
+                          const amountErr = parsed.ok ? null : parseErrorLabel(parsed.error);
 
                           return (
-                            <tr key={r.key} className="border-t align-top">
+                            <tr key={r.key} className="border-t border-white/5 align-top">
                               <td className="py-2 pr-3">
                                 <select
-                                  className="w-full border rounded-md px-2 py-2 text-sm bg-transparent"
+                                  className="w-full rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm"
                                   value={r.categoryId ?? ""}
                                   onChange={(e) => {
                                     const v = e.target.value;
@@ -574,40 +620,39 @@ export default function TransactionDetailClient() {
 
                               <td className="py-2 pr-3">
                                 <input
-                                  className="w-full border rounded-md px-2 py-2 text-sm bg-transparent font-mono"
+                                  className={cn(
+                                    "w-full rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm font-mono",
+                                    amountErr ? "border-rose-500/60" : ""
+                                  )}
                                   value={r.amountEur}
                                   onChange={(e) => {
                                     const v = e.target.value;
                                     setSplitsDraft((prev) => prev.map((x) => (x.key === r.key ? { ...x, amountEur: v } : x)));
                                     setSplitsSaveOk(null);
                                   }}
-                                  placeholder="Ej: 12.34"
+                                  placeholder={t("detail.splits.table.amountPlaceholder")}
                                   inputMode="decimal"
                                 />
-                                {amountErr && <div className="text-xs text-red-600 mt-1">{`Fila ${idx + 1}: ${amountErr}`}</div>}
+                                {amountErr && <div className="mt-1 text-xs text-rose-300">{t("detail.splits.rowError", { index: idx + 1, error: amountErr })}</div>}
                               </td>
 
                               <td className="py-2 pr-3">
                                 <input
-                                  className="w-full border rounded-md px-2 py-2 text-sm bg-transparent"
+                                  className="w-full rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm"
                                   value={r.note}
                                   onChange={(e) => {
                                     const v = e.target.value;
                                     setSplitsDraft((prev) => prev.map((x) => (x.key === r.key ? { ...x, note: v } : x)));
                                     setSplitsSaveOk(null);
                                   }}
-                                  placeholder="Opcional…"
+                                  placeholder={t("detail.splits.table.notePlaceholder")}
                                 />
                               </td>
 
                               <td className="py-2 pr-3 text-right">
-                                <button
-                                  className="px-3 py-2 rounded-md border text-sm"
-                                  onClick={() => onRemoveSplit(r.key)}
-                                  disabled={splitsSaving}
-                                >
-                                  Eliminar
-                                </button>
+                                <Button variant="secondary" onClick={() => onRemoveSplit(r.key)} disabled={splitsSaving}>
+                                  {t("detail.splits.actions.remove")}
+                                </Button>
                               </td>
                             </tr>
                           );
@@ -615,64 +660,44 @@ export default function TransactionDetailClient() {
                       )}
                     </tbody>
                   </table>
-
-                  <div className="mt-2 text-xs opacity-70">
-                    Regla P0: la suma de splits debe cuadrar exactamente con el importe de la transacción para poder guardar.
-                  </div>
                 </div>
               )}
-            </div>
+            </Card>
           </div>
 
-          <div className="space-y-4">
-            <div className="rounded-md border p-4">
-              <div className="font-medium">Metadata</div>
-              <div className="mt-2 text-xs opacity-70 space-y-1">
+          <div className="space-y-6">
+            <Card className="space-y-3">
+              <div className="text-sm font-semibold">{t("detail.metadata.title")}</div>
+              <div className="text-xs text-fh-muted space-y-2">
                 <div>
-                  source: <span className="font-mono">{tx?.source ?? "-"}</span>
+                  {t("detail.metadata.source")}: <span className="font-mono text-fh-text">{tx?.source ?? "-"}</span>
                 </div>
                 <div>
-                  merchantNorm: <span className="font-mono">{tx?.merchantNorm ?? "-"}</span>
+                  {t("detail.metadata.merchantNorm")}: <span className="font-mono text-fh-text">{tx?.merchantNorm ?? "-"}</span>
+                </div>
+                <div>
+                  {t("detail.metadata.reviewedAt")}: <span className="font-mono text-fh-text">{tx?.reviewedAt ?? "-"}</span>
                 </div>
               </div>
-            </div>
+            </Card>
 
-            <div className="rounded-md border p-4">
-              <div className="font-medium">Estado del ledger</div>
-              <div className="mt-2 text-xs opacity-70 space-y-1">
+            <Card className="space-y-3">
+              <div className="text-sm font-semibold">{t("detail.ledger.title")}</div>
+              <div className="text-xs text-fh-muted space-y-2">
                 <div>
-                  loading: <span className="font-mono">{String(loading)}</span>
+                  {t("detail.ledger.loading")}: <span className="font-mono text-fh-text">{String(loading)}</span>
                 </div>
                 <div>
-                  ledgerMonth: <span className="font-mono">{ledgerMonth ?? "null"}</span>
+                  {t("detail.ledger.month")}: <span className="font-mono text-fh-text">{ledgerMonth ?? "null"}</span>
                 </div>
                 <div>
-                  txCount: <span className="font-mono">{String(transactions.length)}</span>
+                  {t("detail.ledger.count")}: <span className="font-mono text-fh-text">{String(transactions.length)}</span>
                 </div>
               </div>
-            </div>
-
-            <div className="rounded-md border p-4">
-              <div className="font-medium">Opciones</div>
-              <div className="mt-2 text-sm space-y-2">
-                <button className="w-full px-3 py-2 rounded-md border text-sm disabled:opacity-50" disabled={!tx || !dirty || saving} onClick={onSave}>
-                  {saving ? "Guardando..." : "Guardar cambios"}
-                </button>
-                <button
-                  className="w-full px-3 py-2 rounded-md border text-sm disabled:opacity-50"
-                  disabled={!tx || splitsLoading || splitsSaving || !splitsDirty || !splitsSum.ok || splitsDelta !== 0}
-                  onClick={onSaveSplits}
-                >
-                  {splitsSaving ? "Guardando..." : "Guardar splits"}
-                </button>
-                <div className="text-xs opacity-70">
-                  P0: detalle edita status/category/note y splits. Validación: splits deben cuadrar con importe.
-                </div>
-              </div>
-            </div>
+            </Card>
           </div>
         </div>
       )}
-    </div>
+    </Screen>
   );
 }
