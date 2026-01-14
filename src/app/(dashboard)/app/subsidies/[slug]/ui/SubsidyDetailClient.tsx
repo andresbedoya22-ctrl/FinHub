@@ -6,13 +6,11 @@ import { Card } from "@/ui/components/Card";
 import { Screen } from "@/ui/components/Screen";
 import { InfoBox } from "@/ui/components/InfoBox";
 import { SubsidyHero } from "@/components/subsidies/SubsidyHero";
-import { getSubsidyBySlug } from "@/domain/subsidies/registry";
+import { getSubsidyBySlug, isSubsidySlug } from "@/domain/subsidies/registry";
 
 export default function SubsidyDetailClient({ slug }: { slug: string }) {
   const t = useTranslations("subsidies");
-  const subsidy = getSubsidyBySlug(slug);
-
-  if (!subsidy) {
+  if (!isSubsidySlug(slug)) {
     return (
       <Card>
         <InfoBox title={t("detail.invalid.title")} variant="warning">
@@ -20,6 +18,11 @@ export default function SubsidyDetailClient({ slug }: { slug: string }) {
         </InfoBox>
       </Card>
     );
+  }
+
+  const subsidy = getSubsidyBySlug(slug);
+  if (!subsidy) {
+    throw new Error(`[subsidies] Missing registry entry for slug: ${slug}`);
   }
 
   return (
