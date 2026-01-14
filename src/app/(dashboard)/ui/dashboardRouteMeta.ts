@@ -1,3 +1,5 @@
+import { getSubsidyBySlug } from "@/domain/subsidies/registry";
+
 export type Breadcrumb = { href: string; label: string };
 
 export type RouteMeta = {
@@ -40,6 +42,79 @@ function byPathname(pathname: string, t: TranslateFn): RouteMeta {
     return mk(t("route.transactionDetail"), [
       { href: "/app/finances", label: t("route.finances") },
       { href: "/app/finances/transactions", label: t("route.transactions") },
+      { href: pathname, label: t("route.detail") },
+    ]);
+  }
+
+  // Subsidios
+  if (pathname === "/app/subsidies") {
+    return mk(t("route.subsidies"), [
+      { href: "/app/finances", label: t("route.finances") },
+      { href: "/app/subsidies", label: t("route.subsidies") },
+    ]);
+  }
+
+  if (pathname === "/app/subsidies/applications") {
+    return mk(t("route.subsidyApplications"), [
+      { href: "/app/finances", label: t("route.finances") },
+      { href: "/app/subsidies", label: t("route.subsidies") },
+      { href: "/app/subsidies/applications", label: t("route.subsidyApplications") },
+    ]);
+  }
+
+  if (pathname.startsWith("/app/subsidies/applications/")) {
+    return mk(t("route.subsidyApplications"), [
+      { href: "/app/finances", label: t("route.finances") },
+      { href: "/app/subsidies", label: t("route.subsidies") },
+      { href: "/app/subsidies/applications", label: t("route.subsidyApplications") },
+      { href: pathname, label: t("route.detail") },
+    ]);
+  }
+
+  const subsidyMatch = pathname.match(/^\/app\/subsidies\/([^/]+)(?:\/(wizard|result|checkout))?$/);
+  const subsidySlug = subsidyMatch?.[1];
+  if (subsidySlug) {
+    const subsidy = getSubsidyBySlug(subsidySlug);
+    if (subsidy) {
+      const subsidyLabel = t(subsidy.catalog.titleKey);
+      const baseBreadcrumbs = [
+        { href: "/app/finances", label: t("route.finances") },
+        { href: "/app/subsidies", label: t("route.subsidies") },
+        { href: `/app/subsidies/${subsidy.slug}`, label: subsidyLabel },
+      ];
+
+      const step = subsidyMatch?.[2];
+      if (!step) {
+        return mk(subsidyLabel, baseBreadcrumbs);
+      }
+
+      if (step === "wizard") {
+        return mk(t("route.subsidyWizard"), [
+          ...baseBreadcrumbs,
+          { href: pathname, label: t("route.subsidyWizard") },
+        ]);
+      }
+
+      if (step === "result") {
+        return mk(t("route.subsidyResult"), [
+          ...baseBreadcrumbs,
+          { href: pathname, label: t("route.subsidyResult") },
+        ]);
+      }
+
+      if (step === "checkout") {
+        return mk(t("route.subsidyCheckout"), [
+          ...baseBreadcrumbs,
+          { href: pathname, label: t("route.subsidyCheckout") },
+        ]);
+      }
+    }
+  }
+
+  if (pathname.startsWith("/app/subsidies/")) {
+    return mk(t("route.subsidyDetail"), [
+      { href: "/app/finances", label: t("route.finances") },
+      { href: "/app/subsidies", label: t("route.subsidies") },
       { href: pathname, label: t("route.detail") },
     ]);
   }
