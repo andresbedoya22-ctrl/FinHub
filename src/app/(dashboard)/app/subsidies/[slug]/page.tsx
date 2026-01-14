@@ -1,5 +1,10 @@
 import SubsidyDetailClient from "./ui/SubsidyDetailClient";
 
-export default function SubsidyDetailPage({ params }: { params: { slug: string } }) {
-  return <SubsidyDetailClient slug={params.slug} />;
+export default async function SubsidyDetailPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  return <SubsidyDetailClient slug={slug} />;
 }
