@@ -12,15 +12,16 @@ export function SubsidyCard({
   coverageValue,
   audienceLabel,
   audienceValue,
-  quickFactsLabel,
-  signalsLabel,
-  metrics,
-  facts,
   timelineLabel,
   timelineValue,
   ctaLabel,
   href,
   icon,
+  variant = "compact",
+  quickFactsLabel,
+  signalsLabel,
+  metrics,
+  facts,
 }: {
   title: string;
   description: string;
@@ -29,17 +30,64 @@ export function SubsidyCard({
   coverageValue: string;
   audienceLabel: string;
   audienceValue: string;
-  quickFactsLabel: string;
-  signalsLabel: string;
-  metrics: { label: string; value: string }[];
-  facts: { label: string; value: string }[];
   timelineLabel: string;
   timelineValue: string;
   ctaLabel: string;
   href: string;
   icon: SubsidyIconName;
+  variant?: "compact" | "full";
+  quickFactsLabel?: string;
+  signalsLabel?: string;
+  metrics?: { label: string; value: string }[];
+  facts?: { label: string; value: string }[];
 }) {
-  const [primaryMetric, ...secondaryMetrics] = metrics;
+  const resolvedMetrics = metrics ?? [];
+  const resolvedFacts = facts ?? [];
+  const [primaryMetric, ...secondaryMetrics] = resolvedMetrics;
+
+  if (variant === "compact") {
+    return (
+      <Card className="flex h-full min-h-[170px] flex-col gap-3 bg-gradient-to-br from-fh-surface via-fh-surface to-fh-surface-2">
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-fh-primary/15">
+              <SubsidyIcon name={icon} className="text-fh-primary" />
+            </div>
+            <div className="space-y-1">
+              <div className="text-sm font-semibold text-fh-text line-clamp-1">{title}</div>
+              <div className="text-xs text-fh-muted line-clamp-1">{description}</div>
+            </div>
+          </div>
+          <Badge variant="neutral" className="px-2 py-0.5 text-[10px] uppercase">
+            {badgeLabel}
+          </Badge>
+        </div>
+
+        <div className="flex flex-wrap gap-2">
+          <div className="rounded-full border border-fh-border/70 bg-fh-surface-2 px-3 py-1 text-xs">
+            <span className="text-[10px] uppercase text-fh-muted">{coverageLabel}</span>
+            <span className="ml-2 text-fh-text">{coverageValue}</span>
+          </div>
+          <div className="rounded-full border border-fh-border/70 bg-fh-surface-2 px-3 py-1 text-xs">
+            <span className="text-[10px] uppercase text-fh-muted">{audienceLabel}</span>
+            <span className="ml-2 text-fh-text">{audienceValue}</span>
+          </div>
+        </div>
+
+        <div className="mt-auto flex items-center justify-between gap-3">
+          <div className="text-xs text-fh-muted">
+            {timelineLabel}: {timelineValue}
+          </div>
+          <Link
+            href={href}
+            className="rounded-xl bg-fh-primary px-3 py-1.5 text-xs font-medium text-fh-primaryFg hover:opacity-90"
+          >
+            {ctaLabel}
+          </Link>
+        </div>
+      </Card>
+    );
+  }
 
   return (
     <Card className="flex h-full flex-col gap-4 bg-gradient-to-br from-fh-surface via-fh-surface to-fh-surface-2">
@@ -73,20 +121,22 @@ export function SubsidyCard({
         ) : null}
       </div>
 
-      <div className="space-y-2">
-        <div className="text-xs uppercase text-fh-muted">{quickFactsLabel}</div>
-        <div className="flex flex-wrap gap-2">
-          {facts.map((fact) => (
-            <div
-              key={`${fact.label}-${fact.value}`}
-              className="flex items-center gap-2 rounded-full border border-fh-border/60 bg-fh-surface-2 px-3 py-1 text-xs"
-            >
-              <span className="text-[10px] uppercase text-fh-muted">{fact.label}</span>
-              <span className="text-fh-text">{fact.value}</span>
-            </div>
-          ))}
+      {resolvedFacts.length ? (
+        <div className="space-y-2">
+          <div className="text-xs uppercase text-fh-muted">{quickFactsLabel}</div>
+          <div className="flex flex-wrap gap-2">
+            {resolvedFacts.map((fact) => (
+              <div
+                key={`${fact.label}-${fact.value}`}
+                className="flex items-center gap-2 rounded-full border border-fh-border/60 bg-fh-surface-2 px-3 py-1 text-xs"
+              >
+                <span className="text-[10px] uppercase text-fh-muted">{fact.label}</span>
+                <span className="text-fh-text">{fact.value}</span>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      ) : null}
 
       {secondaryMetrics.length ? (
         <div className="space-y-2">
