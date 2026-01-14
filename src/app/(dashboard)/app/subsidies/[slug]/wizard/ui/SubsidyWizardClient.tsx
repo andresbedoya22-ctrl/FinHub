@@ -11,7 +11,7 @@ import { Stepper } from "@/ui/components/Stepper";
 import { ToggleGroup } from "@/ui/components/ToggleGroup";
 import { WIZARD_STEPS_BY_SLUG, type WizardField } from "@/domain/subsidies/wizardSchemas";
 import { DEFAULT_POLICY_2026 } from "@/domain/subsidies/policy";
-import { evaluateSubsidyEligibility } from "@/domain/subsidies/engine";
+import { evaluateSubsidyEligibility } from "@/domain/subsidies/eligibilityEngine";
 import { isSubsidySlug } from "@/domain/subsidies/registry";
 import type { SubsidySlug } from "@/domain/subsidies/types";
 import { useSubsidyWizardStore } from "@/domain/subsidies/wizardStore";

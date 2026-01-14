@@ -73,24 +73,6 @@ export default function SubsidyResultClient({ slug }: { slug: string }) {
     }
   }
 
-  async function handleSaveReference() {
-    setError(null);
-    setBusy(true);
-    try {
-      await createSubsidyApplication({
-        slug: subsidySlug,
-        eligibilitySnapshot,
-        intakeData: answers,
-        status: "eligible_checked",
-      });
-      router.push("/app/subsidies/applications");
-    } catch (e) {
-      setError(e instanceof Error ? e.message : t("result.actions.error"));
-    } finally {
-      setBusy(false);
-    }
-  }
-
   return (
     <Screen className="space-y-6">
       {error ? (
@@ -133,30 +115,30 @@ export default function SubsidyResultClient({ slug }: { slug: string }) {
           </div>
           <div className="flex flex-wrap gap-2">
             {result.eligible ? (
-              <button
-                type="button"
-                disabled={busy}
-                onClick={handleContinue}
-                className="rounded-xl bg-fh-primary px-4 py-2 text-sm font-medium text-fh-primaryFg hover:opacity-90 disabled:opacity-50"
-              >
-                {busy ? t("result.actions.processing") : t("result.actions.continue")}
-              </button>
+              <>
+                <button
+                  type="button"
+                  disabled={busy}
+                  onClick={handleContinue}
+                  className="rounded-xl bg-fh-primary px-4 py-2 text-sm font-medium text-fh-primaryFg hover:opacity-90 disabled:opacity-50"
+                >
+                  {busy ? t("result.actions.processing") : t("result.actions.continue")}
+                </button>
+                <Link
+                  href={`/app/subsidies/${subsidySlug}/wizard`}
+                  className="rounded-xl border border-fh-border bg-fh-surface px-4 py-2 text-sm font-medium text-fh-text hover:bg-fh-surface-2"
+                >
+                  {t("result.actions.review")}
+                </Link>
+              </>
             ) : (
-              <button
-                type="button"
-                disabled={busy}
-                onClick={handleSaveReference}
-                className="rounded-xl bg-fh-primary px-4 py-2 text-sm font-medium text-fh-primaryFg hover:opacity-90 disabled:opacity-50"
+              <Link
+                href={`/app/subsidies/${subsidySlug}/wizard`}
+                className="rounded-xl bg-fh-primary px-4 py-2 text-sm font-medium text-fh-primaryFg hover:opacity-90"
               >
-                {busy ? t("result.actions.processing") : t("result.actions.saveReference")}
-              </button>
+                {t("result.actions.review")}
+              </Link>
             )}
-            <Link
-              href={`/app/subsidies/${subsidySlug}/wizard`}
-              className="rounded-xl border border-fh-border bg-fh-surface px-4 py-2 text-sm font-medium text-fh-text hover:bg-fh-surface-2"
-            >
-              {t("result.actions.review")}
-            </Link>
           </div>
         </Card>
       </div>
