@@ -444,7 +444,7 @@
       "eyebrow": "Toeslagen",
       "title": "Subsidies managed by FinHub",
       "subtitle": "Check eligibility quickly and let FinHub manage the full request, documents, and follow-up.",
-      "badge": "FinHub managed",
+      "badge": "Gestionat de FinHub",
       "labels": {
         "coverage": "Covers",
         "audience": "For",
@@ -623,7 +623,7 @@
       }
     },
     "detail": {
-      "badge": "FinHub managed",
+      "badge": "Gestionat de FinHub",
       "invalid": {
         "title": "Subsidy not found",
         "description": "This subsidy is not available."
@@ -999,3 +999,4 @@
     }
   }
 }
+
