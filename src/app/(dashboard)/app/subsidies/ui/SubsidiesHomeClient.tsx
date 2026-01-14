@@ -18,22 +18,38 @@ export default function SubsidiesHomeClient() {
       </div>
 
       <div className="grid gap-4 lg:grid-cols-2">
-        {SUBSIDIES.map((subsidy) => (
-          <SubsidyCard
-            key={subsidy.slug}
-            title={t(subsidy.catalog.titleKey)}
-            description={t(subsidy.catalog.descriptionKey)}
-            coverageLabel={t("home.labels.coverage")}
-            coverageValue={t(subsidy.catalog.coverageKey)}
-            audienceLabel={t("home.labels.audience")}
-            audienceValue={t(subsidy.catalog.audienceKey)}
-            timelineLabel={t("home.labels.timeline")}
-            timelineValue={t(subsidy.catalog.timelineKey)}
-            ctaLabel={t("home.cta.viewDetails")}
-            href={`/app/subsidies/${subsidy.slug}`}
-            icon={subsidy.icon}
-          />
-        ))}
+        {SUBSIDIES.map((subsidy) => {
+          const metrics = subsidy.metrics.map((metric) => ({
+            label: t(metric.labelKey),
+            value: t(metric.valueKey),
+          }));
+          const facts = subsidy.facts.map((fact) => ({
+            label: t(fact.labelKey),
+            value: t(fact.valueKey),
+          }));
+
+          return (
+            <SubsidyCard
+              key={subsidy.slug}
+              title={t(subsidy.catalog.titleKey)}
+              description={t(subsidy.catalog.descriptionKey)}
+              badgeLabel={t("home.badge")}
+              coverageLabel={t("home.labels.coverage")}
+              coverageValue={t(subsidy.catalog.coverageKey)}
+              audienceLabel={t("home.labels.audience")}
+              audienceValue={t(subsidy.catalog.audienceKey)}
+              quickFactsLabel={t("home.labels.quickFacts")}
+              signalsLabel={t("home.labels.signals")}
+              metrics={metrics}
+              facts={facts}
+              timelineLabel={t("home.labels.timeline")}
+              timelineValue={t(subsidy.catalog.timelineKey)}
+              ctaLabel={t("home.cta.viewDetails")}
+              href={`/app/subsidies/${subsidy.slug}`}
+              icon={subsidy.icon}
+            />
+          );
+        })}
       </div>
 
       <Card className="space-y-4">

@@ -3,20 +3,20 @@
                 "name":  "FinHub"
             },
     "landing":  {
-                    "title":  "Gestiona tus finanzas en Países Bajos",
+                    "title":  "Gestiona tus finanzas en PaÃ­ses Bajos",
                     "cta":  "Empezar",
                     "lead":  {
                                  "consent":  "Acepto que me contacten sobre novedades de FinHub.",
                                  "createAccount":  "Crear cuenta",
-                                 "email":  "Correo electrónico",
-                                 "error":  "Algo salió mal. Inténtalo de nuevo.",
+                                 "email":  "Correo electrÃ³nico",
+                                 "error":  "Algo saliÃ³ mal. IntÃ©ntalo de nuevo.",
                                  "fullName":  "Nombre completo",
                                  "interests":  "Me interesa",
-                                 "phone":  "Teléfono (opcional)",
+                                 "phone":  "TelÃ©fono (opcional)",
                                  "submit":  "Enviar",
-                                 "subtitle":  "Déjanos tus datos y lo que te interesa — priorizaremos según tu necesidad.",
+                                 "subtitle":  "DÃ©janos tus datos y lo que te interesa â€” priorizaremos segÃºn tu necesidad.",
                                  "successBody":  "Te contactaremos cuando abramos nuevos cupos de beta.",
-                                 "successTitle":  "Gracias — recibido.",
+                                 "successTitle":  "Gracias â€” recibido.",
                                  "title":  "Recibir novedades (beta)",
                                  "interestLabels":  {
                                                         "personal_finance":  "Personal finance",
@@ -35,66 +35,66 @@
                                "apple":  "Continuar con Apple"
                            },
                  "forgot":  {
-                                "sent":  "Si el email existe, recibirás un enlace para restablecer tu contraseña.",
-                                "title":  "Recuperar contraseña",
+                                "sent":  "Si el email existe, recibirÃ¡s un enlace para restablecer tu contraseÃ±a.",
+                                "title":  "Recuperar contraseÃ±a",
                                 "busy":  "Enviando...",
                                 "submit":  "Enviar enlace",
                                 "backToLogin":  "Volver a login"
                             },
                  "reset":  {
-                               "newPassword":  "Nueva contraseña",
-                               "title":  "Restablecer contraseña",
+                               "newPassword":  "Nueva contraseÃ±a",
+                               "title":  "Restablecer contraseÃ±a",
                                "busy":  "Actualizando...",
-                               "submit":  "Actualizar contraseña",
-                               "ok":  "Contraseña actualizada."
+                               "submit":  "Actualizar contraseÃ±a",
+                               "ok":  "ContraseÃ±a actualizada."
                            },
                  "common":  {
                                 "email":  "Email",
                                 "error":  "Error",
                                 "info":  "Info",
-                                "password":  "Contraseña"
+                                "password":  "ContraseÃ±a"
                             },
                  "legal":  {
                                "and":  "y la",
                                "continue":  "Al continuar aceptas los",
-                               "privacy":  "Política de Privacidad",
+                               "privacy":  "PolÃ­tica de Privacidad",
                                "continueRegister":  "Al crear una cuenta aceptas los",
-                               "terms":  "Términos"
+                               "terms":  "TÃ©rminos"
                            },
                  "login":  {
-                               "emailNotConfirmedHint":  "Tu email aún no está verificado. Revisa tu correo o reenvía la verificación.",
-                               "goRegister":  "Regístrate",
+                               "emailNotConfirmedHint":  "Tu email aÃºn no estÃ¡ verificado. Revisa tu correo o reenvÃ­a la verificaciÃ³n.",
+                               "goRegister":  "RegÃ­strate",
                                "resendBusy":  "Reenviando...",
                                "busy":  "Entrando...",
-                               "forgot":  "¿Olvidaste tu contraseña?",
-                               "noAccount":  "¿No tienes cuenta?",
+                               "forgot":  "Â¿Olvidaste tu contraseÃ±a?",
+                               "noAccount":  "Â¿No tienes cuenta?",
                                "submit":  "Entrar",
-                               "title":  "Iniciar sesión",
-                               "resend":  "Reenviar verificación",
-                               "resendOk":  "Verificación reenviada. Revisa tu correo."
+                               "title":  "Iniciar sesiÃ³n",
+                               "resend":  "Reenviar verificaciÃ³n",
+                               "resendOk":  "VerificaciÃ³n reenviada. Revisa tu correo."
                            },
                  "register":  {
                                   "busy":  "Creando...",
                                   "goLogin":  "Login",
-                                  "checkEmail":  "Cuenta creada. Revisa tu correo para verificar tu email antes de iniciar sesión.",
+                                  "checkEmail":  "Cuenta creada. Revisa tu correo para verificar tu email antes de iniciar sesiÃ³n.",
                                   "submit":  "Crear cuenta",
-                                  "haveAccount":  "¿Ya tienes cuenta?",
+                                  "haveAccount":  "Â¿Ya tienes cuenta?",
                                   "title":  "Crear cuenta"
                               },
                  "errors":  {
-                                "unknown":  "Ocurrió un error. Inténtalo de nuevo.",
-                                "weak_password":  "La contraseña no cumple los requisitos.",
-                                "missing_code":  "Enlace inválido o expirado.",
-                                "rate_limited":  "Demasiados intentos. Inténtalo más tarde.",
-                                "invalid_request":  "Datos inválidos. Revisa e inténtalo de nuevo.",
+                                "unknown":  "OcurriÃ³ un error. IntÃ©ntalo de nuevo.",
+                                "weak_password":  "La contraseÃ±a no cumple los requisitos.",
+                                "missing_code":  "Enlace invÃ¡lido o expirado.",
+                                "rate_limited":  "Demasiados intentos. IntÃ©ntalo mÃ¡s tarde.",
+                                "invalid_request":  "Datos invÃ¡lidos. Revisa e intÃ©ntalo de nuevo.",
                                 "email_not_confirmed":  "Email no verificado.",
                                 "user_exists":  "Este email ya tiene una cuenta.",
-                                "invalid_credentials":  "Credenciales inválidas.",
-                                "oauth_failed":  "No se pudo completar el login social. Inténtalo de nuevo."
+                                "invalid_credentials":  "Credenciales invÃ¡lidas.",
+                                "oauth_failed":  "No se pudo completar el login social. IntÃ©ntalo de nuevo."
                             }
              },
     "finny":  {
-                  "ask":  "Pregúntale a Finny"
+                  "ask":  "PregÃºntale a Finny"
               },
     "shell":  {
                   "skipToContent":  "Saltar al contenido",
@@ -103,6 +103,7 @@
                               },
                   "section":  {
                                    "finances":  "Finanzas",
+                                   "subsidies":  "Subsidios",
                                    "operations":  "Operaciones",
                                    "account":  "Cuenta",
                                    "admin":  "Admin"
@@ -110,6 +111,7 @@
                   "nav":  {
                               "overview":  "Resumen",
                               "transactions":  "Transacciones",
+                              "subsidies":  "Subsidios",
                               "documents":  "Documentos",
                               "cases":  "Casos",
                               "profile":  "Perfil",
@@ -126,7 +128,7 @@
                                     },
                   "account":  {
                                   "label":  "Cuenta",
-                                  "logout":  "Cerrar sesión"
+                                  "logout":  "Cerrar sesiÃ³n"
                               },
                   "cmdk":  {
                                "ariaLabel":  "Paleta de comandos",
@@ -137,6 +139,7 @@
                                "footerHint":  "Arriba/Abajo: navegar - Esc: cerrar",
                                "goToFinances":  "Ir a Finanzas",
                                "goToTransactions":  "Ir a Transacciones",
+                               "goToSubsidies":  "Ir a Subsidios",
                                "goToDocuments":  "Ir a Documentos",
                                "goToCases":  "Ir a Casos",
                                "goToProfile":  "Ir a Perfil",
@@ -146,9 +149,15 @@
                   "route":  {
                                 "dashboard":  "Dashboard",
                                 "finances":  "Finanzas",
+                                "subsidies":  "Subsidios",
+                                "subsidyApplications":  "Mis solicitudes",
+                                "subsidyDetail":  "Detalle del subsidio",
+                                "subsidyWizard":  "Wizard de elegibilidad",
+                                "subsidyResult":  "Resultado de elegibilidad",
+                                "subsidyCheckout":  "Pago",
                                 "transactions":  "Transacciones",
-                                "newTransaction":  "Nueva transacción",
-                                "transactionDetail":  "Detalle de transacción",
+                                "newTransaction":  "Nueva transacciÃ³n",
+                                "transactionDetail":  "Detalle de transacciÃ³n",
                                 "documents":  "Documentos",
                                 "cases":  "Casos",
                                 "case":  "Caso",
@@ -176,11 +185,11 @@
                                                   },
                                        "actions":  {
                                                        "viewAll":  "Ver todas",
-                                                       "newTransaction":  "Nueva transacción",
+                                                       "newTransaction":  "Nueva transacciÃ³n",
                                                        "review":  "Revisar"
                                                    },
                                        "nav":  {
-                                                   "title":  "Navegación",
+                                                   "title":  "NavegaciÃ³n",
                                                    "finances":  "Finanzas",
                                                    "cases":  "Casos",
                                                    "documents":  "Documentos",
@@ -192,23 +201,23 @@
                                                     "incomeReceived":  "Ingresos recibidos",
                                                     "billsPaid":  "Facturas pagadas",
                                                     "budgetUsed":  "Presupuesto usado",
-                                                    "safeHint":  "Después de costos fijos",
+                                                    "safeHint":  "DespuÃ©s de costos fijos",
                                                     "monthHint":  "Este mes ({month})",
-                                                    "outflowHint":  "Salidas de este período",
+                                                    "outflowHint":  "Salidas de este perÃ­odo",
                                                     "budgetHint":  "Usado vs plan"
                                                 },
                                        "inbox":  {
                                                      "title":  "Bandeja de transacciones",
                                                      "subtitle":  "Actividad reciente",
                                                      "viewAll":  "Ver todas",
-                                                     "emptyTitle":  "Aún no hay transacciones",
-                                                     "emptyBody":  "Agrega tu primera transacción para desbloquear insights.",
-                                                     "emptyCta":  "Agregar primera transacción"
+                                                     "emptyTitle":  "AÃºn no hay transacciones",
+                                                     "emptyBody":  "Agrega tu primera transacciÃ³n para desbloquear insights.",
+                                                     "emptyCta":  "Agregar primera transacciÃ³n"
                                                  },
                                        "table":  {
                                                      "date":  "Fecha",
                                                      "merchant":  "Comercio",
-                                                     "category":  "Categoría",
+                                                     "category":  "CategorÃ­a",
                                                      "status":  "Estado",
                                                      "amount":  "Monto"
                                                  },
@@ -216,21 +225,21 @@
                                                        "groceries":  "Supermercado",
                                                        "transport":  "Transporte",
                                                        "entertainment":  "Entretenimiento",
-                                                       "uncategorized":  "Sin categoría"
+                                                       "uncategorized":  "Sin categorÃ­a"
                                                    },
                                        "status":  {
                                                      "approved":  "Aprobado",
                                                      "flagged":  "Marcado"
                                                  },
                                        "burndown":  {
-                                                       "title":  "Evolución mensual",
+                                                       "title":  "EvoluciÃ³n mensual",
                                                        "subtitle":  "Balance neto en el tiempo",
                                                        "currency":  "EUR",
                                                        "emptyTitle":  "Datos insuficientes",
-                                                       "emptyBody":  "Aún no hay datos suficientes para graficar."
+                                                       "emptyBody":  "AÃºn no hay datos suficientes para graficar."
                                                    },
                                        "budgets":  {
-                                                      "title":  "Presupuestos por categoría",
+                                                      "title":  "Presupuestos por categorÃ­a",
                                                       "subtitle":  "Presupuestos activos para {month}",
                                                       "used":  "Usado",
                                                       "remaining":  "Restante",
@@ -239,7 +248,7 @@
                                                       "emptyCta":  "Revisar transacciones",
                                                       "status":  {
                                                                      "ok":  "En orden",
-                                                                     "warn":  "Atención",
+                                                                     "warn":  "AtenciÃ³n",
                                                                      "risk":  "En riesgo"
                                                                  }
                                                   },
@@ -258,22 +267,22 @@
                                          "monthLabel":  "Mes: {month}",
                                          "actions":  {
                                                          "backToFinances":  "Volver a Finanzas",
-                                                         "newTransaction":  "Nueva transacción"
+                                                         "newTransaction":  "Nueva transacciÃ³n"
                                                      },
                                          "summary":  {
                                                          "count":  "{count} transacciones"
                                                      },
                                          "loading":  "Cargando...",
                                          "errors":  {
-                                                        "title":  "Algo salió mal",
+                                                        "title":  "Algo saliÃ³ mal",
                                                         "updateStatus":  "No se pudo actualizar el estado."
                                                     },
                                          "table":  {
                                                        "title":  "Bandeja de transacciones",
-                                                       "subtitle":  "Actividad del ledger y edición rápida",
+                                                       "subtitle":  "Actividad del ledger y ediciÃ³n rÃ¡pida",
                                                        "date":  "Fecha",
                                                        "merchant":  "Comercio",
-                                                       "category":  "Categoría",
+                                                       "category":  "CategorÃ­a",
                                                        "amount":  "Importe",
                                                        "status":  "Estado",
                                                        "actions":  "Acciones",
@@ -287,16 +296,16 @@
                                                        "hidden":  "Oculto"
                                                    },
                                          "category":  {
-                                                         "uncategorized":  "Sin categoría"
+                                                         "uncategorized":  "Sin categorÃ­a"
                                                      },
                                          "empty":  {
-                                                       "title":  "Aún no hay transacciones",
-                                                       "body":  "Las transacciones aparecerán aquí cuando se creen o importen.",
-                                                       "cta":  "Crear transacción"
+                                                       "title":  "AÃºn no hay transacciones",
+                                                       "body":  "Las transacciones aparecerÃ¡n aquÃ­ cuando se creen o importen.",
+                                                       "cta":  "Crear transacciÃ³n"
                                                    },
                                          "detail":  {
                                                        "breadcrumb":  "Detalle",
-                                                       "title":  "Detalle de transacción",
+                                                       "title":  "Detalle de transacciÃ³n",
                                                        "monthLabel":  "Mes: {month}",
                                                        "actions":  {
                                                                        "backToList":  "Volver al listado",
@@ -309,12 +318,12 @@
                                                                     "error":  "No se pudieron guardar los cambios."
                                                                 },
                                                        "notFound":  {
-                                                                       "title":  "No se encontró la transacción en este mes.",
+                                                                       "title":  "No se encontrÃ³ la transacciÃ³n en este mes.",
                                                                        "body":  "Si entraste directo por URL, vuelve al listado para alinear el mes y el ledger."
                                                                    },
                                                        "invalidId":  {
-                                                                        "title":  "ID de transacción inválido",
-                                                                        "body":  "No pudimos leer el ID de la transacción desde la URL."
+                                                                        "title":  "ID de transacciÃ³n invÃ¡lido",
+                                                                        "body":  "No pudimos leer el ID de la transacciÃ³n desde la URL."
                                                                     },
                                                        "merchant":  {
                                                                         "label":  "Comercio"
@@ -329,26 +338,26 @@
                                                                       "label":  "Estado"
                                                                   },
                                                        "category":  {
-                                                                        "label":  "Categoría",
-                                                                        "none":  "Sin categoría"
+                                                                        "label":  "CategorÃ­a",
+                                                                        "none":  "Sin categorÃ­a"
                                                                     },
                                                        "note":  {
                                                                     "label":  "Nota",
                                                                     "placeholder":  "Opcional...",
-                                                                    "helper":  "Agrega contexto para esta transacción."
+                                                                    "helper":  "Agrega contexto para esta transacciÃ³n."
                                                                 },
                                                        "splits":  {
                                                                       "title":  "Divisiones",
-                                                                      "subtitle":  "Divide la transacción por categorías.",
+                                                                      "subtitle":  "Divide la transacciÃ³n por categorÃ­as.",
                                                                       "actions":  {
-                                                                                      "add":  "Añadir división",
+                                                                                      "add":  "AÃ±adir divisiÃ³n",
                                                                                       "reset":  "Restablecer",
                                                                                       "save":  "Guardar divisiones",
                                                                                       "saving":  "Guardando...",
                                                                                       "remove":  "Eliminar"
                                                                                   },
                                                                       "totals":  {
-                                                                                    "total":  "Total de la transacción",
+                                                                                    "total":  "Total de la transacciÃ³n",
                                                                                     "sum":  "Total de divisiones",
                                                                                     "delta":  "Diferencia"
                                                                                 },
@@ -359,10 +368,10 @@
                                                                       "saveOk":  "Divisiones guardadas.",
                                                                       "saveTitle":  "Divisiones actualizadas",
                                                                       "loading":  "Cargando divisiones...",
-                                                                      "empty":  "Sin divisiones. Puedes añadir una.",
+                                                                      "empty":  "Sin divisiones. Puedes aÃ±adir una.",
                                                                       "deltaError":  "Las divisiones deben cuadrar con el importe. Diferencia: {delta}.",
                                                                       "table":  {
-                                                                                    "category":  "Categoría",
+                                                                                    "category":  "CategorÃ­a",
                                                                                     "amount":  "Importe (EUR)",
                                                                                     "note":  "Nota",
                                                                                     "amountPlaceholder":  "Ej: 12.34",
@@ -371,9 +380,9 @@
                                                                       "rowError":  "Fila {index}: {error}",
                                                                       "errors":  {
                                                                                     "required":  "Importe requerido.",
-                                                                                    "format":  "Formato inválido (usa 12.34).",
-                                                                                    "invalidNumber":  "Número inválido.",
-                                                                                    "invalidDecimals":  "Decimales inválidos."
+                                                                                    "format":  "Formato invÃ¡lido (usa 12.34).",
+                                                                                    "invalidNumber":  "NÃºmero invÃ¡lido.",
+                                                                                    "invalidDecimals":  "Decimales invÃ¡lidos."
                                                                                 }
                                                                   },
                                                        "metadata":  {
@@ -396,23 +405,23 @@
                                                                 "transactions":  "Transacciones",
                                                                 "new":  "Nueva"
                                                             },
-                                            "title":  "Nueva transacción",
+                                            "title":  "Nueva transacciÃ³n",
                                             "monthLabel":  "Mes: {month}",
                                             "actions":  {
                                                             "backToList":  "Volver al listado",
-                                                            "create":  "Crear transacción",
+                                                            "create":  "Crear transacciÃ³n",
                                                             "creating":  "Creando..."
                                                         },
                                             "errors":  {
-                                                           "title":  "Algo salió mal",
-                                                           "create":  "No se pudo crear la transacción."
+                                                           "title":  "Algo saliÃ³ mal",
+                                                           "create":  "No se pudo crear la transacciÃ³n."
                                                        },
                                             "form":  {
                                                          "date":  {
                                                                      "label":  "Fecha",
                                                                      "placeholder":  "YYYY-MM-DD",
-                                                                     "helper":  "Usa la fecha de la transacción.",
-                                                                     "error":  "Ingresa una fecha ISO válida."
+                                                                     "helper":  "Usa la fecha de la transacciÃ³n.",
+                                                                     "error":  "Ingresa una fecha ISO vÃ¡lida."
                                                                  },
                                                          "merchant":  {
                                                                          "label":  "Comercio",
@@ -427,9 +436,9 @@
                                                                        "error":  "Ingresa un importe distinto de cero."
                                                                    },
                                                          "category":  {
-                                                                         "label":  "Categoría",
-                                                                         "helper":  "Elige una categoría para mantener el presupuesto ordenado.",
-                                                                         "none":  "Sin categoría"
+                                                                         "label":  "CategorÃ­a",
+                                                                         "helper":  "Elige una categorÃ­a para mantener el presupuesto ordenado.",
+                                                                         "none":  "Sin categorÃ­a"
                                                                      },
                                                          "note":  {
                                                                      "label":  "Nota",
@@ -438,5 +447,566 @@
                                                                  }
                                                      }
                                         }
-                 }
+                 },
+    "subsidies":  {
+                      "home":  {
+                                   "eyebrow":  "Subsidios",
+                                   "title":  "Subsidios gestionados por FinHub",
+                                   "subtitle":  "Comprueba elegibilidad rÃƒÂ¡pido y deja que FinHub gestione la solicitud, documentos y seguimiento.",
+                                   "labels":  {
+                                                  "coverage":  "Cubre",
+                                                  "audience":  "Para",
+                                                  "timeline":  "Tiempo est.",
+                                                  "quickFacts":  "Datos clave",
+                                                  "signals":  "Señales"
+                                              },
+                                   "cta":  {
+                                               "viewDetails":  "Ver detalles"
+                                           },
+                                   "howItWorks":  {
+                                                     "title":  "CÃƒÂ³mo funciona con FinHub",
+                                                     "steps":  {
+                                                                  "1":  {
+                                                                            "eyebrow":  "Paso 1",
+                                                                            "title":  "Comprobar elegibilidad",
+                                                                            "description":  "Responde un wizard corto y obtÃƒÂ©n un resultado claro."
+                                                                        },
+                                                                  "2":  {
+                                                                            "eyebrow":  "Paso 2",
+                                                                            "title":  "Gestionamos la solicitud",
+                                                                            "description":  "FinHub prepara y presenta tu solicitud."
+                                                                        },
+                                                                  "3":  {
+                                                                            "eyebrow":  "Paso 3",
+                                                                            "title":  "Sigue el progreso",
+                                                                            "description":  "Sube documentos y consulta el estado en un solo lugar."
+                                                                        }
+                                                              }
+                                                 }
+                               },
+                      "catalog":  {
+                                      "huurtoeslag":  {
+                                                         "title":  "Huurtoeslag",
+                                                         "description":  "Apoyo de alquiler",
+                                                         "coverage":  "Alquiler + servicios elegibles",
+                                                         "audience":  "Inquilinos en NL con lÃƒÂ­mites de ingresos",
+                                                         "timeline":  "3-6 semanas"
+                                                     },
+                                      "zorgtoeslag":  {
+                                                         "title":  "Zorgtoeslag",
+                                                         "description":  "Apoyo a seguro de salud",
+                                                         "coverage":  "Ayuda mensual de salud",
+                                                         "audience":  "Personas con seguro bÃƒÂ¡sico",
+                                                         "timeline":  "2-4 semanas"
+                                                     },
+                                      "kgb":  {
+                                                   "title":  "Kindgebonden budget",
+                                                   "description":  "Apoyo familiar",
+                                                   "coverage":  "Apoyo para familias con hijos",
+                                                   "audience":  "Hogares con menores",
+                                                   "timeline":  "3-5 semanas"
+                                               },
+                                      "kot":  {
+                                                  "title":  "Kinderopvangtoeslag",
+                                                  "description":  "Apoyo de guarderÃƒÂ­a",
+                                                  "coverage":  "Horas y costes de guarderÃƒÂ­a",
+                                                  "audience":  "Padres que trabajan/estudian",
+                                                  "timeline":  "4-6 semanas"
+                                              }
+                                  },
+                                            "metrics":  {
+                                      "huurtoeslag":  {
+                                                         "primary":  {
+                                                                         "label":  "Comprobación de ingresos",
+                                                                         "value":  "Límites aplican"
+                                                                     },
+                                                         "secondary":  {
+                                                                           "label":  "Topes de alquiler",
+                                                                           "value":  "Dentro del rango"
+                                                                       },
+                                                         "tertiary":  {
+                                                                          "label":  "Costes de servicio",
+                                                                          "value":  "Partidas elegibles"
+                                                                      }
+                                                     },
+                                      "zorgtoeslag":  {
+                                                         "primary":  {
+                                                                         "label":  "Seguro",
+                                                                         "value":  "Básico requerido"
+                                                                     },
+                                                         "secondary":  {
+                                                                           "label":  "Comprobación de ingresos",
+                                                                           "value":  "Límites aplican"
+                                                                       },
+                                                         "tertiary":  {
+                                                                          "label":  "Hogar",
+                                                                          "value":  "Cuenta la pareja"
+                                                                      }
+                                                     },
+                                      "kgb":  {
+                                                  "primary":  {
+                                                                  "label":  "Hijos",
+                                                                  "value":  "Menores de 18"
+                                                              },
+                                                  "secondary":  {
+                                                                    "label":  "Comprobación de ingresos",
+                                                                    "value":  "Límites aplican"
+                                                                },
+                                                  "tertiary":  {
+                                                                   "label":  "Hogar",
+                                                                   "value":  "Tamaño familiar"
+                                                               }
+                                              },
+                                      "kot":  {
+                                                  "primary":  {
+                                                                  "label":  "Guardería",
+                                                                  "value":  "Proveedor registrado"
+                                                              },
+                                                  "secondary":  {
+                                                                    "label":  "Trabajo/estudio",
+                                                                    "value":  "Condición parental"
+                                                                },
+                                                  "tertiary":  {
+                                                                   "label":  "Horas y costes",
+                                                                   "value":  "Según uso"
+                                                               }
+                                              }
+                                  },
+                      "facts":  {
+                                    "huurtoeslag":  {
+                                                       "1":  {
+                                                                 "label":  "Alquiler",
+                                                                 "value":  "Alquiler + costes de servicio"
+                                                             },
+                                                       "2":  {
+                                                                 "label":  "Edad",
+                                                                 "value":  "18+"
+                                                             },
+                                                       "3":  {
+                                                                 "label":  "Ingresos",
+                                                                 "value":  "Límites del hogar"
+                                                             }
+                                                   },
+                                    "zorgtoeslag":  {
+                                                       "1":  {
+                                                                 "label":  "Seguro",
+                                                                 "value":  "Cobertura básica"
+                                                             },
+                                                       "2":  {
+                                                                 "label":  "Ingresos",
+                                                                 "value":  "Límites del hogar"
+                                                             },
+                                                       "3":  {
+                                                                 "label":  "Residencia",
+                                                                 "value":  "Residente en NL"
+                                                             }
+                                                   },
+                                    "kgb":  {
+                                                "1":  {
+                                                          "label":  "Hijos",
+                                                          "value":  "Menores de 18"
+                                                      },
+                                                "2":  {
+                                                          "label":  "Ingresos",
+                                                          "value":  "Límites del hogar"
+                                                      },
+                                                "3":  {
+                                                          "label":  "Residencia",
+                                                          "value":  "Residente en NL"
+                                                      }
+                                            },
+                                    "kot":  {
+                                                "1":  {
+                                                          "label":  "Guardería",
+                                                          "value":  "Registrada"
+                                                      },
+                                                "2":  {
+                                                          "label":  "Trabajo/estudio",
+                                                          "value":  "Obligatorio"
+                                                      },
+                                                "3":  {
+                                                          "label":  "Horas",
+                                                          "value":  "Costes mensuales"
+                                                      }
+                                            }
+                                },"detail":  {
+                                    "badge":  "Gestionado por FinHub",
+                                    "invalid":  {
+                                                    "title":  "Subsidio no encontrado",
+                                                    "description":  "Este subsidio no estÃƒÂ¡ disponible."
+                                                },
+                                    "sections":  {
+                                                     "whatIs":  "QuÃƒÂ© es",
+                                                     "coverage":  "Cobertura y beneficio tÃƒÂ­pico",
+                                                     "requirements":  "Requisitos",
+                                                     "needs":  "QuÃƒÂ© necesitarÃƒÂ¡ FinHub"
+                                                 },
+                                    "disclaimer":  "Las estimaciones son orientativas. El importe final depende de la evaluaciÃƒÂ³n oficial.",
+                                    "cta":  {
+                                                "title":  "Ã‚Â¿Listo para comprobar elegibilidad?",
+                                                "description":  "Responde un wizard rÃƒÂ¡pido y obtÃƒÂ©n un resultado claro.",
+                                                "back":  "Volver a subsidios",
+                                                "check":  "Comprobar elegibilidad"
+                                            },
+                                    "huurtoeslag":  {
+                                                       "title":  "Huurtoeslag",
+                                                       "subtitle":  "Apoyo para reducir la presiÃƒÂ³n del alquiler mensual.",
+                                                       "whatIs":  "Una ayuda del gobierno para cubrir parte del alquiler a inquilinos elegibles.",
+                                                       "coverage":  "Ayuda mensual para alquiler y servicios elegibles.",
+                                                       "benefits":  {
+                                                                        "1":  "Apoyo mensual segÃƒÂºn alquiler e ingresos.",
+                                                                        "2":  "DiseÃƒÂ±ado para mantener los costes de vivienda controlados."
+                                                                    },
+                                                       "requirements":  {
+                                                                            "1":  "Vives de alquiler en PaÃƒÂ­ses Bajos.",
+                                                                            "2":  "Tienes al menos 18 aÃƒÂ±os.",
+                                                                            "3":  "Ingresos del hogar dentro de los lÃƒÂ­mites.",
+                                                                            "4":  "Alquiler y servicios dentro del rango elegible."
+                                                                        },
+                                                       "needs":  {
+                                                                    "1":  "Contrato de alquiler y detalles mensuales.",
+                                                                    "2":  "EstimaciÃƒÂ³n de ingresos del hogar.",
+                                                                    "3":  "Documento de identificaciÃƒÂ³n vÃƒÂ¡lido.",
+                                                                    "4":  "ComposiciÃƒÂ³n del hogar (pareja/hijos)."
+                                                                }
+                                                   },
+                                    "zorgtoeslag":  {
+                                                       "title":  "Zorgtoeslag",
+                                                       "subtitle":  "Apoyo para costes del seguro de salud.",
+                                                       "whatIs":  "Ayuda mensual para reducir el coste del seguro bÃƒÂ¡sico.",
+                                                       "coverage":  "Ayuda mensual segÃƒÂºn ingresos.",
+                                                       "benefits":  {
+                                                                        "1":  "Reduce el coste del seguro mensual.",
+                                                                        "2":  "Ajustado por ingresos del hogar."
+                                                                    },
+                                                       "requirements":  {
+                                                                            "1":  "Tienes seguro bÃƒÂ¡sico en PaÃƒÂ­ses Bajos.",
+                                                                            "2":  "Ingresos del hogar dentro de los lÃƒÂ­mites.",
+                                                                            "3":  "Resides en PaÃƒÂ­ses Bajos."
+                                                                        },
+                                                       "needs":  {
+                                                                    "1":  "Comprobante de seguro bÃƒÂ¡sico.",
+                                                                    "2":  "EstimaciÃƒÂ³n de ingresos del hogar.",
+                                                                    "3":  "Documento de identificaciÃƒÂ³n vÃƒÂ¡lido."
+                                                                }
+                                                   },
+                                    "kgb":  {
+                                                "title":  "Kindgebonden budget",
+                                                "subtitle":  "Apoyo extra para familias con hijos.",
+                                                "whatIs":  "Ayuda para hogares con hijos menores de 18.",
+                                                "coverage":  "Apoyo mensual adicional para familias.",
+                                                "benefits":  {
+                                                                 "1":  "Apoyo extra para gastos familiares.",
+                                                                 "2":  "Depende de los ingresos del hogar."
+                                                             },
+                                                "requirements":  {
+                                                                     "1":  "Tienes al menos un hijo menor de 18.",
+                                                                     "2":  "Ingresos del hogar dentro de los lÃƒÂ­mites.",
+                                                                     "3":  "Resides en PaÃƒÂ­ses Bajos."
+                                                                 },
+                                                "needs":  {
+                                                             "1":  "Datos de los hijos (fechas de nacimiento).",
+                                                             "2":  "EstimaciÃƒÂ³n de ingresos del hogar.",
+                                                             "3":  "Documento de identificaciÃƒÂ³n vÃƒÂ¡lido."
+                                                         }
+                                            },
+                                    "kot":  {
+                                                "title":  "Kinderopvangtoeslag",
+                                                "subtitle":  "Apoyo para costes de guarderÃƒÂ­a.",
+                                                "whatIs":  "Subsidio para familias que pagan guarderÃƒÂ­a y trabajan o estudian.",
+                                                "coverage":  "Horas y costes de guarderÃƒÂ­a elegibles.",
+                                                "benefits":  {
+                                                                 "1":  "Reduce gastos mensuales de guarderÃƒÂ­a.",
+                                                                 "2":  "Depende de ingresos y costes."
+                                                             },
+                                                "requirements":  {
+                                                                     "1":  "Pagas por guarderÃƒÂ­a registrada.",
+                                                                     "2":  "TÃƒÂº o tu pareja trabajan o estudian.",
+                                                                     "3":  "Ingresos del hogar dentro de los lÃƒÂ­mites.",
+                                                                     "4":  "NiÃƒÂ±os registrados en guarderÃƒÂ­a."
+                                                                 },
+                                                "needs":  {
+                                                             "1":  "Contrato y facturas de guarderÃƒÂ­a.",
+                                                             "2":  "ConfirmaciÃƒÂ³n de trabajo o estudios.",
+                                                             "3":  "EstimaciÃƒÂ³n de ingresos del hogar.",
+                                                            "4":  "Documento de identificaciÃƒÂ³n vÃƒÂ¡lido."
+                                                        }
+                                            }
+                                },
+                      "wizard":  {
+                                    "stepper":  {
+                                                    "progress":  "Progreso",
+                                                    "step":  "Paso"
+                                                },
+                                    "errors":  {
+                                                   "required":  "Este campo es obligatorio.",
+                                                   "invalidNumber":  "Introduce un nÃƒÂºmero vÃƒÂ¡lido."
+                                               },
+                                    "actions":  {
+                                                    "back":  "Volver",
+                                                    "next":  "Continuar",
+                                                    "finish":  "Comprobar elegibilidad"
+                                                },
+                                    "common":  {
+                                                   "yes":  "SÃƒÂ­",
+                                                   "no":  "No",
+                                                   "selectPlaceholder":  "Selecciona una opciÃƒÂ³n",
+                                                   "steps":  {
+                                                                "income":  {
+                                                                               "title":  "Ingresos",
+                                                                               "description":  "Usa tu mejor estimaciÃƒÂ³n para este aÃƒÂ±o."
+                                                                           }
+                                                            },
+                                                   "fields":  {
+                                                                  "age":  "Tu edad",
+                                                                  "hasPartner":  "Ã‚Â¿Tienes toeslagpartner?",
+                                                                  "incomeSelf":  "Ingresos anuales (tÃƒÂº)",
+                                                                  "incomePartner":  "Ingresos anuales (pareja)",
+                                                                  "incomeHousehold":  "Ingresos totales del hogar"
+                                                              }
+                                               },
+                                    "huurtoeslag":  {
+                                                       "steps":  {
+                                                                    "base":  {
+                                                                                "title":  "Hogar",
+                                                                                "description":  "CuÃƒÂ©ntanos tu situaciÃƒÂ³n de vivienda."
+                                                                            },
+                                                                    "rent":  {
+                                                                                "title":  "Detalles de alquiler",
+                                                                                "description":  "Alquiler mensual y servicios."
+                                                                            }
+                                                                },
+                                                       "fields":  {
+                                                                      "livesInRent":  "Ã‚Â¿Vives en alquiler?",
+                                                                      "rent":  "Alquiler mensual (kale huur)",
+                                                                      "serviceCosts":  "Servicios elegibles"
+                                                                  }
+                                                   },
+                                    "zorgtoeslag":  {
+                                                       "steps":  {
+                                                                    "insurance":  {
+                                                                                      "title":  "Seguro de salud",
+                                                                                      "description":  "Confirma tu seguro bÃƒÂ¡sico."
+                                                                                  }
+                                                                },
+                                                       "fields":  {
+                                                                      "hasBasicInsurance":  "Ã‚Â¿Tienes seguro bÃƒÂ¡sico en NL?"
+                                                                  }
+                                                   },
+                                    "kgb":  {
+                                                "steps":  {
+                                                             "family":  {
+                                                                            "title":  "Familia",
+                                                                            "description":  "CuÃƒÂ©ntanos sobre tu hogar."
+                                                                        }
+                                                         },
+                                                "fields":  {
+                                                               "childrenCount":  "NÃƒÂºmero de hijos menores de 18"
+                                                           }
+                                            },
+                                    "kot":  {
+                                                "steps":  {
+                                                             "children":  {
+                                                                             "title":  "NiÃƒÂ±os",
+                                                                             "description":  "CuÃƒÂ©ntanos sobre la guarderÃƒÂ­a."
+                                                                         },
+                                                             "costs":  {
+                                                                          "title":  "Costes",
+                                                                          "description":  "Horas mensuales y coste por hora."
+                                                                      },
+                                                             "work":  {
+                                                                         "title":  "Trabajo o estudios",
+                                                                         "description":  "Confirma trabajo o estudios."
+                                                                     }
+                                                         },
+                                                "fields":  {
+                                                               "childrenCount":  "NÃƒÂºmero de niÃƒÂ±os en guarderÃƒÂ­a",
+                                                               "childcareType":  "Tipo de guarderÃƒÂ­a",
+                                                               "hoursPerMonth":  "Horas al mes",
+                                                               "costPerHour":  "Coste por hora",
+                                                               "worksOrStudies":  "Ã‚Â¿Trabajas o estudias?",
+                                                               "partnerWorksOrStudies":  "Ã‚Â¿Tu pareja trabaja o estudia?"
+                                                           },
+                                                "options":  {
+                                                                "dagopvang":  "GuarderÃƒÂ­a",
+                                                                "bso":  "After-school care (BSO)",
+                                                                "gastouder":  "NiÃƒÂ±era (gastouder)"
+                                                            }
+                                            }
+                                },
+                      "engine":  {
+                                    "common":  {
+                                                   "missingIncome":  "Necesitamos una estimaciÃƒÂ³n de ingresos para evaluar.",
+                                                   "missingRent":  "Indica tu alquiler mensual.",
+                                                   "eligibleIncomeOk":  "Los ingresos parecen dentro del rango.",
+                                                   "invalidSlug":  "SelecciÃƒÂ³n de subsidio invÃƒÂ¡lida."
+                                               },
+                                    "huurtoeslag":  {
+                                                       "notRenting":  "Indicaste que no vives en alquiler.",
+                                                       "ageTooLow":  "Debes tener al menos 18 aÃƒÂ±os.",
+                                                       "incomeTooHigh":  "Los ingresos del hogar parecen superar el lÃƒÂ­mite.",
+                                                       "rentTooHigh":  "El alquiler parece superar el rango elegible.",
+                                                       "serviceCostsTooHigh":  "Los costes de servicios parecen superar el rango.",
+                                                       "eligibleRentOk":  "Alquiler y servicios parecen elegibles."
+                                                   },
+                                    "zorgtoeslag":  {
+                                                       "noBasicInsurance":  "Indicaste que no tienes seguro bÃƒÂ¡sico.",
+                                                       "incomeTooHigh":  "Los ingresos del hogar parecen superar el lÃƒÂ­mite.",
+                                                       "eligibleInsuranceOk":  "Seguro bÃƒÂ¡sico confirmado."
+                                                   },
+                                    "kgb":  {
+                                                "noChildren":  "Indicaste que no hay hijos menores de 18.",
+                                                "incomeTooHigh":  "Los ingresos del hogar parecen superar el lÃƒÂ­mite.",
+                                                "eligibleChildrenOk":  "El hogar incluye hijos elegibles."
+                                            },
+                                    "kot":  {
+                                                "noChildren":  "Indicaste que no hay niÃƒÂ±os en guarderÃƒÂ­a.",
+                                                "noChildcareCosts":  "Necesitamos horas y costes de guarderÃƒÂ­a para evaluar.",
+                                                "noWorkOrStudy":  "Al menos un progenitor debe trabajar o estudiar.",
+                                                "incomeTooHigh":  "Los ingresos del hogar parecen superar el lÃƒÂ­mite.",
+                                                "eligibleChildcareOk":  "Los datos de guarderÃƒÂ­a parecen elegibles."
+                                            }
+                                },
+                      "result":  {
+                                    "empty":  {
+                                                  "title":  "Sin datos de elegibilidad",
+                                                  "description":  "Completa el wizard para ver el resultado."
+                                              },
+                                    "header":  {
+                                                   "label":  "Resultado de elegibilidad",
+                                                   "eligible":  "Probablemente aplicas",
+                                                   "notEligible":  "Probablemente no aplicas",
+                                                   "eligibleDescription":  "SegÃƒÂºn tus respuestas, podrÃƒÂ­as aplicar.",
+                                                   "notEligibleDescription":  "SegÃƒÂºn tus respuestas, no cumples los criterios."
+                                               },
+                                    "reasons":  {
+                                                   "title":  "Por quÃƒÂ© este resultado"
+                                               },
+                                    "next":  {
+                                                "title":  "Siguiente paso con FinHub",
+                                                "description":  "Gestionaremos la solicitud, documentos y seguimiento."
+                                            },
+                                    "paywall":  {
+                                                   "label":  "Tarifa del servicio",
+                                                   "sla":  "Tiempo estimado 3-6 semanas"
+                                               },
+                                    "actions":  {
+                                                    "continue":  "Continuar y pagar",
+                                                    "saveReference":  "Guardar como referencia",
+                                                    "review":  "Revisar respuestas",
+                                                    "processing":  "Procesando...",
+                                                    "errorTitle":  "No pudimos continuar",
+                                                    "error":  "IntÃƒÂ©ntalo de nuevo."
+                                                }
+                                },
+                      "checkout":  {
+                                      "missing":  {
+                                                     "title":  "Falta la solicitud",
+                                                     "description":  "Empieza desde el resultado de elegibilidad."
+                                                 },
+                                      "title":  "Pago",
+                                      "subtitle":  "FinHub gestionarÃƒÂ¡ tu subsidio de punta a punta.",
+                                      "description":  "Tras el pago crearemos tu caso y pediremos documentos.",
+                                      "priceLabel":  "Tarifa del servicio",
+                                      "sla":  "Tiempo estimado 3-6 semanas",
+                                      "cta":  "Continuar al pago",
+                                      "back":  "Volver al resultado",
+                                      "processing":  "Redirigiendo...",
+                                      "errorTitle":  "Error de pago",
+                                      "error":  "No se pudo iniciar el checkout."
+                                  },
+                      "applications":  {
+                                          "eyebrow":  "Subsidios",
+                                          "title":  "Mis solicitudes",
+                                          "subtitle":  "Sigue tus solicitudes, sube documentos y consulta avances.",
+                                          "error":  "No se pudieron cargar las solicitudes.",
+                                          "errorTitle":  "Error",
+                                          "loading":  "Cargando solicitudes",
+                                          "loadingDescription":  "Consultando los ÃƒÂºltimos datos.",
+                                          "empty":  {
+                                                        "title":  "AÃƒÂºn no tienes solicitudes",
+                                                        "description":  "Completa el wizard de elegibilidad para empezar."
+                                                    },
+                                          "createdAt":  "Creado",
+                                          "progress":  "Estado",
+                                          "cta":  {
+                                                      "view":  "Ver solicitud",
+                                                      "details":  "Ver subsidio"
+                                                  },
+                                          "detail":  {
+                                                        "eyebrow":  "Solicitud",
+                                                        "subtitle":  "Checklist, timeline y actualizaciones.",
+                                                        "back":  "Volver a solicitudes",
+                                                        "timeline":  "Timeline",
+                                                        "documents":  "Checklist de documentos",
+                                                        "upload":  "Subir",
+                                                        "uploading":  "Subiendo...",
+                                                        "uploaded":  "Subido",
+                                                        "missing":  "Falta",
+                                                        "notes":  "Notas del admin",
+                                                        "notesEmpty":  "Sin notas por ahora",
+                                                        "notesEmptyDescription":  "Publicaremos actualizaciones aquÃƒÂ­.",
+                                                        "loading":  "Cargando solicitud",
+                                                        "loadingDescription":  "Buscando el estado y documentos.",
+                                                        "notFound":  "Solicitud no encontrada",
+                                                        "notFoundDescription":  "Puede haber sido eliminada.",
+                                                        "error":  "No se pudo cargar la solicitud.",
+                                                        "errorTitle":  "Error",
+                                                        "uploadError":  "No se pudo subir el documento."
+                                                    }
+                                      },
+                      "admin":  {
+                                    "eyebrow":  "Admin",
+                                    "title":  "Solicitudes de subsidios",
+                                    "subtitle":  "Revisa estado, pide faltantes y agrega notas.",
+                                    "loading":  "Cargando solicitudes",
+                                    "loadingDescription":  "Consultando datos de admin.",
+                                    "error":  "FallÃƒÂ³ la peticiÃƒÂ³n de admin.",
+                                    "errorTitle":  "Error de admin",
+                                    "empty":  {
+                                                 "title":  "Sin solicitudes",
+                                                 "description":  "AÃƒÂºn no hay solicitudes de subsidios."
+                                             },
+                                    "userId":  "ID de usuario",
+                                    "requestDocs":  "Pedir documentos",
+                                    "notePlaceholder":  "Agrega una nota o pide detalles...",
+                                    "saving":  "Guardando...",
+                                    "requestDocsCta":  "Pedir documentos",
+                                    "addNote":  "Agregar nota"
+                                },
+                      "documents":  {
+                                        "huurcontract":  "Contrato de alquiler",
+                                        "rent_service_costs":  "Alquiler + servicios",
+                                        "proof_income":  "Comprobante de ingresos",
+                                        "id":  "Documento de identidad",
+                                        "health_insurance":  "Comprobante de seguro de salud",
+                                        "partner_income":  "Comprobante de ingresos de pareja",
+                                        "children_birth":  "Certificados de nacimiento",
+                                        "childcare_contract":  "Contrato de guarderÃƒÂ­a",
+                                        "childcare_invoice":  "Facturas de guarderÃƒÂ­a",
+                                        "work_or_study_proof":  "Comprobante de trabajo o estudios",
+                                        "household_composition":  "ComposiciÃƒÂ³n del hogar",
+                                        "status":  {
+                                                       "missing":  "Falta",
+                                                       "uploaded":  "Subido",
+                                                       "approved":  "Aprobado",
+                                                       "rejected":  "Rechazado"
+                                                   }
+                                    },
+                      "status":  {
+                                     "draft":  "Borrador",
+                                     "eligible_checked":  "Elegibilidad comprobada",
+                                     "paid":  "Pagado",
+                                     "waiting_user":  "Esperando al usuario",
+                                     "under_review":  "En revisiÃƒÂ³n",
+                                     "submitted":  "Enviado",
+                                     "decision":  "DecisiÃƒÂ³n recibida",
+                                     "done":  "Cerrado",
+                                     "cancelled":  "Cancelado"
+                                 }
+                  }
 }
+
+
+
+
