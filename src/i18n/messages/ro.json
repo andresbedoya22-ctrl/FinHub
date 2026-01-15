@@ -445,37 +445,37 @@
   },
   "subsidies": {
     "home": {
-      "eyebrow": "Toeslagen",
-      "title": "Subsidies managed by FinHub",
-      "subtitle": "Check eligibility quickly and let FinHub manage the full request, documents, and follow-up.",
+      "eyebrow": "Subvenții",
+      "title": "Subvenții gestionate de FinHub",
+      "subtitle": "Verifică eligibilitatea rapid și lasă FinHub să gestioneze cererea, documentele și urmărirea.",
       "badge": "Gestionat de FinHub",
       "labels": {
-        "coverage": "Covers",
-        "audience": "For",
-        "timeline": "Est. time",
-        "quickFacts": "Quick facts",
-        "signals": "Signals"
+        "coverage": "Acoperă",
+        "audience": "Pentru",
+        "timeline": "Timp estimat",
+        "quickFacts": "Date cheie",
+        "signals": "Semnale"
       },
       "cta": {
-        "viewDetails": "View details"
+        "viewDetails": "Vezi detalii"
       },
       "howItWorks": {
-        "title": "How FinHub works for subsidies",
+        "title": "Cum funcționează FinHub pentru subvenții",
         "steps": {
           "1": {
-            "eyebrow": "Step 1",
-            "title": "Check eligibility",
-            "description": "Answer a short wizard and get a clear result."
+            "eyebrow": "Pasul 1",
+            "title": "Verifică eligibilitatea",
+            "description": "Răspunde la un wizard scurt și obține un rezultat clar."
           },
           "2": {
-            "eyebrow": "Step 2",
-            "title": "We handle the request",
-            "description": "FinHub prepares and submits your application."
+            "eyebrow": "Pasul 2",
+            "title": "Gestionăm cererea",
+            "description": "FinHub pregătește și trimite cererea ta."
           },
           "3": {
-            "eyebrow": "Step 3",
-            "title": "Track progress",
-            "description": "Upload documents and follow the status in one place."
+            "eyebrow": "Pasul 3",
+            "title": "Urmărește progresul",
+            "description": "Încarcă documente și urmărește statusul într-un singur loc."
           }
         }
       }
@@ -483,523 +483,523 @@
     "catalog": {
       "huurtoeslag": {
         "title": "Huurtoeslag",
-        "description": "Rent support",
-        "coverage": "Rent + eligible service costs",
-        "audience": "Renters in NL with income limits",
-        "timeline": "3-6 weeks"
+        "description": "Sprijin pentru chirie",
+        "coverage": "Chirie + costuri de servicii eligibile",
+        "audience": "Chiriași în NL cu limite de venit",
+        "timeline": "36 sptmni"
       },
       "zorgtoeslag": {
         "title": "Zorgtoeslag",
-        "description": "Health insurance support",
-        "coverage": "Monthly healthcare allowance",
-        "audience": "People with basic insurance",
-        "timeline": "2-4 weeks"
+        "description": "Sprijin pentru asigurarea de sănătate",
+        "coverage": "Indemnizație lunară pentru sănătate",
+        "audience": "Persoane cu asigurare de bază",
+        "timeline": "24 sptmni"
       },
       "kgb": {
         "title": "Kindgebonden budget",
-        "description": "Family support",
-        "coverage": "Support for families with children",
-        "audience": "Households with minors",
-        "timeline": "3-5 weeks"
+        "description": "Sprijin pentru familie",
+        "coverage": "Sprijin pentru familii cu copii",
+        "audience": "Gospodării cu minori",
+        "timeline": "35 sptmni"
       },
       "kot": {
         "title": "Kinderopvangtoeslag",
-        "description": "Childcare support",
-        "coverage": "Childcare hours and costs",
-        "audience": "Working/studying parents",
-        "timeline": "4-6 weeks"
+        "description": "Sprijin pentru îngrijirea copiilor",
+        "coverage": "Ore și costuri de îngrijire",
+        "audience": "Părinți care lucrează sau studiază",
+        "timeline": "46 sptmni"
       }
     },
     "metrics": {
       "huurtoeslag": {
         "primary": {
-          "label": "Income check",
-          "value": "Limits apply"
+          "label": "Verificare venit",
+          "value": "Se aplică limite"
         },
         "secondary": {
-          "label": "Rent caps",
-          "value": "Within range"
+          "label": "Plafoane chirie",
+          "value": "În interval"
         },
         "tertiary": {
-          "label": "Service costs",
-          "value": "Eligible items"
+          "label": "Costuri servicii",
+          "value": "Elemente eligibile"
         }
       },
       "zorgtoeslag": {
         "primary": {
-          "label": "Insurance",
-          "value": "Basic plan required"
+          "label": "Asigurare",
+          "value": "Necesită plan de bază"
         },
         "secondary": {
-          "label": "Income check",
-          "value": "Limits apply"
+          "label": "Verificare venit",
+          "value": "Se aplică limite"
         },
         "tertiary": {
-          "label": "Household",
-          "value": "Partner counts"
+          "label": "Gospodărie",
+          "value": "Partenerul contează"
         }
       },
       "kgb": {
         "primary": {
-          "label": "Children",
-          "value": "Under 18"
+          "label": "Copii",
+          "value": "Sub 18 ani"
         },
         "secondary": {
-          "label": "Income check",
-          "value": "Limits apply"
+          "label": "Verificare venit",
+          "value": "Se aplică limite"
         },
         "tertiary": {
-          "label": "Household",
-          "value": "Family size"
+          "label": "Gospodărie",
+          "value": "Dimensiunea familiei"
         }
       },
       "kot": {
         "primary": {
-          "label": "Childcare",
-          "value": "Registered provider"
+          "label": "Îngrijire copii",
+          "value": "Furnizor înregistrat"
         },
         "secondary": {
-          "label": "Work/study",
-          "value": "Parent condition"
+          "label": "Muncă/studii",
+          "value": "Condiție părinte"
         },
         "tertiary": {
-          "label": "Hours & costs",
-          "value": "Based on usage"
+          "label": "Ore și costuri",
+          "value": "În funcție de utilizare"
         }
       }
     },
     "facts": {
       "huurtoeslag": {
         "1": {
-          "label": "Rent",
-          "value": "Rent + service costs"
+          "label": "Chirie",
+          "value": "Chirie + costuri servicii"
         },
         "2": {
-          "label": "Age",
+          "label": "Vrst",
           "value": "18+"
         },
         "3": {
-          "label": "Income",
-          "value": "Household limits"
+          "label": "Venit",
+          "value": "Limite gospodărie"
         }
       },
       "zorgtoeslag": {
         "1": {
-          "label": "Insurance",
-          "value": "Basic coverage"
+          "label": "Asigurare",
+          "value": "Acoperire de bază"
         },
         "2": {
-          "label": "Income",
-          "value": "Household limits"
+          "label": "Venit",
+          "value": "Limite gospodărie"
         },
         "3": {
-          "label": "Residency",
-          "value": "NL resident"
+          "label": "Reședință",
+          "value": "Rezident NL"
         }
       },
       "kgb": {
         "1": {
-          "label": "Children",
-          "value": "Under 18"
+          "label": "Copii",
+          "value": "Sub 18 ani"
         },
         "2": {
-          "label": "Income",
-          "value": "Household limits"
+          "label": "Venit",
+          "value": "Limite gospodărie"
         },
         "3": {
-          "label": "Residence",
-          "value": "NL resident"
+          "label": "Reședință",
+          "value": "Rezident NL"
         }
       },
       "kot": {
         "1": {
-          "label": "Childcare",
-          "value": "Registered"
+          "label": "Îngrijire copii",
+          "value": "Înregistrată"
         },
         "2": {
-          "label": "Work/study",
-          "value": "Required"
+          "label": "Muncă/studii",
+          "value": "Obligatoriu"
         },
         "3": {
-          "label": "Hours",
-          "value": "Monthly costs"
+          "label": "Ore",
+          "value": "Costuri lunare"
         }
       }
     },
     "detail": {
       "badge": "Gestionat de FinHub",
       "invalid": {
-        "title": "Subsidy not found",
-        "description": "This subsidy is not available."
+        "title": "Subvenție negăsită",
+        "description": "Această subvenție nu este disponibilă."
       },
       "sections": {
-        "whatIs": "What it is",
-        "coverage": "Coverage & typical benefit",
-        "requirements": "Requirements",
-        "needs": "What FinHub will need"
+        "whatIs": "Ce este",
+        "coverage": "Acoperire și beneficiu tipic",
+        "requirements": "Cerințe",
+        "needs": "Ce va avea nevoie FinHub"
       },
-      "disclaimer": "Estimates are indicative. Final amounts depend on the official assessment.",
+      "disclaimer": "Estimările sunt orientative. Sumele finale depind de evaluarea oficială.",
       "cta": {
-        "title": "Ready to check eligibility?",
-        "description": "Answer a quick wizard and get a clear outcome.",
-        "back": "Back to subsidies",
-        "check": "Check eligibility"
+        "title": "Gata să verifici eligibilitatea?",
+        "description": "Răspunde la un wizard rapid și obține un rezultat clar.",
+        "back": "Înapoi la subvenții",
+        "check": "Verifică eligibilitatea"
       },
       "huurtoeslag": {
         "title": "Huurtoeslag",
-        "subtitle": "Support to reduce monthly rent pressure.",
-        "whatIs": "A government allowance that helps eligible renters pay part of their rent.",
-        "coverage": "Monthly allowance for rent and eligible service costs.",
+        "subtitle": "Sprijin pentru reducerea presiunii chiriei lunare.",
+        "whatIs": "Indemnizație guvernamentală care ajută chiriașii eligibili să plătească o parte din chirie.",
+        "coverage": "Indemnizație lunară pentru chirie și costuri eligibile.",
         "benefits": {
-          "1": "Monthly support based on rent and income.",
-          "2": "Designed to keep housing costs manageable."
+          "1": "Sprijin lunar în funcție de chirie și venit.",
+          "2": "Conceput pentru a menține costurile locuinței gestionabile."
         },
         "requirements": {
-          "1": "You rent a home in the Netherlands.",
-          "2": "You are at least 18 years old.",
-          "3": "Household income is within limits.",
-          "4": "Rent and service costs are within the eligible range."
+          "1": "Închiriezi o locuință în Olanda.",
+          "2": "Ai cel puțin 18 ani.",
+          "3": "Venitul gospodăriei este în limite.",
+          "4": "Chiria și costurile de servicii sunt în intervalul eligibil."
         },
         "needs": {
-          "1": "Rental contract and monthly rent details.",
-          "2": "Estimated household income.",
-          "3": "Valid identification document.",
-          "4": "Household composition (partner/children)."
+          "1": "Contract de închiriere și detalii despre chiria lunară.",
+          "2": "Estimarea venitului gospodăriei.",
+          "3": "Document de identitate valid.",
+          "4": "Componența gospodăriei (partener/copii)."
         }
       },
       "zorgtoeslag": {
         "title": "Zorgtoeslag",
-        "subtitle": "Support for Dutch health insurance costs.",
-        "whatIs": "A monthly allowance to offset the cost of basic health insurance.",
-        "coverage": "Monthly healthcare allowance based on income.",
+        "subtitle": "Sprijin pentru costurile asigurării de sănătate din NL.",
+        "whatIs": "Indemnizație lunară pentru a compensa costul asigurării de bază.",
+        "coverage": "Indemnizație lunară în funcție de venit.",
         "benefits": {
-          "1": "Helps reduce monthly health insurance costs.",
-          "2": "Adjusted by household income."
+          "1": "Ajută la reducerea costurilor lunare de asigurare.",
+          "2": "Ajustată după venitul gospodăriei."
         },
         "requirements": {
-          "1": "You have Dutch basic health insurance.",
-          "2": "Household income is within limits.",
-          "3": "You live in the Netherlands."
+          "1": "Ai asigurare de sănătate de bază în NL.",
+          "2": "Venitul gospodăriei este în limite.",
+          "3": "Locuiești în Olanda."
         },
         "needs": {
-          "1": "Proof of health insurance coverage.",
-          "2": "Estimated household income.",
-          "3": "Valid identification document."
+          "1": "Dovadă de asigurare de sănătate.",
+          "2": "Estimarea venitului gospodăriei.",
+          "3": "Document de identitate valid."
         }
       },
       "kgb": {
         "title": "Kindgebonden budget",
-        "subtitle": "Extra support for families with children.",
-        "whatIs": "An allowance for households with children under 18.",
-        "coverage": "Additional monthly support for families.",
+        "subtitle": "Sprijin suplimentar pentru familii cu copii.",
+        "whatIs": "Indemnizație pentru gospodării cu copii sub 18 ani.",
+        "coverage": "Sprijin lunar suplimentar pentru familii.",
         "benefits": {
-          "1": "Extra support for family expenses.",
-          "2": "Depends on household income."
+          "1": "Sprijin suplimentar pentru cheltuieli familiale.",
+          "2": "Depinde de venitul gospodăriei."
         },
         "requirements": {
-          "1": "You have at least one child under 18.",
-          "2": "Household income is within limits.",
-          "3": "You live in the Netherlands."
+          "1": "Ai cel puțin un copil sub 18 ani.",
+          "2": "Venitul gospodăriei este în limite.",
+          "3": "Locuiești în Olanda."
         },
         "needs": {
-          "1": "Children details (birth dates).",
-          "2": "Estimated household income.",
-          "3": "Valid identification document."
+          "1": "Datele copiilor (date de naștere).",
+          "2": "Estimarea venitului gospodăriei.",
+          "3": "Document de identitate valid."
         }
       },
       "kot": {
         "title": "Kinderopvangtoeslag",
-        "subtitle": "Support for childcare costs.",
-        "whatIs": "A subsidy for parents who pay for childcare and work or study.",
-        "coverage": "Eligible childcare hours and costs.",
+        "subtitle": "Sprijin pentru costurile de îngrijire a copiilor.",
+        "whatIs": "Subvenție pentru părinții care plătesc îngrijirea copiilor și lucrează sau studiază.",
+        "coverage": "Ore și costuri eligibile de îngrijire.",
         "benefits": {
-          "1": "Reduces monthly childcare expenses.",
-          "2": "Based on income and childcare costs."
+          "1": "Reduce cheltuielile lunare pentru îngrijire.",
+          "2": "Se bazează pe venit și costuri de îngrijire."
         },
         "requirements": {
-          "1": "You pay for registered childcare.",
-          "2": "You or your partner work or study.",
-          "3": "Household income is within limits.",
-          "4": "Children are registered for childcare."
+          "1": "Plătești îngrijire înregistrată.",
+          "2": "Tu sau partenerul lucrați sau studiați.",
+          "3": "Venitul gospodăriei este în limite.",
+          "4": "Copiii sunt înregistrați la îngrijire."
         },
         "needs": {
-          "1": "Childcare contract and invoices.",
-          "2": "Work or study confirmation.",
-          "3": "Estimated household income.",
-          "4": "Valid identification document."
+          "1": "Contract și facturi de îngrijire copii.",
+          "2": "Confirmare de muncă sau studii.",
+          "3": "Estimarea venitului gospodăriei.",
+          "4": "Document de identitate valid."
         }
       }
     },
     "wizard": {
       "stepper": {
-        "progress": "Progress",
-        "step": "Step"
+        "progress": "Progres",
+        "step": "Pas"
       },
       "errors": {
-        "required": "This field is required.",
-        "invalidNumber": "Enter a valid number."
+        "required": "Acest cmp este obligatoriu.",
+        "invalidNumber": "Introdu un număr valid."
       },
       "actions": {
-        "back": "Back",
-        "next": "Continue",
-        "finish": "Check eligibility"
+        "back": "Înapoi",
+        "next": "Continuă",
+        "finish": "Verifică eligibilitatea"
       },
       "common": {
-        "yes": "Yes",
-        "no": "No",
-        "selectPlaceholder": "Select an option",
+        "yes": "Da",
+        "no": "Nu",
+        "selectPlaceholder": "Selectează o opțiune",
         "steps": {
           "income": {
-            "title": "Income",
-            "description": "Use your best estimate for this year."
+            "title": "Venituri",
+            "description": "Folosește cea mai bună estimare pentru acest an."
           }
         },
         "fields": {
-          "age": "Your age",
-          "hasPartner": "Do you have a toeslag partner?",
-          "incomeSelf": "Your annual income",
-          "incomePartner": "Partner annual income",
-          "incomeHousehold": "Total household income"
+          "age": "Vrsta ta",
+          "hasPartner": "Ai un partener toeslag?",
+          "incomeSelf": "Venit anual (tu)",
+          "incomePartner": "Venit anual partener",
+          "incomeHousehold": "Venitul total al gospodăriei"
         }
       },
       "huurtoeslag": {
         "steps": {
           "base": {
-            "title": "Household",
-            "description": "Tell us about your living situation."
+            "title": "Gospodărie",
+            "description": "Spune-ne despre situația locativă."
           },
           "rent": {
-            "title": "Rent details",
-            "description": "Monthly rent and service costs."
+            "title": "Detalii chirie",
+            "description": "Chirie lunară și costuri de servicii."
           }
         },
         "fields": {
-          "livesInRent": "Do you rent your home?",
-          "rent": "Monthly rent (kale huur)",
-          "serviceCosts": "Eligible service costs"
+          "livesInRent": "Locuiești cu chirie?",
+          "rent": "Chirie lunară (kale huur)",
+          "serviceCosts": "Costuri eligibile de servicii"
         }
       },
       "zorgtoeslag": {
         "steps": {
           "insurance": {
-            "title": "Health insurance",
-            "description": "Confirm your basic insurance."
+            "title": "Asigurare de sănătate",
+            "description": "Confirmă asigurarea de bază."
           }
         },
         "fields": {
-          "hasBasicInsurance": "Do you have Dutch basic insurance?"
+          "hasBasicInsurance": "Ai asigurare de bază în NL?"
         }
       },
       "kgb": {
         "steps": {
           "family": {
-            "title": "Family",
-            "description": "Tell us about your household."
+            "title": "Familie",
+            "description": "Spune-ne despre gospodăria ta."
           }
         },
         "fields": {
-          "childrenCount": "Number of children under 18"
+          "childrenCount": "Numărul de copii sub 18 ani"
         }
       },
       "kot": {
         "steps": {
           "children": {
-            "title": "Children",
-            "description": "Tell us about childcare."
+            "title": "Copii",
+            "description": "Spune-ne despre îngrijirea copiilor."
           },
           "costs": {
-            "title": "Costs",
-            "description": "Monthly childcare hours and cost per hour."
+            "title": "Costuri",
+            "description": "Ore lunare și cost pe oră."
           },
           "work": {
-            "title": "Work or study",
-            "description": "Confirm work or study status."
+            "title": "Muncă sau studii",
+            "description": "Confirmă statutul de muncă sau studii."
           }
         },
         "fields": {
-          "childrenCount": "Number of children in childcare",
-          "childcareType": "Childcare type",
-          "hoursPerMonth": "Hours per month",
-          "costPerHour": "Cost per hour",
-          "worksOrStudies": "Do you work or study?",
-          "partnerWorksOrStudies": "Does your partner work or study?"
+          "childrenCount": "Numărul de copii în îngrijire",
+          "childcareType": "Tip de îngrijire",
+          "hoursPerMonth": "Ore pe lună",
+          "costPerHour": "Cost pe oră",
+          "worksOrStudies": "Lucrezi sau studiezi?",
+          "partnerWorksOrStudies": "Partenerul lucrează sau studiază?"
         },
         "options": {
-          "dagopvang": "Daycare",
-          "bso": "After-school care (BSO)",
-          "gastouder": "Childminder"
+          "dagopvang": "Îngrijire de zi",
+          "bso": "Îngrijire după școală (BSO)",
+          "gastouder": "Asistent maternal"
         }
       }
     },
     "engine": {
       "common": {
-        "missingIncome": "We need an income estimate to evaluate eligibility.",
-        "missingRent": "Please provide your monthly rent.",
-        "eligibleIncomeOk": "Income looks within the expected range.",
-        "invalidSlug": "Invalid subsidy selection."
+        "missingIncome": "Avem nevoie de o estimare a venitului pentru evaluare.",
+        "missingRent": "Te rugăm să indici chiria lunară.",
+        "eligibleIncomeOk": "Venitul pare în interval.",
+        "invalidSlug": "Selecție de subvenție invalidă."
       },
       "huurtoeslag": {
-        "notRenting": "You indicated you do not rent your home.",
-        "ageTooLow": "You must be at least 18.",
-        "incomeTooHigh": "Household income seems above the limit.",
-        "rentTooHigh": "Rent appears above the eligible range.",
-        "serviceCostsTooHigh": "Service costs appear above the eligible range.",
-        "eligibleRentOk": "Rent and service costs look eligible."
+        "notRenting": "Ai indicat că nu stai în chirie.",
+        "ageTooLow": "Trebuie să ai cel puțin 18 ani.",
+        "incomeTooHigh": "Venitul gospodăriei pare peste limită.",
+        "rentTooHigh": "Chiria pare peste intervalul eligibil.",
+        "serviceCostsTooHigh": "Costurile de servicii par peste interval.",
+        "eligibleRentOk": "Chiria și costurile par eligibile."
       },
       "zorgtoeslag": {
-        "noBasicInsurance": "You indicated you do not have basic health insurance.",
-        "incomeTooHigh": "Household income seems above the limit.",
-        "eligibleInsuranceOk": "Basic insurance confirmed."
+        "noBasicInsurance": "Ai indicat că nu ai asigurare de bază.",
+        "incomeTooHigh": "Venitul gospodăriei pare peste limită.",
+        "eligibleInsuranceOk": "Asigurarea de bază confirmată."
       },
       "kgb": {
-        "noChildren": "You indicated no children under 18.",
-        "incomeTooHigh": "Household income seems above the limit.",
-        "eligibleChildrenOk": "Household includes eligible children."
+        "noChildren": "Ai indicat că nu ai copii sub 18 ani.",
+        "incomeTooHigh": "Venitul gospodăriei pare peste limită.",
+        "eligibleChildrenOk": "Gospodăria include copii eligibili."
       },
       "kot": {
-        "noChildren": "You indicated no children in childcare.",
-        "noChildcareCosts": "We need childcare hours and costs to evaluate.",
-        "noWorkOrStudy": "At least one parent must work or study.",
-        "incomeTooHigh": "Household income seems above the limit.",
-        "eligibleChildcareOk": "Childcare details look eligible."
+        "noChildren": "Ai indicat că nu ai copii în îngrijire.",
+        "noChildcareCosts": "Avem nevoie de ore și costuri de îngrijire.",
+        "noWorkOrStudy": "Cel puțin un părinte trebuie să lucreze sau să studieze.",
+        "incomeTooHigh": "Venitul gospodăriei pare peste limită.",
+        "eligibleChildcareOk": "Detaliile de îngrijire par eligibile."
       }
     },
     "result": {
       "empty": {
-        "title": "No eligibility data",
-        "description": "Complete the wizard to see your result."
+        "title": "Fără date de eligibilitate",
+        "description": "Finalizează wizardul pentru a vedea rezultatul."
       },
       "header": {
-        "label": "Eligibility result",
-        "eligible": "You likely qualify",
-        "notEligible": "You likely do not qualify",
-        "eligibleDescription": "Based on your answers, you appear eligible.",
-        "notEligibleDescription": "Based on your answers, you do not meet the criteria."
+        "label": "Rezultat eligibilitate",
+        "eligible": "Probabil ești eligibil",
+        "notEligible": "Probabil nu ești eligibil",
+        "eligibleDescription": "Pe baza răspunsurilor, pari eligibil.",
+        "notEligibleDescription": "Pe baza răspunsurilor, nu îndeplinești criteriile."
       },
       "reasons": {
-        "title": "Why this result"
+        "title": "De ce acest rezultat"
       },
       "next": {
-        "title": "Next step with FinHub",
-        "description": "We will manage the full request, documentation, and follow-up."
+        "title": "Următorul pas cu FinHub",
+        "description": "Vom gestiona cererea, documentele și urmărirea."
       },
       "paywall": {
-        "label": "Service fee",
-        "sla": "Estimated turnaround 3-6 weeks"
+        "label": "Taxă de serviciu",
+        "sla": "Durat estimat 36 sptmni"
       },
       "actions": {
-        "continue": "Continue and pay",
-        "saveReference": "Save as reference",
-        "review": "Review answers",
-        "processing": "Processing...",
-        "errorTitle": "We could not continue",
-        "error": "Please try again."
+        "continue": "Continuă și plătește",
+        "saveReference": "Salvează ca referință",
+        "review": "Revizuiește răspunsurile",
+        "processing": "Se procesează...",
+        "errorTitle": "Nu am putut continua",
+        "error": "Te rugăm să încerci din nou."
       }
     },
     "checkout": {
       "missing": {
-        "title": "Missing application",
-        "description": "Start from the eligibility result first."
+        "title": "Lipsește cererea",
+        "description": "Începe din rezultatul de eligibilitate."
       },
-      "title": "Checkout",
-      "subtitle": "FinHub will manage your subsidy end-to-end.",
-      "description": "After payment, we will create your case and request your documents.",
-      "priceLabel": "Service fee",
-      "sla": "Estimated turnaround 3-6 weeks",
-      "cta": "Continue to payment",
-      "back": "Back to result",
-      "processing": "Redirecting...",
-      "errorTitle": "Checkout error",
-      "error": "Could not start checkout."
+      "title": "Plată",
+      "subtitle": "FinHub va gestiona subvenția cap-coadă.",
+      "description": "După plată vom crea cazul și vom solicita documentele.",
+      "priceLabel": "Taxă de serviciu",
+      "sla": "Durat estimat 36 sptmni",
+      "cta": "Continuă la plată",
+      "back": "Înapoi la rezultat",
+      "processing": "Redirecționare...",
+      "errorTitle": "Eroare la plată",
+      "error": "Nu am putut porni plata."
     },
     "applications": {
-      "eyebrow": "Subsidies",
-      "title": "My applications",
-      "subtitle": "Track your applications, upload documents, and see progress.",
-      "error": "Could not load applications.",
-      "errorTitle": "Error",
-      "loading": "Loading applications",
-      "loadingDescription": "Fetching your latest data.",
+      "eyebrow": "Subvenții",
+      "title": "Cererile mele",
+      "subtitle": "Urmărește cererile, încarcă documente și vezi progresul.",
+      "error": "Nu am putut încărca cererile.",
+      "errorTitle": "Eroare",
+      "loading": "Se încarcă cererile",
+      "loadingDescription": "Se preiau cele mai recente date.",
       "empty": {
-        "title": "No applications yet",
-        "description": "Complete the eligibility wizard to start."
+        "title": "Nu există cereri încă",
+        "description": "Finalizează wizardul de eligibilitate pentru a începe."
       },
-      "createdAt": "Created",
+      "createdAt": "Creat",
       "progress": "Status",
       "cta": {
-        "view": "View application",
-        "details": "View subsidy"
+        "view": "Vezi cererea",
+        "details": "Vezi subvenția"
       },
       "detail": {
-        "eyebrow": "Application",
-        "subtitle": "Checklist, timeline, and updates.",
-        "back": "Back to applications",
-        "timeline": "Timeline",
-        "documents": "Documents checklist",
-        "upload": "Upload",
-        "uploading": "Uploading...",
-        "uploaded": "Uploaded",
-        "missing": "Missing",
-        "notes": "Admin notes",
-        "notesEmpty": "No notes yet",
-        "notesEmptyDescription": "We will post updates here.",
-        "loading": "Loading application",
-        "loadingDescription": "Fetching the latest status and documents.",
-        "notFound": "Application not found",
-        "notFoundDescription": "This application may have been removed.",
-        "error": "Could not load application.",
-        "errorTitle": "Error",
-        "uploadError": "Could not upload the document."
+        "eyebrow": "Cerere",
+        "subtitle": "Listă, cronologie și actualizări.",
+        "back": "Înapoi la cereri",
+        "timeline": "Cronologie",
+        "documents": "Lista documentelor",
+        "upload": "Încarcă",
+        "uploading": "Se încarcă...",
+        "uploaded": "Încărcat",
+        "missing": "Lipsă",
+        "notes": "Note admin",
+        "notesEmpty": "Nicio notă încă",
+        "notesEmptyDescription": "Vom publica actualizări aici.",
+        "loading": "Se încarcă cererea",
+        "loadingDescription": "Se preiau statusul și documentele.",
+        "notFound": "Cerere negăsită",
+        "notFoundDescription": "Această cerere poate fi ștearsă.",
+        "error": "Nu am putut încărca cererea.",
+        "errorTitle": "Eroare",
+        "uploadError": "Nu am putut încărca documentul."
       }
     },
     "admin": {
       "eyebrow": "Admin",
-      "title": "Subsidy applications",
-      "subtitle": "Review status, request missing docs, and add notes.",
-      "loading": "Loading applications",
-      "loadingDescription": "Fetching admin data.",
-      "error": "Admin request failed.",
-      "errorTitle": "Admin error",
+      "title": "Cereri de subvenții",
+      "subtitle": "Revizuiește statusul, solicită documente lipsă și adaugă note.",
+      "loading": "Se încarcă cererile",
+      "loadingDescription": "Se preiau datele de admin.",
+      "error": "Cererea admin a eșuat.",
+      "errorTitle": "Eroare admin",
       "empty": {
-        "title": "No applications",
-        "description": "There are no subsidy applications yet."
+        "title": "Fără cereri",
+        "description": "Încă nu există cereri de subvenții."
       },
-      "userId": "User ID",
-      "requestDocs": "Request missing docs",
-      "notePlaceholder": "Add a note or request details...",
-      "saving": "Saving...",
-      "requestDocsCta": "Request documents",
-      "addNote": "Add note"
+      "userId": "ID utilizator",
+      "requestDocs": "Solicită documente",
+      "notePlaceholder": "Adaugă o notă sau solicită detalii...",
+      "saving": "Se salvează...",
+      "requestDocsCta": "Solicită documente",
+      "addNote": "Adaugă notă"
     },
     "documents": {
-      "huurcontract": "Rental contract",
-      "rent_service_costs": "Rent + service costs",
-      "proof_income": "Income proof",
-      "id": "ID document",
-      "health_insurance": "Health insurance proof",
-      "partner_income": "Partner income proof",
-      "children_birth": "Children birth certificates",
-      "childcare_contract": "Childcare contract",
-      "childcare_invoice": "Childcare invoices",
-      "work_or_study_proof": "Work or study proof",
-      "household_composition": "Household composition",
+      "huurcontract": "Contract de închiriere",
+      "rent_service_costs": "Chirie + costuri servicii",
+      "proof_income": "Dovadă venit",
+      "id": "Document de identitate",
+      "health_insurance": "Dovadă asigurare de sănătate",
+      "partner_income": "Dovadă venit partener",
+      "children_birth": "Certificate de naștere copii",
+      "childcare_contract": "Contract de îngrijire copii",
+      "childcare_invoice": "Facturi îngrijire copii",
+      "work_or_study_proof": "Dovadă de muncă sau studii",
+      "household_composition": "Componența gospodăriei",
       "status": {
-        "missing": "Missing",
-        "uploaded": "Uploaded",
-        "approved": "Approved",
-        "rejected": "Rejected"
+        "missing": "Lipsă",
+        "uploaded": "Încărcat",
+        "approved": "Aprobat",
+        "rejected": "Respins"
       }
     },
     "status": {
-      "draft": "Draft",
-      "eligible_checked": "Eligibility checked",
-      "paid": "Paid",
-      "waiting_user": "Waiting on you",
-      "under_review": "Under review",
-      "submitted": "Submitted",
-      "decision": "Decision received",
-      "done": "Closed",
-      "cancelled": "Cancelled"
+      "draft": "Schiță",
+      "eligible_checked": "Eligibilitate verificată",
+      "paid": "Plătit",
+      "waiting_user": "Așteptăm de la tine",
+      "under_review": "În verificare",
+      "submitted": "Trimis",
+      "decision": "Decizie primită",
+      "done": "Închis",
+      "cancelled": "Anulat"
     }
   }
 }

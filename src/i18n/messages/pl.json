@@ -448,37 +448,37 @@
   },
   "subsidies": {
     "home": {
-      "eyebrow": "Toeslagen",
-      "title": "Subsidies managed by FinHub",
-      "subtitle": "Check eligibility quickly and let FinHub manage the full request, documents, and follow-up.",
-      "badge": "Obslugiwane przez FinHub",
+      "eyebrow": "Dopłaty",
+      "title": "Dopłaty obsługiwane przez FinHub",
+      "subtitle": "Szybko sprawdź uprawnienia i pozwól FinHub obsłużyć wniosek, dokumenty i dalsze kroki.",
+      "badge": "Obsługiwane przez FinHub",
       "labels": {
-        "coverage": "Covers",
-        "audience": "For",
-        "timeline": "Est. time",
-        "quickFacts": "Quick facts",
-        "signals": "Signals"
+        "coverage": "Zakres",
+        "audience": "Dla",
+        "timeline": "Szac. czas",
+        "quickFacts": "Kluczowe informacje",
+        "signals": "Sygnały"
       },
       "cta": {
-        "viewDetails": "View details"
+        "viewDetails": "Zobacz szczegóły"
       },
       "howItWorks": {
-        "title": "How FinHub works for subsidies",
+        "title": "Jak FinHub obsługuje dopłaty",
         "steps": {
           "1": {
-            "eyebrow": "Step 1",
-            "title": "Check eligibility",
-            "description": "Answer a short wizard and get a clear result."
+            "eyebrow": "Krok 1",
+            "title": "Sprawdź uprawnienia",
+            "description": "Odpowiedz na krótki kreator i poznaj wynik."
           },
           "2": {
-            "eyebrow": "Step 2",
-            "title": "We handle the request",
-            "description": "FinHub prepares and submits your application."
+            "eyebrow": "Krok 2",
+            "title": "Obsługujemy wniosek",
+            "description": "FinHub przygotowuje i składa Twój wniosek."
           },
           "3": {
-            "eyebrow": "Step 3",
-            "title": "Track progress",
-            "description": "Upload documents and follow the status in one place."
+            "eyebrow": "Krok 3",
+            "title": "Śledź postęp",
+            "description": "Przesyłaj dokumenty i śledź status w jednym miejscu."
           }
         }
       }
@@ -486,523 +486,523 @@
     "catalog": {
       "huurtoeslag": {
         "title": "Huurtoeslag",
-        "description": "Rent support",
-        "coverage": "Rent + eligible service costs",
-        "audience": "Renters in NL with income limits",
-        "timeline": "3-6 weeks"
+        "description": "Wsparcie czynszu",
+        "coverage": "Czynsz + kwalifikowane koszty usług",
+        "audience": "Najemcy w NL z limitami dochodów",
+        "timeline": "3–6 tygodni"
       },
       "zorgtoeslag": {
         "title": "Zorgtoeslag",
-        "description": "Health insurance support",
-        "coverage": "Monthly healthcare allowance",
-        "audience": "People with basic insurance",
-        "timeline": "2-4 weeks"
+        "description": "Wsparcie ubezpieczenia zdrowotnego",
+        "coverage": "Miesięczne dofinansowanie zdrowotne",
+        "audience": "Osoby z podstawowym ubezpieczeniem",
+        "timeline": "2–4 tygodnie"
       },
       "kgb": {
         "title": "Kindgebonden budget",
-        "description": "Family support",
-        "coverage": "Support for families with children",
-        "audience": "Households with minors",
-        "timeline": "3-5 weeks"
+        "description": "Wsparcie rodzinne",
+        "coverage": "Wsparcie dla rodzin z dziećmi",
+        "audience": "Gospodarstwa z nieletnimi",
+        "timeline": "3–5 tygodni"
       },
       "kot": {
         "title": "Kinderopvangtoeslag",
-        "description": "Childcare support",
-        "coverage": "Childcare hours and costs",
-        "audience": "Working/studying parents",
-        "timeline": "4-6 weeks"
+        "description": "Wsparcie opieki nad dziećmi",
+        "coverage": "Godziny i koszty opieki",
+        "audience": "Rodzice pracujący lub uczący się",
+        "timeline": "4–6 tygodni"
       }
     },
     "metrics": {
       "huurtoeslag": {
         "primary": {
-          "label": "Income check",
-          "value": "Limits apply"
+          "label": "Weryfikacja dochodu",
+          "value": "Obowiązują limity"
         },
         "secondary": {
-          "label": "Rent caps",
-          "value": "Within range"
+          "label": "Limity czynszu",
+          "value": "W zakresie"
         },
         "tertiary": {
-          "label": "Service costs",
-          "value": "Eligible items"
+          "label": "Koszty usług",
+          "value": "Pozycje kwalifikowane"
         }
       },
       "zorgtoeslag": {
         "primary": {
-          "label": "Insurance",
-          "value": "Basic plan required"
+          "label": "Ubezpieczenie",
+          "value": "Wymagany pakiet podstawowy"
         },
         "secondary": {
-          "label": "Income check",
-          "value": "Limits apply"
+          "label": "Weryfikacja dochodu",
+          "value": "Obowiązują limity"
         },
         "tertiary": {
-          "label": "Household",
-          "value": "Partner counts"
+          "label": "Gospodarstwo",
+          "value": "Partner się liczy"
         }
       },
       "kgb": {
         "primary": {
-          "label": "Children",
-          "value": "Under 18"
+          "label": "Dzieci",
+          "value": "Poniżej 18 lat"
         },
         "secondary": {
-          "label": "Income check",
-          "value": "Limits apply"
+          "label": "Weryfikacja dochodu",
+          "value": "Obowiązują limity"
         },
         "tertiary": {
-          "label": "Household",
-          "value": "Family size"
+          "label": "Gospodarstwo",
+          "value": "Wielkość rodziny"
         }
       },
       "kot": {
         "primary": {
-          "label": "Childcare",
-          "value": "Registered provider"
+          "label": "Opieka nad dziećmi",
+          "value": "Zarejestrowany dostawca"
         },
         "secondary": {
-          "label": "Work/study",
-          "value": "Parent condition"
+          "label": "Praca lub nauka",
+          "value": "Warunek rodzica"
         },
         "tertiary": {
-          "label": "Hours & costs",
-          "value": "Based on usage"
+          "label": "Godziny i koszty",
+          "value": "W zależności od użycia"
         }
       }
     },
     "facts": {
       "huurtoeslag": {
         "1": {
-          "label": "Rent",
-          "value": "Rent + service costs"
+          "label": "Czynsz",
+          "value": "Czynsz + koszty usług"
         },
         "2": {
-          "label": "Age",
+          "label": "Wiek",
           "value": "18+"
         },
         "3": {
-          "label": "Income",
-          "value": "Household limits"
+          "label": "Dochód",
+          "value": "Limity gospodarstwa"
         }
       },
       "zorgtoeslag": {
         "1": {
-          "label": "Insurance",
-          "value": "Basic coverage"
+          "label": "Ubezpieczenie",
+          "value": "Podstawowa ochrona"
         },
         "2": {
-          "label": "Income",
-          "value": "Household limits"
+          "label": "Dochód",
+          "value": "Limity gospodarstwa"
         },
         "3": {
-          "label": "Residency",
-          "value": "NL resident"
+          "label": "Rezydencja",
+          "value": "Rezydent NL"
         }
       },
       "kgb": {
         "1": {
-          "label": "Children",
-          "value": "Under 18"
+          "label": "Dzieci",
+          "value": "Poniżej 18 lat"
         },
         "2": {
-          "label": "Income",
-          "value": "Household limits"
+          "label": "Dochód",
+          "value": "Limity gospodarstwa"
         },
         "3": {
-          "label": "Residence",
-          "value": "NL resident"
+          "label": "Rezydencja",
+          "value": "Rezydent NL"
         }
       },
       "kot": {
         "1": {
-          "label": "Childcare",
-          "value": "Registered"
+          "label": "Opieka nad dziećmi",
+          "value": "Zarejestrowana"
         },
         "2": {
-          "label": "Work/study",
-          "value": "Required"
+          "label": "Praca lub nauka",
+          "value": "Wymagane"
         },
         "3": {
-          "label": "Hours",
-          "value": "Monthly costs"
+          "label": "Godziny",
+          "value": "Koszty miesięczne"
         }
       }
     },
     "detail": {
-      "badge": "Obslugiwane przez FinHub",
+      "badge": "Obsługiwane przez FinHub",
       "invalid": {
-        "title": "Subsidy not found",
-        "description": "This subsidy is not available."
+        "title": "Nie znaleziono dopłaty",
+        "description": "Ta dopłata nie jest dostępna."
       },
       "sections": {
-        "whatIs": "What it is",
-        "coverage": "Coverage & typical benefit",
-        "requirements": "Requirements",
-        "needs": "What FinHub will need"
+        "whatIs": "Co to jest",
+        "coverage": "Zakres i typowe świadczenie",
+        "requirements": "Wymagania",
+        "needs": "Czego potrzebuje FinHub"
       },
-      "disclaimer": "Estimates are indicative. Final amounts depend on the official assessment.",
+      "disclaimer": "Szacunki są orientacyjne. Ostateczne kwoty zależą od oceny urzędowej.",
       "cta": {
-        "title": "Ready to check eligibility?",
-        "description": "Answer a quick wizard and get a clear outcome.",
-        "back": "Back to subsidies",
-        "check": "Check eligibility"
+        "title": "Gotowy, by sprawdzić uprawnienia?",
+        "description": "Odpowiedz na krótki kreator i uzyskaj wynik.",
+        "back": "Wróć do dopłat",
+        "check": "Sprawdź uprawnienia"
       },
       "huurtoeslag": {
         "title": "Huurtoeslag",
-        "subtitle": "Support to reduce monthly rent pressure.",
-        "whatIs": "A government allowance that helps eligible renters pay part of their rent.",
-        "coverage": "Monthly allowance for rent and eligible service costs.",
+        "subtitle": "Wsparcie zmniejszające presję czynszu.",
+        "whatIs": "Świadczenie rządowe pomagające uprawnionym najemcom opłacić część czynszu.",
+        "coverage": "Miesięczne wsparcie na czynsz i kwalifikowane koszty usług.",
         "benefits": {
-          "1": "Monthly support based on rent and income.",
-          "2": "Designed to keep housing costs manageable."
+          "1": "Miesięczne wsparcie zależne od czynszu i dochodu.",
+          "2": "Zaprojektowane, aby utrzymać koszty mieszkania na rozsądnym poziomie."
         },
         "requirements": {
-          "1": "You rent a home in the Netherlands.",
-          "2": "You are at least 18 years old.",
-          "3": "Household income is within limits.",
-          "4": "Rent and service costs are within the eligible range."
+          "1": "Wynajmujesz mieszkanie w Holandii.",
+          "2": "Masz co najmniej 18 lat.",
+          "3": "Dochód gospodarstwa mieści się w limitach.",
+          "4": "Czynsz i koszty usług mieszczą się w zakresie kwalifikacji."
         },
         "needs": {
-          "1": "Rental contract and monthly rent details.",
-          "2": "Estimated household income.",
-          "3": "Valid identification document.",
-          "4": "Household composition (partner/children)."
+          "1": "Umowa najmu i miesięczne szczegóły czynszu.",
+          "2": "Szacowany dochód gospodarstwa.",
+          "3": "Ważny dokument tożsamości.",
+          "4": "Skład gospodarstwa (partner/dzieci)."
         }
       },
       "zorgtoeslag": {
         "title": "Zorgtoeslag",
-        "subtitle": "Support for Dutch health insurance costs.",
-        "whatIs": "A monthly allowance to offset the cost of basic health insurance.",
-        "coverage": "Monthly healthcare allowance based on income.",
+        "subtitle": "Wsparcie kosztów ubezpieczenia zdrowotnego w NL.",
+        "whatIs": "Miesięczne świadczenie na pokrycie kosztów podstawowego ubezpieczenia zdrowotnego.",
+        "coverage": "Miesięczne dofinansowanie zależne od dochodu.",
         "benefits": {
-          "1": "Helps reduce monthly health insurance costs.",
-          "2": "Adjusted by household income."
+          "1": "Pomaga obniżyć miesięczne koszty ubezpieczenia.",
+          "2": "Korygowane według dochodu gospodarstwa."
         },
         "requirements": {
-          "1": "You have Dutch basic health insurance.",
-          "2": "Household income is within limits.",
-          "3": "You live in the Netherlands."
+          "1": "Masz podstawowe ubezpieczenie zdrowotne w NL.",
+          "2": "Dochód gospodarstwa mieści się w limitach.",
+          "3": "Mieszkasz w Holandii."
         },
         "needs": {
-          "1": "Proof of health insurance coverage.",
-          "2": "Estimated household income.",
-          "3": "Valid identification document."
+          "1": "Potwierdzenie ubezpieczenia zdrowotnego.",
+          "2": "Szacowany dochód gospodarstwa.",
+          "3": "Ważny dokument tożsamości."
         }
       },
       "kgb": {
         "title": "Kindgebonden budget",
-        "subtitle": "Extra support for families with children.",
-        "whatIs": "An allowance for households with children under 18.",
-        "coverage": "Additional monthly support for families.",
+        "subtitle": "Dodatkowe wsparcie dla rodzin z dziećmi.",
+        "whatIs": "Świadczenie dla gospodarstw z dziećmi poniżej 18 lat.",
+        "coverage": "Dodatkowe miesięczne wsparcie dla rodzin.",
         "benefits": {
-          "1": "Extra support for family expenses.",
-          "2": "Depends on household income."
+          "1": "Dodatkowe wsparcie na wydatki rodzinne.",
+          "2": "Zależy od dochodu gospodarstwa."
         },
         "requirements": {
-          "1": "You have at least one child under 18.",
-          "2": "Household income is within limits.",
-          "3": "You live in the Netherlands."
+          "1": "Masz co najmniej jedno dziecko poniżej 18 lat.",
+          "2": "Dochód gospodarstwa mieści się w limitach.",
+          "3": "Mieszkasz w Holandii."
         },
         "needs": {
-          "1": "Children details (birth dates).",
-          "2": "Estimated household income.",
-          "3": "Valid identification document."
+          "1": "Dane dzieci (daty urodzenia).",
+          "2": "Szacowany dochód gospodarstwa.",
+          "3": "Ważny dokument tożsamości."
         }
       },
       "kot": {
         "title": "Kinderopvangtoeslag",
-        "subtitle": "Support for childcare costs.",
-        "whatIs": "A subsidy for parents who pay for childcare and work or study.",
-        "coverage": "Eligible childcare hours and costs.",
+        "subtitle": "Wsparcie kosztów opieki nad dziećmi.",
+        "whatIs": "Dopłata dla rodziców, którzy opłacają opiekę i pracują lub się uczą.",
+        "coverage": "Kwalifikowane godziny i koszty opieki.",
         "benefits": {
-          "1": "Reduces monthly childcare expenses.",
-          "2": "Based on income and childcare costs."
+          "1": "Zmniejsza miesięczne wydatki na opiekę.",
+          "2": "Zależne od dochodu i kosztów opieki."
         },
         "requirements": {
-          "1": "You pay for registered childcare.",
-          "2": "You or your partner work or study.",
-          "3": "Household income is within limits.",
-          "4": "Children are registered for childcare."
+          "1": "Opłacasz zarejestrowaną opiekę nad dziećmi.",
+          "2": "Ty lub Twój partner pracujecie lub się uczycie.",
+          "3": "Dochód gospodarstwa mieści się w limitach.",
+          "4": "Dzieci są zarejestrowane w opiece."
         },
         "needs": {
-          "1": "Childcare contract and invoices.",
-          "2": "Work or study confirmation.",
-          "3": "Estimated household income.",
-          "4": "Valid identification document."
+          "1": "Umowa i faktury za opiekę nad dziećmi.",
+          "2": "Potwierdzenie pracy lub nauki.",
+          "3": "Szacowany dochód gospodarstwa.",
+          "4": "Ważny dokument tożsamości."
         }
       }
     },
     "wizard": {
       "stepper": {
-        "progress": "Progress",
-        "step": "Step"
+        "progress": "Postęp",
+        "step": "Krok"
       },
       "errors": {
-        "required": "This field is required.",
-        "invalidNumber": "Enter a valid number."
+        "required": "To pole jest wymagane.",
+        "invalidNumber": "Wpisz poprawną liczbę."
       },
       "actions": {
-        "back": "Back",
-        "next": "Continue",
-        "finish": "Check eligibility"
+        "back": "Wstecz",
+        "next": "Dalej",
+        "finish": "Sprawdź uprawnienia"
       },
       "common": {
-        "yes": "Yes",
-        "no": "No",
-        "selectPlaceholder": "Select an option",
+        "yes": "Tak",
+        "no": "Nie",
+        "selectPlaceholder": "Wybierz opcję",
         "steps": {
           "income": {
-            "title": "Income",
-            "description": "Use your best estimate for this year."
+            "title": "Dochód",
+            "description": "Podaj najlepsze oszacowanie na ten rok."
           }
         },
         "fields": {
-          "age": "Your age",
-          "hasPartner": "Do you have a toeslag partner?",
-          "incomeSelf": "Your annual income",
-          "incomePartner": "Partner annual income",
-          "incomeHousehold": "Total household income"
+          "age": "Twój wiek",
+          "hasPartner": "Czy masz toeslagpartnera?",
+          "incomeSelf": "Roczny dochód (Ty)",
+          "incomePartner": "Roczny dochód partnera",
+          "incomeHousehold": "Łączny dochód gospodarstwa"
         }
       },
       "huurtoeslag": {
         "steps": {
           "base": {
-            "title": "Household",
-            "description": "Tell us about your living situation."
+            "title": "Gospodarstwo",
+            "description": "Opowiedz o swojej sytuacji mieszkaniowej."
           },
           "rent": {
-            "title": "Rent details",
-            "description": "Monthly rent and service costs."
+            "title": "Szczegóły czynszu",
+            "description": "Miesięczny czynsz i koszty usług."
           }
         },
         "fields": {
-          "livesInRent": "Do you rent your home?",
-          "rent": "Monthly rent (kale huur)",
-          "serviceCosts": "Eligible service costs"
+          "livesInRent": "Czy wynajmujesz mieszkanie?",
+          "rent": "Miesięczny czynsz (kale huur)",
+          "serviceCosts": "Kwalifikowane koszty usług"
         }
       },
       "zorgtoeslag": {
         "steps": {
           "insurance": {
-            "title": "Health insurance",
-            "description": "Confirm your basic insurance."
+            "title": "Ubezpieczenie zdrowotne",
+            "description": "Potwierdź podstawowe ubezpieczenie."
           }
         },
         "fields": {
-          "hasBasicInsurance": "Do you have Dutch basic insurance?"
+          "hasBasicInsurance": "Czy masz podstawowe ubezpieczenie w NL?"
         }
       },
       "kgb": {
         "steps": {
           "family": {
-            "title": "Family",
-            "description": "Tell us about your household."
+            "title": "Rodzina",
+            "description": "Opowiedz o swoim gospodarstwie."
           }
         },
         "fields": {
-          "childrenCount": "Number of children under 18"
+          "childrenCount": "Liczba dzieci poniżej 18 lat"
         }
       },
       "kot": {
         "steps": {
           "children": {
-            "title": "Children",
-            "description": "Tell us about childcare."
+            "title": "Dzieci",
+            "description": "Opowiedz o opiece nad dziećmi."
           },
           "costs": {
-            "title": "Costs",
-            "description": "Monthly childcare hours and cost per hour."
+            "title": "Koszty",
+            "description": "Miesięczne godziny opieki i koszt za godzinę."
           },
           "work": {
-            "title": "Work or study",
-            "description": "Confirm work or study status."
+            "title": "Praca lub nauka",
+            "description": "Potwierdź status pracy lub nauki."
           }
         },
         "fields": {
-          "childrenCount": "Number of children in childcare",
-          "childcareType": "Childcare type",
-          "hoursPerMonth": "Hours per month",
-          "costPerHour": "Cost per hour",
-          "worksOrStudies": "Do you work or study?",
-          "partnerWorksOrStudies": "Does your partner work or study?"
+          "childrenCount": "Liczba dzieci w opiece",
+          "childcareType": "Rodzaj opieki",
+          "hoursPerMonth": "Godziny miesięcznie",
+          "costPerHour": "Koszt za godzinę",
+          "worksOrStudies": "Czy pracujesz lub się uczysz?",
+          "partnerWorksOrStudies": "Czy Twój partner pracuje lub się uczy?"
         },
         "options": {
-          "dagopvang": "Daycare",
-          "bso": "After-school care (BSO)",
-          "gastouder": "Childminder"
+          "dagopvang": "Opieka dzienna",
+          "bso": "Opieka pozaszkolna (BSO)",
+          "gastouder": "Opiekun dzienny"
         }
       }
     },
     "engine": {
       "common": {
-        "missingIncome": "We need an income estimate to evaluate eligibility.",
-        "missingRent": "Please provide your monthly rent.",
-        "eligibleIncomeOk": "Income looks within the expected range.",
-        "invalidSlug": "Invalid subsidy selection."
+        "missingIncome": "Potrzebujemy szacunku dochodu, aby ocenić uprawnienia.",
+        "missingRent": "Podaj miesięczny czynsz.",
+        "eligibleIncomeOk": "Dochód wygląda na mieszczący się w limicie.",
+        "invalidSlug": "Nieprawidłowy wybór dopłaty."
       },
       "huurtoeslag": {
-        "notRenting": "You indicated you do not rent your home.",
-        "ageTooLow": "You must be at least 18.",
-        "incomeTooHigh": "Household income seems above the limit.",
-        "rentTooHigh": "Rent appears above the eligible range.",
-        "serviceCostsTooHigh": "Service costs appear above the eligible range.",
-        "eligibleRentOk": "Rent and service costs look eligible."
+        "notRenting": "Wskazałeś, że nie wynajmujesz mieszkania.",
+        "ageTooLow": "Musisz mieć co najmniej 18 lat.",
+        "incomeTooHigh": "Dochód gospodarstwa wydaje się przekraczać limit.",
+        "rentTooHigh": "Czynsz wydaje się przekraczać zakres kwalifikacji.",
+        "serviceCostsTooHigh": "Koszty usług wydają się przekraczać zakres kwalifikacji.",
+        "eligibleRentOk": "Czynsz i koszty usług wyglądają na kwalifikowane."
       },
       "zorgtoeslag": {
-        "noBasicInsurance": "You indicated you do not have basic health insurance.",
-        "incomeTooHigh": "Household income seems above the limit.",
-        "eligibleInsuranceOk": "Basic insurance confirmed."
+        "noBasicInsurance": "Wskazałeś, że nie masz podstawowego ubezpieczenia.",
+        "incomeTooHigh": "Dochód gospodarstwa wydaje się przekraczać limit.",
+        "eligibleInsuranceOk": "Podstawowe ubezpieczenie potwierdzone."
       },
       "kgb": {
-        "noChildren": "You indicated no children under 18.",
-        "incomeTooHigh": "Household income seems above the limit.",
-        "eligibleChildrenOk": "Household includes eligible children."
+        "noChildren": "Wskazałeś brak dzieci poniżej 18 lat.",
+        "incomeTooHigh": "Dochód gospodarstwa wydaje się przekraczać limit.",
+        "eligibleChildrenOk": "Gospodarstwo obejmuje uprawnione dzieci."
       },
       "kot": {
-        "noChildren": "You indicated no children in childcare.",
-        "noChildcareCosts": "We need childcare hours and costs to evaluate.",
-        "noWorkOrStudy": "At least one parent must work or study.",
-        "incomeTooHigh": "Household income seems above the limit.",
-        "eligibleChildcareOk": "Childcare details look eligible."
+        "noChildren": "Wskazałeś brak dzieci w opiece.",
+        "noChildcareCosts": "Potrzebujemy godzin i kosztów opieki, aby ocenić uprawnienia.",
+        "noWorkOrStudy": "Co najmniej jeden rodzic musi pracować lub się uczyć.",
+        "incomeTooHigh": "Dochód gospodarstwa wydaje się przekraczać limit.",
+        "eligibleChildcareOk": "Dane opieki wyglądają na kwalifikowane."
       }
     },
     "result": {
       "empty": {
-        "title": "No eligibility data",
-        "description": "Complete the wizard to see your result."
+        "title": "Brak danych o uprawnieniach",
+        "description": "Ukończ kreator, aby zobaczyć wynik."
       },
       "header": {
-        "label": "Eligibility result",
-        "eligible": "You likely qualify",
-        "notEligible": "You likely do not qualify",
-        "eligibleDescription": "Based on your answers, you appear eligible.",
-        "notEligibleDescription": "Based on your answers, you do not meet the criteria."
+        "label": "Wynik uprawnień",
+        "eligible": "Prawdopodobnie się kwalifikujesz",
+        "notEligible": "Prawdopodobnie się nie kwalifikujesz",
+        "eligibleDescription": "Na podstawie odpowiedzi wydajesz się uprawniony.",
+        "notEligibleDescription": "Na podstawie odpowiedzi nie spełniasz kryteriów."
       },
       "reasons": {
-        "title": "Why this result"
+        "title": "Dlaczego taki wynik"
       },
       "next": {
-        "title": "Next step with FinHub",
-        "description": "We will manage the full request, documentation, and follow-up."
+        "title": "Następny krok z FinHub",
+        "description": "Zajmiemy się wnioskiem, dokumentami i dalszymi krokami."
       },
       "paywall": {
-        "label": "Service fee",
-        "sla": "Estimated turnaround 3-6 weeks"
+        "label": "Opłata serwisowa",
+        "sla": "Szacowany czas 3–6 tygodni"
       },
       "actions": {
-        "continue": "Continue and pay",
-        "saveReference": "Save as reference",
-        "review": "Review answers",
-        "processing": "Processing...",
-        "errorTitle": "We could not continue",
-        "error": "Please try again."
+        "continue": "Kontynuuj i zapłać",
+        "saveReference": "Zapisz jako odniesienie",
+        "review": "Przejrzyj odpowiedzi",
+        "processing": "Przetwarzanie...",
+        "errorTitle": "Nie mogliśmy kontynuować",
+        "error": "Spróbuj ponownie."
       }
     },
     "checkout": {
       "missing": {
-        "title": "Missing application",
-        "description": "Start from the eligibility result first."
+        "title": "Brak wniosku",
+        "description": "Zacznij od wyniku uprawnień."
       },
-      "title": "Checkout",
-      "subtitle": "FinHub will manage your subsidy end-to-end.",
-      "description": "After payment, we will create your case and request your documents.",
-      "priceLabel": "Service fee",
-      "sla": "Estimated turnaround 3-6 weeks",
-      "cta": "Continue to payment",
-      "back": "Back to result",
-      "processing": "Redirecting...",
-      "errorTitle": "Checkout error",
-      "error": "Could not start checkout."
+      "title": "Płatność",
+      "subtitle": "FinHub poprowadzi Twoją dopłatę od początku do końca.",
+      "description": "Po płatności utworzymy sprawę i poprosimy o dokumenty.",
+      "priceLabel": "Opłata serwisowa",
+      "sla": "Szacowany czas 3–6 tygodni",
+      "cta": "Przejdź do płatności",
+      "back": "Wróć do wyniku",
+      "processing": "Przekierowywanie...",
+      "errorTitle": "Błąd płatności",
+      "error": "Nie udało się rozpocząć płatności."
     },
     "applications": {
-      "eyebrow": "Subsidies",
-      "title": "My applications",
-      "subtitle": "Track your applications, upload documents, and see progress.",
-      "error": "Could not load applications.",
-      "errorTitle": "Error",
-      "loading": "Loading applications",
-      "loadingDescription": "Fetching your latest data.",
+      "eyebrow": "Dopłaty",
+      "title": "Moje wnioski",
+      "subtitle": "Śledź wnioski, przesyłaj dokumenty i sprawdzaj postęp.",
+      "error": "Nie udało się wczytać wniosków.",
+      "errorTitle": "Błąd",
+      "loading": "Ładowanie wniosków",
+      "loadingDescription": "Pobieranie najnowszych danych.",
       "empty": {
-        "title": "No applications yet",
-        "description": "Complete the eligibility wizard to start."
+        "title": "Brak wniosków",
+        "description": "Ukończ kreator uprawnień, aby zacząć."
       },
-      "createdAt": "Created",
+      "createdAt": "Utworzono",
       "progress": "Status",
       "cta": {
-        "view": "View application",
-        "details": "View subsidy"
+        "view": "Zobacz wniosek",
+        "details": "Zobacz dopłatę"
       },
       "detail": {
-        "eyebrow": "Application",
-        "subtitle": "Checklist, timeline, and updates.",
-        "back": "Back to applications",
-        "timeline": "Timeline",
-        "documents": "Documents checklist",
-        "upload": "Upload",
-        "uploading": "Uploading...",
-        "uploaded": "Uploaded",
-        "missing": "Missing",
-        "notes": "Admin notes",
-        "notesEmpty": "No notes yet",
-        "notesEmptyDescription": "We will post updates here.",
-        "loading": "Loading application",
-        "loadingDescription": "Fetching the latest status and documents.",
-        "notFound": "Application not found",
-        "notFoundDescription": "This application may have been removed.",
-        "error": "Could not load application.",
-        "errorTitle": "Error",
-        "uploadError": "Could not upload the document."
+        "eyebrow": "Wniosek",
+        "subtitle": "Lista, oś czasu i aktualizacje.",
+        "back": "Wróć do wniosków",
+        "timeline": "Oś czasu",
+        "documents": "Lista dokumentów",
+        "upload": "Prześlij",
+        "uploading": "Przesyłanie...",
+        "uploaded": "Przesłano",
+        "missing": "Brak",
+        "notes": "Notatki admina",
+        "notesEmpty": "Brak notatek",
+        "notesEmptyDescription": "Będziemy tu publikować aktualizacje.",
+        "loading": "Ładowanie wniosku",
+        "loadingDescription": "Pobieranie statusu i dokumentów.",
+        "notFound": "Nie znaleziono wniosku",
+        "notFoundDescription": "Wniosek mógł zostać usunięty.",
+        "error": "Nie udało się wczytać wniosku.",
+        "errorTitle": "Błąd",
+        "uploadError": "Nie udało się przesłać dokumentu."
       }
     },
     "admin": {
       "eyebrow": "Admin",
-      "title": "Subsidy applications",
-      "subtitle": "Review status, request missing docs, and add notes.",
-      "loading": "Loading applications",
-      "loadingDescription": "Fetching admin data.",
-      "error": "Admin request failed.",
-      "errorTitle": "Admin error",
+      "title": "Wnioski o dopłaty",
+      "subtitle": "Sprawdzaj status, proś o brakujące dokumenty i dodawaj notatki.",
+      "loading": "Ładowanie wniosków",
+      "loadingDescription": "Pobieranie danych admina.",
+      "error": "Żądanie admina nie powiodło się.",
+      "errorTitle": "Błąd admina",
       "empty": {
-        "title": "No applications",
-        "description": "There are no subsidy applications yet."
+        "title": "Brak wniosków",
+        "description": "Nie ma jeszcze wniosków o dopłaty."
       },
-      "userId": "User ID",
-      "requestDocs": "Request missing docs",
-      "notePlaceholder": "Add a note or request details...",
-      "saving": "Saving...",
-      "requestDocsCta": "Request documents",
-      "addNote": "Add note"
+      "userId": "ID użytkownika",
+      "requestDocs": "Poproś o dokumenty",
+      "notePlaceholder": "Dodaj notatkę lub poproś o szczegóły...",
+      "saving": "Zapisywanie...",
+      "requestDocsCta": "Poproś o dokumenty",
+      "addNote": "Dodaj notatkę"
     },
     "documents": {
-      "huurcontract": "Rental contract",
-      "rent_service_costs": "Rent + service costs",
-      "proof_income": "Income proof",
-      "id": "ID document",
-      "health_insurance": "Health insurance proof",
-      "partner_income": "Partner income proof",
-      "children_birth": "Children birth certificates",
-      "childcare_contract": "Childcare contract",
-      "childcare_invoice": "Childcare invoices",
-      "work_or_study_proof": "Work or study proof",
-      "household_composition": "Household composition",
+      "huurcontract": "Umowa najmu",
+      "rent_service_costs": "Czynsz + koszty usług",
+      "proof_income": "Potwierdzenie dochodów",
+      "id": "Dokument tożsamości",
+      "health_insurance": "Potwierdzenie ubezpieczenia zdrowotnego",
+      "partner_income": "Potwierdzenie dochodów partnera",
+      "children_birth": "Akty urodzenia dzieci",
+      "childcare_contract": "Umowa opieki nad dziećmi",
+      "childcare_invoice": "Faktury za opiekę",
+      "work_or_study_proof": "Potwierdzenie pracy lub nauki",
+      "household_composition": "Skład gospodarstwa",
       "status": {
-        "missing": "Missing",
-        "uploaded": "Uploaded",
-        "approved": "Approved",
-        "rejected": "Rejected"
+        "missing": "Brak",
+        "uploaded": "Przesłano",
+        "approved": "Zatwierdzono",
+        "rejected": "Odrzucono"
       }
     },
     "status": {
-      "draft": "Draft",
-      "eligible_checked": "Eligibility checked",
-      "paid": "Paid",
-      "waiting_user": "Waiting on you",
-      "under_review": "Under review",
-      "submitted": "Submitted",
-      "decision": "Decision received",
-      "done": "Closed",
-      "cancelled": "Cancelled"
+      "draft": "Szkic",
+      "eligible_checked": "Uprawnienia sprawdzone",
+      "paid": "Opłacono",
+      "waiting_user": "Czekamy na Ciebie",
+      "under_review": "W trakcie weryfikacji",
+      "submitted": "Złożono",
+      "decision": "Decyzja otrzymana",
+      "done": "Zamknięto",
+      "cancelled": "Anulowano"
     }
   }
 }
