@@ -37,14 +37,27 @@ function getFieldValue(raw: unknown): string {
   return String(raw);
 }
 
+function getPersistedStepIndex(slug: SubsidySlug): number {
+  if (typeof window === "undefined") return 0;
+  try {
+    const raw = window.localStorage.getItem("finhub.subsidies.wizard.v1");
+    if (!raw) return 0;
+    const parsed = JSON.parse(raw);
+    const index = parsed?.state?.stepIndexBySlug?.[slug];
+    return typeof index === "number" && Number.isFinite(index) ? index : 0;
+  } catch {
+    return 0;
+  }
+}
+
 export default function SubsidyWizardClient({ slug }: { slug: string }) {
   const t = useTranslations("subsidies");
   const router = useRouter();
-  const [activeStepKey, setActiveStepKey] = useState<string | null>(null);
   const [errors, setErrors] = useState<FieldErrors>({});
 
   const setAnswer = useSubsidyWizardStore((s) => s.setAnswer);
   const setResult = useSubsidyWizardStore((s) => s.setResult);
+  const setStoredStepIndex = useSubsidyWizardStore((s) => s.setStepIndex);
   const answersBySlug = useSubsidyWizardStore((s) => s.answersBySlug);
 
   const isValidSlug = isSubsidySlug(slug);
@@ -59,29 +72,16 @@ export default function SubsidyWizardClient({ slug }: { slug: string }) {
     [steps, t]
   );
 
-  if (!isValidSlug) {
-    return (
-      <Card>
-        <InfoBox title={t("detail.invalid.title")} variant="warning">
-          {t("detail.invalid.description")}
-        </InfoBox>
-      </Card>
-    );
-  }
-
-  if (steps.length === 0) {
-    return (
-      <Card>
-        <InfoBox title={t("detail.invalid.title")} variant="warning">
-          {t("detail.invalid.description")}
-        </InfoBox>
-      </Card>
-    );
-  }
-
   const subsidySlug = slug as SubsidySlug;
-  const fallbackStep = steps[0];
-  if (!fallbackStep) {
+  const initialStepIndex = useMemo(() => getPersistedStepIndex(subsidySlug), [subsidySlug]);
+  const [stepIndex, setStepIndex] = useState(initialStepIndex);
+  const totalSteps = steps.length;
+  const clampedStepIndex = totalSteps > 0 ? Math.min(Math.max(stepIndex, 0), totalSteps - 1) : 0;
+  const activeStep = totalSteps > 0 ? steps[clampedStepIndex] : undefined;
+  const activeKey = activeStep?.key ?? "";
+  const answers = answersBySlug[subsidySlug] ?? {};
+
+  if (!isValidSlug || !activeStep) {
     return (
       <Card>
         <InfoBox title={t("detail.invalid.title")} variant="warning">
@@ -90,10 +90,14 @@ export default function SubsidyWizardClient({ slug }: { slug: string }) {
       </Card>
     );
   }
-  const activeKey = activeStepKey ?? fallbackStep.key;
-  const activeStep = steps.find((s) => s.key === activeKey) ?? fallbackStep;
-  const stepIndex = steps.findIndex((s) => s.key === activeKey);
-  const answers = answersBySlug[subsidySlug] ?? {};
+
+  const currentStep = activeStep;
+
+  function setStepIndexAndPersist(nextIndex: number) {
+    const bounded = Math.min(Math.max(nextIndex, 0), totalSteps - 1);
+    setStepIndex(bounded);
+    setStoredStepIndex(subsidySlug, bounded);
+  }
 
   function setFieldValue(field: WizardField, value: string) {
     if (field.type === "toggle") {
@@ -110,7 +114,7 @@ export default function SubsidyWizardClient({ slug }: { slug: string }) {
 
   function validateStep(): boolean {
     const nextErrors: FieldErrors = {};
-    activeStep.fields.forEach((field) => {
+    currentStep.fields.forEach((field) => {
       const value = answers[field.id];
       if (field.type === "toggle" || field.type === "select") {
         if (!value) nextErrors[field.id] = t("wizard.errors.required");
@@ -170,9 +174,9 @@ export default function SubsidyWizardClient({ slug }: { slug: string }) {
 
   function goNext() {
     if (!validateStep()) return;
-    const next = steps[stepIndex + 1];
+    const next = steps[clampedStepIndex + 1];
     if (next) {
-      setActiveStepKey(next.key);
+      setStepIndexAndPersist(clampedStepIndex + 1);
       return;
     }
 
@@ -183,8 +187,7 @@ export default function SubsidyWizardClient({ slug }: { slug: string }) {
   }
 
   function goBack() {
-    const prev = steps[stepIndex - 1];
-    if (prev) setActiveStepKey(prev.key);
+    if (clampedStepIndex > 0) setStepIndexAndPersist(clampedStepIndex - 1);
   }
 
   return (
@@ -193,21 +196,24 @@ export default function SubsidyWizardClient({ slug }: { slug: string }) {
         <Stepper
           steps={stepperSteps}
           activeKey={activeKey}
-          onStepChange={setActiveStepKey}
+          onStepChange={(key) => {
+            const nextIndex = steps.findIndex((s) => s.key === key);
+            if (nextIndex >= 0) setStepIndexAndPersist(nextIndex);
+          }}
           labels={{ progress: t("wizard.stepper.progress"), step: t("wizard.stepper.step") }}
         />
 
         <Card className="space-y-6">
           <div>
             <div className="text-xs uppercase tracking-wide text-fh-muted">{t("wizard.stepper.step")}</div>
-            <div className="text-lg font-semibold text-fh-text">{t(activeStep.titleKey)}</div>
-            {activeStep.descriptionKey ? (
-              <div className="text-sm text-fh-muted">{t(activeStep.descriptionKey)}</div>
+            <div className="text-lg font-semibold text-fh-text">{t(currentStep.titleKey)}</div>
+            {currentStep.descriptionKey ? (
+              <div className="text-sm text-fh-muted">{t(currentStep.descriptionKey)}</div>
             ) : null}
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">
-            {activeStep.fields.map((field) => {
+            {currentStep.fields.map((field) => {
               const fieldValue = getFieldValue(answers[field.id]);
               const error = errors[field.id];
 
@@ -278,7 +284,7 @@ export default function SubsidyWizardClient({ slug }: { slug: string }) {
             <button
               type="button"
               onClick={goBack}
-              disabled={stepIndex === 0}
+              disabled={clampedStepIndex === 0}
               className="rounded-xl border border-fh-border bg-fh-surface px-4 py-2 text-sm font-medium text-fh-text hover:bg-fh-surface-2 disabled:opacity-50"
             >
               {t("wizard.actions.back")}
@@ -288,7 +294,7 @@ export default function SubsidyWizardClient({ slug }: { slug: string }) {
               onClick={goNext}
               className="rounded-xl bg-fh-primary px-4 py-2 text-sm font-medium text-fh-primaryFg hover:opacity-90"
             >
-              {stepIndex === steps.length - 1 ? t("wizard.actions.finish") : t("wizard.actions.next")}
+              {clampedStepIndex === steps.length - 1 ? t("wizard.actions.finish") : t("wizard.actions.next")}
             </button>
           </div>
         </Card>
