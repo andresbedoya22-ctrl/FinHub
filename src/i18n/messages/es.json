@@ -453,6 +453,7 @@
       "eyebrow": "Subsidios",
       "title": "Subsidios gestionados por FinHub",
       "subtitle": "Comprueba elegibilidad rápido y deja que FinHub gestione la solicitud, documentos y seguimiento.",
+      "badge": "Gestionado por FinHub",
       "labels": {
         "coverage": "Cubre",
         "audience": "Para",

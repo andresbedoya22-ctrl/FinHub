@@ -50,31 +50,31 @@ export function evaluateHuurtoeslag2026(
   const blockingReasons: string[] = [];
   const reasons: string[] = [];
 
-  if (!input.livesInRent) blockingReasons.push("subsidies.engine.huurtoeslag.notRenting");
+  if (!input.livesInRent) blockingReasons.push("engine.huurtoeslag.notRenting");
   if (!isPositiveNumber(input.age) || input.age < policy.huurtoeslag.minAge) {
-    blockingReasons.push("subsidies.engine.huurtoeslag.ageTooLow");
+    blockingReasons.push("engine.huurtoeslag.ageTooLow");
   }
 
   const incomeSelf = normalizeIncome(input.incomeSelf);
   const incomePartner = normalizeIncome(input.incomePartner);
-  if (incomeSelf === null) blockingReasons.push("subsidies.engine.common.missingIncome");
+  if (incomeSelf === null) blockingReasons.push("engine.common.missingIncome");
 
   const totalIncome = (incomeSelf ?? 0) + (incomePartner ?? 0);
   const maxIncome = input.hasPartner ? policy.huurtoeslag.maxIncomePartner : policy.huurtoeslag.maxIncomeSingle;
-  if (totalIncome > maxIncome) blockingReasons.push("subsidies.engine.huurtoeslag.incomeTooHigh");
+  if (totalIncome > maxIncome) blockingReasons.push("engine.huurtoeslag.incomeTooHigh");
 
-  if (!isPositiveNumber(input.rent)) blockingReasons.push("subsidies.engine.common.missingRent");
+  if (!isPositiveNumber(input.rent)) blockingReasons.push("engine.common.missingRent");
   if (isPositiveNumber(input.rent) && input.rent > policy.huurtoeslag.maxRent) {
-    blockingReasons.push("subsidies.engine.huurtoeslag.rentTooHigh");
+    blockingReasons.push("engine.huurtoeslag.rentTooHigh");
   }
 
   if (isPositiveNumber(input.serviceCosts) && input.serviceCosts > policy.huurtoeslag.maxServiceCosts) {
-    blockingReasons.push("subsidies.engine.huurtoeslag.serviceCostsTooHigh");
+    blockingReasons.push("engine.huurtoeslag.serviceCostsTooHigh");
   }
 
   if (blockingReasons.length === 0) {
-    reasons.push("subsidies.engine.common.eligibleIncomeOk");
-    reasons.push("subsidies.engine.huurtoeslag.eligibleRentOk");
+    reasons.push("engine.common.eligibleIncomeOk");
+    reasons.push("engine.huurtoeslag.eligibleRentOk");
   }
 
   return {
@@ -91,19 +91,19 @@ export function evaluateZorgtoeslag2026(
   const blockingReasons: string[] = [];
   const reasons: string[] = [];
 
-  if (!input.hasBasicInsurance) blockingReasons.push("subsidies.engine.zorgtoeslag.noBasicInsurance");
+  if (!input.hasBasicInsurance) blockingReasons.push("engine.zorgtoeslag.noBasicInsurance");
 
   const incomeSelf = normalizeIncome(input.incomeSelf);
   const incomePartner = normalizeIncome(input.incomePartner);
-  if (incomeSelf === null) blockingReasons.push("subsidies.engine.common.missingIncome");
+  if (incomeSelf === null) blockingReasons.push("engine.common.missingIncome");
 
   const totalIncome = (incomeSelf ?? 0) + (incomePartner ?? 0);
   const maxIncome = input.hasPartner ? policy.zorgtoeslag.maxIncomePartner : policy.zorgtoeslag.maxIncomeSingle;
-  if (totalIncome > maxIncome) blockingReasons.push("subsidies.engine.zorgtoeslag.incomeTooHigh");
+  if (totalIncome > maxIncome) blockingReasons.push("engine.zorgtoeslag.incomeTooHigh");
 
   if (blockingReasons.length === 0) {
-    reasons.push("subsidies.engine.common.eligibleIncomeOk");
-    reasons.push("subsidies.engine.zorgtoeslag.eligibleInsuranceOk");
+    reasons.push("engine.common.eligibleIncomeOk");
+    reasons.push("engine.zorgtoeslag.eligibleInsuranceOk");
   }
 
   return {
@@ -118,19 +118,19 @@ export function evaluateKGB2026(input: KgbInput, policy: SubsidyPolicy2026): Eli
   const reasons: string[] = [];
 
   if (!isPositiveNumber(input.childrenCount) || input.childrenCount < policy.kgb.minChildren) {
-    blockingReasons.push("subsidies.engine.kgb.noChildren");
+    blockingReasons.push("engine.kgb.noChildren");
   }
 
   const incomeHousehold = normalizeIncome(input.incomeHousehold);
-  if (incomeHousehold === null) blockingReasons.push("subsidies.engine.common.missingIncome");
+  if (incomeHousehold === null) blockingReasons.push("engine.common.missingIncome");
 
   if (incomeHousehold !== null && incomeHousehold > policy.kgb.maxIncomeHousehold) {
-    blockingReasons.push("subsidies.engine.kgb.incomeTooHigh");
+    blockingReasons.push("engine.kgb.incomeTooHigh");
   }
 
   if (blockingReasons.length === 0) {
-    reasons.push("subsidies.engine.common.eligibleIncomeOk");
-    reasons.push("subsidies.engine.kgb.eligibleChildrenOk");
+    reasons.push("engine.common.eligibleIncomeOk");
+    reasons.push("engine.kgb.eligibleChildrenOk");
   }
 
   return {
@@ -145,29 +145,29 @@ export function evaluateKOT2026(input: KotInput, policy: SubsidyPolicy2026): Eli
   const reasons: string[] = [];
 
   if (!isPositiveNumber(input.childrenCount) || input.childrenCount < policy.kot.minChildren) {
-    blockingReasons.push("subsidies.engine.kot.noChildren");
+    blockingReasons.push("engine.kot.noChildren");
   }
 
   if (!isPositiveNumber(input.hoursPerMonth) || !isPositiveNumber(input.costPerHour)) {
-    blockingReasons.push("subsidies.engine.kot.noChildcareCosts");
+    blockingReasons.push("engine.kot.noChildcareCosts");
   }
 
   if (!input.worksOrStudies || (input.partnerWorksOrStudies === false && input.partnerWorksOrStudies !== undefined)) {
     if (!input.worksOrStudies) {
-      blockingReasons.push("subsidies.engine.kot.noWorkOrStudy");
+      blockingReasons.push("engine.kot.noWorkOrStudy");
     }
   }
 
   const incomeHousehold = normalizeIncome(input.incomeHousehold);
-  if (incomeHousehold === null) blockingReasons.push("subsidies.engine.common.missingIncome");
+  if (incomeHousehold === null) blockingReasons.push("engine.common.missingIncome");
 
   if (incomeHousehold !== null && incomeHousehold > policy.kot.maxIncomeHousehold) {
-    blockingReasons.push("subsidies.engine.kot.incomeTooHigh");
+    blockingReasons.push("engine.kot.incomeTooHigh");
   }
 
   if (blockingReasons.length === 0) {
-    reasons.push("subsidies.engine.common.eligibleIncomeOk");
-    reasons.push("subsidies.engine.kot.eligibleChildcareOk");
+    reasons.push("engine.common.eligibleIncomeOk");
+    reasons.push("engine.kot.eligibleChildcareOk");
   }
 
   return {
@@ -192,6 +192,7 @@ export function evaluateSubsidyEligibility(
     case "kot":
       return evaluateKOT2026(payload as KotInput, policy);
     default:
-      return { eligible: false, reasons: [], blockingReasons: ["subsidies.engine.common.invalidSlug"] };
+      return { eligible: false, reasons: [], blockingReasons: ["engine.common.invalidSlug"] };
   }
 }
+
