@@ -24,125 +24,126 @@ export type WizardStep = {
 };
 
 const COMMON_YN_OPTIONS: WizardOption[] = [
-  { value: "yes", labelKey: "subsidies.wizard.common.yes" },
-  { value: "no", labelKey: "subsidies.wizard.common.no" },
+  { value: "yes", labelKey: "wizard.common.yes" },
+  { value: "no", labelKey: "wizard.common.no" },
 ];
 
 export const WIZARD_STEPS_BY_SLUG: Record<SubsidySlug, WizardStep[]> = {
   huurtoeslag: [
     {
       key: "base",
-      titleKey: "subsidies.wizard.huurtoeslag.steps.base.title",
-      descriptionKey: "subsidies.wizard.huurtoeslag.steps.base.description",
+      titleKey: "wizard.huurtoeslag.steps.base.title",
+      descriptionKey: "wizard.huurtoeslag.steps.base.description",
       fields: [
-        { id: "livesInRent", type: "toggle", labelKey: "subsidies.wizard.huurtoeslag.fields.livesInRent", options: COMMON_YN_OPTIONS },
-        { id: "age", type: "number", labelKey: "subsidies.wizard.common.fields.age" },
-        { id: "hasPartner", type: "toggle", labelKey: "subsidies.wizard.common.fields.hasPartner", options: COMMON_YN_OPTIONS },
+        { id: "livesInRent", type: "toggle", labelKey: "wizard.huurtoeslag.fields.livesInRent", options: COMMON_YN_OPTIONS },
+        { id: "age", type: "number", labelKey: "wizard.common.fields.age" },
+        { id: "hasPartner", type: "toggle", labelKey: "wizard.common.fields.hasPartner", options: COMMON_YN_OPTIONS },
       ],
     },
     {
       key: "income",
-      titleKey: "subsidies.wizard.common.steps.income.title",
-      descriptionKey: "subsidies.wizard.common.steps.income.description",
+      titleKey: "wizard.common.steps.income.title",
+      descriptionKey: "wizard.common.steps.income.description",
       fields: [
-        { id: "incomeSelf", type: "currency", labelKey: "subsidies.wizard.common.fields.incomeSelf" },
-        { id: "incomePartner", type: "currency", labelKey: "subsidies.wizard.common.fields.incomePartner" },
+        { id: "incomeSelf", type: "currency", labelKey: "wizard.common.fields.incomeSelf" },
+        { id: "incomePartner", type: "currency", labelKey: "wizard.common.fields.incomePartner" },
       ],
     },
     {
       key: "rent",
-      titleKey: "subsidies.wizard.huurtoeslag.steps.rent.title",
-      descriptionKey: "subsidies.wizard.huurtoeslag.steps.rent.description",
+      titleKey: "wizard.huurtoeslag.steps.rent.title",
+      descriptionKey: "wizard.huurtoeslag.steps.rent.description",
       fields: [
-        { id: "rent", type: "currency", labelKey: "subsidies.wizard.huurtoeslag.fields.rent" },
-        { id: "serviceCosts", type: "currency", labelKey: "subsidies.wizard.huurtoeslag.fields.serviceCosts" },
+        { id: "rent", type: "currency", labelKey: "wizard.huurtoeslag.fields.rent" },
+        { id: "serviceCosts", type: "currency", labelKey: "wizard.huurtoeslag.fields.serviceCosts" },
       ],
     },
   ],
   zorgtoeslag: [
     {
       key: "insurance",
-      titleKey: "subsidies.wizard.zorgtoeslag.steps.insurance.title",
-      descriptionKey: "subsidies.wizard.zorgtoeslag.steps.insurance.description",
+      titleKey: "wizard.zorgtoeslag.steps.insurance.title",
+      descriptionKey: "wizard.zorgtoeslag.steps.insurance.description",
       fields: [
         {
           id: "hasBasicInsurance",
           type: "toggle",
-          labelKey: "subsidies.wizard.zorgtoeslag.fields.hasBasicInsurance",
+          labelKey: "wizard.zorgtoeslag.fields.hasBasicInsurance",
           options: COMMON_YN_OPTIONS,
         },
-        { id: "hasPartner", type: "toggle", labelKey: "subsidies.wizard.common.fields.hasPartner", options: COMMON_YN_OPTIONS },
+        { id: "hasPartner", type: "toggle", labelKey: "wizard.common.fields.hasPartner", options: COMMON_YN_OPTIONS },
       ],
     },
     {
       key: "income",
-      titleKey: "subsidies.wizard.common.steps.income.title",
-      descriptionKey: "subsidies.wizard.common.steps.income.description",
+      titleKey: "wizard.common.steps.income.title",
+      descriptionKey: "wizard.common.steps.income.description",
       fields: [
-        { id: "incomeSelf", type: "currency", labelKey: "subsidies.wizard.common.fields.incomeSelf" },
-        { id: "incomePartner", type: "currency", labelKey: "subsidies.wizard.common.fields.incomePartner" },
+        { id: "incomeSelf", type: "currency", labelKey: "wizard.common.fields.incomeSelf" },
+        { id: "incomePartner", type: "currency", labelKey: "wizard.common.fields.incomePartner" },
       ],
     },
   ],
   kgb: [
     {
       key: "family",
-      titleKey: "subsidies.wizard.kgb.steps.family.title",
-      descriptionKey: "subsidies.wizard.kgb.steps.family.description",
+      titleKey: "wizard.kgb.steps.family.title",
+      descriptionKey: "wizard.kgb.steps.family.description",
       fields: [
-        { id: "childrenCount", type: "number", labelKey: "subsidies.wizard.kgb.fields.childrenCount" },
-        { id: "hasPartner", type: "toggle", labelKey: "subsidies.wizard.common.fields.hasPartner", options: COMMON_YN_OPTIONS },
+        { id: "childrenCount", type: "number", labelKey: "wizard.kgb.fields.childrenCount" },
+        { id: "hasPartner", type: "toggle", labelKey: "wizard.common.fields.hasPartner", options: COMMON_YN_OPTIONS },
       ],
     },
     {
       key: "income",
-      titleKey: "subsidies.wizard.common.steps.income.title",
-      descriptionKey: "subsidies.wizard.common.steps.income.description",
-      fields: [{ id: "incomeHousehold", type: "currency", labelKey: "subsidies.wizard.common.fields.incomeHousehold" }],
+      titleKey: "wizard.common.steps.income.title",
+      descriptionKey: "wizard.common.steps.income.description",
+      fields: [{ id: "incomeHousehold", type: "currency", labelKey: "wizard.common.fields.incomeHousehold" }],
     },
   ],
   kot: [
     {
       key: "children",
-      titleKey: "subsidies.wizard.kot.steps.children.title",
-      descriptionKey: "subsidies.wizard.kot.steps.children.description",
+      titleKey: "wizard.kot.steps.children.title",
+      descriptionKey: "wizard.kot.steps.children.description",
       fields: [
-        { id: "childrenCount", type: "number", labelKey: "subsidies.wizard.kot.fields.childrenCount" },
+        { id: "childrenCount", type: "number", labelKey: "wizard.kot.fields.childrenCount" },
         {
           id: "childcareType",
           type: "select",
-          labelKey: "subsidies.wizard.kot.fields.childcareType",
+          labelKey: "wizard.kot.fields.childcareType",
           options: [
-            { value: "dagopvang", labelKey: "subsidies.wizard.kot.options.dagopvang" },
-            { value: "bso", labelKey: "subsidies.wizard.kot.options.bso" },
-            { value: "gastouder", labelKey: "subsidies.wizard.kot.options.gastouder" },
+            { value: "dagopvang", labelKey: "wizard.kot.options.dagopvang" },
+            { value: "bso", labelKey: "wizard.kot.options.bso" },
+            { value: "gastouder", labelKey: "wizard.kot.options.gastouder" },
           ],
         },
       ],
     },
     {
       key: "costs",
-      titleKey: "subsidies.wizard.kot.steps.costs.title",
-      descriptionKey: "subsidies.wizard.kot.steps.costs.description",
+      titleKey: "wizard.kot.steps.costs.title",
+      descriptionKey: "wizard.kot.steps.costs.description",
       fields: [
-        { id: "hoursPerMonth", type: "number", labelKey: "subsidies.wizard.kot.fields.hoursPerMonth" },
-        { id: "costPerHour", type: "currency", labelKey: "subsidies.wizard.kot.fields.costPerHour" },
+        { id: "hoursPerMonth", type: "number", labelKey: "wizard.kot.fields.hoursPerMonth" },
+        { id: "costPerHour", type: "currency", labelKey: "wizard.kot.fields.costPerHour" },
       ],
     },
     {
       key: "work",
-      titleKey: "subsidies.wizard.kot.steps.work.title",
-      descriptionKey: "subsidies.wizard.kot.steps.work.description",
+      titleKey: "wizard.kot.steps.work.title",
+      descriptionKey: "wizard.kot.steps.work.description",
       fields: [
-        { id: "worksOrStudies", type: "toggle", labelKey: "subsidies.wizard.kot.fields.worksOrStudies", options: COMMON_YN_OPTIONS },
-        { id: "partnerWorksOrStudies", type: "toggle", labelKey: "subsidies.wizard.kot.fields.partnerWorksOrStudies", options: COMMON_YN_OPTIONS },
+        { id: "worksOrStudies", type: "toggle", labelKey: "wizard.kot.fields.worksOrStudies", options: COMMON_YN_OPTIONS },
+        { id: "partnerWorksOrStudies", type: "toggle", labelKey: "wizard.kot.fields.partnerWorksOrStudies", options: COMMON_YN_OPTIONS },
       ],
     },
     {
       key: "income",
-      titleKey: "subsidies.wizard.common.steps.income.title",
-      descriptionKey: "subsidies.wizard.common.steps.income.description",
-      fields: [{ id: "incomeHousehold", type: "currency", labelKey: "subsidies.wizard.common.fields.incomeHousehold" }],
+      titleKey: "wizard.common.steps.income.title",
+      descriptionKey: "wizard.common.steps.income.description",
+      fields: [{ id: "incomeHousehold", type: "currency", labelKey: "wizard.common.fields.incomeHousehold" }],
     },
   ],
 };
+
