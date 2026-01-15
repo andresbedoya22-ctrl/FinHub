@@ -13,61 +13,61 @@ function mk(title: string, breadcrumbs: Breadcrumb[]): RouteMeta {
   return { title, breadcrumbs };
 }
 
-function byPathname(pathname: string, t: TranslateFn): RouteMeta {
+function byPathname(pathname: string, shellT: TranslateFn, subsT: TranslateFn): RouteMeta {
   if (!pathname.startsWith("/app")) {
-    return mk(t("route.dashboard"), [{ href: "/app/finances", label: t("route.finances") }]);
+    return mk(shellT("route.dashboard"), [{ href: "/app/finances", label: shellT("route.finances") }]);
   }
 
   // Finanzas
   if (pathname === "/app/finances") {
-    return mk(t("route.finances"), [{ href: "/app/finances", label: t("route.finances") }]);
+    return mk(shellT("route.finances"), [{ href: "/app/finances", label: shellT("route.finances") }]);
   }
 
   if (pathname === "/app/finances/transactions") {
-    return mk(t("route.transactions"), [
-      { href: "/app/finances", label: t("route.finances") },
-      { href: "/app/finances/transactions", label: t("route.transactions") },
+    return mk(shellT("route.transactions"), [
+      { href: "/app/finances", label: shellT("route.finances") },
+      { href: "/app/finances/transactions", label: shellT("route.transactions") },
     ]);
   }
 
   if (pathname === "/app/finances/transactions/new") {
-    return mk(t("route.newTransaction"), [
-      { href: "/app/finances", label: t("route.finances") },
-      { href: "/app/finances/transactions", label: t("route.transactions") },
-      { href: "/app/finances/transactions/new", label: t("route.new") },
+    return mk(shellT("route.newTransaction"), [
+      { href: "/app/finances", label: shellT("route.finances") },
+      { href: "/app/finances/transactions", label: shellT("route.transactions") },
+      { href: "/app/finances/transactions/new", label: shellT("route.new") },
     ]);
   }
 
   if (pathname.startsWith("/app/finances/transactions/")) {
-    return mk(t("route.transactionDetail"), [
-      { href: "/app/finances", label: t("route.finances") },
-      { href: "/app/finances/transactions", label: t("route.transactions") },
-      { href: pathname, label: t("route.detail") },
+    return mk(shellT("route.transactionDetail"), [
+      { href: "/app/finances", label: shellT("route.finances") },
+      { href: "/app/finances/transactions", label: shellT("route.transactions") },
+      { href: pathname, label: shellT("route.detail") },
     ]);
   }
 
   // Subsidios
   if (pathname === "/app/subsidies") {
-    return mk(t("route.subsidies"), [
-      { href: "/app/finances", label: t("route.finances") },
-      { href: "/app/subsidies", label: t("route.subsidies") },
+    return mk(shellT("route.subsidies"), [
+      { href: "/app/finances", label: shellT("route.finances") },
+      { href: "/app/subsidies", label: shellT("route.subsidies") },
     ]);
   }
 
   if (pathname === "/app/subsidies/applications") {
-    return mk(t("route.subsidyApplications"), [
-      { href: "/app/finances", label: t("route.finances") },
-      { href: "/app/subsidies", label: t("route.subsidies") },
-      { href: "/app/subsidies/applications", label: t("route.subsidyApplications") },
+    return mk(shellT("route.subsidyApplications"), [
+      { href: "/app/finances", label: shellT("route.finances") },
+      { href: "/app/subsidies", label: shellT("route.subsidies") },
+      { href: "/app/subsidies/applications", label: shellT("route.subsidyApplications") },
     ]);
   }
 
   if (pathname.startsWith("/app/subsidies/applications/")) {
-    return mk(t("route.subsidyApplications"), [
-      { href: "/app/finances", label: t("route.finances") },
-      { href: "/app/subsidies", label: t("route.subsidies") },
-      { href: "/app/subsidies/applications", label: t("route.subsidyApplications") },
-      { href: pathname, label: t("route.detail") },
+    return mk(shellT("route.subsidyApplications"), [
+      { href: "/app/finances", label: shellT("route.finances") },
+      { href: "/app/subsidies", label: shellT("route.subsidies") },
+      { href: "/app/subsidies/applications", label: shellT("route.subsidyApplications") },
+      { href: pathname, label: shellT("route.detail") },
     ]);
   }
 
@@ -76,10 +76,10 @@ function byPathname(pathname: string, t: TranslateFn): RouteMeta {
   if (subsidySlug) {
     const subsidy = getSubsidyBySlug(subsidySlug);
     if (subsidy) {
-      const subsidyLabel = t(subsidy.catalog.titleKey);
+      const subsidyLabel = subsT(subsidy.catalog.titleKey);
       const baseBreadcrumbs = [
-        { href: "/app/finances", label: t("route.finances") },
-        { href: "/app/subsidies", label: t("route.subsidies") },
+        { href: "/app/finances", label: shellT("route.finances") },
+        { href: "/app/subsidies", label: shellT("route.subsidies") },
         { href: `/app/subsidies/${subsidy.slug}`, label: subsidyLabel },
       ];
 
@@ -89,99 +89,102 @@ function byPathname(pathname: string, t: TranslateFn): RouteMeta {
       }
 
       if (step === "wizard") {
-        return mk(t("route.subsidyWizard"), [
+        return mk(shellT("route.subsidyWizard"), [
           ...baseBreadcrumbs,
-          { href: pathname, label: t("route.subsidyWizard") },
+          { href: pathname, label: shellT("route.subsidyWizard") },
         ]);
       }
 
       if (step === "result") {
-        return mk(t("route.subsidyResult"), [
+        return mk(shellT("route.subsidyResult"), [
           ...baseBreadcrumbs,
-          { href: pathname, label: t("route.subsidyResult") },
+          { href: pathname, label: shellT("route.subsidyResult") },
         ]);
       }
 
       if (step === "checkout") {
-        return mk(t("route.subsidyCheckout"), [
+        return mk(shellT("route.subsidyCheckout"), [
           ...baseBreadcrumbs,
-          { href: pathname, label: t("route.subsidyCheckout") },
+          { href: pathname, label: shellT("route.subsidyCheckout") },
         ]);
       }
     }
   }
 
   if (pathname.startsWith("/app/subsidies/")) {
-    return mk(t("route.subsidyDetail"), [
-      { href: "/app/finances", label: t("route.finances") },
-      { href: "/app/subsidies", label: t("route.subsidies") },
-      { href: pathname, label: t("route.detail") },
+    return mk(shellT("route.subsidyDetail"), [
+      { href: "/app/finances", label: shellT("route.finances") },
+      { href: "/app/subsidies", label: shellT("route.subsidies") },
+      { href: pathname, label: shellT("route.detail") },
     ]);
   }
 
   // Documentos
   if (pathname === "/app/documents") {
-    return mk(t("route.documents"), [
-      { href: "/app/finances", label: t("route.finances") },
-      { href: "/app/documents", label: t("route.documents") },
+    return mk(shellT("route.documents"), [
+      { href: "/app/finances", label: shellT("route.finances") },
+      { href: "/app/documents", label: shellT("route.documents") },
     ]);
   }
 
   if (pathname.startsWith("/app/documents/")) {
-    return mk(t("route.documents"), [
-      { href: "/app/finances", label: t("route.finances") },
-      { href: "/app/documents", label: t("route.documents") },
-      { href: pathname, label: t("route.detail") },
+    return mk(shellT("route.documents"), [
+      { href: "/app/finances", label: shellT("route.finances") },
+      { href: "/app/documents", label: shellT("route.documents") },
+      { href: pathname, label: shellT("route.detail") },
     ]);
   }
 
   // Casos
   if (pathname === "/app/cases") {
-    return mk(t("route.cases"), [
-      { href: "/app/finances", label: t("route.finances") },
-      { href: "/app/cases", label: t("route.cases") },
+    return mk(shellT("route.cases"), [
+      { href: "/app/finances", label: shellT("route.finances") },
+      { href: "/app/cases", label: shellT("route.cases") },
     ]);
   }
 
   if (pathname.startsWith("/app/cases/")) {
-    return mk(t("route.case"), [
-      { href: "/app/finances", label: t("route.finances") },
-      { href: "/app/cases", label: t("route.cases") },
-      { href: pathname, label: t("route.detail") },
+    return mk(shellT("route.case"), [
+      { href: "/app/finances", label: shellT("route.finances") },
+      { href: "/app/cases", label: shellT("route.cases") },
+      { href: pathname, label: shellT("route.detail") },
     ]);
   }
 
   // Perfil / Admin
   if (pathname === "/app/profile") {
-    return mk(t("route.profile"), [
-      { href: "/app/finances", label: t("route.finances") },
-      { href: "/app/profile", label: t("route.profile") },
+    return mk(shellT("route.profile"), [
+      { href: "/app/finances", label: shellT("route.finances") },
+      { href: "/app/profile", label: shellT("route.profile") },
     ]);
   }
 
   if (pathname === "/app/admin") {
-    return mk(t("route.admin"), [
-      { href: "/app/finances", label: t("route.finances") },
-      { href: "/app/admin", label: t("route.admin") },
+    return mk(shellT("route.admin"), [
+      { href: "/app/finances", label: shellT("route.finances") },
+      { href: "/app/admin", label: shellT("route.admin") },
     ]);
   }
 
   if (pathname.startsWith("/app/admin/")) {
-    return mk(t("route.admin"), [
-      { href: "/app/finances", label: t("route.finances") },
-      { href: "/app/admin", label: t("route.admin") },
-      { href: pathname, label: t("route.detail") },
+    return mk(shellT("route.admin"), [
+      { href: "/app/finances", label: shellT("route.finances") },
+      { href: "/app/admin", label: shellT("route.admin") },
+      { href: pathname, label: shellT("route.detail") },
     ]);
   }
 
-  return mk(t("route.dashboard"), [{ href: "/app/finances", label: t("route.finances") }]);
+  return mk(shellT("route.dashboard"), [{ href: "/app/finances", label: shellT("route.finances") }]);
 }
 
-export function getDashboardRouteMeta(pathname: string, t: TranslateFn): RouteMeta {
-  return byPathname(pathname, t);
+export function getDashboardRouteMeta(pathname: string, shellT: TranslateFn, subsT: TranslateFn): RouteMeta {
+  return byPathname(pathname, shellT, subsT);
 }
 
 // Alias defensivo por compatibilidad
-export function getRouteMeta(pathname: string, t: TranslateFn): RouteMeta {
-  return byPathname(pathname, t);
+export function getRouteMeta(pathname: string, shellT: TranslateFn, subsT: TranslateFn): RouteMeta {
+  return byPathname(pathname, shellT, subsT);
 }
+
+
+

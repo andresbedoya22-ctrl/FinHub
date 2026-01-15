@@ -20,7 +20,7 @@ function isActive(pathname: string, href: string): boolean {
 }
 
 /** Minimal inline icons (no deps) */
-function Icon({ name }: { name: "grid" | "money" | "doc" | "case" | "user" | "shield" | "search" | "bell" }) {
+function Icon({ name }: { name: "grid" | "money" | "doc" | "case" | "user" | "shield" | "search" | "bell" | "benefit" }) {
   const common = "w-4 h-4";
   switch (name) {
     case "grid":
@@ -86,6 +86,14 @@ function Icon({ name }: { name: "grid" | "money" | "doc" | "case" | "user" | "sh
           />
         </svg>
       );
+    case "benefit":
+      return (
+        <svg className={common} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 3l3 3-3 3-3-3 3-3z" stroke="currentColor" strokeWidth="1.5" />
+          <path d="M5 10h14v10H5V10z" stroke="currentColor" strokeWidth="1.5" />
+          <path d="M9 14h6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        </svg>
+      );
     case "search":
       return (
         <svg className={common} viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -131,7 +139,8 @@ function Breadcrumbs({ items }: { items: Breadcrumb[] }) {
 export default function DashboardShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const t = useTranslations("shell");
+  const shellT = useTranslations("shell");
+  const subsT = useTranslations("subsidies");
 
   const SIDEBAR_KEY = "finhub.sidebar.collapsed.v1";
 
@@ -159,37 +168,41 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
     }
   }, [collapsed]);
 
-  const meta = useMemo(() => getDashboardRouteMeta(pathname, t), [pathname, t]);
+  const meta = useMemo(() => getDashboardRouteMeta(pathname, shellT, subsT), [pathname, shellT, subsT]);
 
   const navSections: NavSection[] = useMemo(
     () => [
       {
-        title: t("section.finances"),
+        title: shellT("section.finances"),
         items: [
-          { href: "/app/finances", label: t("nav.overview"), icon: "money" },
-          { href: "/app/finances/transactions", label: t("nav.transactions"), icon: "grid" },
+          { href: "/app/finances", label: shellT("nav.overview"), icon: "money" },
+          { href: "/app/finances/transactions", label: shellT("nav.transactions"), icon: "grid" },
         ],
       },
       {
-        title: t("section.operations"),
+        title: shellT("section.subsidies"),
+        items: [{ href: "/app/subsidies", label: shellT("nav.subsidies"), icon: "benefit" }],
+      },
+      {
+        title: shellT("section.operations"),
         items: [
-          { href: "/app/documents", label: t("nav.documents"), icon: "doc" },
-          { href: "/app/cases", label: t("nav.cases"), icon: "case" },
+          { href: "/app/documents", label: shellT("nav.documents"), icon: "doc" },
+          { href: "/app/cases", label: shellT("nav.cases"), icon: "case" },
         ],
       },
       {
-        title: t("section.account"),
-        items: [{ href: "/app/profile", label: t("nav.profile"), icon: "user" }],
+        title: shellT("section.account"),
+        items: [{ href: "/app/profile", label: shellT("nav.profile"), icon: "user" }],
       },
       {
-        title: t("section.admin"),
+        title: shellT("section.admin"),
         items: [
-          { href: "/app/admin", label: t("nav.admin"), icon: "shield" },
-          { href: "/app/ui-kit", label: t("nav.uikit"), icon: "grid" },
+          { href: "/app/admin", label: shellT("nav.admin"), icon: "shield" },
+          { href: "/app/ui-kit", label: shellT("nav.uikit"), icon: "grid" },
         ],
       },
     ],
-    [t],
+    [shellT],
   );
 
   // CmdK
@@ -210,15 +223,16 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
 
   const actions: CmdkAction[] = useMemo(
     () => [
-      { id: "nav-finances", kind: "nav", href: "/app/finances", label: t("cmdk.goToFinances"), hint: "/app/finances" },
-      { id: "nav-tx", kind: "nav", href: "/app/finances/transactions", label: t("cmdk.goToTransactions"), hint: "/app/finances/transactions" },
-      { id: "nav-docs", kind: "nav", href: "/app/documents", label: t("cmdk.goToDocuments"), hint: "/app/documents" },
-      { id: "nav-cases", kind: "nav", href: "/app/cases", label: t("cmdk.goToCases"), hint: "/app/cases" },
-      { id: "nav-profile", kind: "nav", href: "/app/profile", label: t("cmdk.goToProfile"), hint: "/app/profile" },
-      { id: "nav-ui-kit", kind: "nav", href: "/app/ui-kit", label: t("cmdk.goToUiKit"), hint: "/app/ui-kit" },
-      { id: "logout", kind: "logout", label: t("account.logout"), hint: t("cmdk.logoutHint") },
+      { id: "nav-finances", kind: "nav", href: "/app/finances", label: shellT("cmdk.goToFinances"), hint: "/app/finances" },
+      { id: "nav-tx", kind: "nav", href: "/app/finances/transactions", label: shellT("cmdk.goToTransactions"), hint: "/app/finances/transactions" },
+      { id: "nav-subsidies", kind: "nav", href: "/app/subsidies", label: shellT("cmdk.goToSubsidies"), hint: "/app/subsidies" },
+      { id: "nav-docs", kind: "nav", href: "/app/documents", label: shellT("cmdk.goToDocuments"), hint: "/app/documents" },
+      { id: "nav-cases", kind: "nav", href: "/app/cases", label: shellT("cmdk.goToCases"), hint: "/app/cases" },
+      { id: "nav-profile", kind: "nav", href: "/app/profile", label: shellT("cmdk.goToProfile"), hint: "/app/profile" },
+      { id: "nav-ui-kit", kind: "nav", href: "/app/ui-kit", label: shellT("cmdk.goToUiKit"), hint: "/app/ui-kit" },
+      { id: "logout", kind: "logout", label: shellT("account.logout"), hint: shellT("cmdk.logoutHint") },
     ],
-    [t],
+    [shellT],
   );
 
   const filteredActions = useMemo(() => {
@@ -345,7 +359,7 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
         href="#content"
         className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:px-3 focus:py-2 focus:rounded-md focus:bg-white focus:text-black"
       >
-        {t("skipToContent")}
+        {shellT("skipToContent")}
       </a>
 
       <div className="flex">
@@ -365,7 +379,7 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
             <button
               className="text-xs px-2 py-1 rounded border border-white/10 hover:bg-white/10"
               onClick={() => setCollapsed((v) => !v)}
-              aria-label={t("sidebar.toggleAria")}
+              aria-label={shellT("sidebar.toggleAria")}
               type="button"
             >
               {collapsed ? ">>" : "<<"}
@@ -428,13 +442,13 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
                     type="button"
                     onClick={openCmdk}
                     className="w-full h-9 rounded-md bg-black/20 border border-white/10 px-3 text-sm text-left flex items-center justify-between hover:border-white/20"
-                    aria-label={t("search.ariaLabel")}
+                    aria-label={shellT("search.ariaLabel")}
                   >
                     <span className="flex items-center gap-2 text-white/70">
                       <Icon name="search" />
-                      <span>{t("search.placeholder")}</span>
+                      <span>{shellT("search.placeholder")}</span>
                     </span>
-                    <span className="text-xs text-white/50">{t("search.hint")}</span>
+                    <span className="text-xs text-white/50">{shellT("search.hint")}</span>
                   </button>
                 </div>
               </div>
@@ -444,7 +458,7 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
                 <button
                   type="button"
                   className="h-9 w-9 rounded-md border border-white/10 bg-black/20 hover:bg-white/5 flex items-center justify-center"
-                  aria-label={t("notifications.label")}
+                  aria-label={shellT("notifications.label")}
                 >
                   <Icon name="bell" />
                 </button>
@@ -453,11 +467,11 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
                   <button
                     className="h-9 px-3 rounded-md border border-white/10 bg-black/20 hover:bg-white/5 flex items-center gap-2"
                     type="button"
-                    aria-label={t("account.label")}
+                    aria-label={shellT("account.label")}
                     onClick={() => setAccountOpen((v) => !v)}
                   >
                     <span className="w-6 h-6 rounded-full bg-white/20" aria-hidden="true" />
-                    <span className="text-sm opacity-80 hidden md:inline">{t("account.label")}</span>
+                    <span className="text-sm opacity-80 hidden md:inline">{shellT("account.label")}</span>
                   </button>
 
                   {accountOpen && (
@@ -467,17 +481,17 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
                         className="block px-3 py-2 text-sm hover:bg-white/5"
                         onClick={() => setAccountOpen(false)}
                       >
-                        {t("nav.profile")}
+                        {shellT("nav.profile")}
                       </Link>
                       <button
                         type="button"
                         className="w-full text-left px-3 py-2 text-sm hover:bg-white/5"
                         onClick={() => {
                           setAccountOpen(false);
-                          void runActionRef.current({ id: "logout", kind: "logout", label: t("account.logout") });
+                          void runActionRef.current({ id: "logout", kind: "logout", label: shellT("account.logout") });
                         }}
                       >
-                        {t("account.logout")}
+                        {shellT("account.logout")}
                       </button>
                     </div>
                   )}
@@ -498,7 +512,7 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
           className="fixed inset-0 z-50"
           role="dialog"
           aria-modal="true"
-          aria-label={t("cmdk.ariaLabel")}
+          aria-label={shellT("cmdk.ariaLabel")}
           onMouseDown={(e) => {
             if (e.target === e.currentTarget) closeCmdk();
           }}
@@ -514,14 +528,14 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
                   setCmdkIdx(0);
                 }}
                 className="w-full h-10 rounded-md bg-black/20 border border-white/10 px-3 text-sm outline-none focus:border-white/25"
-                placeholder={t("cmdk.inputPlaceholder")}
-                aria-label={t("cmdk.inputAriaLabel")}
+                placeholder={shellT("cmdk.inputPlaceholder")}
+                aria-label={shellT("cmdk.inputAriaLabel")}
               />
             </div>
 
             <div className="max-h-[360px] overflow-auto p-2">
               {filteredActions.length === 0 ? (
-                <div className="px-3 py-6 text-sm text-white/60">{t("cmdk.empty")}</div>
+                <div className="px-3 py-6 text-sm text-white/60">{shellT("cmdk.empty")}</div>
               ) : (
                 <div className="space-y-1">
                   {filteredActions.map((a, idx) => {
@@ -543,7 +557,7 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
                           <div className="text-sm truncate">{a.label}</div>
                           {a.hint && <div className="text-xs text-white/50 truncate">{a.hint}</div>}
                         </div>
-                        <div className="text-xs text-white/40">{t("cmdk.enterHint")}</div>
+                        <div className="text-xs text-white/40">{shellT("cmdk.enterHint")}</div>
                       </button>
                     );
                   })}
@@ -552,8 +566,8 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
             </div>
 
             <div className="px-3 py-2 border-t border-white/10 flex items-center justify-between text-xs text-white/50">
-              <span>{t("cmdk.footerHint")}</span>
-              <span>{t("search.hint")}</span>
+              <span>{shellT("cmdk.footerHint")}</span>
+              <span>{shellT("search.hint")}</span>
             </div>
           </div>
         </div>
@@ -561,6 +575,8 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
     </div>
   );
 }
+
+
 
 
 
