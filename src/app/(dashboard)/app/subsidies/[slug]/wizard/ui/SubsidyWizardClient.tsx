@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Card } from "@/ui/components/Card";
@@ -54,6 +54,10 @@ export default function SubsidyWizardClient({ slug }: { slug: string }) {
   const t = useTranslations("subsidies");
   const router = useRouter();
   const [errors, setErrors] = useState<FieldErrors>({});
+  const [attemptedNext, setAttemptedNext] = useState(false);
+  const [isChecking, setIsChecking] = useState(false);
+  const backButtonRef = useRef<HTMLButtonElement | null>(null);
+  const nextButtonRef = useRef<HTMLButtonElement | null>(null);
 
   const setAnswer = useSubsidyWizardStore((s) => s.setAnswer);
   const setResult = useSubsidyWizardStore((s) => s.setResult);
@@ -81,6 +85,13 @@ export default function SubsidyWizardClient({ slug }: { slug: string }) {
   const activeKey = activeStep?.key ?? "";
   const answers = answersBySlug[subsidySlug] ?? {};
 
+  useEffect(() => {
+    if (process.env.NODE_ENV === "production") return;
+    if (!backButtonRef.current || !nextButtonRef.current) {
+      console.warn("[SubsidyWizard] Navigation buttons not mounted.");
+    }
+  }, []);
+
   if (!isValidSlug || !activeStep) {
     return (
       <Card>
@@ -97,6 +108,8 @@ export default function SubsidyWizardClient({ slug }: { slug: string }) {
     const bounded = Math.min(Math.max(nextIndex, 0), totalSteps - 1);
     setStepIndex(bounded);
     setStoredStepIndex(subsidySlug, bounded);
+    setErrors({});
+    setAttemptedNext(false);
   }
 
   function setFieldValue(field: WizardField, value: string) {
@@ -173,6 +186,8 @@ export default function SubsidyWizardClient({ slug }: { slug: string }) {
   }
 
   function goNext() {
+    if (isChecking) return;
+    setAttemptedNext(true);
     if (!validateStep()) return;
     const next = steps[clampedStepIndex + 1];
     if (next) {
@@ -180,14 +195,24 @@ export default function SubsidyWizardClient({ slug }: { slug: string }) {
       return;
     }
 
-    const payload = toEligibilityPayload();
-    const result = evaluateSubsidyEligibility(subsidySlug, payload, DEFAULT_POLICY_2026);
-    setResult(subsidySlug, result);
-    router.push(`/app/subsidies/${subsidySlug}/result`);
+    try {
+      setIsChecking(true);
+      const payload = toEligibilityPayload();
+      const result = evaluateSubsidyEligibility(subsidySlug, payload, DEFAULT_POLICY_2026);
+      setResult(subsidySlug, result);
+      router.push(`/app/subsidies/${subsidySlug}/result`);
+    } finally {
+      setIsChecking(false);
+    }
   }
 
   function goBack() {
-    if (clampedStepIndex > 0) setStepIndexAndPersist(clampedStepIndex - 1);
+    if (isChecking) return;
+    if (clampedStepIndex === 0) {
+      router.push(`/app/subsidies/${subsidySlug}`);
+      return;
+    }
+    setStepIndexAndPersist(clampedStepIndex - 1);
   }
 
   return (
@@ -197,6 +222,7 @@ export default function SubsidyWizardClient({ slug }: { slug: string }) {
           steps={stepperSteps}
           activeKey={activeKey}
           onStepChange={(key) => {
+            if (isChecking) return;
             const nextIndex = steps.findIndex((s) => s.key === key);
             if (nextIndex >= 0) setStepIndexAndPersist(nextIndex);
           }}
@@ -215,7 +241,7 @@ export default function SubsidyWizardClient({ slug }: { slug: string }) {
           <div className="grid gap-4 md:grid-cols-2">
             {currentStep.fields.map((field) => {
               const fieldValue = getFieldValue(answers[field.id]);
-              const error = errors[field.id];
+              const error = attemptedNext ? errors[field.id] : undefined;
 
               if (field.type === "toggle") {
                 return (
@@ -280,11 +306,13 @@ export default function SubsidyWizardClient({ slug }: { slug: string }) {
             })}
           </div>
 
-          <div className="flex items-center justify-between">
+          {/* Keep actions above any decorative layers for reliable clicks. */}
+          <div className="relative z-10 flex items-center justify-between">
             <button
               type="button"
               onClick={goBack}
-              disabled={clampedStepIndex === 0}
+              disabled={isChecking}
+              ref={backButtonRef}
               className="rounded-xl border border-fh-border bg-fh-surface px-4 py-2 text-sm font-medium text-fh-text hover:bg-fh-surface-2 disabled:opacity-50"
             >
               {t("wizard.actions.back")}
@@ -292,7 +320,9 @@ export default function SubsidyWizardClient({ slug }: { slug: string }) {
             <button
               type="button"
               onClick={goNext}
-              className="rounded-xl bg-fh-primary px-4 py-2 text-sm font-medium text-fh-primaryFg hover:opacity-90"
+              disabled={isChecking}
+              ref={nextButtonRef}
+              className="rounded-xl bg-fh-primary px-4 py-2 text-sm font-medium text-fh-primaryFg hover:opacity-90 disabled:opacity-60"
             >
               {clampedStepIndex === steps.length - 1 ? t("wizard.actions.finish") : t("wizard.actions.next")}
             </button>
