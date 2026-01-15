@@ -97,9 +97,9 @@
     "ask": "Zapytaj Finny"
   },
   "shell": {
-    "skipToContent": "Przejdź do treści",
+    "skipToContent": "Przejdź do tre:ci",
     "sidebar": {
-      "toggleAria": "Przełącz pasek boczny"
+      "toggleAria": "Prze&cz pasek boczny"
     },
     "section": {
       "finances": "Finanse",
@@ -109,7 +109,7 @@
       "admin": "Admin"
     },
     "nav": {
-      "overview": "Przegląd",
+      "overview": "Przegl&d",
       "transactions": "Transakcje",
       "subsidies": "Dotacje",
       "documents": "Dokumenty",
@@ -131,14 +131,15 @@
       "logout": "Wyloguj"
     },
     "cmdk": {
-      "ariaLabel": "Paleta poleceń",
-      "inputPlaceholder": "Wpisz, aby wyszukać akcje...",
+      "ariaLabel": "Paleta polece",
+      "inputPlaceholder": "Wpisz, aby wyszuka! akcje...",
       "inputAriaLabel": "Szukaj akcji",
       "empty": "Brak wyników.",
       "enterHint": "Enter",
-      "footerHint": "Góra/Dół: nawiguj - Esc: zamknij",
+      "footerHint": "Góra/Dó: nawiguj - Esc: zamknij",
       "goToFinances": "Przejdź do Finansów",
       "goToTransactions": "Przejdź do Transakcji",
+      "goToSubsidies": "Przejd§ do Dop'at",
       "goToDocuments": "Przejdź do Dokumentów",
       "goToCases": "Przejdź do Spraw",
       "goToProfile": "Przejdź do Profilu",
@@ -148,15 +149,16 @@
     "route": {
       "dashboard": "Pulpit",
       "finances": "Finanse",
+      "subsidies": "Dop'aty",
       "transactions": "Transakcje",
       "newTransaction": "Nowa transakcja",
-      "transactionDetail": "Szczegóły transakcji",
+      "transactionDetail": "Szczegóy transakcji",
       "documents": "Dokumenty",
       "cases": "Sprawy",
       "case": "Sprawa",
       "profile": "Profil",
       "admin": "Admin",
-      "detail": "Szczegóły",
+      "detail": "Szczegóy",
       "new": "Nowa"
     }
   },
@@ -179,11 +181,12 @@
       "actions": {
         "viewAll": "Zobacz wszystkie",
         "newTransaction": "Nowa transakcja",
-        "review": "Przegląd"
+        "review": "Przegl&d"
       },
       "nav": {
         "title": "Nawigacja",
         "finances": "Finanse",
+        "subsidies": "Dop'aty",
         "cases": "Sprawy",
         "documents": "Dokumenty",
         "profile": "Profil",
@@ -254,12 +257,13 @@
     "transactions": {
       "breadcrumbs": {
         "finances": "Finanse",
+        "subsidies": "Dop'aty",
         "transactions": "Transakcje"
       },
       "title": "Transakcje",
-      "monthLabel": "Miesiąc: {month}",
+      "monthLabel": "Miesi&c: {month}",
       "actions": {
-        "backToFinances": "Wróć do Finansów",
+        "backToFinances": "Wró! do Finansów",
         "newTransaction": "Nowa transakcja"
       },
       "summary": {
@@ -267,12 +271,12 @@
       },
       "loading": "Ładowanie...",
       "errors": {
-        "title": "Coś poszło nie tak",
-        "updateStatus": "Nie udało się zaktualizować statusu."
+        "title": "Co: poszo nie tak",
+        "updateStatus": "Nie udao si\" zaktualizowa! statusu."
       },
       "table": {
         "title": "Skrzynka transakcji",
-        "subtitle": "Aktywność w ledgerze i szybkie edycje",
+        "subtitle": "Aktywno:! w ledgerze i szybkie edycje",
         "date": "Data",
         "merchant": "Sprzedawca",
         "category": "Kategoria",
@@ -284,7 +288,7 @@
         "saving": "Zapisywanie..."
       },
       "status": {
-        "pending": "Oczekujące",
+        "pending": "Oczekuj&ce",
         "approved": "Zatwierdzone",
         "hidden": "Ukryte"
       },
@@ -293,30 +297,30 @@
       },
       "empty": {
         "title": "Brak transakcji",
-        "body": "Transakcje pojawią się tutaj po utworzeniu lub imporcie.",
-        "cta": "Utwórz transakcję"
+        "body": "Transakcje pojawi& si\" tutaj po utworzeniu lub imporcie.",
+        "cta": "Utwórz transakcj\""
       },
       "detail": {
-        "breadcrumb": "Szczegóły",
-        "title": "Szczegóły transakcji",
-        "monthLabel": "Miesiąc: {month}",
+        "breadcrumb": "Szczegóy",
+        "title": "Szczegóy transakcji",
+        "monthLabel": "Miesi&c: {month}",
         "actions": {
-          "backToList": "Wróć do listy",
+          "backToList": "Wró! do listy",
           "save": "Zapisz zmiany",
           "saving": "Zapisywanie..."
         },
         "save": {
           "title": "Zapisano",
           "ok": "Zmiany zapisane.",
-          "error": "Nie udało się zapisać zmian."
+          "error": "Nie udao si\" zapisa! zmian."
         },
         "notFound": {
-          "title": "Nie znaleziono transakcji w tym miesiącu.",
-          "body": "Jeśli otworzyłeś adres bezpośrednio, wróć do listy, aby zsynchronizować miesiąc i ledger."
+          "title": "Nie znaleziono transakcji w tym miesi&cu.",
+          "body": "Je:li otworzye: adres bezpo:rednio, wró! do listy, aby zsynchronizowa! miesi&c i ledger."
         },
         "invalidId": {
-          "title": "Nieprawidłowy ID transakcji",
-          "body": "Nie mogliśmy odczytać ID transakcji z URL."
+          "title": "Nieprawidowy ID transakcji",
+          "body": "Nie mogli:my odczyta! ID transakcji z URL."
         },
         "merchant": {
           "label": "Sprzedawca"
@@ -340,29 +344,29 @@
           "helper": "Dodaj kontekst dla tej transakcji."
         },
         "splits": {
-          "title": "Podziały",
-          "subtitle": "Podziel transakcję na kategorie.",
+          "title": "Podziay",
+          "subtitle": "Podziel transakcj\" na kategorie.",
           "actions": {
-            "add": "Dodaj podział",
+            "add": "Dodaj podzia",
             "reset": "Resetuj",
-            "save": "Zapisz podziały",
+            "save": "Zapisz podziay",
             "saving": "Zapisywanie...",
-            "remove": "Usuń"
+            "remove": "Usu"
           },
           "totals": {
             "total": "Suma transakcji",
-            "sum": "Suma podziałów",
+            "sum": "Suma podziaów",
             "delta": "Różnica"
           },
-          "loadError": "Nie udało się wczytać podziałów (HTTP {status}).",
-          "loadErrorFallback": "Nie udało się wczytać podziałów.",
-          "saveError": "Nie udało się zapisać podziałów (HTTP {status}).",
-          "saveErrorFallback": "Nie udało się zapisać podziałów.",
-          "saveOk": "Podziały zapisane.",
-          "saveTitle": "Podziały zaktualizowane",
-          "loading": "Ładowanie podziałów...",
-          "empty": "Brak podziałów. Dodaj pierwszy.",
-          "deltaError": "Suma podziałów musi równać się kwocie transakcji. Różnica: {delta}.",
+          "loadError": "Nie udao si\" wczyta! podziaów (HTTP {status}).",
+          "loadErrorFallback": "Nie udao si\" wczyta! podziaów.",
+          "saveError": "Nie udao si\" zapisa! podziaów (HTTP {status}).",
+          "saveErrorFallback": "Nie udao si\" zapisa! podziaów.",
+          "saveOk": "Podziay zapisane.",
+          "saveTitle": "Podziay zaktualizowane",
+          "loading": "Ładowanie podziaów...",
+          "empty": "Brak podziaów. Dodaj pierwszy.",
+          "deltaError": "Suma podziaów musi równa! si\" kwocie transakcji. Różnica: {delta}.",
           "table": {
             "category": "Kategoria",
             "amount": "Kwota (EUR)",
@@ -373,21 +377,21 @@
           "rowError": "Wiersz {index}: {error}",
           "errors": {
             "required": "Kwota jest wymagana.",
-            "format": "Nieprawidłowy format (użyj 12.34).",
-            "invalidNumber": "Nieprawidłowa liczba.",
-            "invalidDecimals": "Nieprawidłowe miejsca dziesiętne."
+            "format": "Nieprawidowy format (użyj 12.34).",
+            "invalidNumber": "Nieprawidowa liczba.",
+            "invalidDecimals": "Nieprawidowe miejsca dziesi\"tne."
           }
         },
         "metadata": {
           "title": "Metadane",
-          "source": "Źródło",
+          "source": "Źródo",
           "merchantNorm": "Znormalizowany sprzedawca",
           "reviewedAt": "Zweryfikowano"
         },
         "ledger": {
           "title": "Status ledgera",
           "loading": "Ładowanie",
-          "month": "Miesiąc ledgera",
+          "month": "Miesi&c ledgera",
           "count": "Transakcje"
         }
       }
@@ -395,48 +399,49 @@
     "newTransaction": {
       "breadcrumbs": {
         "finances": "Finanse",
+        "subsidies": "Dop'aty",
         "transactions": "Transakcje",
         "new": "Nowa"
       },
       "title": "Nowa transakcja",
-      "monthLabel": "Miesiąc: {month}",
+      "monthLabel": "Miesi&c: {month}",
       "actions": {
-        "backToList": "Wróć do listy",
-        "create": "Utwórz transakcję",
+        "backToList": "Wró! do listy",
+        "create": "Utwórz transakcj\"",
         "creating": "Tworzenie..."
       },
       "errors": {
-        "title": "Coś poszło nie tak",
-        "create": "Nie udało się utworzyć transakcji."
+        "title": "Co: poszo nie tak",
+        "create": "Nie udao si\" utworzy! transakcji."
       },
       "form": {
         "date": {
           "label": "Data",
           "placeholder": "YYYY-MM-DD",
           "helper": "Użyj daty transakcji.",
-          "error": "Podaj poprawną datę ISO."
+          "error": "Podaj poprawn& dat\" ISO."
         },
         "merchant": {
           "label": "Sprzedawca",
           "placeholder": "Albert Heijn, NS, Bol.com...",
-          "helper": "Wpisz sprzedawcę lub odbiorcę.",
+          "helper": "Wpisz sprzedawc\" lub odbiorc\".",
           "error": "Sprzedawca jest wymagany."
         },
         "amount": {
           "label": "Kwota (EUR)",
           "placeholder": "12.34",
-          "helper": "Użyj wartości ujemnych dla wydatków.",
-          "error": "Podaj kwotę różną od zera."
+          "helper": "Użyj warto:ci ujemnych dla wydatków.",
+          "error": "Podaj kwot\" różn& od zera."
         },
         "category": {
           "label": "Kategoria",
-          "helper": "Wybierz kategorię, aby uporządkować budżet.",
+          "helper": "Wybierz kategori\", aby uporz&dkowa! budżet.",
           "none": "Bez kategorii"
         },
         "note": {
           "label": "Notatka",
           "placeholder": "Opcjonalnie...",
-          "helper": "Dodaj kontekst na przyszłość."
+          "helper": "Dodaj kontekst na przyszo:!."
         }
       }
     }
