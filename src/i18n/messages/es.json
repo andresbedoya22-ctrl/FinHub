@@ -954,7 +954,12 @@
           "domesticInsurance": "Supone que est?s asegurado en los Pa?ses Bajos.",
           "noMedebewoners": "Supone que no hay otros miembros del hogar.",
           "serviceCostsIgnored": "Los costes de servicio no se incluyen en 2026.",
-          "childrenInNL": "Supone que los hijos viven en la UE/EEE/Suiza (100%)."
+          "childrenInNL": "Supone que los hijos viven en la UE/EEE/Suiza (100%).",
+          "huur": {
+            "rentCapped": "Para la estimaci?n, la renta se limita al tope de c?lculo 2026.",
+            "serviceCostsExcluded": "Los costes de servicio se excluyen en los c?lculos de 2026.",
+            "kaleHuurOnly": "En 2026 solo cuenta la renta base (kale huur)."
+          }
         },
         "missing": {
           "incomeApplicant": "Ingreso del solicitante",
@@ -993,7 +998,7 @@
       "error": "No se pudo iniciar el checkout."
     },
     "errors": {
-      "tableMissing": "Estamos terminando de configurar las solicitudes de subsidios. Int?ntalo de nuevo en unos minutos.",
+      "tableMissing": "Estamos terminando de configurar las solicitudes de subsidios. Aplica las migraciones o contacta soporte.",
       "permissionDenied": "No tienes permiso para continuar con esta acci?n.",
       "authRequired": "Inicia sesi?n para continuar.",
       "invalidSlug": "Este subsidio no est? disponible.",

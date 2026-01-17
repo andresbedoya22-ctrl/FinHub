@@ -954,7 +954,12 @@
           "domesticInsurance": "Assumes you are insured in the Netherlands.",
           "noMedebewoners": "Assumes no additional household members.",
           "serviceCostsIgnored": "Service costs are not included in 2026 calculations.",
-          "childrenInNL": "Assumes children live in the EU/EEA/Switzerland (100%)."
+          "childrenInNL": "Assumes children live in the EU/EEA/Switzerland (100%).",
+          "huur": {
+            "rentCapped": "For the estimate, rent is capped to the 2026 calculation limit.",
+            "serviceCostsExcluded": "Service costs are excluded in 2026 calculations.",
+            "kaleHuurOnly": "Only the basic rent (kale huur) counts for 2026."
+          }
         },
         "missing": {
           "incomeApplicant": "Applicant income",
@@ -993,7 +998,7 @@
       "error": "Could not start checkout."
     },
     "errors": {
-      "tableMissing": "We are finishing the setup for subsidy applications. Please try again in a moment.",
+      "tableMissing": "We are finishing the setup for subsidy applications. Apply the migrations or contact support.",
       "permissionDenied": "You do not have permission to continue this action.",
       "authRequired": "Please sign in to continue.",
       "invalidSlug": "This subsidy is not available.",

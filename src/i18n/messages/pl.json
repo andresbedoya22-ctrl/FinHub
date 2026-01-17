@@ -957,7 +957,12 @@
           "domesticInsurance": "Zak?adamy ubezpieczenie w Holandii.",
           "noMedebewoners": "Zak?adamy brak dodatkowych domownik?w.",
           "serviceCostsIgnored": "Koszty serwisu nie s? uwzgl?dniane w 2026.",
-          "childrenInNL": "Zak?adamy, ?e dzieci mieszkaj? w UE/EOG/Szwajcarii (100%)."
+          "childrenInNL": "Zak?adamy, ?e dzieci mieszkaj? w UE/EOG/Szwajcarii (100%).",
+          "huur": {
+            "rentCapped": "Dla estymacji czynsz jest ograniczany do limitu obliczeniowego 2026.",
+            "serviceCostsExcluded": "Koszty serwisowe nie s? uwzgl?dniane w obliczeniach 2026.",
+            "kaleHuurOnly": "W 2026 liczy si? tylko czynsz bazowy (kale huur)."
+          }
         },
         "missing": {
           "incomeApplicant": "Doch?d wnioskodawcy",
@@ -1086,7 +1091,7 @@
       "cancelled": "Anulowano"
     },
     "errors": {
-      "tableMissing": "Kończymy konfigurację wniosków o dopłaty. Spróbuj ponownie za chwilę.",
+      "tableMissing": "Ko?czymy konfiguracj? wniosk?w o dop?aty. Zastosuj migracje lub skontaktuj si? z pomoc?.",
       "permissionDenied": "Nie masz uprawnień do wykonania tej akcji.",
       "authRequired": "Zaloguj się, aby kontynuować.",
       "invalidSlug": "Ten dodatek nie jest dostępny.",

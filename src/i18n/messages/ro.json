@@ -954,7 +954,12 @@
           "domesticInsurance": "Presupune asigurare ?n Olanda.",
           "noMedebewoners": "Presupune f?r? al?i membri ai gospod?riei.",
           "serviceCostsIgnored": "Costurile de servicii nu sunt incluse ?n 2026.",
-          "childrenInNL": "Presupune c? copiii locuiesc ?n UE/SEE/Elve?ia (100%)."
+          "childrenInNL": "Presupune c? copiii locuiesc ?n UE/SEE/Elve?ia (100%).",
+          "huur": {
+            "rentCapped": "Pentru estimare, chiria este plafonat? la limita de calcul 2026.",
+            "serviceCostsExcluded": "Costurile de servicii nu sunt incluse ?n calculele din 2026.",
+            "kaleHuurOnly": "?n 2026 se ia ?n calcul doar chiria de baz? (kale huur)."
+          }
         },
         "missing": {
           "incomeApplicant": "Venitul solicitantului",
@@ -1083,13 +1088,13 @@
       "cancelled": "Anulat"
     },
     "errors": {
-      "tableMissing": "Finalizăm configurarea cererilor de subvenții. Încearcă din nou în câteva momente.",
+      "tableMissing": "Finaliz?m configurarea cererilor de subven?ii. Aplic? migra?iile sau contacteaz? suportul.",
       "permissionDenied": "Nu ai permisiunea de a continua această acțiune.",
       "authRequired": "Autentifică-te pentru a continua.",
       "invalidSlug": "Această subvenție nu este disponibilă.",
       "invalidApplication": "Nu am găsit acea cerere.",
       "missingApplicationId": "Nu am găsit identificatorul cererii tale.",
-      "paymentUnavailable": "Plățile sunt temporar indisponibile. Încearcă mai târziu.",
+      "paymentUnavailable": "Plile sunt temporar indisponibile. ncearc mai trziu.",
       "checkoutFailed": "Nu am putut porni plata. Încearcă din nou.",
       "network": "Eroare de rețea. Verifică conexiunea și încearcă din nou.",
       "unknown": "Ceva nu a mers bine. Încearcă din nou."

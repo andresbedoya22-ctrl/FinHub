@@ -1,308 +1,424 @@
 # Subsidies i18n inventory
 
-Generated from code references in Subsidies + Shell (Dashboard breadcrumbs/cmdk/nav).
+Leaf keys used by Subsidies and related shell UI. Status indicates presence in each locale.
 
-## Keys
+## Home
 
-- shell.account.label
-- shell.account.logout
-- shell.cmdk.ariaLabel
-- shell.cmdk.empty
-- shell.cmdk.enterHint
-- shell.cmdk.footerHint
-- shell.cmdk.goToCases
-- shell.cmdk.goToDocuments
-- shell.cmdk.goToFinances
-- shell.cmdk.goToProfile
-- shell.cmdk.goToSubsidies
-- shell.cmdk.goToTransactions
-- shell.cmdk.goToUiKit
-- shell.cmdk.inputAriaLabel
-- shell.cmdk.inputPlaceholder
-- shell.cmdk.logoutHint
-- shell.nav.admin
-- shell.nav.cases
-- shell.nav.documents
-- shell.nav.overview
-- shell.nav.profile
-- shell.nav.subsidies
-- shell.nav.transactions
-- shell.nav.uikit
-- shell.notifications.label
-- shell.route.admin
-- shell.route.case
-- shell.route.cases
-- shell.route.dashboard
-- shell.route.detail
-- shell.route.documents
-- shell.route.finances
-- shell.route.new
-- shell.route.newTransaction
-- shell.route.profile
-- shell.route.subsidies
-- shell.route.subsidyApplications
-- shell.route.subsidyCheckout
-- shell.route.subsidyDetail
-- shell.route.subsidyResult
-- shell.route.subsidyWizard
-- shell.route.transactionDetail
-- shell.route.transactions
-- shell.search.ariaLabel
-- shell.search.hint
-- shell.search.placeholder
-- shell.section.account
-- shell.section.admin
-- shell.section.finances
-- shell.section.operations
-- shell.section.subsidies
-- shell.sidebar.toggleAria
-- shell.skipToContent
-- subsidies.applications.createdAt
-- subsidies.applications.cta.details
-- subsidies.applications.cta.view
-- subsidies.applications.detail.back
-- subsidies.applications.detail.documents
-- subsidies.applications.detail.errorTitle
-- subsidies.applications.detail.eyebrow
-- subsidies.applications.detail.loading
-- subsidies.applications.detail.loadingDescription
-- subsidies.applications.detail.missing
-- subsidies.applications.detail.notFound
-- subsidies.applications.detail.notFoundDescription
-- subsidies.applications.detail.notes
-- subsidies.applications.detail.notesEmpty
-- subsidies.applications.detail.notesEmptyDescription
-- subsidies.applications.detail.subtitle
-- subsidies.applications.detail.timeline
-- subsidies.applications.detail.upload
-- subsidies.applications.detail.uploaded
-- subsidies.applications.detail.uploading
-- subsidies.applications.empty.description
-- subsidies.applications.empty.title
-- subsidies.applications.errorTitle
-- subsidies.applications.eyebrow
-- subsidies.applications.loading
-- subsidies.applications.loadingDescription
-- subsidies.applications.progress
-- subsidies.applications.separator
-- subsidies.applications.subtitle
-- subsidies.applications.title
-- subsidies.catalog.huurtoeslag.description
-- subsidies.catalog.huurtoeslag.title
-- subsidies.catalog.kgb.description
-- subsidies.catalog.kgb.title
-- subsidies.catalog.kot.description
-- subsidies.catalog.kot.title
-- subsidies.catalog.zorgtoeslag.description
-- subsidies.catalog.zorgtoeslag.title
-- subsidies.checkout.back
-- subsidies.checkout.cta
-- subsidies.checkout.description
-- subsidies.checkout.error
-- subsidies.checkout.errorTitle
-- subsidies.checkout.missing.description
-- subsidies.checkout.missing.title
-- subsidies.checkout.priceLabel
-- subsidies.checkout.processing
-- subsidies.checkout.sla
-- subsidies.checkout.subtitle
-- subsidies.checkout.title
-- subsidies.detail.badge
-- subsidies.detail.cta.back
-- subsidies.detail.cta.check
-- subsidies.detail.cta.description
-- subsidies.detail.cta.title
-- subsidies.detail.disclaimer
-- subsidies.detail.huurtoeslag.title
-- subsidies.detail.invalid.description
-- subsidies.detail.invalid.title
-- subsidies.detail.kgb.title
-- subsidies.detail.kot.title
-- subsidies.detail.sections.coverage
-- subsidies.detail.sections.needs
-- subsidies.detail.sections.requirements
-- subsidies.detail.sections.whatIs
-- subsidies.detail.zorgtoeslag.title
-- subsidies.documents.childcare_contract
-- subsidies.documents.childcare_invoice
-- subsidies.documents.children_birth
-- subsidies.documents.health_insurance
-- subsidies.documents.household_composition
-- subsidies.documents.huurcontract
-- subsidies.documents.id
-- subsidies.documents.partner_income
-- subsidies.documents.proof_income
-- subsidies.documents.rent_service_costs
-- subsidies.documents.status.approved
-- subsidies.documents.status.missing
-- subsidies.documents.status.rejected
-- subsidies.documents.status.uploaded
-- subsidies.documents.work_or_study_proof
-- subsidies.errors.authRequired
-- subsidies.errors.checkoutFailed
-- subsidies.errors.invalidApplication
-- subsidies.errors.invalidSlug
-- subsidies.errors.missingApplicationId
-- subsidies.errors.network
-- subsidies.errors.paymentUnavailable
-- subsidies.errors.permissionDenied
-- subsidies.errors.tableMissing
-- subsidies.errors.unknown
-- subsidies.facts.huurtoeslag.1.label
-- subsidies.facts.huurtoeslag.1.value
-- subsidies.facts.huurtoeslag.2.label
-- subsidies.facts.huurtoeslag.2.value
-- subsidies.facts.huurtoeslag.3.label
-- subsidies.facts.huurtoeslag.3.value
-- subsidies.facts.kgb.1.label
-- subsidies.facts.kgb.1.value
-- subsidies.facts.kgb.2.label
-- subsidies.facts.kgb.2.value
-- subsidies.facts.kgb.3.label
-- subsidies.facts.kgb.3.value
-- subsidies.facts.kot.1.label
-- subsidies.facts.kot.1.value
-- subsidies.facts.kot.2.label
-- subsidies.facts.kot.2.value
-- subsidies.facts.kot.3.label
-- subsidies.facts.kot.3.value
-- subsidies.facts.zorgtoeslag.1.label
-- subsidies.facts.zorgtoeslag.1.value
-- subsidies.facts.zorgtoeslag.2.label
-- subsidies.facts.zorgtoeslag.2.value
-- subsidies.facts.zorgtoeslag.3.label
-- subsidies.facts.zorgtoeslag.3.value
-- subsidies.home.badge
-- subsidies.home.cta.viewDetails
-- subsidies.home.eyebrow
-- subsidies.home.howItWorks.steps.1.description
-- subsidies.home.howItWorks.steps.1.eyebrow
-- subsidies.home.howItWorks.steps.1.title
-- subsidies.home.howItWorks.steps.2.description
-- subsidies.home.howItWorks.steps.2.eyebrow
-- subsidies.home.howItWorks.steps.2.title
-- subsidies.home.howItWorks.steps.3.description
-- subsidies.home.howItWorks.steps.3.eyebrow
-- subsidies.home.howItWorks.steps.3.title
-- subsidies.home.howItWorks.title
-- subsidies.home.labels.coverage
-- subsidies.home.labels.timeline
-- subsidies.home.subtitle
-- subsidies.home.title
-- subsidies.metrics.huurtoeslag.primary.label
-- subsidies.metrics.huurtoeslag.primary.value
-- subsidies.metrics.huurtoeslag.secondary.label
-- subsidies.metrics.huurtoeslag.secondary.value
-- subsidies.metrics.huurtoeslag.tertiary.label
-- subsidies.metrics.huurtoeslag.tertiary.value
-- subsidies.metrics.kgb.primary.label
-- subsidies.metrics.kgb.primary.value
-- subsidies.metrics.kgb.secondary.label
-- subsidies.metrics.kgb.secondary.value
-- subsidies.metrics.kgb.tertiary.label
-- subsidies.metrics.kgb.tertiary.value
-- subsidies.metrics.kot.primary.label
-- subsidies.metrics.kot.primary.value
-- subsidies.metrics.kot.secondary.label
-- subsidies.metrics.kot.secondary.value
-- subsidies.metrics.kot.tertiary.label
-- subsidies.metrics.kot.tertiary.value
-- subsidies.metrics.zorgtoeslag.primary.label
-- subsidies.metrics.zorgtoeslag.primary.value
-- subsidies.metrics.zorgtoeslag.secondary.label
-- subsidies.metrics.zorgtoeslag.secondary.value
-- subsidies.metrics.zorgtoeslag.tertiary.label
-- subsidies.metrics.zorgtoeslag.tertiary.value
-- subsidies.result.actions.continue
-- subsidies.result.actions.errorTitle
-- subsidies.result.actions.processing
-- subsidies.result.actions.review
-- subsidies.result.benefit.annualLabel
-- subsidies.result.benefit.assumptionsLabel
-- subsidies.result.benefit.breakdownLabel
-- subsidies.result.benefit.childLabel
-- subsidies.result.benefit.missingInputsLabel
-- subsidies.result.benefit.monthlyLabel
-- subsidies.result.benefit.notAvailableDescription
-- subsidies.result.benefit.title
-- subsidies.result.empty.description
-- subsidies.result.empty.title
-- subsidies.result.header.eligible
-- subsidies.result.header.eligibleDescription
-- subsidies.result.header.label
-- subsidies.result.header.notEligible
-- subsidies.result.header.notEligibleDescription
-- subsidies.result.next.description
-- subsidies.result.next.title
-- subsidies.result.paywall.label
-- subsidies.result.paywall.sla
-- subsidies.result.reasons.title
-- subsidies.status.cancelled
-- subsidies.status.decision
-- subsidies.status.done
-- subsidies.status.draft
-- subsidies.status.eligible_checked
-- subsidies.status.paid
-- subsidies.status.submitted
-- subsidies.status.under_review
-- subsidies.status.waiting_user
-- subsidies.wizard.actions.back
-- subsidies.wizard.actions.finish
-- subsidies.wizard.actions.next
-- subsidies.wizard.common.fields.age
-- subsidies.wizard.common.fields.hasPartner
-- subsidies.wizard.common.fields.incomeHousehold
-- subsidies.wizard.common.fields.incomePartner
-- subsidies.wizard.common.fields.incomeSelf
-- subsidies.wizard.common.no
-- subsidies.wizard.common.selectPlaceholder
-- subsidies.wizard.common.steps.income.description
-- subsidies.wizard.common.steps.income.title
-- subsidies.wizard.common.yes
-- subsidies.wizard.errors.invalidNumber
-- subsidies.wizard.errors.required
-- subsidies.wizard.huurtoeslag.fields.householdSize
-- subsidies.wizard.huurtoeslag.fields.livesInRent
-- subsidies.wizard.huurtoeslag.fields.rent
-- subsidies.wizard.huurtoeslag.fields.serviceCosts
-- subsidies.wizard.huurtoeslag.fields.under21HasChildOrDisability
-- subsidies.wizard.huurtoeslag.steps.base.description
-- subsidies.wizard.huurtoeslag.steps.base.title
-- subsidies.wizard.huurtoeslag.steps.rent.description
-- subsidies.wizard.huurtoeslag.steps.rent.title
-- subsidies.wizard.kgb.fields.childrenCount
-- subsidies.wizard.kgb.fields.childrenCount12To15
-- subsidies.wizard.kgb.fields.childrenCount16To17
-- subsidies.wizard.kgb.steps.family.description
-- subsidies.wizard.kgb.steps.family.title
-- subsidies.wizard.kot.child.title
-- subsidies.wizard.kot.errors.childcareType
-- subsidies.wizard.kot.errors.childrenCount
-- subsidies.wizard.kot.errors.hourlyRate
-- subsidies.wizard.kot.errors.hoursPerMonth
-- subsidies.wizard.kot.fields.childcareType
-- subsidies.wizard.kot.fields.childrenCount
-- subsidies.wizard.kot.fields.costPerHour
-- subsidies.wizard.kot.fields.hoursPerMonth
-- subsidies.wizard.kot.fields.partnerWorksOrStudies
-- subsidies.wizard.kot.fields.workedMonths
-- subsidies.wizard.kot.fields.worksOrStudies
-- subsidies.wizard.kot.options.bso
-- subsidies.wizard.kot.options.dagopvang
-- subsidies.wizard.kot.options.gastouder
-- subsidies.wizard.kot.steps.children.description
-- subsidies.wizard.kot.steps.children.title
-- subsidies.wizard.kot.steps.costs.description
-- subsidies.wizard.kot.steps.costs.title
-- subsidies.wizard.kot.steps.work.description
-- subsidies.wizard.kot.steps.work.title
-- subsidies.wizard.stepper.progress
-- subsidies.wizard.stepper.step
-- subsidies.wizard.zorgtoeslag.fields.hasBasicInsurance
-- subsidies.wizard.zorgtoeslag.steps.insurance.description
-- subsidies.wizard.zorgtoeslag.steps.insurance.title
+| Key | en | es | pl | ro |
+| --- | --- | --- | --- | --- |
+| subsidies.home.badge | present | present | present | present |
+| subsidies.home.cta.viewDetails | present | present | present | present |
+| subsidies.home.eyebrow | present | present | present | present |
+| subsidies.home.howItWorks.steps.1.description | present | present | present | present |
+| subsidies.home.howItWorks.steps.1.eyebrow | present | present | present | present |
+| subsidies.home.howItWorks.steps.1.title | present | present | present | present |
+| subsidies.home.howItWorks.steps.2.description | present | present | present | present |
+| subsidies.home.howItWorks.steps.2.eyebrow | present | present | present | present |
+| subsidies.home.howItWorks.steps.2.title | present | present | present | present |
+| subsidies.home.howItWorks.steps.3.description | present | present | present | present |
+| subsidies.home.howItWorks.steps.3.eyebrow | present | present | present | present |
+| subsidies.home.howItWorks.steps.3.title | present | present | present | present |
+| subsidies.home.howItWorks.title | present | present | present | present |
+| subsidies.home.labels.coverage | present | present | present | present |
+| subsidies.home.labels.timeline | present | present | present | present |
+| subsidies.home.subtitle | present | present | present | present |
+| subsidies.home.title | present | present | present | present |
+
+## Detail
+
+| Key | en | es | pl | ro |
+| --- | --- | --- | --- | --- |
+| subsidies.detail.badge | present | present | present | present |
+| subsidies.detail.cta.back | present | present | present | present |
+| subsidies.detail.cta.check | present | present | present | present |
+| subsidies.detail.cta.description | present | present | present | present |
+| subsidies.detail.cta.title | present | present | present | present |
+| subsidies.detail.disclaimer | present | present | present | present |
+| subsidies.detail.invalid.description | present | present | present | present |
+| subsidies.detail.invalid.title | present | present | present | present |
+| subsidies.detail.sections.coverage | present | present | present | present |
+| subsidies.detail.sections.needs | present | present | present | present |
+| subsidies.detail.sections.requirements | present | present | present | present |
+| subsidies.detail.sections.whatIs | present | present | present | present |
+
+## Wizard
+
+| Key | en | es | pl | ro |
+| --- | --- | --- | --- | --- |
+| subsidies.detail.invalid.description | present | present | present | present |
+| subsidies.detail.invalid.title | present | present | present | present |
+| subsidies.wizard.actions.back | present | present | present | present |
+| subsidies.wizard.actions.finish | present | present | present | present |
+| subsidies.wizard.actions.next | present | present | present | present |
+| subsidies.wizard.common.selectPlaceholder | present | present | present | present |
+| subsidies.wizard.errors.invalidNumber | present | present | present | present |
+| subsidies.wizard.errors.required | present | present | present | present |
+| subsidies.wizard.kot.child.title | present | present | present | present |
+| subsidies.wizard.kot.errors.childcareType | present | present | present | present |
+| subsidies.wizard.kot.errors.childrenCount | present | present | present | present |
+| subsidies.wizard.kot.errors.hourlyRate | present | present | present | present |
+| subsidies.wizard.kot.errors.hoursPerMonth | present | present | present | present |
+| subsidies.wizard.kot.fields.childcareType | present | present | present | present |
+| subsidies.wizard.kot.fields.costPerHour | present | present | present | present |
+| subsidies.wizard.kot.fields.hoursPerMonth | present | present | present | present |
+| subsidies.wizard.kot.options.bso | present | present | present | present |
+| subsidies.wizard.kot.options.dagopvang | present | present | present | present |
+| subsidies.wizard.kot.options.gastouder | present | present | present | present |
+| subsidies.wizard.stepper.progress | present | present | present | present |
+| subsidies.wizard.stepper.step | present | present | present | present |
+
+## Result
+
+| Key | en | es | pl | ro |
+| --- | --- | --- | --- | --- |
+| subsidies.detail.invalid.description | present | present | present | present |
+| subsidies.detail.invalid.title | present | present | present | present |
+| subsidies.result.actions.continue | present | present | present | present |
+| subsidies.result.actions.errorTitle | present | present | present | present |
+| subsidies.result.actions.processing | present | present | present | present |
+| subsidies.result.actions.review | present | present | present | present |
+| subsidies.result.benefit.annualLabel | present | present | present | present |
+| subsidies.result.benefit.assumptionsLabel | present | present | present | present |
+| subsidies.result.benefit.breakdownLabel | present | present | present | present |
+| subsidies.result.benefit.missingInputsLabel | present | present | present | present |
+| subsidies.result.benefit.monthlyLabel | present | present | present | present |
+| subsidies.result.benefit.notAvailableDescription | present | present | present | present |
+| subsidies.result.benefit.title | present | present | present | present |
+| subsidies.result.empty.description | present | present | present | present |
+| subsidies.result.empty.title | present | present | present | present |
+| subsidies.result.header.eligible | present | present | present | present |
+| subsidies.result.header.eligibleDescription | present | present | present | present |
+| subsidies.result.header.label | present | present | present | present |
+| subsidies.result.header.notEligible | present | present | present | present |
+| subsidies.result.header.notEligibleDescription | present | present | present | present |
+| subsidies.result.next.description | present | present | present | present |
+| subsidies.result.next.title | present | present | present | present |
+| subsidies.result.paywall.label | present | present | present | present |
+| subsidies.result.paywall.sla | present | present | present | present |
+| subsidies.result.reasons.title | present | present | present | present |
+
+## Checkout
+
+| Key | en | es | pl | ro |
+| --- | --- | --- | --- | --- |
+| subsidies.checkout.back | present | present | present | present |
+| subsidies.checkout.cta | present | present | present | present |
+| subsidies.checkout.description | present | present | present | present |
+| subsidies.checkout.errorTitle | present | present | present | present |
+| subsidies.checkout.missing.description | present | present | present | present |
+| subsidies.checkout.missing.title | present | present | present | present |
+| subsidies.checkout.priceLabel | present | present | present | present |
+| subsidies.checkout.processing | present | present | present | present |
+| subsidies.checkout.sla | present | present | present | present |
+| subsidies.checkout.subtitle | present | present | present | present |
+| subsidies.checkout.title | present | present | present | present |
+| subsidies.detail.invalid.description | present | present | present | present |
+| subsidies.detail.invalid.title | present | present | present | present |
+
+## Applications
+
+| Key | en | es | pl | ro |
+| --- | --- | --- | --- | --- |
+| subsidies.applications.createdAt | present | present | present | present |
+| subsidies.applications.cta.details | present | present | present | present |
+| subsidies.applications.cta.view | present | present | present | present |
+| subsidies.applications.empty.description | present | present | present | present |
+| subsidies.applications.empty.title | present | present | present | present |
+| subsidies.applications.errorTitle | present | present | present | present |
+| subsidies.applications.eyebrow | present | present | present | present |
+| subsidies.applications.loading | present | present | present | present |
+| subsidies.applications.loadingDescription | present | present | present | present |
+| subsidies.applications.progress | present | present | present | present |
+| subsidies.applications.separator | present | present | present | present |
+| subsidies.applications.subtitle | present | present | present | present |
+| subsidies.applications.title | present | present | present | present |
+| subsidies.status.cancelled | present | present | present | present |
+| subsidies.status.decision | present | present | present | present |
+| subsidies.status.done | present | present | present | present |
+| subsidies.status.draft | present | present | present | present |
+| subsidies.status.eligible_checked | present | present | present | present |
+| subsidies.status.paid | present | present | present | present |
+| subsidies.status.submitted | present | present | present | present |
+| subsidies.status.under_review | present | present | present | present |
+| subsidies.status.waiting_user | present | present | present | present |
+
+## Applications detail
+
+| Key | en | es | pl | ro |
+| --- | --- | --- | --- | --- |
+| subsidies.applications.detail.back | present | present | present | present |
+| subsidies.applications.detail.documents | present | present | present | present |
+| subsidies.applications.detail.errorTitle | present | present | present | present |
+| subsidies.applications.detail.eyebrow | present | present | present | present |
+| subsidies.applications.detail.loading | present | present | present | present |
+| subsidies.applications.detail.loadingDescription | present | present | present | present |
+| subsidies.applications.detail.missing | present | present | present | present |
+| subsidies.applications.detail.notFound | present | present | present | present |
+| subsidies.applications.detail.notFoundDescription | present | present | present | present |
+| subsidies.applications.detail.notes | present | present | present | present |
+| subsidies.applications.detail.notesEmpty | present | present | present | present |
+| subsidies.applications.detail.notesEmptyDescription | present | present | present | present |
+| subsidies.applications.detail.subtitle | present | present | present | present |
+| subsidies.applications.detail.timeline | present | present | present | present |
+| subsidies.applications.detail.upload | present | present | present | present |
+| subsidies.applications.detail.uploaded | present | present | present | present |
+| subsidies.applications.detail.uploading | present | present | present | present |
+| subsidies.documents.childcare_contract | present | present | present | present |
+| subsidies.documents.childcare_invoice | present | present | present | present |
+| subsidies.documents.children_birth | present | present | present | present |
+| subsidies.documents.health_insurance | present | present | present | present |
+| subsidies.documents.household_composition | present | present | present | present |
+| subsidies.documents.huurcontract | present | present | present | present |
+| subsidies.documents.id | present | present | present | present |
+| subsidies.documents.partner_income | present | present | present | present |
+| subsidies.documents.proof_income | present | present | present | present |
+| subsidies.documents.rent_service_costs | present | present | present | present |
+| subsidies.documents.status.approved | present | present | present | present |
+| subsidies.documents.status.missing | present | present | present | present |
+| subsidies.documents.status.rejected | present | present | present | present |
+| subsidies.documents.status.uploaded | present | present | present | present |
+| subsidies.documents.work_or_study_proof | present | present | present | present |
+| subsidies.status.cancelled | present | present | present | present |
+| subsidies.status.decision | present | present | present | present |
+| subsidies.status.done | present | present | present | present |
+| subsidies.status.draft | present | present | present | present |
+| subsidies.status.eligible_checked | present | present | present | present |
+| subsidies.status.paid | present | present | present | present |
+| subsidies.status.submitted | present | present | present | present |
+| subsidies.status.under_review | present | present | present | present |
+| subsidies.status.waiting_user | present | present | present | present |
+
+## Shared (registry & schemas)
+
+| Key | en | es | pl | ro |
+| --- | --- | --- | --- | --- |
+| subsidies.catalog.huurtoeslag.description | present | present | present | present |
+| subsidies.catalog.huurtoeslag.title | present | present | present | present |
+| subsidies.catalog.kgb.description | present | present | present | present |
+| subsidies.catalog.kgb.title | present | present | present | present |
+| subsidies.catalog.kot.description | present | present | present | present |
+| subsidies.catalog.kot.title | present | present | present | present |
+| subsidies.catalog.zorgtoeslag.description | present | present | present | present |
+| subsidies.catalog.zorgtoeslag.title | present | present | present | present |
+| subsidies.detail.huurtoeslag.title | present | present | present | present |
+| subsidies.detail.kgb.title | present | present | present | present |
+| subsidies.detail.kot.title | present | present | present | present |
+| subsidies.detail.zorgtoeslag.title | present | present | present | present |
+| subsidies.facts.huurtoeslag.1.label | present | present | present | present |
+| subsidies.facts.huurtoeslag.1.value | present | present | present | present |
+| subsidies.facts.huurtoeslag.2.label | present | present | present | present |
+| subsidies.facts.huurtoeslag.2.value | present | present | present | present |
+| subsidies.facts.huurtoeslag.3.label | present | present | present | present |
+| subsidies.facts.huurtoeslag.3.value | present | present | present | present |
+| subsidies.facts.kgb.1.label | present | present | present | present |
+| subsidies.facts.kgb.1.value | present | present | present | present |
+| subsidies.facts.kgb.2.label | present | present | present | present |
+| subsidies.facts.kgb.2.value | present | present | present | present |
+| subsidies.facts.kgb.3.label | present | present | present | present |
+| subsidies.facts.kgb.3.value | present | present | present | present |
+| subsidies.facts.kot.1.label | present | present | present | present |
+| subsidies.facts.kot.1.value | present | present | present | present |
+| subsidies.facts.kot.2.label | present | present | present | present |
+| subsidies.facts.kot.2.value | present | present | present | present |
+| subsidies.facts.kot.3.label | present | present | present | present |
+| subsidies.facts.kot.3.value | present | present | present | present |
+| subsidies.facts.zorgtoeslag.1.label | present | present | present | present |
+| subsidies.facts.zorgtoeslag.1.value | present | present | present | present |
+| subsidies.facts.zorgtoeslag.2.label | present | present | present | present |
+| subsidies.facts.zorgtoeslag.2.value | present | present | present | present |
+| subsidies.facts.zorgtoeslag.3.label | present | present | present | present |
+| subsidies.facts.zorgtoeslag.3.value | present | present | present | present |
+| subsidies.metrics.huurtoeslag.primary.label | present | present | present | present |
+| subsidies.metrics.huurtoeslag.primary.value | present | present | present | present |
+| subsidies.metrics.huurtoeslag.secondary.label | present | present | present | present |
+| subsidies.metrics.huurtoeslag.secondary.value | present | present | present | present |
+| subsidies.metrics.huurtoeslag.tertiary.label | present | present | present | present |
+| subsidies.metrics.huurtoeslag.tertiary.value | present | present | present | present |
+| subsidies.metrics.kgb.primary.label | present | present | present | present |
+| subsidies.metrics.kgb.primary.value | present | present | present | present |
+| subsidies.metrics.kgb.secondary.label | present | present | present | present |
+| subsidies.metrics.kgb.secondary.value | present | present | present | present |
+| subsidies.metrics.kgb.tertiary.label | present | present | present | present |
+| subsidies.metrics.kgb.tertiary.value | present | present | present | present |
+| subsidies.metrics.kot.primary.label | present | present | present | present |
+| subsidies.metrics.kot.primary.value | present | present | present | present |
+| subsidies.metrics.kot.secondary.label | present | present | present | present |
+| subsidies.metrics.kot.secondary.value | present | present | present | present |
+| subsidies.metrics.kot.tertiary.label | present | present | present | present |
+| subsidies.metrics.kot.tertiary.value | present | present | present | present |
+| subsidies.metrics.zorgtoeslag.primary.label | present | present | present | present |
+| subsidies.metrics.zorgtoeslag.primary.value | present | present | present | present |
+| subsidies.metrics.zorgtoeslag.secondary.label | present | present | present | present |
+| subsidies.metrics.zorgtoeslag.secondary.value | present | present | present | present |
+| subsidies.metrics.zorgtoeslag.tertiary.label | present | present | present | present |
+| subsidies.metrics.zorgtoeslag.tertiary.value | present | present | present | present |
+| subsidies.wizard.common.fields.age | present | present | present | present |
+| subsidies.wizard.common.fields.hasPartner | present | present | present | present |
+| subsidies.wizard.common.fields.incomeHousehold | present | present | present | present |
+| subsidies.wizard.common.fields.incomePartner | present | present | present | present |
+| subsidies.wizard.common.fields.incomeSelf | present | present | present | present |
+| subsidies.wizard.common.no | present | present | present | present |
+| subsidies.wizard.common.steps.income.description | present | present | present | present |
+| subsidies.wizard.common.steps.income.title | present | present | present | present |
+| subsidies.wizard.common.yes | present | present | present | present |
+| subsidies.wizard.huurtoeslag.fields.householdSize | present | present | present | present |
+| subsidies.wizard.huurtoeslag.fields.livesInRent | present | present | present | present |
+| subsidies.wizard.huurtoeslag.fields.rent | present | present | present | present |
+| subsidies.wizard.huurtoeslag.fields.serviceCosts | present | present | present | present |
+| subsidies.wizard.huurtoeslag.fields.under21HasChildOrDisability | present | present | present | present |
+| subsidies.wizard.huurtoeslag.steps.base.description | present | present | present | present |
+| subsidies.wizard.huurtoeslag.steps.base.title | present | present | present | present |
+| subsidies.wizard.huurtoeslag.steps.rent.description | present | present | present | present |
+| subsidies.wizard.huurtoeslag.steps.rent.title | present | present | present | present |
+| subsidies.wizard.kgb.fields.childrenCount | present | present | present | present |
+| subsidies.wizard.kgb.fields.childrenCount12To15 | present | present | present | present |
+| subsidies.wizard.kgb.fields.childrenCount16To17 | present | present | present | present |
+| subsidies.wizard.kgb.steps.family.description | present | present | present | present |
+| subsidies.wizard.kgb.steps.family.title | present | present | present | present |
+| subsidies.wizard.kot.fields.childrenCount | present | present | present | present |
+| subsidies.wizard.kot.fields.costPerHour | present | present | present | present |
+| subsidies.wizard.kot.fields.hoursPerMonth | present | present | present | present |
+| subsidies.wizard.kot.fields.partnerWorksOrStudies | present | present | present | present |
+| subsidies.wizard.kot.fields.workedMonths | present | present | present | present |
+| subsidies.wizard.kot.fields.worksOrStudies | present | present | present | present |
+| subsidies.wizard.kot.steps.children.description | present | present | present | present |
+| subsidies.wizard.kot.steps.children.title | present | present | present | present |
+| subsidies.wizard.kot.steps.costs.description | present | present | present | present |
+| subsidies.wizard.kot.steps.costs.title | present | present | present | present |
+| subsidies.wizard.kot.steps.work.description | present | present | present | present |
+| subsidies.wizard.kot.steps.work.title | present | present | present | present |
+| subsidies.wizard.zorgtoeslag.fields.hasBasicInsurance | present | present | present | present |
+| subsidies.wizard.zorgtoeslag.steps.insurance.description | present | present | present | present |
+| subsidies.wizard.zorgtoeslag.steps.insurance.title | present | present | present | present |
+
+## Shared (calculators)
+
+| Key | en | es | pl | ro |
+| --- | --- | --- | --- | --- |
+| result.benefit.assumptions.childrenInNL | missing | missing | missing | missing |
+| result.benefit.assumptions.domesticInsurance | missing | missing | missing | missing |
+| result.benefit.assumptions.huur.kaleHuurOnly | missing | missing | missing | missing |
+| result.benefit.assumptions.huur.rentCapped | missing | missing | missing | missing |
+| result.benefit.assumptions.huur.serviceCostsExcluded | missing | missing | missing | missing |
+| result.benefit.assumptions.noMedebewoners | missing | missing | missing | missing |
+| result.benefit.breakdown.huur.basishuur | missing | missing | missing | missing |
+| result.benefit.breakdown.huur.correction | missing | missing | missing | missing |
+| result.benefit.breakdown.huur.rekenhuur | missing | missing | missing | missing |
+| result.benefit.breakdown.huur.rounding | missing | missing | missing | missing |
+| result.benefit.breakdown.kgb.ageSupplements | missing | missing | missing | missing |
+| result.benefit.breakdown.kgb.incomeReduction | missing | missing | missing | missing |
+| result.benefit.breakdown.kgb.maxAmount | missing | missing | missing | missing |
+| result.benefit.breakdown.kgb.rounding | missing | missing | missing | missing |
+| result.benefit.breakdown.kot.hourlyCap | missing | missing | missing | missing |
+| result.benefit.breakdown.kot.hoursCap | missing | missing | missing | missing |
+| result.benefit.breakdown.kot.incomePercent | missing | missing | missing | missing |
+| result.benefit.breakdown.kot.rounding | missing | missing | missing | missing |
+| result.benefit.breakdown.zorg.income | missing | missing | missing | missing |
+| result.benefit.breakdown.zorg.normPremium | missing | missing | missing | missing |
+| result.benefit.breakdown.zorg.rounding | missing | missing | missing | missing |
+| result.benefit.breakdown.zorg.standardPremium | missing | missing | missing | missing |
+| result.benefit.childLabel | missing | missing | missing | missing |
+| result.benefit.missing.age | missing | missing | missing | missing |
+| result.benefit.missing.childDetails | missing | missing | missing | missing |
+| result.benefit.missing.childcareType | missing | missing | missing | missing |
+| result.benefit.missing.childrenCount | missing | missing | missing | missing |
+| result.benefit.missing.childrenCount12To15 | missing | missing | missing | missing |
+| result.benefit.missing.childrenCount16To17 | missing | missing | missing | missing |
+| result.benefit.missing.costPerHour | missing | missing | missing | missing |
+| result.benefit.missing.hoursPerMonth | missing | missing | missing | missing |
+| result.benefit.missing.householdSize | missing | missing | missing | missing |
+| result.benefit.missing.incomeApplicant | missing | missing | missing | missing |
+| result.benefit.missing.incomeHousehold | missing | missing | missing | missing |
+| result.benefit.missing.incomePartner | missing | missing | missing | missing |
+| result.benefit.missing.rent | missing | missing | missing | missing |
+| result.benefit.missing.workedMonths | missing | missing | missing | missing |
+| result.benefit.notAvailableDescription | missing | missing | missing | missing |
+| result.benefit.notEligibleChildren | missing | missing | missing | missing |
+| result.benefit.notEligibleIncome | missing | missing | missing | missing |
+
+## Shared (eligibility engine)
+
+| Key | en | es | pl | ro |
+| --- | --- | --- | --- | --- |
+| engine.common.eligibleIncomeOk | missing | missing | missing | missing |
+| engine.common.invalidSlug | missing | missing | missing | missing |
+| engine.common.missingIncome | missing | missing | missing | missing |
+| engine.common.missingRent | missing | missing | missing | missing |
+| engine.huurtoeslag.ageTooLow | missing | missing | missing | missing |
+| engine.huurtoeslag.eligibleRentOk | missing | missing | missing | missing |
+| engine.huurtoeslag.incomeTooHigh | missing | missing | missing | missing |
+| engine.huurtoeslag.notRenting | missing | missing | missing | missing |
+| engine.kgb.eligibleChildrenOk | missing | missing | missing | missing |
+| engine.kgb.incomeTooHigh | missing | missing | missing | missing |
+| engine.kgb.noChildren | missing | missing | missing | missing |
+| engine.kot.eligibleChildcareOk | missing | missing | missing | missing |
+| engine.kot.incomeTooHigh | missing | missing | missing | missing |
+| engine.kot.noChildcareCosts | missing | missing | missing | missing |
+| engine.kot.noChildren | missing | missing | missing | missing |
+| engine.kot.noWorkOrStudy | missing | missing | missing | missing |
+| engine.zorgtoeslag.eligibleInsuranceOk | missing | missing | missing | missing |
+| engine.zorgtoeslag.incomeTooHigh | missing | missing | missing | missing |
+| engine.zorgtoeslag.noBasicInsurance | missing | missing | missing | missing |
+
+## Shell (breadcrumbs/nav/cmdk)
+
+| Key | en | es | pl | ro |
+| --- | --- | --- | --- | --- |
+| shell.account.label | present | present | present | present |
+| shell.account.logout | present | present | present | present |
+| shell.cmdk.ariaLabel | present | present | present | present |
+| shell.cmdk.empty | present | present | present | present |
+| shell.cmdk.enterHint | present | present | present | present |
+| shell.cmdk.footerHint | present | present | present | present |
+| shell.cmdk.goToCases | present | present | present | present |
+| shell.cmdk.goToDocuments | present | present | present | present |
+| shell.cmdk.goToFinances | present | present | present | present |
+| shell.cmdk.goToProfile | present | present | present | present |
+| shell.cmdk.goToSubsidies | present | present | present | present |
+| shell.cmdk.goToTransactions | present | present | present | present |
+| shell.cmdk.goToUiKit | present | present | present | present |
+| shell.cmdk.inputAriaLabel | present | present | present | present |
+| shell.cmdk.inputPlaceholder | present | present | present | present |
+| shell.cmdk.logoutHint | present | present | present | present |
+| shell.nav.admin | present | present | present | present |
+| shell.nav.cases | present | present | present | present |
+| shell.nav.documents | present | present | present | present |
+| shell.nav.overview | present | present | present | present |
+| shell.nav.profile | present | present | present | present |
+| shell.nav.subsidies | present | present | present | present |
+| shell.nav.transactions | present | present | present | present |
+| shell.nav.uikit | present | present | present | present |
+| shell.notifications.label | present | present | present | present |
+| shell.route.admin | present | present | present | present |
+| shell.route.case | present | present | present | present |
+| shell.route.cases | present | present | present | present |
+| shell.route.dashboard | present | present | present | present |
+| shell.route.detail | present | present | present | present |
+| shell.route.documents | present | present | present | present |
+| shell.route.finances | present | present | present | present |
+| shell.route.new | present | present | present | present |
+| shell.route.newTransaction | present | present | present | present |
+| shell.route.profile | present | present | present | present |
+| shell.route.subsidies | present | present | present | present |
+| shell.route.subsidyApplications | present | present | present | present |
+| shell.route.subsidyCheckout | present | present | present | present |
+| shell.route.subsidyDetail | present | present | present | present |
+| shell.route.subsidyResult | present | present | present | present |
+| shell.route.subsidyWizard | present | present | present | present |
+| shell.route.transactionDetail | present | present | present | present |
+| shell.route.transactions | present | present | present | present |
+| shell.search.ariaLabel | present | present | present | present |
+| shell.search.hint | present | present | present | present |
+| shell.search.placeholder | present | present | present | present |
+| shell.section.account | present | present | present | present |
+| shell.section.admin | present | present | present | present |
+| shell.section.finances | present | present | present | present |
+| shell.section.operations | present | present | present | present |
+| shell.section.subsidies | present | present | present | present |
+| shell.sidebar.toggleAria | present | present | present | present |
+| shell.skipToContent | present | present | present | present |
 
 ## Notes
 
-- Dynamic keys included: home how-it-works steps (1..3), document labels/statuses, subsidy status values, and error mapper keys.
-- All keys must exist in en/es/pl/ro.
+- Dynamic keys include: home how-it-works steps (1..3), documents labels/statuses, and subsidy status values.
+- Calculators and eligibility engine keys are extracted from literal string references in domain files.
