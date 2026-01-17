@@ -17,5 +17,7 @@ This fixes the `public.subsidies_applications` table missing error and enables t
 
 ## Apply in hosted Supabase
 1. Apply the new migrations using your CI/CLI flow.
-2. Restart/refresh the PostgREST schema cache if needed.
+2. Refresh the PostgREST schema cache:
+   - Supabase Dashboard → Settings → API → Reload schema cache, or
+   - `supabase db remote commit` (if your workflow already reloads the cache).
 3. Verify RLS policies by inserting/reading a test `subsidies_applications` row with a user session.
