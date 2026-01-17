@@ -91,6 +91,7 @@ export default function SubsidyCheckoutClient({ slug }: { slug: string }) {
           <div className="text-xl font-semibold text-fh-text">{priceLabel}</div>
           <div className="text-xs text-fh-muted">{t("checkout.sla")}</div>
         </div>
+        <div className="text-xs text-fh-muted">{t("checkout.methods")}</div>
         <div className="flex flex-wrap gap-2">
           <button
             type="button"
