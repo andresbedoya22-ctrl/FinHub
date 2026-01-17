@@ -30,7 +30,8 @@ export function calculateHuurtoeslag2026(
   const rentLimit = isUnder21 && !input.under21HasChildOrDisability
     ? params.huurtoeslag.rentLimitUnder21
     : params.huurtoeslag.rentLimitGeneral;
-  const rent = Math.min(input.monthlyRent ?? 0, rentLimit);
+  const rawRent = input.monthlyRent ?? 0;
+  const rent = Math.min(rawRent, rentLimit);
   const householdSize = Math.max(1, input.householdSize ?? (input.hasPartner ? 2 : 1));
   const baseRent = householdSize >= 2 ? params.huurtoeslag.baseRentMulti : params.huurtoeslag.baseRentSingle;
   const qualityLimit = params.huurtoeslag.qualityLimit;
@@ -58,6 +59,15 @@ export function calculateHuurtoeslag2026(
 
   const monthlyRaw = Math.max(0, partA + partB + partC - correction);
   const monthly = floorToWholeEuros(monthlyRaw);
+  const assumptions: string[] = ["result.benefit.assumptions.noMedebewoners"];
+
+  if (rawRent > rentLimit) {
+    assumptions.push("result.benefit.assumptions.huur.rentCapped");
+  }
+  if ((input.monthlyServiceCosts ?? 0) > 0) {
+    assumptions.push("result.benefit.assumptions.huur.serviceCostsExcluded");
+  }
+  assumptions.push("result.benefit.assumptions.huur.kaleHuurOnly");
 
   return {
     currency: "EUR",
@@ -69,9 +79,6 @@ export function calculateHuurtoeslag2026(
       "result.benefit.breakdown.huur.correction",
       "result.benefit.breakdown.huur.rounding",
     ],
-    assumptionsKeys: [
-      "result.benefit.assumptions.noMedebewoners",
-      "result.benefit.assumptions.serviceCostsIgnored",
-    ],
+    assumptionsKeys: assumptions,
   };
 }

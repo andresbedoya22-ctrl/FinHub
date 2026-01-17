@@ -281,6 +281,7 @@ export default function SubsidyWizardClient({ slug }: { slug: string }) {
           annualIncomeApplicant: typeof raw.incomeSelf === "number" ? raw.incomeSelf : null,
           annualIncomePartner: typeof raw.incomePartner === "number" ? raw.incomePartner : null,
           monthlyRent: typeof raw.rent === "number" ? raw.rent : null,
+          monthlyServiceCosts: typeof raw.serviceCosts === "number" ? raw.serviceCosts : null,
           under21HasChildOrDisability: normalizeToggle(raw.under21HasChildOrDisability),
         },
       };

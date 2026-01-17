@@ -19,6 +19,7 @@ export type HuurtoeslagInput = {
   annualIncomeApplicant: number | null;
   annualIncomePartner: number | null;
   monthlyRent: number | null;
+  monthlyServiceCosts?: number | null;
   under21HasChildOrDisability: boolean;
 };
 
