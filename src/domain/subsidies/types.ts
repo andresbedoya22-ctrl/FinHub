@@ -11,11 +11,13 @@ export type SubsidyStatus =
   | "done"
   | "cancelled";
 
+import type { BenefitEstimate } from "./calculators/types";
+
 export type EligibilityResult = {
   eligible: boolean;
   reasons: string[];
   blockingReasons: string[];
-  estimate?: string;
+  benefitEstimate?: BenefitEstimate;
 };
 
 export type SubsidyApplication = {
