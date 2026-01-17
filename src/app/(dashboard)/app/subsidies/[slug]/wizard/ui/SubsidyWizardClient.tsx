@@ -12,6 +12,7 @@ import { ToggleGroup } from "@/ui/components/ToggleGroup";
 import { WIZARD_STEPS_BY_SLUG, type WizardField } from "@/domain/subsidies/wizardSchemas";
 import { DEFAULT_POLICY_2026 } from "@/domain/subsidies/policy";
 import { evaluateSubsidyEligibility } from "@/domain/subsidies/eligibilityEngine";
+import { calculateSubsidyBenefit } from "@/domain/subsidies/calculators";
 import { isSubsidySlug } from "@/domain/subsidies/registry";
 import type { SubsidySlug } from "@/domain/subsidies/types";
 import { useSubsidyWizardStore } from "@/domain/subsidies/wizardStore";
@@ -186,6 +187,67 @@ export default function SubsidyWizardClient({ slug }: { slug: string }) {
     };
   }
 
+  function toBenefitInput(): Parameters<typeof calculateSubsidyBenefit>[0] {
+    const raw = answers;
+
+    if (subsidySlug === "huurtoeslag") {
+      return {
+        slug: "huurtoeslag",
+        input: {
+          age: typeof raw.age === "number" ? raw.age : null,
+          hasPartner: normalizeToggle(raw.hasPartner),
+          householdSize: typeof raw.householdSize === "number" ? raw.householdSize : null,
+          annualIncomeApplicant: typeof raw.incomeSelf === "number" ? raw.incomeSelf : null,
+          annualIncomePartner: typeof raw.incomePartner === "number" ? raw.incomePartner : null,
+          monthlyRent: typeof raw.rent === "number" ? raw.rent : null,
+          under21HasChildOrDisability: normalizeToggle(raw.under21HasChildOrDisability),
+        },
+      };
+    }
+
+    if (subsidySlug === "zorgtoeslag") {
+      return {
+        slug: "zorgtoeslag",
+        input: {
+          hasPartner: normalizeToggle(raw.hasPartner),
+          annualIncomeApplicant: typeof raw.incomeSelf === "number" ? raw.incomeSelf : null,
+          annualIncomePartner: typeof raw.incomePartner === "number" ? raw.incomePartner : null,
+        },
+      };
+    }
+
+    if (subsidySlug === "kgb") {
+      return {
+        slug: "kgb",
+        input: {
+          hasPartner: normalizeToggle(raw.hasPartner),
+          annualIncomeHousehold: typeof raw.incomeHousehold === "number" ? raw.incomeHousehold : null,
+          childrenCount: typeof raw.childrenCount === "number" ? raw.childrenCount : null,
+          childrenCount12To15: typeof raw.childrenCount12To15 === "number" ? raw.childrenCount12To15 : null,
+          childrenCount16To17: typeof raw.childrenCount16To17 === "number" ? raw.childrenCount16To17 : null,
+        },
+      };
+    }
+
+    return {
+      slug: "kot",
+      input: {
+        annualIncomeHousehold: typeof raw.incomeHousehold === "number" ? raw.incomeHousehold : null,
+        workedMonths: typeof raw.workedMonths === "number" ? raw.workedMonths : null,
+        children:
+          typeof raw.childrenCount === "number" && raw.childrenCount > 1
+            ? Array.from({ length: raw.childrenCount })
+            : [
+                {
+                  hoursPerMonth: typeof raw.hoursPerMonth === "number" ? raw.hoursPerMonth : null,
+                  hourlyRate: typeof raw.costPerHour === "number" ? raw.costPerHour : null,
+                  childcareType: (raw.childcareType as "dagopvang" | "bso" | "gastouder" | null) ?? null,
+                },
+              ],
+      },
+    };
+  }
+
   function goNext() {
     if (isChecking) return;
     setAttemptedNext(true);
@@ -200,7 +262,8 @@ export default function SubsidyWizardClient({ slug }: { slug: string }) {
       setIsChecking(true);
       const payload = toEligibilityPayload();
       const result = evaluateSubsidyEligibility(subsidySlug, payload, DEFAULT_POLICY_2026);
-      setResult(subsidySlug, result);
+      const benefitEstimate = calculateSubsidyBenefit(toBenefitInput(), 2026, result.eligible);
+      setResult(subsidySlug, { ...result, benefitEstimate });
       router.push(`/app/subsidies/${subsidySlug}/result`);
     } finally {
       setIsChecking(false);

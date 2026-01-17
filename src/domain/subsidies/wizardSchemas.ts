@@ -38,6 +38,13 @@ export const WIZARD_STEPS_BY_SLUG: Record<SubsidySlug, WizardStep[]> = {
         { id: "livesInRent", type: "toggle", labelKey: "wizard.huurtoeslag.fields.livesInRent", options: COMMON_YN_OPTIONS },
         { id: "age", type: "number", labelKey: "wizard.common.fields.age" },
         { id: "hasPartner", type: "toggle", labelKey: "wizard.common.fields.hasPartner", options: COMMON_YN_OPTIONS },
+        { id: "householdSize", type: "number", labelKey: "wizard.huurtoeslag.fields.householdSize" },
+        {
+          id: "under21HasChildOrDisability",
+          type: "toggle",
+          labelKey: "wizard.huurtoeslag.fields.under21HasChildOrDisability",
+          options: COMMON_YN_OPTIONS,
+        },
       ],
     },
     {
@@ -91,6 +98,8 @@ export const WIZARD_STEPS_BY_SLUG: Record<SubsidySlug, WizardStep[]> = {
       descriptionKey: "wizard.kgb.steps.family.description",
       fields: [
         { id: "childrenCount", type: "number", labelKey: "wizard.kgb.fields.childrenCount" },
+        { id: "childrenCount12To15", type: "number", labelKey: "wizard.kgb.fields.childrenCount12To15" },
+        { id: "childrenCount16To17", type: "number", labelKey: "wizard.kgb.fields.childrenCount16To17" },
         { id: "hasPartner", type: "toggle", labelKey: "wizard.common.fields.hasPartner", options: COMMON_YN_OPTIONS },
       ],
     },
@@ -136,6 +145,7 @@ export const WIZARD_STEPS_BY_SLUG: Record<SubsidySlug, WizardStep[]> = {
       fields: [
         { id: "worksOrStudies", type: "toggle", labelKey: "wizard.kot.fields.worksOrStudies", options: COMMON_YN_OPTIONS },
         { id: "partnerWorksOrStudies", type: "toggle", labelKey: "wizard.kot.fields.partnerWorksOrStudies", options: COMMON_YN_OPTIONS },
+        { id: "workedMonths", type: "number", labelKey: "wizard.kot.fields.workedMonths" },
       ],
     },
     {

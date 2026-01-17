@@ -31,6 +31,16 @@ export default function SubsidyResultClient({ slug }: { slug: string }) {
     }).format(serviceFeeCents / 100);
   }, []);
 
+  const formatEuro = useMemo(
+    () => (valueCents: number) =>
+      new Intl.NumberFormat(undefined, {
+        style: "currency",
+        currency: "EUR",
+        minimumFractionDigits: 0,
+      }).format(valueCents / 100),
+    []
+  );
+
   if (!isSubsidySlug(slug)) {
     return (
       <Card>
@@ -55,6 +65,7 @@ export default function SubsidyResultClient({ slug }: { slug: string }) {
     );
   }
   const eligibilitySnapshot = result as EligibilityResult;
+  const benefit = result.benefitEstimate;
 
   async function handleContinue() {
     setError(null);
@@ -103,6 +114,53 @@ export default function SubsidyResultClient({ slug }: { slug: string }) {
               </div>
             ))}
           </div>
+        </Card>
+
+        <Card className="space-y-3">
+          <div className="text-sm font-semibold text-fh-text">{t("result.benefit.title")}</div>
+          {benefit?.monthlyCents !== undefined ? (
+            <>
+              <div className="rounded-2xl border border-fh-border bg-fh-surface-2 p-4">
+                <div className="text-xs uppercase text-fh-muted">{t("result.benefit.monthlyLabel")}</div>
+                <div className="text-2xl font-semibold text-fh-text">{formatEuro(benefit.monthlyCents)}</div>
+                {benefit.yearlyCents !== undefined ? (
+                  <div className="text-xs text-fh-muted">
+                    {t("result.benefit.annualLabel")}: {formatEuro(benefit.yearlyCents)}
+                  </div>
+                ) : null}
+              </div>
+              {benefit.breakdownKeys.length ? (
+                <div className="space-y-1 text-sm text-fh-muted">
+                  <div className="text-xs uppercase text-fh-muted">{t("result.benefit.breakdownLabel")}</div>
+                  {benefit.breakdownKeys.map((key) => (
+                    <div key={key}>- {t(key)}</div>
+                  ))}
+                </div>
+              ) : null}
+              {benefit.assumptionsKeys.length ? (
+                <div className="space-y-1 text-xs text-fh-muted">
+                  <div className="text-xs uppercase text-fh-muted">{t("result.benefit.assumptionsLabel")}</div>
+                  {benefit.assumptionsKeys.map((key) => (
+                    <div key={key}>- {t(key)}</div>
+                  ))}
+                </div>
+              ) : null}
+            </>
+          ) : (
+            <>
+              <div className="text-sm text-fh-muted">
+                {benefit?.explanationKey ? t(benefit.explanationKey) : t("result.benefit.notAvailableDescription")}
+              </div>
+              {benefit?.missingInputs?.length ? (
+                <div className="space-y-1 text-xs text-fh-muted">
+                  <div className="text-xs uppercase text-fh-muted">{t("result.benefit.missingInputsLabel")}</div>
+                  {benefit.missingInputs.map((key) => (
+                    <div key={key}>- {t(key)}</div>
+                  ))}
+                </div>
+              ) : null}
+            </>
+          )}
         </Card>
 
         <Card className="space-y-3">
