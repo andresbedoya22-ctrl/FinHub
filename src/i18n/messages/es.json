@@ -838,6 +838,15 @@
           "dagopvang": "Guardería",
           "bso": "After-school care (BSO)",
           "gastouder": "Niñera (gastouder)"
+        },
+        "child": {
+          "title": "Hijo {index}"
+        },
+        "errors": {
+          "childrenCount": "Introduce un n?mero de hijos v?lido (1-4).",
+          "childcareType": "Selecciona un tipo de guarder?a.",
+          "hoursPerMonth": "Introduce las horas por mes.",
+          "hourlyRate": "Introduce la tarifa por hora."
         }
       }
     },
@@ -963,7 +972,8 @@
           "childDetails": "Detalles por hijo",
           "householdSize": "Tama?o del hogar"
         },
-        "notEligibleChildren": "No hay hijos elegibles para este subsidio."
+        "notEligibleChildren": "No hay hijos elegibles para este subsidio.",
+        "childLabel": "Hijo {index}"
       }
     },
     "checkout": {

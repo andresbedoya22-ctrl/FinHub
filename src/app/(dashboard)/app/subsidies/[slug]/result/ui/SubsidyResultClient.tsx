@@ -137,6 +137,21 @@ export default function SubsidyResultClient({ slug }: { slug: string }) {
                   ))}
                 </div>
               ) : null}
+              {benefit.breakdownItems?.length ? (
+                <div className="flex flex-wrap gap-2">
+                  {benefit.breakdownItems.map((item, idx) => (
+                    <div
+                      key={`${item.labelKey}-${idx}`}
+                      className="flex items-center gap-2 rounded-full border border-fh-border/60 bg-fh-surface-2 px-3 py-1 text-xs"
+                    >
+                      <span className="text-[10px] uppercase text-fh-muted">
+                        {item.labelValues ? t(item.labelKey, item.labelValues) : t(item.labelKey)}
+                      </span>
+                      <span className="text-fh-text">{formatEuro(item.amountCents)}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : null}
               {benefit.assumptionsKeys.length ? (
                 <div className="space-y-1 text-xs text-fh-muted">
                   <div className="text-xs uppercase text-fh-muted">{t("result.benefit.assumptionsLabel")}</div>

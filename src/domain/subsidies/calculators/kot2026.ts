@@ -21,6 +21,11 @@ function computeChildCost(
   return { monthlyCost: hourly * hours };
 }
 
+function compareChildren(a: { hours: number; cost: number }, b: { hours: number; cost: number }) {
+  if (a.hours !== b.hours) return b.hours - a.hours;
+  return b.cost - a.cost;
+}
+
 export function calculateKot2026(input: KotInput, params: typeof PARAMS_2026): BenefitEstimate {
   const missingInputs: string[] = [];
   if (input.annualIncomeHousehold === null) missingInputs.push("result.benefit.missing.incomeHousehold");
@@ -32,7 +37,7 @@ export function calculateKot2026(input: KotInput, params: typeof PARAMS_2026): B
     missingInputs.push("result.benefit.missing.childrenCount");
   }
 
-  if (input.children.length > 1) {
+  if (input.children.length > 4) {
     missingInputs.push("result.benefit.missing.childDetails");
   }
 
@@ -57,21 +62,48 @@ export function calculateKot2026(input: KotInput, params: typeof PARAMS_2026): B
       explanationKey: "result.benefit.notAvailableDescription",
     };
   }
-  const cost = computeChildCost(child, params);
-  if (cost.missing) {
+
+  const income = input.annualIncomeHousehold ?? 0;
+  const percents = selectPercent(income, params.kot.incomeTable);
+
+  const computedChildren = input.children.slice(0, 4).map((entry) => {
+    const cost = computeChildCost(entry, params);
+    return { entry, cost };
+  });
+
+  const missing = computedChildren.find((c) => c.cost.missing);
+  if (missing?.cost.missing) {
     return {
       currency: "EUR",
       breakdownKeys: [],
       assumptionsKeys: [],
-      missingInputs: [cost.missing],
+      missingInputs: [missing.cost.missing],
       explanationKey: "result.benefit.notAvailableDescription",
     };
   }
 
-  const income = input.annualIncomeHousehold ?? 0;
-  const percents = selectPercent(income, params.kot.incomeTable);
-  const monthlyRaw = cost.monthlyCost * percents.first;
-  const monthly = floorToWholeEuros(monthlyRaw);
+  const ranked = computedChildren
+    .map((child, index) => ({
+      index,
+      hours: child.entry.hoursPerMonth ?? 0,
+      cost: child.cost.monthlyCost,
+    }))
+    .sort(compareChildren);
+
+  const firstIndex = ranked[0]?.index ?? 0;
+  let totalRaw = 0;
+  const breakdownItems = computedChildren.map((child, index) => {
+    const percent = index === firstIndex ? percents.first : percents.next;
+    const amountRaw = child.cost.monthlyCost * percent;
+    totalRaw += amountRaw;
+    return {
+      labelKey: "result.benefit.childLabel",
+      labelValues: { index: index + 1 },
+      amountCents: floorToWholeEuros(amountRaw) * 100,
+    };
+  });
+
+  const monthly = floorToWholeEuros(totalRaw);
   const yearly = monthly * workedMonths;
 
   return {
@@ -84,6 +116,7 @@ export function calculateKot2026(input: KotInput, params: typeof PARAMS_2026): B
       "result.benefit.breakdown.kot.incomePercent",
       "result.benefit.breakdown.kot.rounding",
     ],
+    breakdownItems,
     assumptionsKeys: [],
   };
 }

@@ -838,6 +838,15 @@
           "dagopvang": "Daycare",
           "bso": "After-school care (BSO)",
           "gastouder": "Childminder"
+        },
+        "child": {
+          "title": "Child {index}"
+        },
+        "errors": {
+          "childrenCount": "Enter a valid number of children (1-4).",
+          "childcareType": "Select a childcare type.",
+          "hoursPerMonth": "Enter hours per month.",
+          "hourlyRate": "Enter hourly rate."
         }
       }
     },
@@ -963,7 +972,8 @@
           "childDetails": "Per-child childcare details",
           "householdSize": "Household size"
         },
-        "notEligibleChildren": "No eligible children for this benefit."
+        "notEligibleChildren": "No eligible children for this benefit.",
+        "childLabel": "Child {index}"
       }
     },
     "checkout": {

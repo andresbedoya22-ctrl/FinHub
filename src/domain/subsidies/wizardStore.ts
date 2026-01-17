@@ -4,7 +4,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { SubsidySlug, EligibilityResult } from "./types";
 
-export type SubsidyWizardAnswers = Record<string, string | number | boolean | null>;
+export type SubsidyWizardAnswers = Record<string, unknown>;
 
 type WizardState = {
   answersBySlug: Record<SubsidySlug, SubsidyWizardAnswers>;

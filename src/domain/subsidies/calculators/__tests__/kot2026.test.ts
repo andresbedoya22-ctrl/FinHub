@@ -22,6 +22,30 @@ describe("calculateKot2026", () => {
     expect(result.monthlyCents).toBe(120200);
   });
 
+  it("matches example 2 (two children, day care + bso)", () => {
+    const result = calculateKot2026(
+      {
+        annualIncomeHousehold: 120000,
+        workedMonths: 12,
+        children: [
+          {
+            hoursPerMonth: 87,
+            hourlyRate: 12.45,
+            childcareType: "dagopvang",
+          },
+          {
+            hoursPerMonth: 65,
+            hourlyRate: 10.1,
+            childcareType: "bso",
+          },
+        ],
+      },
+      PARAMS_2026
+    );
+
+    expect(result.monthlyCents).toBe(116200);
+  });
+
   it("matches example 3 (one child, gastouder, hours capped)", () => {
     const result = calculateKot2026(
       {

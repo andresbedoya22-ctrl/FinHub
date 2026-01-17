@@ -117,16 +117,6 @@ export const WIZARD_STEPS_BY_SLUG: Record<SubsidySlug, WizardStep[]> = {
       descriptionKey: "wizard.kot.steps.children.description",
       fields: [
         { id: "childrenCount", type: "number", labelKey: "wizard.kot.fields.childrenCount" },
-        {
-          id: "childcareType",
-          type: "select",
-          labelKey: "wizard.kot.fields.childcareType",
-          options: [
-            { value: "dagopvang", labelKey: "wizard.kot.options.dagopvang" },
-            { value: "bso", labelKey: "wizard.kot.options.bso" },
-            { value: "gastouder", labelKey: "wizard.kot.options.gastouder" },
-          ],
-        },
       ],
     },
     {

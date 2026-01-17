@@ -8,6 +8,7 @@ export type BenefitEstimate = {
   explanationKey?: string;
   missingInputs?: string[];
   breakdownKeys: string[];
+  breakdownItems?: { labelKey: string; amountCents: number; labelValues?: Record<string, string | number> }[];
   assumptionsKeys: string[];
 };
 

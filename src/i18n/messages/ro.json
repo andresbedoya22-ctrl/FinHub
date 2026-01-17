@@ -833,6 +833,15 @@
           "dagopvang": "Îngrijire de zi",
           "bso": "Îngrijire după școală (BSO)",
           "gastouder": "Asistent maternal"
+        },
+        "child": {
+          "title": "Copil {index}"
+        },
+        "errors": {
+          "childrenCount": "Introdu un num?r valid de copii (1-4).",
+          "childcareType": "Selecteaz? tipul de ?ngrijire.",
+          "hoursPerMonth": "Introdu orele pe lun?.",
+          "hourlyRate": "Introdu tariful pe or?."
         }
       }
     },
@@ -958,7 +967,8 @@
           "childDetails": "Detalii pentru fiecare copil",
           "householdSize": "Num?r de persoane ?n gospod?rie"
         },
-        "notEligibleChildren": "Nu exist? copii eligibili pentru aceast? subven?ie."
+        "notEligibleChildren": "Nu exist? copii eligibili pentru aceast? subven?ie.",
+        "childLabel": "Copil {index}"
       }
     },
     "checkout": {

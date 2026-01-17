@@ -18,6 +18,11 @@ import type { SubsidySlug } from "@/domain/subsidies/types";
 import { useSubsidyWizardStore } from "@/domain/subsidies/wizardStore";
 
 type FieldErrors = Record<string, string>;
+type KotChildAnswer = {
+  childcareType: "dagopvang" | "bso" | "gastouder" | null;
+  hoursPerMonth: number | null;
+  hourlyRate: number | null;
+};
 
 function parseNumber(value: string): number | null {
   const trimmed = value.trim();
@@ -36,6 +41,24 @@ function getFieldValue(raw: unknown): string {
   if (typeof raw === "number") return String(raw);
   if (typeof raw === "boolean") return raw ? "yes" : "no";
   return String(raw);
+}
+
+function getKotChildren(raw: unknown): KotChildAnswer[] {
+  if (!Array.isArray(raw)) return [];
+  return raw.map((child) => ({
+    childcareType:
+      child && typeof child === "object" && "childcareType" in child
+        ? (child as KotChildAnswer).childcareType ?? null
+        : null,
+    hoursPerMonth:
+      child && typeof child === "object" && "hoursPerMonth" in child
+        ? (child as KotChildAnswer).hoursPerMonth ?? null
+        : null,
+    hourlyRate:
+      child && typeof child === "object" && "hourlyRate" in child
+        ? (child as KotChildAnswer).hourlyRate ?? null
+        : null,
+  }));
 }
 
 function getPersistedStepIndex(slug: SubsidySlug): number {
@@ -86,6 +109,11 @@ export default function SubsidyWizardClient({ slug }: { slug: string }) {
   const activeStep = totalSteps > 0 ? steps[clampedStepIndex] : undefined;
   const activeKey = activeStep?.key ?? "";
   const answers = answersBySlug[subsidySlug] ?? {};
+  const kotChildren = getKotChildren(answers.children);
+  const kotChildrenCount = Math.min(
+    4,
+    Math.max(1, typeof answers.childrenCount === "number" ? answers.childrenCount : 1)
+  );
 
   useEffect(() => {
     if (process.env.NODE_ENV === "production") return;
@@ -127,7 +155,59 @@ export default function SubsidyWizardClient({ slug }: { slug: string }) {
     setAnswer(subsidySlug, field.id, value);
   }
 
+  function setKotChildField(index: number, field: keyof KotChildAnswer, value: string) {
+    const nextChildren: KotChildAnswer[] = Array.from({ length: kotChildrenCount }, (_, idx) => {
+      const existing = kotChildren[idx];
+      return {
+        childcareType: existing?.childcareType ?? null,
+        hoursPerMonth: existing?.hoursPerMonth ?? null,
+        hourlyRate: existing?.hourlyRate ?? null,
+      };
+    });
+    const current = nextChildren[index]!;
+    if (field === "childcareType") {
+      nextChildren[index] = { ...current, childcareType: value as KotChildAnswer["childcareType"] };
+    } else if (field === "hoursPerMonth") {
+      nextChildren[index] = { ...current, hoursPerMonth: parseNumber(value) };
+    } else {
+      nextChildren[index] = { ...current, hourlyRate: parseNumber(value) };
+    }
+    setAnswer(subsidySlug, "children", nextChildren);
+  }
+
   function validateStep(): boolean {
+    if (subsidySlug === "kot" && currentStep.key === "costs") {
+      const nextErrors: FieldErrors = {};
+      if (kotChildrenCount < 1 || kotChildrenCount > 4) {
+        nextErrors.childrenCount = t("wizard.kot.errors.childrenCount");
+      }
+
+      for (let i = 0; i < kotChildrenCount; i += 1) {
+        const child = kotChildren[i];
+        if (!child || !child.childcareType) {
+          nextErrors[`child.${i}.childcareType`] = t("wizard.kot.errors.childcareType");
+        }
+        if (typeof child?.hoursPerMonth !== "number" || child.hoursPerMonth <= 0) {
+          nextErrors[`child.${i}.hoursPerMonth`] = t("wizard.kot.errors.hoursPerMonth");
+        }
+        if (typeof child?.hourlyRate !== "number" || child.hourlyRate <= 0) {
+          nextErrors[`child.${i}.hourlyRate`] = t("wizard.kot.errors.hourlyRate");
+        }
+      }
+
+      setErrors(nextErrors);
+      return Object.keys(nextErrors).length === 0;
+    }
+
+    if (subsidySlug === "kot" && currentStep.key === "children") {
+      const nextErrors: FieldErrors = {};
+      if (kotChildrenCount < 1 || kotChildrenCount > 4) {
+        nextErrors.childrenCount = t("wizard.kot.errors.childrenCount");
+      }
+      setErrors(nextErrors);
+      return Object.keys(nextErrors).length === 0;
+    }
+
     const nextErrors: FieldErrors = {};
     currentStep.fields.forEach((field) => {
       const value = answers[field.id];
@@ -176,11 +256,12 @@ export default function SubsidyWizardClient({ slug }: { slug: string }) {
       };
     }
 
+    const firstChild = kotChildren[0];
     return {
       childrenCount: typeof raw.childrenCount === "number" ? raw.childrenCount : null,
-      childcareType: (raw.childcareType as "dagopvang" | "bso" | "gastouder" | null) ?? null,
-      hoursPerMonth: typeof raw.hoursPerMonth === "number" ? raw.hoursPerMonth : null,
-      costPerHour: typeof raw.costPerHour === "number" ? raw.costPerHour : null,
+      childcareType: firstChild?.childcareType ?? null,
+      hoursPerMonth: typeof firstChild?.hoursPerMonth === "number" ? firstChild.hoursPerMonth : null,
+      costPerHour: typeof firstChild?.hourlyRate === "number" ? firstChild.hourlyRate : null,
       worksOrStudies: normalizeToggle(raw.worksOrStudies),
       partnerWorksOrStudies: normalizeToggle(raw.partnerWorksOrStudies),
       incomeHousehold: typeof raw.incomeHousehold === "number" ? raw.incomeHousehold : null,
@@ -234,16 +315,7 @@ export default function SubsidyWizardClient({ slug }: { slug: string }) {
       input: {
         annualIncomeHousehold: typeof raw.incomeHousehold === "number" ? raw.incomeHousehold : null,
         workedMonths: typeof raw.workedMonths === "number" ? raw.workedMonths : null,
-        children:
-          typeof raw.childrenCount === "number" && raw.childrenCount > 1
-            ? Array.from({ length: raw.childrenCount })
-            : [
-                {
-                  hoursPerMonth: typeof raw.hoursPerMonth === "number" ? raw.hoursPerMonth : null,
-                  hourlyRate: typeof raw.costPerHour === "number" ? raw.costPerHour : null,
-                  childcareType: (raw.childcareType as "dagopvang" | "bso" | "gastouder" | null) ?? null,
-                },
-              ],
+        children: kotChildren.slice(0, kotChildrenCount),
       },
     };
   }
@@ -302,75 +374,141 @@ export default function SubsidyWizardClient({ slug }: { slug: string }) {
             ) : null}
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2">
-            {currentStep.fields.map((field) => {
-              const fieldValue = getFieldValue(answers[field.id]);
-              const error = attemptedNext ? errors[field.id] : undefined;
+          {subsidySlug === "kot" && currentStep.key === "costs" ? (
+            <div className="space-y-4">
+              {Array.from({ length: kotChildrenCount }).map((_, index) => {
+                const child = kotChildren[index] ?? {
+                  childcareType: null,
+                  hoursPerMonth: null,
+                  hourlyRate: null,
+                };
+                const childcareError = attemptedNext ? errors[`child.${index}.childcareType`] : undefined;
+                const hoursError = attemptedNext ? errors[`child.${index}.hoursPerMonth`] : undefined;
+                const rateError = attemptedNext ? errors[`child.${index}.hourlyRate`] : undefined;
 
-              if (field.type === "toggle") {
                 return (
-                  <div key={field.id} className="space-y-1">
-                    <ToggleGroup
-                      label={t(field.labelKey)}
-                      value={fieldValue || undefined}
-                      options={(field.options ?? []).map((o) => ({
-                        ...o,
-                        label: t(o.labelKey),
-                        description: o.descriptionKey ? t(o.descriptionKey) : undefined,
-                      }))}
-                      onValueChange={(value) => {
-                        setFieldValue(field, value);
-                        setErrors((prev) => ({ ...prev, [field.id]: "" }));
-                      }}
-                    />
-                    {error ? <div className="text-xs text-red-300">{error}</div> : null}
-                  </div>
-                );
-              }
+                  <Card key={`child-${index}`} className="space-y-3 border border-fh-border/60 bg-fh-surface-2">
+                    <div className="text-sm font-semibold text-fh-text">{t("wizard.kot.child.title", { index: index + 1 })}</div>
+                    <div className="grid gap-4 md:grid-cols-3">
+                      <label className="space-y-1 text-sm">
+                        <div className="text-sm font-medium text-fh-muted">{t("wizard.kot.fields.childcareType")}</div>
+                        <select
+                          value={child.childcareType ?? ""}
+                          onChange={(e) => {
+                            setKotChildField(index, "childcareType", e.target.value);
+                            setErrors((prev) => ({ ...prev, [`child.${index}.childcareType`]: "" }));
+                          }}
+                          className="w-full rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-fh-primary/35"
+                        >
+                          <option value="">{t("wizard.common.selectPlaceholder")}</option>
+                          <option value="dagopvang">{t("wizard.kot.options.dagopvang")}</option>
+                          <option value="bso">{t("wizard.kot.options.bso")}</option>
+                          <option value="gastouder">{t("wizard.kot.options.gastouder")}</option>
+                        </select>
+                        {childcareError ? <div className="text-xs text-red-300">{childcareError}</div> : null}
+                      </label>
 
-              if (field.type === "select") {
+                      <Input
+                        label={t("wizard.kot.fields.hoursPerMonth")}
+                        error={hoursError}
+                        type="number"
+                        min="0"
+                        step="1"
+                        value={getFieldValue(child.hoursPerMonth)}
+                        onChange={(e) => {
+                          setKotChildField(index, "hoursPerMonth", e.target.value);
+                          setErrors((prev) => ({ ...prev, [`child.${index}.hoursPerMonth`]: "" }));
+                        }}
+                      />
+
+                      <Input
+                        label={t("wizard.kot.fields.costPerHour")}
+                        error={rateError}
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value={getFieldValue(child.hourlyRate)}
+                        onChange={(e) => {
+                          setKotChildField(index, "hourlyRate", e.target.value);
+                          setErrors((prev) => ({ ...prev, [`child.${index}.hourlyRate`]: "" }));
+                        }}
+                      />
+                    </div>
+                  </Card>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="grid gap-4 md:grid-cols-2">
+              {currentStep.fields.map((field) => {
+                const fieldValue = getFieldValue(answers[field.id]);
+                const error = attemptedNext ? errors[field.id] : undefined;
+
+                if (field.type === "toggle") {
+                  return (
+                    <div key={field.id} className="space-y-1">
+                      <ToggleGroup
+                        label={t(field.labelKey)}
+                        value={fieldValue || undefined}
+                        options={(field.options ?? []).map((o) => ({
+                          ...o,
+                          label: t(o.labelKey),
+                          description: o.descriptionKey ? t(o.descriptionKey) : undefined,
+                        }))}
+                        onValueChange={(value) => {
+                          setFieldValue(field, value);
+                          setErrors((prev) => ({ ...prev, [field.id]: "" }));
+                        }}
+                      />
+                      {error ? <div className="text-xs text-red-300">{error}</div> : null}
+                    </div>
+                  );
+                }
+
+                if (field.type === "select") {
+                  return (
+                    <label key={field.id} className="space-y-1 text-sm">
+                      <div className="text-sm font-medium text-fh-muted">{t(field.labelKey)}</div>
+                      <select
+                        value={fieldValue}
+                        onChange={(e) => {
+                          setFieldValue(field, e.target.value);
+                          setErrors((prev) => ({ ...prev, [field.id]: "" }));
+                        }}
+                        className="w-full rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-fh-primary/35"
+                      >
+                        <option value="">{t("wizard.common.selectPlaceholder")}</option>
+                        {(field.options ?? []).map((o) => (
+                          <option key={o.value} value={o.value}>
+                            {t(o.labelKey)}
+                          </option>
+                        ))}
+                      </select>
+                      {field.hintKey ? <div className="text-xs text-fh-muted">{t(field.hintKey)}</div> : null}
+                      {error ? <div className="text-xs text-red-300">{error}</div> : null}
+                    </label>
+                  );
+                }
+
                 return (
-                  <label key={field.id} className="space-y-1 text-sm">
-                    <div className="text-sm font-medium text-fh-muted">{t(field.labelKey)}</div>
-                    <select
-                      value={fieldValue}
-                      onChange={(e) => {
-                        setFieldValue(field, e.target.value);
-                        setErrors((prev) => ({ ...prev, [field.id]: "" }));
-                      }}
-                      className="w-full rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-fh-primary/35"
-                    >
-                      <option value="">{t("wizard.common.selectPlaceholder")}</option>
-                      {(field.options ?? []).map((o) => (
-                        <option key={o.value} value={o.value}>
-                          {t(o.labelKey)}
-                        </option>
-                      ))}
-                    </select>
-                    {field.hintKey ? <div className="text-xs text-fh-muted">{t(field.hintKey)}</div> : null}
-                    {error ? <div className="text-xs text-red-300">{error}</div> : null}
-                  </label>
+                  <Input
+                    key={field.id}
+                    label={t(field.labelKey)}
+                    hint={field.hintKey ? t(field.hintKey) : undefined}
+                    error={error}
+                    type="number"
+                    min="0"
+                    step={field.type === "currency" ? "0.01" : "1"}
+                    value={fieldValue}
+                    onChange={(e) => {
+                      setFieldValue(field, e.target.value);
+                      setErrors((prev) => ({ ...prev, [field.id]: "" }));
+                    }}
+                  />
                 );
-              }
-
-              return (
-                <Input
-                  key={field.id}
-                  label={t(field.labelKey)}
-                  hint={field.hintKey ? t(field.hintKey) : undefined}
-                  error={error}
-                  type="number"
-                  min="0"
-                  step={field.type === "currency" ? "0.01" : "1"}
-                  value={fieldValue}
-                  onChange={(e) => {
-                    setFieldValue(field, e.target.value);
-                    setErrors((prev) => ({ ...prev, [field.id]: "" }));
-                  }}
-                />
-              );
-            })}
-          </div>
+              })}
+            </div>
+          )}
 
           {/* Keep actions above any decorative layers for reliable clicks. */}
           <div className="relative z-10 flex items-center justify-between">

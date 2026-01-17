@@ -836,6 +836,15 @@
           "dagopvang": "Opieka dzienna",
           "bso": "Opieka pozaszkolna (BSO)",
           "gastouder": "Opiekun dzienny"
+        },
+        "child": {
+          "title": "Dziecko {index}"
+        },
+        "errors": {
+          "childrenCount": "Podaj poprawn? liczb? dzieci (1-4).",
+          "childcareType": "Wybierz rodzaj opieki.",
+          "hoursPerMonth": "Podaj liczb? godzin na miesi?c.",
+          "hourlyRate": "Podaj stawk? za godzin?."
         }
       }
     },
@@ -961,7 +970,8 @@
           "childDetails": "Szczeg??y dla ka?dego dziecka",
           "householdSize": "Liczba os?b w gospodarstwie"
         },
-        "notEligibleChildren": "Brak kwalifikuj?cych si? dzieci dla tego ?wiadczenia."
+        "notEligibleChildren": "Brak kwalifikuj?cych si? dzieci dla tego ?wiadczenia.",
+        "childLabel": "Dziecko {index}"
       }
     },
     "checkout": {
