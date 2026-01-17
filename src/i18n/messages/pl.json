@@ -3,7 +3,7 @@
     "name": "FinHub"
   },
   "landing": {
-    "title": "Zarz⬦dzaj finansami w Holandii",
+    "title": "Zarządzaj finansami w Holandii",
     "cta": "Zacznij",
     "lead": {
       "consent": "Wyrażam zgod\" na kontakt w sprawie aktualizacji FinHub.",
@@ -66,7 +66,7 @@
       "goRegister": "Zarejestruj sie",
       "resendBusy": "Wysylanie...",
       "busy": "Logowanie...",
-      "forgot": "Nie pamietasz hasla?",
+      "forgot": "Nie pamiętasz hasła?",
       "noAccount": "Nie masz konta?",
       "submit": "Zaloguj",
       "title": "Zaloguj sie",
@@ -174,7 +174,7 @@
         "title": "Finanse",
         "subtitle": "Centrum Finansowe",
         "search": "Szukaj",
-        "searchPlaceholder": "Szukaj lub przejd? do...",
+        "searchPlaceholder": "Szukaj lub przejdź do...",
         "cmdk": "Cmd+K",
         "notifications": "Powiadomienia"
       },
@@ -191,7 +191,7 @@
       "nav": {
         "title": "Nawigacja",
         "finances": "Finanse",
-        "subsidies": "Dop?aty",
+        "subsidies": "Dopłaty",
         "cases": "Sprawy",
         "documents": "Dokumenty",
         "profile": "Profil",
@@ -200,20 +200,20 @@
       "kpis": {
         "safeToSpend": "Do wydania",
         "incomeReceived": "Otrzymane przychody",
-        "billsPaid": "Op?acone rachunki",
-        "budgetUsed": "Wykorzystany bud?et",
-        "safeHint": "Po kosztach sta?ych",
-        "monthHint": "W tym miesi?cu ({month})",
+        "billsPaid": "Opłacone rachunki",
+        "budgetUsed": "Wykorzystany budżet",
+        "safeHint": "Po kosztach stałych",
+        "monthHint": "W tym miesiącu ({month})",
         "outflowHint": "Wydatki w tym okresie",
         "budgetHint": "Wykorzystanie planu"
       },
       "inbox": {
         "title": "Skrzynka transakcji",
-        "subtitle": "Ostatnia aktywno??",
+        "subtitle": "Ostatnia aktywność",
         "viewAll": "Zobacz wszystkie",
         "emptyTitle": "Brak transakcji",
-        "emptyBody": "Dodaj pierwsz? transakcj?, aby odblokowa? analizy.",
-        "emptyCta": "Dodaj pierwsz? transakcj?"
+        "emptyBody": "Dodaj pierwszą transakcję, aby odblokować analizy.",
+        "emptyCta": "Dodaj pierwszą transakcję"
       },
       "table": {
         "date": "Data",
@@ -233,19 +233,19 @@
         "flagged": "Oznaczone"
       },
       "burndown": {
-        "title": "Miesi?czny wykres",
+        "title": "Miesięczny wykres",
         "subtitle": "Saldo netto w czasie",
         "currency": "EUR",
-        "emptyTitle": "Za ma?o danych",
-        "emptyBody": "Za ma?o danych, aby narysowa? wykres."
+        "emptyTitle": "Za mało danych",
+        "emptyBody": "Za mało danych, aby narysować wykres."
       },
       "budgets": {
-        "title": "Bud?ety kategorii",
-        "subtitle": "Aktywne bud?ety na {month}",
+        "title": "Budżety kategorii",
+        "subtitle": "Aktywne budżety na {month}",
         "used": "Wykorzystane",
-        "remaining": "Pozosta?o",
-        "emptyTitle": "Brak bud?et?w",
-        "emptyBody": "Zdefiniuj bud?ety lub dodaj transakcje, aby zbudowa? baz?.",
+        "remaining": "Pozostało",
+        "emptyTitle": "Brak budżetów",
+        "emptyBody": "Zdefiniuj budżety lub dodaj transakcje, aby zbudować bazę.",
         "emptyCta": "Przejrzyj transakcje",
         "status": {
           "ok": "Na dobrej drodze",
@@ -254,15 +254,15 @@
         }
       },
       "states": {
-        "errorTitle": "Nie mo?na za?adowa? finans?w",
-        "errorBody": "Spr?buj ponownie za chwil?.",
-        "retry": "Spr?buj ponownie"
+        "errorTitle": "Nie można załadować finansów",
+        "errorBody": "Spróbuj ponownie za chwilę.",
+        "retry": "Spróbuj ponownie"
       }
     },
     "transactions": {
       "breadcrumbs": {
         "finances": "Finanse",
-        "subsidies": "Dop?aty",
+        "subsidies": "Dopłaty",
         "transactions": "Transakcje"
       },
       "title": "Transakcje",
@@ -404,7 +404,7 @@
     "newTransaction": {
       "breadcrumbs": {
         "finances": "Finanse",
-        "subsidies": "Dop?aty",
+        "subsidies": "Dopłaty",
         "transactions": "Transakcje",
         "new": "Nowa"
       },

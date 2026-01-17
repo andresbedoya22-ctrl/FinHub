@@ -3,21 +3,21 @@
     "name": "FinHub"
   },
   "landing": {
-    "title": "Gestioneaz-⬺i finan⬺ele ®n Olanda",
+    "title": "Gestioneaz-ți finanțele în Olanda",
     "cta": "ncepe",
     "lead": {
-      "consent": "Sunt de acord s fiu contactat despre nout:i FinHub.",
+      "consent": "Sunt de acord să fiu contactat despre noutăți FinHub.",
       "createAccount": "Creeaz cont",
       "email": "Email",
       "error": "A aprut o problem. }ncearc din nou.",
       "fullName": "Nume complet",
       "interests": "M intereseaz",
-      "phone": "Telefon (op⬺ional)",
+      "phone": "Telefon (opțional)",
       "submit": "Trimite",
-      "subtitle": "Las datele tale \"i ce te intereseaz  vom prioritiza în consecin:.",
+      "subtitle": "Lasă datele tale și ce te interesează; vom prioritiza în consecință.",
       "successBody": "Te contactm cnd deschidem noi locuri n beta.",
-      "successTitle": "Mul:umim  am primit.",
-      "title": "Prime\"te nout:i (beta)",
+      "successTitle": "Mulțumim, am primit.",
+      "title": "Primește noutăți (beta)",
       "interestLabels": {
         "personal_finance": "Personal finance",
         "taxes": "Taxes (IB)",
@@ -55,10 +55,10 @@
       "password": "Parola"
     },
     "legal": {
-      "and": "?i",
-      "continue": "Continund accep?i",
-      "privacy": "Politica de confiden?ialitate",
-      "continueRegister": "Crend un cont accep?i",
+      "and": "și",
+      "continue": "Continund accepși",
+      "privacy": "Politica de confidenșialitate",
+      "continueRegister": "Crend un cont accepși",
       "terms": "Termenii"
     },
     "login": {
@@ -83,34 +83,34 @@
     },
     "errors": {
       "unknown": "A aparut o eroare. ncearca din nou.",
-      "weak_password": "Parola nu îndepline?te cerin?ele.",
+      "weak_password": "Parola nu îîîndeplinește cerințele.",
       "missing_code": "Link invalid sau expirat.",
       "rate_limited": "Prea multe ncercari. ncearca mai trziu.",
       "invalid_request": "Date invalide. ncearca din nou.",
       "email_not_confirmed": "Email neconfirmat.",
       "user_exists": "Exista deja un cont pentru acest email.",
-      "invalid_credentials": "Creden?iale invalide.",
-      "oauth_failed": "Autentificarea sociala a e?uat."
+      "invalid_credentials": "Credenșiale invalide.",
+      "oauth_failed": "Autentificarea sociala a eșuat."
     }
   },
   "finny": {
     "ask": "ntreab-l pe Finny"
   },
   "shell": {
-    "skipToContent": "Sari la con⬺inut",
+    "skipToContent": "Sari la conținut",
     "sidebar": {
       "toggleAria": "Comut bara lateral"
     },
     "section": {
-      "finances": "Finan⬺e",
+      "finances": "Finanțe",
       "subsidies": "Subvenții",
-      "operations": "Opera⬺iuni",
+      "operations": "Operațiuni",
       "account": "Cont",
       "admin": "Admin"
     },
     "nav": {
       "overview": "Prezentare general",
-      "transactions": "Tranzac⬺ii",
+      "transactions": "Tranzacții",
       "subsidies": "Subvenții",
       "documents": "Documente",
       "cases": "Dosare",
@@ -132,13 +132,13 @@
     },
     "cmdk": {
       "ariaLabel": "Palet de comenzi",
-      "inputPlaceholder": "Tasteaz pentru a cuta ac:iuni...",
-      "inputAriaLabel": "Caut ac:iuni",
+      "inputPlaceholder": "Tasteaz pentru a cuta acșiuni...",
+      "inputAriaLabel": "Caut acșiuni",
       "empty": "Fr rezultate.",
       "enterHint": "Enter",
       "footerHint": "Sus/Jos: navigheaz - Esc: închide",
-      "goToFinances": "Mergi la Finan⬺e",
-      "goToTransactions": "Mergi la Tranzac⬺ii",
+      "goToFinances": "Mergi la Finanțe",
+      "goToTransactions": "Mergi la Tranzacții",
       "goToSubsidies": "Mergi la Subvenții",
       "goToDocuments": "Mergi la Documente",
       "goToCases": "Mergi la Dosare",
@@ -148,11 +148,11 @@
     },
     "route": {
       "dashboard": "Tablou de bord",
-      "finances": "Finan⬺e",
+      "finances": "Finanțe",
       "subsidies": "Subvenții",
-      "transactions": "Tranzac⬺ii",
-      "newTransaction": "Tranzac:ie nou",
-      "transactionDetail": "Detalii tranzac⬺ie",
+      "transactions": "Tranzacții",
+      "newTransaction": "Tranzacșie nou",
+      "transactionDetail": "Detalii tranzacție",
       "documents": "Documente",
       "cases": "Dosare",
       "case": "Dosar",
@@ -171,26 +171,26 @@
     "dashboard": {
       "topbar": {
         "eyebrow": "Dashboard",
-        "title": "Finan?e",
-        "subtitle": "Centru de Comand? Financiar",
-        "search": "Caut?",
-        "searchPlaceholder": "Caut? sau sari la...",
+        "title": "Finanțe",
+        "subtitle": "Centru de Comandă Financiar",
+        "search": "Caută",
+        "searchPlaceholder": "Caută sau sari la...",
         "cmdk": "Cmd+K",
-        "notifications": "Notific?ri"
+        "notifications": "Notificări"
       },
       "header": {
         "kicker": "Dashboard",
-        "title": "Finan?e",
-        "subtitle": "Centru de Comand? Financiar"
+        "title": "Finanțe",
+        "subtitle": "Centru de Comandă Financiar"
       },
       "actions": {
         "viewAll": "Vezi toate",
-        "newTransaction": "Tranzac?ie nou?",
-        "review": "Revizuie?te"
+        "newTransaction": "Tranzacșie nouă",
+        "review": "Revizuiește"
       },
       "nav": {
         "title": "Navigare",
-        "finances": "Finan?e",
+        "finances": "Finanțe",
         "cases": "Dosare",
         "documents": "Documente",
         "profile": "Profil",
@@ -198,42 +198,42 @@
       },
       "kpis": {
         "safeToSpend": "Disponibil de cheltuit",
-        "incomeReceived": "Venituri ?ncasate",
-        "billsPaid": "Facturi pl?tite",
+        "incomeReceived": "Venituri încasate",
+        "billsPaid": "Facturi plătite",
         "budgetUsed": "Buget folosit",
-        "safeHint": "Dup? costurile fixe",
+        "safeHint": "După costurile fixe",
         "monthHint": "Luna aceasta ({month})",
-        "outflowHint": "Ie?iri ?n perioad?",
+        "outflowHint": "Ieșiri în perioadă",
         "budgetHint": "Folosire vs plan"
       },
       "inbox": {
-        "title": "Inbox tranzac?ii",
-        "subtitle": "Activitate recent?",
+        "title": "Inbox tranzacșii",
+        "subtitle": "Activitate recentă",
         "viewAll": "Vezi toate",
-        "emptyTitle": "Nu exist? tranzac?ii",
-        "emptyBody": "Adaug? prima tranzac?ie pentru a debloca insight-uri.",
-        "emptyCta": "Adaug? prima tranzac?ie"
+        "emptyTitle": "Nu există tranzacșii",
+        "emptyBody": "Adaugă prima tranzacșie pentru a debloca insight-uri.",
+        "emptyCta": "Adaugă prima tranzacșie"
       },
       "table": {
         "date": "Data",
         "merchant": "Comerciant",
         "category": "Categorie",
         "status": "Status",
-        "amount": "Sum?"
+        "amount": "Sumă"
       },
       "category": {
         "groceries": "Alimente",
         "transport": "Transport",
         "entertainment": "Divertisment",
-        "uncategorized": "F?r? categorie"
+        "uncategorized": "Fără categorie"
       },
       "status": {
         "approved": "Aprobat",
         "flagged": "Marcat"
       },
       "burndown": {
-        "title": "Evolu?ie lunar?",
-        "subtitle": "Sold net ?n timp",
+        "title": "Evolușie lunară",
+        "subtitle": "Sold net în timp",
         "currency": "EUR",
         "emptyTitle": "Date insuficiente",
         "emptyBody": "Nu sunt suficiente date pentru grafic."
@@ -242,35 +242,35 @@
         "title": "Bugete pe categorii",
         "subtitle": "Bugete active pentru {month}",
         "used": "Folosit",
-        "remaining": "R?mas",
-        "emptyTitle": "F?r? bugete",
-        "emptyBody": "Define?te bugete sau adaug? tranzac?ii pentru o baz?.",
-        "emptyCta": "Revizuie?te tranzac?iile",
+        "remaining": "Rămas",
+        "emptyTitle": "Fără bugete",
+        "emptyBody": "Definește bugete sau adaugă tranzacșii pentru o bază.",
+        "emptyCta": "Revizuiește tranzacșiile",
         "status": {
-          "ok": "?n grafic",
-          "warn": "Aten?ie",
+          "ok": "în grafic",
+          "warn": "Atenșie",
           "risk": "Risc"
         }
       },
       "states": {
-        "errorTitle": "Nu s-au putut ?nc?rca finan?ele",
-        "errorBody": "?ncearc? din nou ?n c?teva momente.",
-        "retry": "Re?ncearc?"
+        "errorTitle": "Nu s-au putut încărca finanțele",
+        "errorBody": "Încearcă din nou în câteva momente.",
+        "retry": "Reîncearcă"
       }
     },
     "transactions": {
       "breadcrumbs": {
-        "finances": "Finan⬺e",
-        "transactions": "Tranzac⬺ii"
+        "finances": "Finanțe",
+        "transactions": "Tranzacții"
       },
-      "title": "Tranzac⬺ii",
+      "title": "Tranzacții",
       "monthLabel": "Luna: {month}",
       "actions": {
-        "backToFinances": "napoi la Finan:e",
-        "newTransaction": "Tranzac:ie nou"
+        "backToFinances": "napoi la Finanțe",
+        "newTransaction": "Tranzacșie nou"
       },
       "summary": {
-        "count": "{count} tranzac⬺ii"
+        "count": "{count} tranzacții"
       },
       "loading": "Se încarc...",
       "errors": {
@@ -278,14 +278,14 @@
         "updateStatus": "Nu s-a putut actualiza statusul."
       },
       "table": {
-        "title": "Inbox tranzac⬺ii",
+        "title": "Inbox tranzacții",
         "subtitle": "Activitate ledger \"i editri rapide",
         "date": "Data",
         "merchant": "Comerciant",
         "category": "Categorie",
         "amount": "Sum",
         "status": "Status",
-        "actions": "Ac⬺iuni",
+        "actions": "Acțiuni",
         "open": "Deschide",
         "statusAria": "Actualizeaz statusul",
         "saving": "Se salveaz..."
@@ -299,13 +299,13 @@
         "uncategorized": "Fr categorie"
       },
       "empty": {
-        "title": "Nu exist tranzac:ii",
-        "body": "Tranzac:iile vor aprea aici dup creare sau import.",
-        "cta": "Creeaz o tranzac:ie"
+        "title": "Nu exist tranzacșii",
+        "body": "Tranzacșiile vor aprea aici dup creare sau import.",
+        "cta": "Creeaz o tranzacșie"
       },
       "detail": {
         "breadcrumb": "Detalii",
-        "title": "Detalii tranzac⬺ie",
+        "title": "Detalii tranzacție",
         "monthLabel": "Luna: {month}",
         "actions": {
           "backToList": "napoi la list",
@@ -318,12 +318,12 @@
           "error": "Nu s-au putut salva modificrile."
         },
         "notFound": {
-          "title": "Tranzac:ia nu a fost gsit pentru aceast lun.",
+          "title": "Tranzacșia nu a fost gsit pentru aceast lun.",
           "body": "Dac ai deschis URL-ul direct, revino la list pentru a alinia luna \"i ledger-ul."
         },
         "invalidId": {
-          "title": "ID tranzac⬺ie invalid",
-          "body": "Nu am putut citi ID-ul tranzac⬺iei din URL."
+          "title": "ID tranzacție invalid",
+          "body": "Nu am putut citi ID-ul tranzacției din URL."
         },
         "merchant": {
           "label": "Comerciant"
@@ -343,39 +343,39 @@
         },
         "note": {
           "label": "Not",
-          "placeholder": "Op⬺ional...",
-          "helper": "Adaug context pentru aceast tranzac:ie."
+          "placeholder": "Opțional...",
+          "helper": "Adaug context pentru aceast tranzacșie."
         },
         "splits": {
-          "title": "mpr:iri",
-          "subtitle": "mparte tranzac:ia pe categorii.",
+          "title": "Împărțiri",
+          "subtitle": "Împarte tranzacția pe categorii.",
           "actions": {
-            "add": "Adaug împr:ire",
+            "add": "Adaugă împărțire",
             "reset": "Reseteaz",
-            "save": "Salveaz împr:iri",
+            "save": "Salveaz îÎmpărțiri",
             "saving": "Se salveaz...",
             "remove": "Elimin"
           },
           "totals": {
-            "total": "Total tranzac⬺ie",
-            "sum": "Total împr:iri",
-            "delta": "Diferen:"
+            "total": "Total tranzacție",
+            "sum": "Total îÎmpărțiri",
+            "delta": "Diferență"
           },
-          "loadError": "Nu s-au putut încrca împr:irile (HTTP {status}).",
-          "loadErrorFallback": "Nu s-au putut încrca împr:irile.",
-          "saveError": "Nu s-au putut salva împr:irile (HTTP {status}).",
-          "saveErrorFallback": "Nu s-au putut salva împr:irile.",
-          "saveOk": "mpr:iri salvate.",
-          "saveTitle": "mpr:iri actualizate",
-          "loading": "Se încarc împr:irile...",
-          "empty": "Fr împr:iri. Adaug una.",
-          "deltaError": "mpr:irile trebuie s fie egale cu suma tranzac:iei. Diferen:: {delta}.",
+          "loadError": "Nu s-au putut încrca îÎmpărțirile (HTTP {status}).",
+          "loadErrorFallback": "Nu s-au putut încrca îÎmpărțirile.",
+          "saveError": "Nu s-au putut salva îÎmpărțirile (HTTP {status}).",
+          "saveErrorFallback": "Nu s-au putut salva îÎmpărțirile.",
+          "saveOk": "Împărțiri salvate.",
+          "saveTitle": "Împărțiri actualizate",
+          "loading": "Se încarc îÎmpărțirile...",
+          "empty": "Fr îÎmpărțiri. Adaug una.",
+          "deltaError": "Împărțirile trebuie s fie egale cu suma tranzacșiei. Diferență: {delta}.",
           "table": {
             "category": "Categorie",
             "amount": "Sum (EUR)",
             "note": "Not",
             "amountPlaceholder": "ex: 12.34",
-            "notePlaceholder": "Op⬺ional..."
+            "notePlaceholder": "Opțional..."
           },
           "rowError": "Rnd {index}: {error}",
           "errors": {
@@ -395,32 +395,32 @@
           "title": "Stare ledger",
           "loading": "Se încarc",
           "month": "Luna ledger",
-          "count": "Tranzac⬺ii"
+          "count": "Tranzacții"
         }
       }
     },
     "newTransaction": {
       "breadcrumbs": {
-        "finances": "Finan⬺e",
-        "transactions": "Tranzac⬺ii",
+        "finances": "Finanțe",
+        "transactions": "Tranzacții",
         "new": "Nou"
       },
-      "title": "Tranzac:ie nou",
+      "title": "Tranzacșie nou",
       "monthLabel": "Luna: {month}",
       "actions": {
         "backToList": "napoi la list",
-        "create": "Creeaz tranzac:ie",
+        "create": "Creeaz tranzacșie",
         "creating": "Se creeaz..."
       },
       "errors": {
         "title": "A aprut o problem",
-        "create": "Nu s-a putut crea tranzac⬺ia."
+        "create": "Nu s-a putut crea tranzacția."
       },
       "form": {
         "date": {
           "label": "Data",
           "placeholder": "YYYY-MM-DD",
-          "helper": "Folosete data tranzac⬺iei.",
+          "helper": "Folosete data tranzacției.",
           "error": "Introdu o dat ISO valid."
         },
         "merchant": {
@@ -442,7 +442,7 @@
         },
         "note": {
           "label": "Not",
-          "placeholder": "Op⬺ional...",
+          "placeholder": "Opțional...",
           "helper": "Adaug context pentru revizuiri."
         }
       }
