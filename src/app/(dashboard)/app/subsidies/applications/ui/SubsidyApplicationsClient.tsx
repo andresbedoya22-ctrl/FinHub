@@ -11,6 +11,7 @@ import { listMySubsidyApplications } from "@/lib/db/subsidies/client";
 import { SUBSIDY_ICON_BY_SLUG, isSubsidySlug } from "@/domain/subsidies/registry";
 import { SubsidyIcon } from "@/components/subsidies/SubsidyIcon";
 import type { SubsidyApplication } from "@/domain/subsidies/types";
+import { formatSubsidyError } from "@/domain/subsidies/errorMapper";
 
 export default function SubsidyApplicationsClient() {
   const t = useTranslations("subsidies");
@@ -27,7 +28,7 @@ export default function SubsidyApplicationsClient() {
         setItems(data);
       } catch (e) {
         if (!alive) return;
-        setError(e instanceof Error ? e.message : t("applications.error"));
+        setError(formatSubsidyError(e, t));
       } finally {
         if (alive) setLoading(false);
       }
@@ -93,7 +94,7 @@ export default function SubsidyApplicationsClient() {
                 </div>
 
                 <div className="text-xs text-fh-muted">
-                  {t("applications.progress")} · {t(`status.${app.status}`)}
+                  {t("applications.progress")} {t("applications.separator")} {t(`status.${app.status}`)}
                 </div>
 
                 <div className="flex items-center gap-2">
@@ -118,3 +119,4 @@ export default function SubsidyApplicationsClient() {
     </Screen>
   );
 }
+

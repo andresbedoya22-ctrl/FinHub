@@ -9,6 +9,7 @@ import { InfoBox } from "@/ui/components/InfoBox";
 import { Screen } from "@/ui/components/Screen";
 import { DEFAULT_POLICY_2026 } from "@/domain/subsidies/policy";
 import { isSubsidySlug } from "@/domain/subsidies/registry";
+import { formatSubsidyError } from "@/domain/subsidies/errorMapper";
 
 export default function SubsidyCheckoutClient({ slug }: { slug: string }) {
   const t = useTranslations("subsidies");
@@ -56,14 +57,16 @@ export default function SubsidyCheckoutClient({ slug }: { slug: string }) {
         body: JSON.stringify({ applicationId, slug }),
       });
 
-      const json = (await res.json().catch(() => null)) as { ok?: boolean; url?: string; error?: string } | null;
+      const json = (await res.json().catch(() => null)) as
+        | { ok?: boolean; url?: string; error?: string; detail?: string }
+        | null;
       if (!res.ok || !json?.ok || !json.url) {
-        throw new Error(json?.error || t("checkout.error"));
+        throw json ?? { error: "checkout_failed" };
       }
 
       window.location.assign(json.url);
     } catch (e) {
-      setError(e instanceof Error ? e.message : t("checkout.error"));
+      setError(formatSubsidyError(e, t));
     } finally {
       setBusy(false);
     }

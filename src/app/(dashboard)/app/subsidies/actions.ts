@@ -12,9 +12,9 @@ export async function createSubsidyApplication(args: {
 }): Promise<string> {
   const supabase = await createSupabaseServerClient();
   const { data: userData, error: userErr } = await supabase.auth.getUser();
-  if (userErr) throw new Error(userErr.message);
-  if (!userData.user) throw new Error("No authenticated user");
-  if (!isSubsidySlug(args.slug)) throw new Error("Invalid subsidy slug");
+  if (userErr) throw new Error("unauthorized");
+  if (!userData.user) throw new Error("unauthorized");
+  if (!isSubsidySlug(args.slug)) throw new Error("invalid_slug");
 
   const now = new Date().toISOString();
   const status = args.status ?? "eligible_checked";

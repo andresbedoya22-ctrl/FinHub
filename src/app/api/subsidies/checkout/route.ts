@@ -12,8 +12,8 @@ export async function POST(req: Request) {
   try {
     const supabase = await createSupabaseServerClient();
     const { data: userData, error: userErr } = await supabase.auth.getUser();
-    if (userErr) return NextResponse.json({ ok: false, error: userErr.message }, { status: 401 });
-    if (!userData.user) return NextResponse.json({ ok: false, error: "No authenticated user" }, { status: 401 });
+    if (userErr) return NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 });
+    if (!userData.user) return NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 });
 
     const body = (await req.json().catch(() => null)) as
       | { applicationId?: string; slug?: string }
@@ -21,8 +21,8 @@ export async function POST(req: Request) {
 
     const applicationId = (body?.applicationId ?? "").toString().trim();
     const slug = (body?.slug ?? "").toString().trim();
-    if (!applicationId) return NextResponse.json({ ok: false, error: "applicationId requerido" }, { status: 400 });
-    if (!isSubsidySlug(slug)) return NextResponse.json({ ok: false, error: "slug inválido" }, { status: 400 });
+    if (!applicationId) return NextResponse.json({ ok: false, error: "missing_application_id" }, { status: 400 });
+    if (!isSubsidySlug(slug)) return NextResponse.json({ ok: false, error: "invalid_slug" }, { status: 400 });
 
     const { data: app, error: appErr } = await supabase
       .from("subsidies_applications")
@@ -30,20 +30,20 @@ export async function POST(req: Request) {
       .eq("id", applicationId)
       .maybeSingle();
 
-    if (appErr) return NextResponse.json({ ok: false, error: appErr.message }, { status: 400 });
+    if (appErr) return NextResponse.json({ ok: false, error: "query_failed", detail: appErr.message }, { status: 400 });
     if (!app || app.user_id !== userData.user.id) {
-      return NextResponse.json({ ok: false, error: "Aplicación no válida" }, { status: 403 });
+      return NextResponse.json({ ok: false, error: "forbidden" }, { status: 403 });
     }
 
     const policy = await getSubsidyPolicy2026();
     const { serviceFeeCents, currency } = policy.pricing;
 
     const secretKey = process.env.STRIPE_SECRET_KEY;
-    if (!secretKey) return NextResponse.json({ ok: false, error: "Missing STRIPE_SECRET_KEY" }, { status: 500 });
+    if (!secretKey) return NextResponse.json({ ok: false, error: "payment_unavailable" }, { status: 500 });
 
     const stripe = new Stripe(secretKey);
     const origin = req.headers.get("origin") ?? "";
-    if (!origin) return NextResponse.json({ ok: false, error: "Missing Origin header" }, { status: 400 });
+    if (!origin) return NextResponse.json({ ok: false, error: "invalid_origin" }, { status: 400 });
 
     const successUrl = `${origin}/app/subsidies/applications/${encodeURIComponent(applicationId)}?payment=success`;
     const cancelUrl = `${origin}/app/subsidies/${encodeURIComponent(slug)}/checkout?applicationId=${encodeURIComponent(
@@ -58,7 +58,7 @@ export async function POST(req: Request) {
           price_data: {
             currency: currency.toLowerCase(),
             unit_amount: serviceFeeCents,
-            product_data: { name: "FinHub – Subsidy Service" },
+            product_data: { name: "FinHub Subsidy Service" },
           },
         },
       ],
@@ -73,7 +73,7 @@ export async function POST(req: Request) {
     });
 
     if (!session?.id || !session?.url) {
-      return NextResponse.json({ ok: false, error: "Stripe session inválida" }, { status: 502 });
+      return NextResponse.json({ ok: false, error: "stripe_session_invalid" }, { status: 502 });
     }
 
     const now = new Date().toISOString();
@@ -87,11 +87,11 @@ export async function POST(req: Request) {
       })
       .eq("id", applicationId);
 
-    if (updateErr) return NextResponse.json({ ok: false, error: updateErr.message }, { status: 400 });
+    if (updateErr) return NextResponse.json({ ok: false, error: "query_failed", detail: updateErr.message }, { status: 400 });
 
     return NextResponse.json({ ok: true, url: session.url });
   } catch (e: unknown) {
-    const msg = e instanceof Error ? e.message : "Error desconocido";
-    return NextResponse.json({ ok: false, error: msg }, { status: 500 });
+    console.error("[subsidies][checkout]", e);
+    return NextResponse.json({ ok: false, error: "checkout_failed" }, { status: 500 });
   }
 }

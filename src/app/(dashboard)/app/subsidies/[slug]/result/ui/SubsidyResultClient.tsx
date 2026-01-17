@@ -12,6 +12,7 @@ import { isSubsidySlug } from "@/domain/subsidies/registry";
 import type { EligibilityResult, SubsidySlug } from "@/domain/subsidies/types";
 import { useSubsidyWizardStore } from "@/domain/subsidies/wizardStore";
 import { createSubsidyApplication } from "@/app/(dashboard)/app/subsidies/actions";
+import { formatSubsidyError } from "@/domain/subsidies/errorMapper";
 
 export default function SubsidyResultClient({ slug }: { slug: string }) {
   const t = useTranslations("subsidies");
@@ -78,7 +79,7 @@ export default function SubsidyResultClient({ slug }: { slug: string }) {
       });
       router.push(`/app/subsidies/${subsidySlug}/checkout?applicationId=${encodeURIComponent(applicationId)}`);
     } catch (e) {
-      setError(e instanceof Error ? e.message : t("result.actions.error"));
+      setError(formatSubsidyError(e, t));
     } finally {
       setBusy(false);
     }

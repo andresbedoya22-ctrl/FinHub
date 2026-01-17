@@ -16,6 +16,7 @@ import {
   listSubsidyNotes,
   uploadSubsidyDocument,
 } from "@/lib/db/subsidies/client";
+import { formatSubsidyError } from "@/domain/subsidies/errorMapper";
 
 export default function SubsidyApplicationDetailClient({ id }: { id: string }) {
   const t = useTranslations("subsidies");
@@ -45,7 +46,7 @@ export default function SubsidyApplicationDetailClient({ id }: { id: string }) {
         }
       } catch (e) {
         if (!alive) return;
-        setError(e instanceof Error ? e.message : t("applications.detail.error"));
+        setError(formatSubsidyError(e, t));
       } finally {
         if (alive) setLoading(false);
       }
@@ -69,7 +70,7 @@ export default function SubsidyApplicationDetailClient({ id }: { id: string }) {
       const updated = await listSubsidyDocuments(id);
       setDocs(updated);
     } catch (e) {
-      setError(e instanceof Error ? e.message : t("applications.detail.uploadError"));
+      setError(formatSubsidyError(e, t));
     } finally {
       setUploading((prev) => ({ ...prev, [documentId]: false }));
     }
@@ -137,6 +138,7 @@ export default function SubsidyApplicationDetailClient({ id }: { id: string }) {
                 submitted: t("status.submitted"),
                 decision: t("status.decision"),
                 done: t("status.done"),
+                cancelled: t("status.cancelled"),
               }}
             />
           </div>
