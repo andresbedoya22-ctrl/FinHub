@@ -423,3 +423,5 @@ Leaf keys used by Subsidies and related shell UI. Status indicates presence in e
 
 - Dynamic keys include: home how-it-works steps (1..3), documents labels/statuses, and subsidy status values.
 - Calculators and eligibility engine keys are extracted from literal string references in domain files.
+# Notes
+- Currency formatting: Intl for locale `ro` renders EUR as `EUR` (not `€`) even with `currencyDisplay: "symbol"`. This is expected and covered by tests in `src/ui/lib/__tests__/formatCurrency.test.ts`.
