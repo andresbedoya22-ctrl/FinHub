@@ -1,99 +1,1104 @@
 {
-    "app":  {
-                "name":  "FinHub"
-            },
-    "landing":  {
-                    "title":  "Manage your finances in the Netherlands",
-                    "cta":  "Get started",
-                    "lead":  {
-                                 "consent":  "I agree to be contacted about FinHub updates.",
-                                 "createAccount":  "Create account",
-                                 "email":  "Email",
-                                 "error":  "Something went wrong. Please try again.",
-                                 "fullName":  "Full name",
-                                 "interests":  "I\u0027m interested in",
-                                 "phone":  "Phone (optional)",
-                                 "submit":  "Send",
-                                 "subtitle":  "Leave your details and what you are interested in â€” we will prioritize accordingly.",
-                                 "successBody":  "We will reach out when we open the next beta slots.",
-                                 "successTitle":  "Thanks â€” we got it.",
-                                 "title":  "Get updates (beta)",
-                                 "interestLabels":  {
-                                                        "personal_finance":  "Personal finance",
-                                                        "taxes":  "Taxes (IB)",
-                                                        "voorlopige_aanslag":  "Provisional assessment (voorlopige aanslag)",
-                                                        "toeslagen":  "Allowances (toeslagen)",
-                                                        "mortgage":  "Mortgage",
-                                                        "personal_loan":  "Personal loan",
-                                                        "insurance":  "Insurance"
-                                                    }
-                             }
-                },
-    "auth":  {
-                 "oauth":  {
-                               "google":  "Continue with Google",
-                               "apple":  "Continue with Apple"
-                           },
-                 "forgot":  {
-                                "sent":  "If the email exists, you\u0027ll receive a password reset link.",
-                                "title":  "Reset password",
-                                "busy":  "Sending...",
-                                "submit":  "Send link",
-                                "backToLogin":  "Back to sign in"
-                            },
-                 "reset":  {
-                               "newPassword":  "New password",
-                               "title":  "Set a new password",
-                               "busy":  "Updating...",
-                               "submit":  "Update password",
-                               "ok":  "Password updated."
-                           },
-                 "common":  {
-                                "email":  "Email",
-                                "error":  "Error",
-                                "info":  "Info",
-                                "password":  "Password"
-                            },
-                 "legal":  {
-                               "and":  "and the",
-                               "continue":  "By continuing you accept the",
-                               "privacy":  "Privacy Policy",
-                               "continueRegister":  "By creating an account you accept the",
-                               "terms":  "Terms"
-                           },
-                 "login":  {
-                               "emailNotConfirmedHint":  "Your email is not confirmed yet. Check your inbox or resend verification.",
-                               "goRegister":  "Create one",
-                               "resendBusy":  "Resending...",
-                               "busy":  "Signing in...",
-                               "forgot":  "Forgot your password?",
-                               "noAccount":  "No account?",
-                               "submit":  "Sign in",
-                               "title":  "Sign in",
-                               "resend":  "Resend verification",
-                               "resendOk":  "Verification resent. Check your inbox."
-                           },
-                 "register":  {
-                                  "busy":  "Creating...",
-                                  "goLogin":  "Sign in",
-                                  "checkEmail":  "Account created. Check your inbox to confirm your email before signing in.",
-                                  "submit":  "Create account",
-                                  "haveAccount":  "Already have an account?",
-                                  "title":  "Create account"
-                              },
-                 "errors":  {
-                                "unknown":  "Something went wrong. Please try again.",
-                                "weak_password":  "Password does not meet requirements.",
-                                "missing_code":  "Invalid or expired link.",
-                                "rate_limited":  "Too many attempts. Please try later.",
-                                "invalid_request":  "Invalid input. Please try again.",
-                                "email_not_confirmed":  "Email not confirmed.",
-                                "user_exists":  "An account already exists for this email.",
-                                "invalid_credentials":  "Invalid credentials.",
-                                "oauth_failed":  "Social login failed. Please try again."
-                            }
-             },
-    "finny":  {
-                  "ask":  "Ask Finny"
-              }
+  "app": {
+    "name": "FinHub"
+  },
+  "landing": {
+    "title": "Manage your finances in the Netherlands",
+    "cta": "Get started",
+    "lead": {
+      "consent": "I agree to be contacted about FinHub updates.",
+      "createAccount": "Create account",
+      "email": "Email",
+      "error": "Something went wrong. Please try again.",
+      "fullName": "Full name",
+      "interests": "I'm interested in",
+      "phone": "Phone (optional)",
+      "submit": "Send",
+      "subtitle": "Leave your details and what you are interested in  we will prioritize accordingly.",
+      "successBody": "We will reach out when we open the next beta slots.",
+      "successTitle": "Thanks  we got it.",
+      "title": "Get updates (beta)",
+      "interestLabels": {
+        "personal_finance": "Personal finance",
+        "taxes": "Taxes (IB)",
+        "voorlopige_aanslag": "Provisional assessment (voorlopige aanslag)",
+        "toeslagen": "Allowances (toeslagen)",
+        "mortgage": "Mortgage",
+        "personal_loan": "Personal loan",
+        "insurance": "Insurance"
+      }
+    }
+  },
+  "auth": {
+    "oauth": {
+      "google": "Continue with Google",
+      "apple": "Continue with Apple"
+    },
+    "forgot": {
+      "sent": "If the email exists, you'll receive a password reset link.",
+      "title": "Reset password",
+      "busy": "Sending...",
+      "submit": "Send link",
+      "backToLogin": "Back to sign in"
+    },
+    "reset": {
+      "newPassword": "New password",
+      "title": "Set a new password",
+      "busy": "Updating...",
+      "submit": "Update password",
+      "ok": "Password updated."
+    },
+    "common": {
+      "email": "Email",
+      "error": "Error",
+      "info": "Info",
+      "password": "Password"
+    },
+    "legal": {
+      "and": "and the",
+      "continue": "By continuing you accept the",
+      "privacy": "Privacy Policy",
+      "continueRegister": "By creating an account you accept the",
+      "terms": "Terms"
+    },
+    "login": {
+      "emailNotConfirmedHint": "Your email is not confirmed yet. Check your inbox or resend verification.",
+      "goRegister": "Create one",
+      "resendBusy": "Resending...",
+      "busy": "Signing in...",
+      "forgot": "Forgot your password?",
+      "noAccount": "No account?",
+      "submit": "Sign in",
+      "title": "Sign in",
+      "resend": "Resend verification",
+      "resendOk": "Verification resent. Check your inbox."
+    },
+    "register": {
+      "busy": "Creating...",
+      "goLogin": "Sign in",
+      "checkEmail": "Account created. Check your inbox to confirm your email before signing in.",
+      "submit": "Create account",
+      "haveAccount": "Already have an account?",
+      "title": "Create account"
+    },
+    "errors": {
+      "unknown": "Something went wrong. Please try again.",
+      "weak_password": "Password does not meet requirements.",
+      "missing_code": "Invalid or expired link.",
+      "rate_limited": "Too many attempts. Please try later.",
+      "invalid_request": "Invalid input. Please try again.",
+      "email_not_confirmed": "Email not confirmed.",
+      "user_exists": "An account already exists for this email.",
+      "invalid_credentials": "Invalid credentials.",
+      "oauth_failed": "Social login failed. Please try again."
+    }
+  },
+  "finny": {
+    "ask": "Ask Finny"
+  },
+  "shell": {
+    "skipToContent": "Skip to content",
+    "sidebar": {
+      "toggleAria": "Toggle sidebar"
+    },
+    "section": {
+      "finances": "Finances",
+      "subsidies": "Subsidies",
+      "operations": "Operations",
+      "account": "Account",
+      "admin": "Admin"
+    },
+    "nav": {
+      "overview": "Overview",
+      "transactions": "Transactions",
+      "subsidies": "Subsidies",
+      "documents": "Documents",
+      "cases": "Cases",
+      "profile": "Profile",
+      "uikit": "UI Kit",
+      "admin": "Admin"
+    },
+    "search": {
+      "placeholder": "Search or run...",
+      "ariaLabel": "Search or run command",
+      "hint": "Cmd/Ctrl+K"
+    },
+    "notifications": {
+      "label": "Notifications"
+    },
+    "account": {
+      "label": "Account",
+      "logout": "Log out"
+    },
+    "cmdk": {
+      "ariaLabel": "Command palette",
+      "inputPlaceholder": "Type to search actions...",
+      "inputAriaLabel": "Search actions",
+      "empty": "No results.",
+      "enterHint": "Enter",
+      "footerHint": "Up/Down: navigate - Esc: close",
+      "goToFinances": "Go to Finances",
+      "goToTransactions": "Go to Transactions",
+      "goToSubsidies": "Go to Subsidies",
+      "goToDocuments": "Go to Documents",
+      "goToCases": "Go to Cases",
+      "goToProfile": "Go to Profile",
+      "goToUiKit": "Go to UI Kit",
+      "logoutHint": "POST /api/auth/logout"
+    },
+    "route": {
+      "dashboard": "Dashboard",
+      "finances": "Finances",
+      "subsidies": "Subsidies",
+      "subsidyApplications": "My applications",
+      "subsidyDetail": "Subsidy detail",
+      "subsidyWizard": "Eligibility wizard",
+      "subsidyResult": "Eligibility result",
+      "subsidyCheckout": "Checkout",
+      "transactions": "Transactions",
+      "newTransaction": "New transaction",
+      "transactionDetail": "Transaction details",
+      "documents": "Documents",
+      "cases": "Cases",
+      "case": "Case",
+      "profile": "Profile",
+      "admin": "Admin",
+      "detail": "Detail",
+      "new": "New"
+    }
+  },
+  "finances": {
+    "dashboard": {
+      "topbar": {
+        "eyebrow": "Dashboard",
+        "title": "Finances",
+        "subtitle": "Finances Command Center",
+        "search": "Search",
+        "searchPlaceholder": "Search or jump to...",
+        "cmdk": "Cmd+K",
+        "notifications": "Notifications"
+      },
+      "header": {
+        "kicker": "Dashboard",
+        "title": "Finances",
+        "subtitle": "Finances Command Center"
+      },
+      "actions": {
+        "viewAll": "View all",
+        "newTransaction": "New transaction",
+        "review": "Review"
+      },
+      "nav": {
+        "title": "Navigation",
+        "finances": "Finances",
+        "cases": "Cases",
+        "documents": "Documents",
+        "profile": "Profile",
+        "uiKit": "UI Kit"
+      },
+      "kpis": {
+        "safeToSpend": "Safe to spend",
+        "incomeReceived": "Income received",
+        "billsPaid": "Bills paid",
+        "budgetUsed": "Budget used",
+        "safeHint": "After fixed costs",
+        "monthHint": "This month ({month})",
+        "outflowHint": "Outflows this period",
+        "budgetHint": "Used vs plan"
+      },
+      "inbox": {
+        "title": "Transactions inbox",
+        "subtitle": "Latest activity",
+        "viewAll": "View all",
+        "emptyTitle": "No transactions yet",
+        "emptyBody": "Add your first transaction to unlock insights.",
+        "emptyCta": "Add first transaction"
+      },
+      "table": {
+        "date": "Date",
+        "merchant": "Merchant",
+        "category": "Category",
+        "status": "Status",
+        "amount": "Amount"
+      },
+      "category": {
+        "groceries": "Groceries",
+        "transport": "Transport",
+        "entertainment": "Entertainment",
+        "uncategorized": "Uncategorized"
+      },
+      "status": {
+        "approved": "Approved",
+        "flagged": "Flagged"
+      },
+      "burndown": {
+        "title": "Monthly burndown",
+        "subtitle": "Net balance over time",
+        "currency": "EUR",
+        "emptyTitle": "Not enough data",
+        "emptyBody": "Not enough data to render this chart yet."
+      },
+      "budgets": {
+        "title": "Category budgets",
+        "subtitle": "Active budgets for {month}",
+        "used": "Used",
+        "remaining": "Remaining",
+        "emptyTitle": "No budgets yet",
+        "emptyBody": "Define budgets or add transactions to create a baseline.",
+        "emptyCta": "Review transactions",
+        "status": {
+          "ok": "On track",
+          "warn": "Watch",
+          "risk": "At risk"
+        }
+      },
+      "states": {
+        "errorTitle": "We could not load finances",
+        "errorBody": "Please retry in a moment.",
+        "retry": "Retry"
+      }
+    },
+    "transactions": {
+      "breadcrumbs": {
+        "finances": "Finances",
+        "transactions": "Transactions"
+      },
+      "title": "Transactions",
+      "monthLabel": "Month: {month}",
+      "actions": {
+        "backToFinances": "Back to Finances",
+        "newTransaction": "New transaction"
+      },
+      "summary": {
+        "count": "{count} transactions"
+      },
+      "loading": "Loading...",
+      "errors": {
+        "title": "Something went wrong",
+        "updateStatus": "Could not update status."
+      },
+      "table": {
+        "title": "Transactions inbox",
+        "subtitle": "Ledger activity and quick edits",
+        "date": "Date",
+        "merchant": "Merchant",
+        "category": "Category",
+        "amount": "Amount",
+        "status": "Status",
+        "actions": "Actions",
+        "open": "Open",
+        "statusAria": "Update status",
+        "saving": "Saving..."
+      },
+      "status": {
+        "pending": "Pending",
+        "approved": "Approved",
+        "hidden": "Hidden"
+      },
+      "category": {
+        "uncategorized": "Uncategorized"
+      },
+      "empty": {
+        "title": "No transactions yet",
+        "body": "Transactions will appear here once they are created or imported.",
+        "cta": "Create a transaction"
+      },
+      "detail": {
+        "breadcrumb": "Details",
+        "title": "Transaction details",
+        "monthLabel": "Month: {month}",
+        "actions": {
+          "backToList": "Back to list",
+          "save": "Save changes",
+          "saving": "Saving..."
+        },
+        "save": {
+          "title": "Saved",
+          "ok": "Changes saved.",
+          "error": "Could not save changes."
+        },
+        "notFound": {
+          "title": "Transaction not found for this month.",
+          "body": "If you opened the URL directly, go back to the list so the month and ledger align."
+        },
+        "invalidId": {
+          "title": "Invalid transaction ID",
+          "body": "We couldn't read the transaction ID from the URL."
+        },
+        "merchant": {
+          "label": "Merchant"
+        },
+        "amount": {
+          "label": "Amount"
+        },
+        "date": {
+          "label": "Date"
+        },
+        "status": {
+          "label": "Status"
+        },
+        "category": {
+          "label": "Category",
+          "none": "Uncategorized"
+        },
+        "note": {
+          "label": "Note",
+          "placeholder": "Optional...",
+          "helper": "Add context for this transaction."
+        },
+        "splits": {
+          "title": "Splits",
+          "subtitle": "Split the transaction across categories.",
+          "actions": {
+            "add": "Add split",
+            "reset": "Reset",
+            "save": "Save splits",
+            "saving": "Saving...",
+            "remove": "Remove"
+          },
+          "totals": {
+            "total": "Transaction total",
+            "sum": "Splits total",
+            "delta": "Difference"
+          },
+          "loadError": "Could not load splits (HTTP {status}).",
+          "loadErrorFallback": "Could not load splits.",
+          "saveError": "Could not save splits (HTTP {status}).",
+          "saveErrorFallback": "Could not save splits.",
+          "saveOk": "Splits saved.",
+          "saveTitle": "Splits updated",
+          "loading": "Loading splits...",
+          "empty": "No splits yet. Add one to continue.",
+          "deltaError": "Splits must match the transaction amount. Difference: {delta}.",
+          "table": {
+            "category": "Category",
+            "amount": "Amount (EUR)",
+            "note": "Note",
+            "amountPlaceholder": "e.g. 12.34",
+            "notePlaceholder": "Optional..."
+          },
+          "rowError": "Row {index}: {error}",
+          "errors": {
+            "required": "Amount required.",
+            "format": "Invalid format (use 12.34).",
+            "invalidNumber": "Invalid number.",
+            "invalidDecimals": "Invalid decimals."
+          }
+        },
+        "metadata": {
+          "title": "Metadata",
+          "source": "Source",
+          "merchantNorm": "Merchant norm",
+          "reviewedAt": "Reviewed at"
+        },
+        "ledger": {
+          "title": "Ledger status",
+          "loading": "Loading",
+          "month": "Ledger month",
+          "count": "Transactions"
+        }
+      }
+    },
+    "newTransaction": {
+      "breadcrumbs": {
+        "finances": "Finances",
+        "transactions": "Transactions",
+        "new": "New"
+      },
+      "title": "New transaction",
+      "monthLabel": "Month: {month}",
+      "actions": {
+        "backToList": "Back to list",
+        "create": "Create transaction",
+        "creating": "Creating..."
+      },
+      "errors": {
+        "title": "Something went wrong",
+        "create": "Could not create transaction."
+      },
+      "form": {
+        "date": {
+          "label": "Date",
+          "placeholder": "YYYY-MM-DD",
+          "helper": "Use the transaction date.",
+          "error": "Enter a valid ISO date."
+        },
+        "merchant": {
+          "label": "Merchant",
+          "placeholder": "Albert Heijn, NS, Bol.com...",
+          "helper": "Add the merchant or payee name.",
+          "error": "Merchant is required."
+        },
+        "amount": {
+          "label": "Amount (EUR)",
+          "placeholder": "12.34",
+          "helper": "Use negative values for outflows.",
+          "error": "Enter a non-zero amount."
+        },
+        "category": {
+          "label": "Category",
+          "helper": "Pick a category to keep budgets tidy.",
+          "none": "Uncategorized"
+        },
+        "note": {
+          "label": "Note",
+          "placeholder": "Optional...",
+          "helper": "Add context for future reviews."
+        }
+      }
+    }
+  },
+  "subsidies": {
+    "home": {
+      "eyebrow": "Toeslagen",
+      "title": "Subsidies managed by FinHub",
+      "subtitle": "Check eligibility quickly and let FinHub manage the full request, documents, and follow-up.",
+      "badge": "FinHub managed",
+      "labels": {
+        "coverage": "Covers",
+        "audience": "For",
+        "timeline": "Est. time",
+        "quickFacts": "Quick facts",
+        "signals": "Signals"
+      },
+      "cta": {
+        "viewDetails": "View details"
+      },
+      "howItWorks": {
+        "title": "How FinHub works for subsidies",
+        "steps": {
+          "1": {
+            "eyebrow": "Step 1",
+            "title": "Check eligibility",
+            "description": "Answer a short wizard and get a clear result."
+          },
+          "2": {
+            "eyebrow": "Step 2",
+            "title": "We handle the request",
+            "description": "FinHub prepares and submits your application."
+          },
+          "3": {
+            "eyebrow": "Step 3",
+            "title": "Track progress",
+            "description": "Upload documents and follow the status in one place."
+          }
+        }
+      }
+    },
+    "catalog": {
+      "huurtoeslag": {
+        "title": "Huurtoeslag",
+        "description": "Rent support",
+        "coverage": "Rent + eligible service costs",
+        "audience": "Renters in NL with income limits",
+        "timeline": "3-6 weeks"
+      },
+      "zorgtoeslag": {
+        "title": "Zorgtoeslag",
+        "description": "Health insurance support",
+        "coverage": "Monthly healthcare allowance",
+        "audience": "People with basic insurance",
+        "timeline": "2-4 weeks"
+      },
+      "kgb": {
+        "title": "Kindgebonden budget",
+        "description": "Family support",
+        "coverage": "Support for families with children",
+        "audience": "Households with minors",
+        "timeline": "3-5 weeks"
+      },
+      "kot": {
+        "title": "Kinderopvangtoeslag",
+        "description": "Childcare support",
+        "coverage": "Childcare hours and costs",
+        "audience": "Working/studying parents",
+        "timeline": "4-6 weeks"
+      }
+    },
+    "metrics": {
+      "huurtoeslag": {
+        "primary": {
+          "label": "Income check",
+          "value": "Limits apply"
+        },
+        "secondary": {
+          "label": "Rent caps",
+          "value": "Within range"
+        },
+        "tertiary": {
+          "label": "Service costs",
+          "value": "Eligible items"
+        }
+      },
+      "zorgtoeslag": {
+        "primary": {
+          "label": "Insurance",
+          "value": "Basic plan required"
+        },
+        "secondary": {
+          "label": "Income check",
+          "value": "Limits apply"
+        },
+        "tertiary": {
+          "label": "Household",
+          "value": "Partner counts"
+        }
+      },
+      "kgb": {
+        "primary": {
+          "label": "Children",
+          "value": "Under 18"
+        },
+        "secondary": {
+          "label": "Income check",
+          "value": "Limits apply"
+        },
+        "tertiary": {
+          "label": "Household",
+          "value": "Family size"
+        }
+      },
+      "kot": {
+        "primary": {
+          "label": "Childcare",
+          "value": "Registered provider"
+        },
+        "secondary": {
+          "label": "Work/study",
+          "value": "Parent condition"
+        },
+        "tertiary": {
+          "label": "Hours & costs",
+          "value": "Based on usage"
+        }
+      }
+    },
+    "facts": {
+      "huurtoeslag": {
+        "1": {
+          "label": "Rent",
+          "value": "Rent + service costs"
+        },
+        "2": {
+          "label": "Age",
+          "value": "18+"
+        },
+        "3": {
+          "label": "Income",
+          "value": "Household limits"
+        }
+      },
+      "zorgtoeslag": {
+        "1": {
+          "label": "Insurance",
+          "value": "Basic coverage"
+        },
+        "2": {
+          "label": "Income",
+          "value": "Household limits"
+        },
+        "3": {
+          "label": "Residency",
+          "value": "NL resident"
+        }
+      },
+      "kgb": {
+        "1": {
+          "label": "Children",
+          "value": "Under 18"
+        },
+        "2": {
+          "label": "Income",
+          "value": "Household limits"
+        },
+        "3": {
+          "label": "Residence",
+          "value": "NL resident"
+        }
+      },
+      "kot": {
+        "1": {
+          "label": "Childcare",
+          "value": "Registered"
+        },
+        "2": {
+          "label": "Work/study",
+          "value": "Required"
+        },
+        "3": {
+          "label": "Hours",
+          "value": "Monthly costs"
+        }
+      }
+    },
+    "detail": {
+      "badge": "FinHub managed",
+      "invalid": {
+        "title": "Subsidy not found",
+        "description": "This subsidy is not available."
+      },
+      "sections": {
+        "whatIs": "What it is",
+        "coverage": "Coverage & typical benefit",
+        "requirements": "Requirements",
+        "needs": "What FinHub will need"
+      },
+      "disclaimer": "Estimates are indicative. Final amounts depend on the official assessment.",
+      "cta": {
+        "title": "Ready to check eligibility?",
+        "description": "Answer a quick wizard and get a clear outcome.",
+        "back": "Back to subsidies",
+        "check": "Check eligibility"
+      },
+      "huurtoeslag": {
+        "title": "Huurtoeslag",
+        "subtitle": "Support to reduce monthly rent pressure.",
+        "whatIs": "A government allowance that helps eligible renters pay part of their rent.",
+        "coverage": "Monthly allowance for rent and eligible service costs.",
+        "benefits": {
+          "1": "Monthly support based on rent and income.",
+          "2": "Designed to keep housing costs manageable."
+        },
+        "requirements": {
+          "1": "You rent a home in the Netherlands.",
+          "2": "You are at least 18 years old.",
+          "3": "Household income is within limits.",
+          "4": "Rent and service costs are within the eligible range."
+        },
+        "needs": {
+          "1": "Rental contract and monthly rent details.",
+          "2": "Estimated household income.",
+          "3": "Valid identification document.",
+          "4": "Household composition (partner/children)."
+        }
+      },
+      "zorgtoeslag": {
+        "title": "Zorgtoeslag",
+        "subtitle": "Support for Dutch health insurance costs.",
+        "whatIs": "A monthly allowance to offset the cost of basic health insurance.",
+        "coverage": "Monthly healthcare allowance based on income.",
+        "benefits": {
+          "1": "Helps reduce monthly health insurance costs.",
+          "2": "Adjusted by household income."
+        },
+        "requirements": {
+          "1": "You have Dutch basic health insurance.",
+          "2": "Household income is within limits.",
+          "3": "You live in the Netherlands."
+        },
+        "needs": {
+          "1": "Proof of health insurance coverage.",
+          "2": "Estimated household income.",
+          "3": "Valid identification document."
+        }
+      },
+      "kgb": {
+        "title": "Kindgebonden budget",
+        "subtitle": "Extra support for families with children.",
+        "whatIs": "An allowance for households with children under 18.",
+        "coverage": "Additional monthly support for families.",
+        "benefits": {
+          "1": "Extra support for family expenses.",
+          "2": "Depends on household income."
+        },
+        "requirements": {
+          "1": "You have at least one child under 18.",
+          "2": "Household income is within limits.",
+          "3": "You live in the Netherlands."
+        },
+        "needs": {
+          "1": "Children details (birth dates).",
+          "2": "Estimated household income.",
+          "3": "Valid identification document."
+        }
+      },
+      "kot": {
+        "title": "Kinderopvangtoeslag",
+        "subtitle": "Support for childcare costs.",
+        "whatIs": "A subsidy for parents who pay for childcare and work or study.",
+        "coverage": "Eligible childcare hours and costs.",
+        "benefits": {
+          "1": "Reduces monthly childcare expenses.",
+          "2": "Based on income and childcare costs."
+        },
+        "requirements": {
+          "1": "You pay for registered childcare.",
+          "2": "You or your partner work or study.",
+          "3": "Household income is within limits.",
+          "4": "Children are registered for childcare."
+        },
+        "needs": {
+          "1": "Childcare contract and invoices.",
+          "2": "Work or study confirmation.",
+          "3": "Estimated household income.",
+          "4": "Valid identification document."
+        }
+      }
+    },
+    "wizard": {
+      "stepper": {
+        "progress": "Progress",
+        "step": "Step"
+      },
+      "errors": {
+        "required": "This field is required.",
+        "invalidNumber": "Enter a valid number."
+      },
+      "actions": {
+        "back": "Back",
+        "next": "Continue",
+        "finish": "Check eligibility"
+      },
+      "common": {
+        "yes": "Yes",
+        "no": "No",
+        "selectPlaceholder": "Select an option",
+        "steps": {
+          "income": {
+            "title": "Income",
+            "description": "Use your best estimate for this year."
+          }
+        },
+        "fields": {
+          "age": "Your age",
+          "hasPartner": "Do you have a toeslag partner?",
+          "incomeSelf": "Your annual income",
+          "incomePartner": "Partner annual income",
+          "incomeHousehold": "Total household income"
+        }
+      },
+      "huurtoeslag": {
+        "steps": {
+          "base": {
+            "title": "Household",
+            "description": "Tell us about your living situation."
+          },
+          "rent": {
+            "title": "Rent details",
+            "description": "Monthly rent and service costs."
+          }
+        },
+        "fields": {
+          "livesInRent": "Do you rent your home?",
+          "rent": "Monthly rent (kale huur)",
+          "serviceCosts": "Eligible service costs",
+          "under21HasChildOrDisability": "If you are under 21, do you have a child or disability?",
+          "householdSize": "Household size (people living with you)"
+        }
+      },
+      "zorgtoeslag": {
+        "steps": {
+          "insurance": {
+            "title": "Health insurance",
+            "description": "Confirm your basic insurance."
+          }
+        },
+        "fields": {
+          "hasBasicInsurance": "Do you have Dutch basic insurance?"
+        }
+      },
+      "kgb": {
+        "steps": {
+          "family": {
+            "title": "Family",
+            "description": "Tell us about your household."
+          }
+        },
+        "fields": {
+          "childrenCount": "Number of children under 18",
+          "childrenCount12To15": "Children aged 12-15",
+          "childrenCount16To17": "Children aged 16-17"
+        }
+      },
+      "kot": {
+        "steps": {
+          "children": {
+            "title": "Children",
+            "description": "Tell us about childcare."
+          },
+          "costs": {
+            "title": "Costs",
+            "description": "Monthly childcare hours and cost per hour."
+          },
+          "work": {
+            "title": "Work or study",
+            "description": "Confirm work or study status."
+          }
+        },
+        "fields": {
+          "childrenCount": "Number of children in childcare",
+          "childcareType": "Childcare type",
+          "hoursPerMonth": "Hours per month",
+          "costPerHour": "Cost per hour",
+          "worksOrStudies": "Do you work or study?",
+          "partnerWorksOrStudies": "Does your partner work or study?",
+          "workedMonths": "Months worked this year"
+        },
+        "options": {
+          "dagopvang": "Daycare",
+          "bso": "After-school care (BSO)",
+          "gastouder": "Childminder"
+        },
+        "child": {
+          "title": "Child {index}"
+        },
+        "errors": {
+          "childrenCount": "Enter a valid number of children (1-4).",
+          "childcareType": "Select a childcare type.",
+          "hoursPerMonth": "Enter hours per month.",
+          "hourlyRate": "Enter hourly rate."
+        }
+      }
+    },
+    "engine": {
+      "common": {
+        "missingIncome": "We need an income estimate to evaluate eligibility.",
+        "missingRent": "Please provide your monthly rent.",
+        "eligibleIncomeOk": "Income looks within the expected range.",
+        "invalidSlug": "Invalid subsidy selection."
+      },
+      "huurtoeslag": {
+        "notRenting": "You indicated you do not rent your home.",
+        "ageTooLow": "You must be at least 18.",
+        "incomeTooHigh": "Household income seems above the limit.",
+        "rentTooHigh": "Rent appears above the eligible range.",
+        "serviceCostsTooHigh": "Service costs appear above the eligible range.",
+        "eligibleRentOk": "Rent and service costs look eligible."
+      },
+      "zorgtoeslag": {
+        "noBasicInsurance": "You indicated you do not have basic health insurance.",
+        "incomeTooHigh": "Household income seems above the limit.",
+        "eligibleInsuranceOk": "Basic insurance confirmed."
+      },
+      "kgb": {
+        "noChildren": "You indicated no children under 18.",
+        "incomeTooHigh": "Household income seems above the limit.",
+        "eligibleChildrenOk": "Household includes eligible children."
+      },
+      "kot": {
+        "noChildren": "You indicated no children in childcare.",
+        "noChildcareCosts": "We need childcare hours and costs to evaluate.",
+        "noWorkOrStudy": "At least one parent must work or study.",
+        "incomeTooHigh": "Household income seems above the limit.",
+        "eligibleChildcareOk": "Childcare details look eligible."
+      }
+    },
+    "result": {
+      "empty": {
+        "title": "No eligibility data",
+        "description": "Complete the wizard to see your result."
+      },
+      "header": {
+        "label": "Eligibility result",
+        "eligible": "You likely qualify",
+        "notEligible": "You likely do not qualify",
+        "eligibleDescription": "Based on your answers, you appear eligible.",
+        "notEligibleDescription": "Based on your answers, you do not meet the criteria."
+      },
+      "reasons": {
+        "title": "Why this result"
+      },
+      "next": {
+        "title": "Next step with FinHub",
+        "description": "We will manage the full request, documentation, and follow-up."
+      },
+      "paywall": {
+        "label": "FinHub fee",
+        "sla": "Estimated turnaround 3-6 weeks"
+      },
+      "actions": {
+        "continue": "Continue and pay",
+        "saveReference": "Save as reference",
+        "review": "Review answers",
+        "processing": "Processing...",
+        "errorTitle": "We could not continue",
+        "error": "Please try again."
+      },
+      "benefit": {
+        "title": "Estimated benefit",
+        "monthlyLabel": "Monthly estimate",
+        "annualLabel": "Annual estimate",
+        "breakdownLabel": "Breakdown",
+        "assumptionsLabel": "Assumptions",
+        "missingInputsLabel": "Missing details",
+        "notAvailableDescription": "We need a few more details to calculate the benefit.",
+        "notEligible": "You are not eligible, so no benefit estimate is available.",
+        "notEligibleIncome": "Income is above the limit for this benefit.",
+        "breakdown": {
+          "zorg": {
+            "standardPremium": "Standard and norm premiums applied.",
+            "normPremium": "Norm premium calculated from threshold income.",
+            "income": "Household income applied.",
+            "rounding": "Monthly amount rounded down to whole euros."
+          },
+          "huur": {
+            "rekenhuur": "Rent capped to the eligible rent limit.",
+            "basishuur": "Base rent deducted before subsidy parts.",
+            "correction": "Income-dependent reduction applied.",
+            "rounding": "Monthly amount rounded down to whole euros."
+          },
+          "kgb": {
+            "maxAmount": "Base amount based on number of children.",
+            "ageSupplements": "Age supplements added for older children.",
+            "incomeReduction": "Income-based reduction applied.",
+            "rounding": "Monthly amount rounded down to whole euros."
+          },
+          "kot": {
+            "hourlyCap": "Hourly rate capped to the official maximum.",
+            "hoursCap": "Hours capped to 230 per month.",
+            "incomePercent": "Income bracket percentage applied.",
+            "rounding": "Monthly amount rounded down to whole euros."
+          }
+        },
+        "assumptions": {
+          "domesticInsurance": "Assumes you are insured in the Netherlands.",
+          "noMedebewoners": "Assumes no additional household members.",
+          "serviceCostsIgnored": "Service costs are not included in 2026 calculations.",
+          "childrenInNL": "Assumes children live in the EU/EEA/Switzerland (100%).",
+          "huur": {
+            "rentCapped": "For the estimate, rent is capped to the 2026 calculation limit.",
+            "serviceCostsExcluded": "Service costs are excluded in 2026 calculations.",
+            "kaleHuurOnly": "Only the basic rent (kale huur) counts for 2026."
+          }
+        },
+        "missing": {
+          "incomeApplicant": "Applicant income",
+          "incomePartner": "Partner income",
+          "incomeHousehold": "Household income",
+          "age": "Applicant age",
+          "rent": "Monthly rent",
+          "childrenCount": "Number of children",
+          "childrenCount12To15": "Children aged 12-15",
+          "childrenCount16To17": "Children aged 16-17",
+          "workedMonths": "Months worked this year",
+          "childcareType": "Childcare type",
+          "hoursPerMonth": "Childcare hours per month",
+          "costPerHour": "Childcare hourly rate",
+          "childDetails": "Per-child childcare details",
+          "householdSize": "Household size"
+        },
+        "notEligibleChildren": "No eligible children for this benefit.",
+        "childLabel": "Child {index}"
+      }
+    },
+    "checkout": {
+      "missing": {
+        "title": "Missing application",
+        "description": "Start from the eligibility result first."
+      },
+      "title": "Checkout",
+      "subtitle": "FinHub will manage your subsidy end-to-end.",
+      "description": "After payment, we will create your case and request your documents.",
+      "priceLabel": "Service fee",
+      "sla": "Estimated turnaround 3-6 weeks",
+      "cta": "Continue to payment",
+      "back": "Back to result",
+      "processing": "Redirecting...",
+      "errorTitle": "Checkout error",
+      "error": "Could not start checkout.",
+      "methods": "Payment methods: iDEAL, card"
+    },
+    "errors": {
+      "tableMissing": "We are finishing the setup for subsidy applications. Apply the migrations or contact support.",
+      "permissionDenied": "You do not have permission to continue this action.",
+      "authRequired": "Please sign in to continue.",
+      "invalidSlug": "This subsidy is not available.",
+      "invalidApplication": "We could not find that application.",
+      "missingApplicationId": "We could not find your application id.",
+      "paymentUnavailable": "Payments are temporarily unavailable. Please try again later.",
+      "checkoutFailed": "We could not start checkout. Please try again.",
+      "network": "Network error. Check your connection and try again.",
+      "unknown": "Something went wrong. Please try again."
+    },
+    "applications": {
+      "eyebrow": "Subsidies",
+      "title": "My applications",
+      "subtitle": "Track your applications, upload documents, and see progress.",
+      "error": "Could not load applications.",
+      "errorTitle": "Error",
+      "loading": "Loading applications",
+      "loadingDescription": "Fetching your latest data.",
+      "empty": {
+        "title": "No applications yet",
+        "description": "Complete the eligibility wizard to start."
+      },
+      "createdAt": "Created",
+      "progress": "Status",
+      "separator": "-",
+      "cta": {
+        "view": "View application",
+        "details": "View subsidy"
+      },
+      "detail": {
+        "eyebrow": "Application",
+        "subtitle": "Checklist, timeline, and updates.",
+        "back": "Back to applications",
+        "timeline": "Timeline",
+        "documents": "Documents checklist",
+        "upload": "Upload",
+        "uploading": "Uploading...",
+        "uploaded": "Uploaded",
+        "missing": "Missing",
+        "notes": "Admin notes",
+        "notesEmpty": "No notes yet",
+        "notesEmptyDescription": "We will post updates here.",
+        "loading": "Loading application",
+        "loadingDescription": "Fetching the latest status and documents.",
+        "notFound": "Application not found",
+        "notFoundDescription": "This application may have been removed.",
+        "error": "Could not load application.",
+        "errorTitle": "Error",
+        "uploadError": "Could not upload the document."
+      }
+    },
+    "admin": {
+      "eyebrow": "Admin",
+      "title": "Subsidy applications",
+      "subtitle": "Review status, request missing docs, and add notes.",
+      "loading": "Loading applications",
+      "loadingDescription": "Fetching admin data.",
+      "error": "Admin request failed.",
+      "errorTitle": "Admin error",
+      "empty": {
+        "title": "No applications",
+        "description": "There are no subsidy applications yet."
+      },
+      "userId": "User ID",
+      "requestDocs": "Request missing docs",
+      "notePlaceholder": "Add a note or request details...",
+      "saving": "Saving...",
+      "requestDocsCta": "Request documents",
+      "addNote": "Add note"
+    },
+    "documents": {
+      "huurcontract": "Rental contract",
+      "rent_service_costs": "Rent + service costs",
+      "proof_income": "Income proof",
+      "id": "ID document",
+      "health_insurance": "Health insurance proof",
+      "partner_income": "Partner income proof",
+      "children_birth": "Children birth certificates",
+      "childcare_contract": "Childcare contract",
+      "childcare_invoice": "Childcare invoices",
+      "work_or_study_proof": "Work or study proof",
+      "household_composition": "Household composition",
+      "status": {
+        "missing": "Missing",
+        "uploaded": "Uploaded",
+        "approved": "Approved",
+        "rejected": "Rejected"
+      }
+    },
+    "status": {
+      "draft": "Draft",
+      "eligible_checked": "Eligibility checked",
+      "paid": "Paid",
+      "waiting_user": "Waiting on you",
+      "under_review": "Under review",
+      "submitted": "Submitted",
+      "decision": "Decision received",
+      "done": "Closed",
+      "cancelled": "Cancelled"
+    }
+  }
 }

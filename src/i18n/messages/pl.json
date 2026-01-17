@@ -1,99 +1,1107 @@
 {
-    "app":  {
-                "name":  "FinHub"
-            },
-    "landing":  {
-                    "title":  "Zarzï¿½\u001eâ¬¦dzaj finansami w Holandii",
-                    "cta":  "Zacznij",
-                    "lead":  {
-                                 "consent":  "WyraÅ¼am zgodÄ™ na kontakt w sprawie aktualizacji FinHub.",
-                                 "createAccount":  "UtwÃ³rz konto",
-                                 "email":  "E-mail",
-                                 "error":  "CoÅ› poszÅ‚o nie tak. SprÃ³buj ponownie.",
-                                 "fullName":  "ImiÄ™ i nazwisko",
-                                 "interests":  "Interesuje mnie",
-                                 "phone":  "Telefon (opcjonalnie)",
-                                 "submit":  "WyÅ›lij",
-                                 "subtitle":  "Zostaw swoje dane i wybierz, czym jesteÅ› zainteresowany â€” nadamy priorytety.",
-                                 "successBody":  "Skontaktujemy siÄ™, gdy otworzymy kolejne miejsca w becie.",
-                                 "successTitle":  "DziÄ™kujemy â€” otrzymaliÅ›my zgÅ‚oszenie.",
-                                 "title":  "Otrzymuj aktualizacje (beta)",
-                                 "interestLabels":  {
-                                                        "personal_finance":  "Personal finance",
-                                                        "taxes":  "Taxes (IB)",
-                                                        "voorlopige_aanslag":  "Provisional assessment (voorlopige aanslag)",
-                                                        "toeslagen":  "Allowances (toeslagen)",
-                                                        "mortgage":  "Hipoteka",
-                                                        "personal_loan":  "Personal loan",
-                                                        "insurance":  "Ubezpieczenia"
-                                                    }
-                             }
-                },
-    "auth":  {
-                 "oauth":  {
-                               "google":  "Kontynuuj z Google",
-                               "apple":  "Kontynuuj z Apple"
-                           },
-                 "forgot":  {
-                                "sent":  "Jesli email istnieje, otrzymasz link do resetu hasla.",
-                                "title":  "Reset hasla",
-                                "busy":  "Wysylanie...",
-                                "submit":  "Wyslij link",
-                                "backToLogin":  "Wróc do logowania"
-                            },
-                 "reset":  {
-                               "newPassword":  "Nowe haslo",
-                               "title":  "Ustaw nowe haslo",
-                               "busy":  "Aktualizacja...",
-                               "submit":  "Zaktualizuj haslo",
-                               "ok":  "Haslo zaktualizowane."
-                           },
-                 "common":  {
-                                "email":  "Email",
-                                "error":  "Blad",
-                                "info":  "Informacja",
-                                "password":  "Haslo"
-                            },
-                 "legal":  {
-                               "and":  "oraz",
-                               "continue":  "Kontynuujac akceptujesz",
-                               "privacy":  "Polityke prywatnosci",
-                               "continueRegister":  "Tworzac konto akceptujesz",
-                               "terms":  "Regulamin"
-                           },
-                 "login":  {
-                               "emailNotConfirmedHint":  "Email nie jest jeszcze potwierdzony. Sprawdz skrzynke lub wyslij ponownie weryfikacje.",
-                               "goRegister":  "Zarejestruj sie",
-                               "resendBusy":  "Wysylanie...",
-                               "busy":  "Logowanie...",
-                               "forgot":  "Nie pamietasz hasla?",
-                               "noAccount":  "Nie masz konta?",
-                               "submit":  "Zaloguj",
-                               "title":  "Zaloguj sie",
-                               "resend":  "Wyslij weryfikacje ponownie",
-                               "resendOk":  "Weryfikacja wyslana ponownie. Sprawdz skrzynke."
-                           },
-                 "register":  {
-                                  "busy":  "Tworzenie...",
-                                  "goLogin":  "Zaloguj sie",
-                                  "checkEmail":  "Konto utworzone. Potwierdz email przed logowaniem.",
-                                  "submit":  "Utwórz konto",
-                                  "haveAccount":  "Masz juz konto?",
-                                  "title":  "Utwórz konto"
-                              },
-                 "errors":  {
-                                "unknown":  "Wystapil blad. Spróbuj ponownie.",
-                                "weak_password":  "Haslo nie spelnia wymagan.",
-                                "missing_code":  "Nieprawidlowy lub wygasly link.",
-                                "rate_limited":  "Zbyt wiele prób. Spróbuj pózniej.",
-                                "invalid_request":  "Nieprawidlowe dane. Spróbuj ponownie.",
-                                "email_not_confirmed":  "Email niepotwierdzony.",
-                                "user_exists":  "Konto dla tego emaila juz istnieje.",
-                                "invalid_credentials":  "Nieprawidlowe dane logowania.",
-                                "oauth_failed":  "Logowanie spolecznosciowe nie powiodlo sie."
-                            }
-             },
-    "finny":  {
-                  "ask":  "Zapytaj Finny"
-              }
+  "app": {
+    "name": "FinHub"
+  },
+  "landing": {
+    "title": "Zarządzaj finansami w Holandii",
+    "cta": "Zacznij",
+    "lead": {
+      "consent": "Wyrażam zgod\" na kontakt w sprawie aktualizacji FinHub.",
+      "createAccount": "Utwórz konto",
+      "email": "E-mail",
+      "error": "Co: poszo nie tak. Spróbuj ponownie.",
+      "fullName": "Imi\" i nazwisko",
+      "interests": "Interesuje mnie",
+      "phone": "Telefon (opcjonalnie)",
+      "submit": "Wy:lij",
+      "subtitle": "Zostaw swoje dane i wybierz, czym jeste: zainteresowany  nadamy priorytety.",
+      "successBody": "Skontaktujemy si\", gdy otworzymy kolejne miejsca w becie.",
+      "successTitle": "Dzi\"kujemy  otrzymali:my zgoszenie.",
+      "title": "Otrzymuj aktualizacje (beta)",
+      "interestLabels": {
+        "personal_finance": "Personal finance",
+        "taxes": "Taxes (IB)",
+        "voorlopige_aanslag": "Provisional assessment (voorlopige aanslag)",
+        "toeslagen": "Allowances (toeslagen)",
+        "mortgage": "Hipoteka",
+        "personal_loan": "Personal loan",
+        "insurance": "Ubezpieczenia"
+      }
+    }
+  },
+  "auth": {
+    "oauth": {
+      "google": "Kontynuuj z Google",
+      "apple": "Kontynuuj z Apple"
+    },
+    "forgot": {
+      "sent": "Jesli email istnieje, otrzymasz link do resetu hasla.",
+      "title": "Reset hasla",
+      "busy": "Wysylanie...",
+      "submit": "Wyslij link",
+      "backToLogin": "Wróc do logowania"
+    },
+    "reset": {
+      "newPassword": "Nowe haslo",
+      "title": "Ustaw nowe haslo",
+      "busy": "Aktualizacja...",
+      "submit": "Zaktualizuj haslo",
+      "ok": "Haslo zaktualizowane."
+    },
+    "common": {
+      "email": "Email",
+      "error": "Blad",
+      "info": "Informacja",
+      "password": "Haslo"
+    },
+    "legal": {
+      "and": "oraz",
+      "continue": "Kontynuujac akceptujesz",
+      "privacy": "Polityke prywatnosci",
+      "continueRegister": "Tworzac konto akceptujesz",
+      "terms": "Regulamin"
+    },
+    "login": {
+      "emailNotConfirmedHint": "Email nie jest jeszcze potwierdzony. Sprawdz skrzynke lub wyslij ponownie weryfikacje.",
+      "goRegister": "Zarejestruj sie",
+      "resendBusy": "Wysylanie...",
+      "busy": "Logowanie...",
+      "forgot": "Nie pamiętasz hasła?",
+      "noAccount": "Nie masz konta?",
+      "submit": "Zaloguj",
+      "title": "Zaloguj sie",
+      "resend": "Wyslij weryfikacje ponownie",
+      "resendOk": "Weryfikacja wyslana ponownie. Sprawdz skrzynke."
+    },
+    "register": {
+      "busy": "Tworzenie...",
+      "goLogin": "Zaloguj sie",
+      "checkEmail": "Konto utworzone. Potwierdz email przed logowaniem.",
+      "submit": "Utwórz konto",
+      "haveAccount": "Masz juz konto?",
+      "title": "Utwórz konto"
+    },
+    "errors": {
+      "unknown": "Wystapil blad. Spróbuj ponownie.",
+      "weak_password": "Haslo nie spelnia wymagan.",
+      "missing_code": "Nieprawidlowy lub wygasly link.",
+      "rate_limited": "Zbyt wiele prób. Spróbuj pózniej.",
+      "invalid_request": "Nieprawidlowe dane. Spróbuj ponownie.",
+      "email_not_confirmed": "Email niepotwierdzony.",
+      "user_exists": "Konto dla tego emaila juz istnieje.",
+      "invalid_credentials": "Nieprawidlowe dane logowania.",
+      "oauth_failed": "Logowanie spolecznosciowe nie powiodlo sie."
+    }
+  },
+  "finny": {
+    "ask": "Zapytaj Finny"
+  },
+  "shell": {
+    "skipToContent": "Przejdź do tre:ci",
+    "sidebar": {
+      "toggleAria": "Prze&cz pasek boczny"
+    },
+    "section": {
+      "finances": "Finanse",
+      "subsidies": "Dotacje",
+      "operations": "Operacje",
+      "account": "Konto",
+      "admin": "Admin"
+    },
+    "nav": {
+      "overview": "Przegl&d",
+      "transactions": "Transakcje",
+      "subsidies": "Dotacje",
+      "documents": "Dokumenty",
+      "cases": "Sprawy",
+      "profile": "Profil",
+      "uikit": "UI Kit",
+      "admin": "Admin"
+    },
+    "search": {
+      "placeholder": "Szukaj lub wykonaj...",
+      "ariaLabel": "Szukaj lub wykonaj polecenie",
+      "hint": "Cmd/Ctrl+K"
+    },
+    "notifications": {
+      "label": "Powiadomienia"
+    },
+    "account": {
+      "label": "Konto",
+      "logout": "Wyloguj"
+    },
+    "cmdk": {
+      "ariaLabel": "Paleta polece",
+      "inputPlaceholder": "Wpisz, aby wyszuka! akcje...",
+      "inputAriaLabel": "Szukaj akcji",
+      "empty": "Brak wyników.",
+      "enterHint": "Enter",
+      "footerHint": "Góra/Dó: nawiguj - Esc: zamknij",
+      "goToFinances": "Przejdź do Finansów",
+      "goToTransactions": "Przejdź do Transakcji",
+      "goToSubsidies": "Przejdź do Dopłat",
+      "goToDocuments": "Przejdź do Dokumentów",
+      "goToCases": "Przejdź do Spraw",
+      "goToProfile": "Przejdź do Profilu",
+      "goToUiKit": "Przejdź do UI Kit",
+      "logoutHint": "POST /api/auth/logout"
+    },
+    "route": {
+      "dashboard": "Pulpit",
+      "finances": "Finanse",
+      "subsidies": "Dopłaty",
+      "transactions": "Transakcje",
+      "newTransaction": "Nowa transakcja",
+      "transactionDetail": "Szczegóy transakcji",
+      "documents": "Dokumenty",
+      "cases": "Sprawy",
+      "case": "Sprawa",
+      "profile": "Profil",
+      "admin": "Admin",
+      "detail": "Szczegóy",
+      "new": "Nowa",
+      "subsidyApplications": "Wnioski o dopłaty",
+      "subsidyCheckout": "Płatność dopłaty",
+      "subsidyDetail": "Szczegóły dopłaty",
+      "subsidyResult": "Wynik dopłaty",
+      "subsidyWizard": "Kreator dopłaty"
+    }
+  },
+  "finances": {
+    "dashboard": {
+      "topbar": {
+        "eyebrow": "Dashboard",
+        "title": "Finanse",
+        "subtitle": "Centrum Finansowe",
+        "search": "Szukaj",
+        "searchPlaceholder": "Szukaj lub przejdź do...",
+        "cmdk": "Cmd+K",
+        "notifications": "Powiadomienia"
+      },
+      "header": {
+        "kicker": "Dashboard",
+        "title": "Finanse",
+        "subtitle": "Centrum Finansowe"
+      },
+      "actions": {
+        "viewAll": "Zobacz wszystkie",
+        "newTransaction": "Nowa transakcja",
+        "review": "Przegl&d"
+      },
+      "nav": {
+        "title": "Nawigacja",
+        "finances": "Finanse",
+        "subsidies": "Dopłaty",
+        "cases": "Sprawy",
+        "documents": "Dokumenty",
+        "profile": "Profil",
+        "uiKit": "UI Kit"
+      },
+      "kpis": {
+        "safeToSpend": "Do wydania",
+        "incomeReceived": "Otrzymane przychody",
+        "billsPaid": "Opłacone rachunki",
+        "budgetUsed": "Wykorzystany budżet",
+        "safeHint": "Po kosztach stałych",
+        "monthHint": "W tym miesiącu ({month})",
+        "outflowHint": "Wydatki w tym okresie",
+        "budgetHint": "Wykorzystanie planu"
+      },
+      "inbox": {
+        "title": "Skrzynka transakcji",
+        "subtitle": "Ostatnia aktywność",
+        "viewAll": "Zobacz wszystkie",
+        "emptyTitle": "Brak transakcji",
+        "emptyBody": "Dodaj pierwszą transakcję, aby odblokować analizy.",
+        "emptyCta": "Dodaj pierwszą transakcję"
+      },
+      "table": {
+        "date": "Data",
+        "merchant": "Sklep",
+        "category": "Kategoria",
+        "status": "Status",
+        "amount": "Kwota"
+      },
+      "category": {
+        "groceries": "Zakupy",
+        "transport": "Transport",
+        "entertainment": "Rozrywka",
+        "uncategorized": "Bez kategorii"
+      },
+      "status": {
+        "approved": "Zatwierdzone",
+        "flagged": "Oznaczone"
+      },
+      "burndown": {
+        "title": "Miesięczny wykres",
+        "subtitle": "Saldo netto w czasie",
+        "currency": "EUR",
+        "emptyTitle": "Za mało danych",
+        "emptyBody": "Za mało danych, aby narysować wykres."
+      },
+      "budgets": {
+        "title": "Budżety kategorii",
+        "subtitle": "Aktywne budżety na {month}",
+        "used": "Wykorzystane",
+        "remaining": "Pozostało",
+        "emptyTitle": "Brak budżetów",
+        "emptyBody": "Zdefiniuj budżety lub dodaj transakcje, aby zbudować bazę.",
+        "emptyCta": "Przejrzyj transakcje",
+        "status": {
+          "ok": "Na dobrej drodze",
+          "warn": "Uwaga",
+          "risk": "Ryzyko"
+        }
+      },
+      "states": {
+        "errorTitle": "Nie można załadować finansów",
+        "errorBody": "Spróbuj ponownie za chwilę.",
+        "retry": "Spróbuj ponownie"
+      }
+    },
+    "transactions": {
+      "breadcrumbs": {
+        "finances": "Finanse",
+        "subsidies": "Dopłaty",
+        "transactions": "Transakcje"
+      },
+      "title": "Transakcje",
+      "monthLabel": "Miesi&c: {month}",
+      "actions": {
+        "backToFinances": "Wró! do Finansów",
+        "newTransaction": "Nowa transakcja"
+      },
+      "summary": {
+        "count": "{count} transakcji"
+      },
+      "loading": "Ładowanie...",
+      "errors": {
+        "title": "Co: poszo nie tak",
+        "updateStatus": "Nie udao si\" zaktualizowa! statusu."
+      },
+      "table": {
+        "title": "Skrzynka transakcji",
+        "subtitle": "Aktywno:! w ledgerze i szybkie edycje",
+        "date": "Data",
+        "merchant": "Sprzedawca",
+        "category": "Kategoria",
+        "amount": "Kwota",
+        "status": "Status",
+        "actions": "Akcje",
+        "open": "Otwórz",
+        "statusAria": "Zaktualizuj status",
+        "saving": "Zapisywanie..."
+      },
+      "status": {
+        "pending": "Oczekuj&ce",
+        "approved": "Zatwierdzone",
+        "hidden": "Ukryte"
+      },
+      "category": {
+        "uncategorized": "Bez kategorii"
+      },
+      "empty": {
+        "title": "Brak transakcji",
+        "body": "Transakcje pojawi& si\" tutaj po utworzeniu lub imporcie.",
+        "cta": "Utwórz transakcj\""
+      },
+      "detail": {
+        "breadcrumb": "Szczegóy",
+        "title": "Szczegóy transakcji",
+        "monthLabel": "Miesi&c: {month}",
+        "actions": {
+          "backToList": "Wró! do listy",
+          "save": "Zapisz zmiany",
+          "saving": "Zapisywanie..."
+        },
+        "save": {
+          "title": "Zapisano",
+          "ok": "Zmiany zapisane.",
+          "error": "Nie udao si\" zapisa! zmian."
+        },
+        "notFound": {
+          "title": "Nie znaleziono transakcji w tym miesi&cu.",
+          "body": "Je:li otworzye: adres bezpo:rednio, wró! do listy, aby zsynchronizowa! miesi&c i ledger."
+        },
+        "invalidId": {
+          "title": "Nieprawidowy ID transakcji",
+          "body": "Nie mogli:my odczyta! ID transakcji z URL."
+        },
+        "merchant": {
+          "label": "Sprzedawca"
+        },
+        "amount": {
+          "label": "Kwota"
+        },
+        "date": {
+          "label": "Data"
+        },
+        "status": {
+          "label": "Status"
+        },
+        "category": {
+          "label": "Kategoria",
+          "none": "Bez kategorii"
+        },
+        "note": {
+          "label": "Notatka",
+          "placeholder": "Opcjonalnie...",
+          "helper": "Dodaj kontekst dla tej transakcji."
+        },
+        "splits": {
+          "title": "Podziay",
+          "subtitle": "Podziel transakcj\" na kategorie.",
+          "actions": {
+            "add": "Dodaj podzia",
+            "reset": "Resetuj",
+            "save": "Zapisz podziay",
+            "saving": "Zapisywanie...",
+            "remove": "Usu"
+          },
+          "totals": {
+            "total": "Suma transakcji",
+            "sum": "Suma podziaów",
+            "delta": "Różnica"
+          },
+          "loadError": "Nie udao si\" wczyta! podziaów (HTTP {status}).",
+          "loadErrorFallback": "Nie udao si\" wczyta! podziaów.",
+          "saveError": "Nie udao si\" zapisa! podziaów (HTTP {status}).",
+          "saveErrorFallback": "Nie udao si\" zapisa! podziaów.",
+          "saveOk": "Podziay zapisane.",
+          "saveTitle": "Podziay zaktualizowane",
+          "loading": "Ładowanie podziaów...",
+          "empty": "Brak podziaów. Dodaj pierwszy.",
+          "deltaError": "Suma podziaów musi równa! si\" kwocie transakcji. Różnica: {delta}.",
+          "table": {
+            "category": "Kategoria",
+            "amount": "Kwota (EUR)",
+            "note": "Notatka",
+            "amountPlaceholder": "np. 12.34",
+            "notePlaceholder": "Opcjonalnie..."
+          },
+          "rowError": "Wiersz {index}: {error}",
+          "errors": {
+            "required": "Kwota jest wymagana.",
+            "format": "Nieprawidowy format (użyj 12.34).",
+            "invalidNumber": "Nieprawidowa liczba.",
+            "invalidDecimals": "Nieprawidowe miejsca dziesi\"tne."
+          }
+        },
+        "metadata": {
+          "title": "Metadane",
+          "source": "Źródo",
+          "merchantNorm": "Znormalizowany sprzedawca",
+          "reviewedAt": "Zweryfikowano"
+        },
+        "ledger": {
+          "title": "Status ledgera",
+          "loading": "Ładowanie",
+          "month": "Miesi&c ledgera",
+          "count": "Transakcje"
+        }
+      }
+    },
+    "newTransaction": {
+      "breadcrumbs": {
+        "finances": "Finanse",
+        "subsidies": "Dopłaty",
+        "transactions": "Transakcje",
+        "new": "Nowa"
+      },
+      "title": "Nowa transakcja",
+      "monthLabel": "Miesi&c: {month}",
+      "actions": {
+        "backToList": "Wró! do listy",
+        "create": "Utwórz transakcj\"",
+        "creating": "Tworzenie..."
+      },
+      "errors": {
+        "title": "Co: poszo nie tak",
+        "create": "Nie udao si\" utworzy! transakcji."
+      },
+      "form": {
+        "date": {
+          "label": "Data",
+          "placeholder": "YYYY-MM-DD",
+          "helper": "Użyj daty transakcji.",
+          "error": "Podaj poprawn& dat\" ISO."
+        },
+        "merchant": {
+          "label": "Sprzedawca",
+          "placeholder": "Albert Heijn, NS, Bol.com...",
+          "helper": "Wpisz sprzedawc\" lub odbiorc\".",
+          "error": "Sprzedawca jest wymagany."
+        },
+        "amount": {
+          "label": "Kwota (EUR)",
+          "placeholder": "12.34",
+          "helper": "Użyj warto:ci ujemnych dla wydatków.",
+          "error": "Podaj kwot\" różn& od zera."
+        },
+        "category": {
+          "label": "Kategoria",
+          "helper": "Wybierz kategori\", aby uporz&dkowa! budżet.",
+          "none": "Bez kategorii"
+        },
+        "note": {
+          "label": "Notatka",
+          "placeholder": "Opcjonalnie...",
+          "helper": "Dodaj kontekst na przyszo:!."
+        }
+      }
+    }
+  },
+  "subsidies": {
+    "home": {
+      "eyebrow": "Dopłaty",
+      "title": "Dopłaty obsługiwane przez FinHub",
+      "subtitle": "Szybko sprawdź uprawnienia i pozwól FinHub obsłużyć wniosek, dokumenty i dalsze kroki.",
+      "badge": "Obsługiwane przez FinHub",
+      "labels": {
+        "coverage": "Zakres",
+        "audience": "Dla",
+        "timeline": "Szac. czas",
+        "quickFacts": "Kluczowe informacje",
+        "signals": "Sygnały"
+      },
+      "cta": {
+        "viewDetails": "Zobacz szczegóły"
+      },
+      "howItWorks": {
+        "title": "Jak FinHub obsługuje dopłaty",
+        "steps": {
+          "1": {
+            "eyebrow": "Krok 1",
+            "title": "Sprawdź uprawnienia",
+            "description": "Odpowiedz na krótki kreator i poznaj wynik."
+          },
+          "2": {
+            "eyebrow": "Krok 2",
+            "title": "Obsługujemy wniosek",
+            "description": "FinHub przygotowuje i składa Twój wniosek."
+          },
+          "3": {
+            "eyebrow": "Krok 3",
+            "title": "Śledź postęp",
+            "description": "Przesyłaj dokumenty i śledź status w jednym miejscu."
+          }
+        }
+      }
+    },
+    "catalog": {
+      "huurtoeslag": {
+        "title": "Huurtoeslag",
+        "description": "Wsparcie czynszu",
+        "coverage": "Czynsz + kwalifikowane koszty usług",
+        "audience": "Najemcy w NL z limitami dochodów",
+        "timeline": "3–6 tygodni"
+      },
+      "zorgtoeslag": {
+        "title": "Zorgtoeslag",
+        "description": "Wsparcie ubezpieczenia zdrowotnego",
+        "coverage": "Miesięczne dofinansowanie zdrowotne",
+        "audience": "Osoby z podstawowym ubezpieczeniem",
+        "timeline": "2–4 tygodnie"
+      },
+      "kgb": {
+        "title": "Kindgebonden budget",
+        "description": "Wsparcie rodzinne",
+        "coverage": "Wsparcie dla rodzin z dziećmi",
+        "audience": "Gospodarstwa z nieletnimi",
+        "timeline": "3–5 tygodni"
+      },
+      "kot": {
+        "title": "Kinderopvangtoeslag",
+        "description": "Wsparcie opieki nad dziećmi",
+        "coverage": "Godziny i koszty opieki",
+        "audience": "Rodzice pracujący lub uczący się",
+        "timeline": "4–6 tygodni"
+      }
+    },
+    "metrics": {
+      "huurtoeslag": {
+        "primary": {
+          "label": "Weryfikacja dochodu",
+          "value": "Obowiązują limity"
+        },
+        "secondary": {
+          "label": "Limity czynszu",
+          "value": "W zakresie"
+        },
+        "tertiary": {
+          "label": "Koszty usług",
+          "value": "Pozycje kwalifikowane"
+        }
+      },
+      "zorgtoeslag": {
+        "primary": {
+          "label": "Ubezpieczenie",
+          "value": "Wymagany pakiet podstawowy"
+        },
+        "secondary": {
+          "label": "Weryfikacja dochodu",
+          "value": "Obowiązują limity"
+        },
+        "tertiary": {
+          "label": "Gospodarstwo",
+          "value": "Partner się liczy"
+        }
+      },
+      "kgb": {
+        "primary": {
+          "label": "Dzieci",
+          "value": "Poniżej 18 lat"
+        },
+        "secondary": {
+          "label": "Weryfikacja dochodu",
+          "value": "Obowiązują limity"
+        },
+        "tertiary": {
+          "label": "Gospodarstwo",
+          "value": "Wielkość rodziny"
+        }
+      },
+      "kot": {
+        "primary": {
+          "label": "Opieka nad dziećmi",
+          "value": "Zarejestrowany dostawca"
+        },
+        "secondary": {
+          "label": "Praca lub nauka",
+          "value": "Warunek rodzica"
+        },
+        "tertiary": {
+          "label": "Godziny i koszty",
+          "value": "W zależności od użycia"
+        }
+      }
+    },
+    "facts": {
+      "huurtoeslag": {
+        "1": {
+          "label": "Czynsz",
+          "value": "Czynsz + koszty usług"
+        },
+        "2": {
+          "label": "Wiek",
+          "value": "18+"
+        },
+        "3": {
+          "label": "Dochód",
+          "value": "Limity gospodarstwa"
+        }
+      },
+      "zorgtoeslag": {
+        "1": {
+          "label": "Ubezpieczenie",
+          "value": "Podstawowa ochrona"
+        },
+        "2": {
+          "label": "Dochód",
+          "value": "Limity gospodarstwa"
+        },
+        "3": {
+          "label": "Rezydencja",
+          "value": "Rezydent NL"
+        }
+      },
+      "kgb": {
+        "1": {
+          "label": "Dzieci",
+          "value": "Poniżej 18 lat"
+        },
+        "2": {
+          "label": "Dochód",
+          "value": "Limity gospodarstwa"
+        },
+        "3": {
+          "label": "Rezydencja",
+          "value": "Rezydent NL"
+        }
+      },
+      "kot": {
+        "1": {
+          "label": "Opieka nad dziećmi",
+          "value": "Zarejestrowana"
+        },
+        "2": {
+          "label": "Praca lub nauka",
+          "value": "Wymagane"
+        },
+        "3": {
+          "label": "Godziny",
+          "value": "Koszty miesięczne"
+        }
+      }
+    },
+    "detail": {
+      "badge": "Obsługiwane przez FinHub",
+      "invalid": {
+        "title": "Nie znaleziono dopłaty",
+        "description": "Ta dopłata nie jest dostępna."
+      },
+      "sections": {
+        "whatIs": "Co to jest",
+        "coverage": "Zakres i typowe świadczenie",
+        "requirements": "Wymagania",
+        "needs": "Czego potrzebuje FinHub"
+      },
+      "disclaimer": "Szacunki są orientacyjne. Ostateczne kwoty zależą od oceny urzędowej.",
+      "cta": {
+        "title": "Gotowy, by sprawdzić uprawnienia?",
+        "description": "Odpowiedz na krótki kreator i uzyskaj wynik.",
+        "back": "Wróć do dopłat",
+        "check": "Sprawdź uprawnienia"
+      },
+      "huurtoeslag": {
+        "title": "Huurtoeslag",
+        "subtitle": "Wsparcie zmniejszające presję czynszu.",
+        "whatIs": "Świadczenie rządowe pomagające uprawnionym najemcom opłacić część czynszu.",
+        "coverage": "Miesięczne wsparcie na czynsz i kwalifikowane koszty usług.",
+        "benefits": {
+          "1": "Miesięczne wsparcie zależne od czynszu i dochodu.",
+          "2": "Zaprojektowane, aby utrzymać koszty mieszkania na rozsądnym poziomie."
+        },
+        "requirements": {
+          "1": "Wynajmujesz mieszkanie w Holandii.",
+          "2": "Masz co najmniej 18 lat.",
+          "3": "Dochód gospodarstwa mieści się w limitach.",
+          "4": "Czynsz i koszty usług mieszczą się w zakresie kwalifikacji."
+        },
+        "needs": {
+          "1": "Umowa najmu i miesięczne szczegóły czynszu.",
+          "2": "Szacowany dochód gospodarstwa.",
+          "3": "Ważny dokument tożsamości.",
+          "4": "Skład gospodarstwa (partner/dzieci)."
+        }
+      },
+      "zorgtoeslag": {
+        "title": "Zorgtoeslag",
+        "subtitle": "Wsparcie kosztów ubezpieczenia zdrowotnego w NL.",
+        "whatIs": "Miesięczne świadczenie na pokrycie kosztów podstawowego ubezpieczenia zdrowotnego.",
+        "coverage": "Miesięczne dofinansowanie zależne od dochodu.",
+        "benefits": {
+          "1": "Pomaga obniżyć miesięczne koszty ubezpieczenia.",
+          "2": "Korygowane według dochodu gospodarstwa."
+        },
+        "requirements": {
+          "1": "Masz podstawowe ubezpieczenie zdrowotne w NL.",
+          "2": "Dochód gospodarstwa mieści się w limitach.",
+          "3": "Mieszkasz w Holandii."
+        },
+        "needs": {
+          "1": "Potwierdzenie ubezpieczenia zdrowotnego.",
+          "2": "Szacowany dochód gospodarstwa.",
+          "3": "Ważny dokument tożsamości."
+        }
+      },
+      "kgb": {
+        "title": "Kindgebonden budget",
+        "subtitle": "Dodatkowe wsparcie dla rodzin z dziećmi.",
+        "whatIs": "Świadczenie dla gospodarstw z dziećmi poniżej 18 lat.",
+        "coverage": "Dodatkowe miesięczne wsparcie dla rodzin.",
+        "benefits": {
+          "1": "Dodatkowe wsparcie na wydatki rodzinne.",
+          "2": "Zależy od dochodu gospodarstwa."
+        },
+        "requirements": {
+          "1": "Masz co najmniej jedno dziecko poniżej 18 lat.",
+          "2": "Dochód gospodarstwa mieści się w limitach.",
+          "3": "Mieszkasz w Holandii."
+        },
+        "needs": {
+          "1": "Dane dzieci (daty urodzenia).",
+          "2": "Szacowany dochód gospodarstwa.",
+          "3": "Ważny dokument tożsamości."
+        }
+      },
+      "kot": {
+        "title": "Kinderopvangtoeslag",
+        "subtitle": "Wsparcie kosztów opieki nad dziećmi.",
+        "whatIs": "Dopłata dla rodziców, którzy opłacają opiekę i pracują lub się uczą.",
+        "coverage": "Kwalifikowane godziny i koszty opieki.",
+        "benefits": {
+          "1": "Zmniejsza miesięczne wydatki na opiekę.",
+          "2": "Zależne od dochodu i kosztów opieki."
+        },
+        "requirements": {
+          "1": "Opłacasz zarejestrowaną opiekę nad dziećmi.",
+          "2": "Ty lub Twój partner pracujecie lub się uczycie.",
+          "3": "Dochód gospodarstwa mieści się w limitach.",
+          "4": "Dzieci są zarejestrowane w opiece."
+        },
+        "needs": {
+          "1": "Umowa i faktury za opiekę nad dziećmi.",
+          "2": "Potwierdzenie pracy lub nauki.",
+          "3": "Szacowany dochód gospodarstwa.",
+          "4": "Ważny dokument tożsamości."
+        }
+      }
+    },
+    "wizard": {
+      "stepper": {
+        "progress": "Postęp",
+        "step": "Krok"
+      },
+      "errors": {
+        "required": "To pole jest wymagane.",
+        "invalidNumber": "Wpisz poprawną liczbę."
+      },
+      "actions": {
+        "back": "Wstecz",
+        "next": "Dalej",
+        "finish": "Sprawdź uprawnienia"
+      },
+      "common": {
+        "yes": "Tak",
+        "no": "Nie",
+        "selectPlaceholder": "Wybierz opcję",
+        "steps": {
+          "income": {
+            "title": "Dochód",
+            "description": "Podaj najlepsze oszacowanie na ten rok."
+          }
+        },
+        "fields": {
+          "age": "Twój wiek",
+          "hasPartner": "Czy masz toeslagpartnera?",
+          "incomeSelf": "Roczny dochód (Ty)",
+          "incomePartner": "Roczny dochód partnera",
+          "incomeHousehold": "Łączny dochód gospodarstwa"
+        }
+      },
+      "huurtoeslag": {
+        "steps": {
+          "base": {
+            "title": "Gospodarstwo",
+            "description": "Opowiedz o swojej sytuacji mieszkaniowej."
+          },
+          "rent": {
+            "title": "Szczegóły czynszu",
+            "description": "Miesięczny czynsz i koszty usług."
+          }
+        },
+        "fields": {
+          "livesInRent": "Czy wynajmujesz mieszkanie?",
+          "rent": "Miesięczny czynsz (kale huur)",
+          "serviceCosts": "Kwalifikowane koszty usług",
+          "under21HasChildOrDisability": "Jeśli masz mniej niż 21 lat, czy masz dziecko lub niepełnosprawność?",
+          "householdSize": "Liczba osób w gospodarstwie domowym"
+        }
+      },
+      "zorgtoeslag": {
+        "steps": {
+          "insurance": {
+            "title": "Ubezpieczenie zdrowotne",
+            "description": "Potwierdź podstawowe ubezpieczenie."
+          }
+        },
+        "fields": {
+          "hasBasicInsurance": "Czy masz podstawowe ubezpieczenie w NL?"
+        }
+      },
+      "kgb": {
+        "steps": {
+          "family": {
+            "title": "Rodzina",
+            "description": "Opowiedz o swoim gospodarstwie."
+          }
+        },
+        "fields": {
+          "childrenCount": "Liczba dzieci poniżej 18 lat",
+          "childrenCount12To15": "Dzieci w wieku 12-15",
+          "childrenCount16To17": "Dzieci w wieku 16-17"
+        }
+      },
+      "kot": {
+        "steps": {
+          "children": {
+            "title": "Dzieci",
+            "description": "Opowiedz o opiece nad dziećmi."
+          },
+          "costs": {
+            "title": "Koszty",
+            "description": "Miesięczne godziny opieki i koszt za godzinę."
+          },
+          "work": {
+            "title": "Praca lub nauka",
+            "description": "Potwierdź status pracy lub nauki."
+          }
+        },
+        "fields": {
+          "childrenCount": "Liczba dzieci w opiece",
+          "childcareType": "Rodzaj opieki",
+          "hoursPerMonth": "Godziny miesięcznie",
+          "costPerHour": "Koszt za godzinę",
+          "worksOrStudies": "Czy pracujesz lub się uczysz?",
+          "partnerWorksOrStudies": "Czy Twój partner pracuje lub się uczy?",
+          "workedMonths": "Miesiące przepracowane w tym roku"
+        },
+        "options": {
+          "dagopvang": "Opieka dzienna",
+          "bso": "Opieka pozaszkolna (BSO)",
+          "gastouder": "Opiekun dzienny"
+        },
+        "child": {
+          "title": "Dziecko {index}"
+        },
+        "errors": {
+          "childrenCount": "Podaj poprawną liczbę dzieci (1-4).",
+          "childcareType": "Wybierz rodzaj opieki.",
+          "hoursPerMonth": "Podaj liczbę godzin na miesiąc.",
+          "hourlyRate": "Podaj stawkę za godzinę."
+        }
+      }
+    },
+    "engine": {
+      "common": {
+        "missingIncome": "Potrzebujemy szacunku dochodu, aby ocenić uprawnienia.",
+        "missingRent": "Podaj miesięczny czynsz.",
+        "eligibleIncomeOk": "Dochód wygląda na mieszczący się w limicie.",
+        "invalidSlug": "Nieprawidłowy wybór dopłaty."
+      },
+      "huurtoeslag": {
+        "notRenting": "Wskazałeś, że nie wynajmujesz mieszkania.",
+        "ageTooLow": "Musisz mieć co najmniej 18 lat.",
+        "incomeTooHigh": "Dochód gospodarstwa wydaje się przekraczać limit.",
+        "rentTooHigh": "Czynsz wydaje się przekraczać zakres kwalifikacji.",
+        "serviceCostsTooHigh": "Koszty usług wydają się przekraczać zakres kwalifikacji.",
+        "eligibleRentOk": "Czynsz i koszty usług wyglądają na kwalifikowane."
+      },
+      "zorgtoeslag": {
+        "noBasicInsurance": "Wskazałeś, że nie masz podstawowego ubezpieczenia.",
+        "incomeTooHigh": "Dochód gospodarstwa wydaje się przekraczać limit.",
+        "eligibleInsuranceOk": "Podstawowe ubezpieczenie potwierdzone."
+      },
+      "kgb": {
+        "noChildren": "Wskazałeś brak dzieci poniżej 18 lat.",
+        "incomeTooHigh": "Dochód gospodarstwa wydaje się przekraczać limit.",
+        "eligibleChildrenOk": "Gospodarstwo obejmuje uprawnione dzieci."
+      },
+      "kot": {
+        "noChildren": "Wskazałeś brak dzieci w opiece.",
+        "noChildcareCosts": "Potrzebujemy godzin i kosztów opieki, aby ocenić uprawnienia.",
+        "noWorkOrStudy": "Co najmniej jeden rodzic musi pracować lub się uczyć.",
+        "incomeTooHigh": "Dochód gospodarstwa wydaje się przekraczać limit.",
+        "eligibleChildcareOk": "Dane opieki wyglądają na kwalifikowane."
+      }
+    },
+    "result": {
+      "empty": {
+        "title": "Brak danych o uprawnieniach",
+        "description": "Ukończ kreator, aby zobaczyć wynik."
+      },
+      "header": {
+        "label": "Wynik uprawnień",
+        "eligible": "Prawdopodobnie się kwalifikujesz",
+        "notEligible": "Prawdopodobnie się nie kwalifikujesz",
+        "eligibleDescription": "Na podstawie odpowiedzi wydajesz się uprawniony.",
+        "notEligibleDescription": "Na podstawie odpowiedzi nie spełniasz kryteriów."
+      },
+      "reasons": {
+        "title": "Dlaczego taki wynik"
+      },
+      "next": {
+        "title": "Następny krok z FinHub",
+        "description": "Zajmiemy się wnioskiem, dokumentami i dalszymi krokami."
+      },
+      "paywall": {
+        "label": "Opłata FinHub",
+        "sla": "Szacowany czas 3–6 tygodni"
+      },
+      "actions": {
+        "continue": "Kontynuuj i zapłać",
+        "saveReference": "Zapisz jako odniesienie",
+        "review": "Przejrzyj odpowiedzi",
+        "processing": "Przetwarzanie...",
+        "errorTitle": "Nie mogliśmy kontynuować",
+        "error": "Spróbuj ponownie."
+      },
+      "benefit": {
+        "title": "Szacowane świadczenie",
+        "monthlyLabel": "Szacunek miesięczny",
+        "annualLabel": "Szacunek roczny",
+        "breakdownLabel": "Rozbicie",
+        "assumptionsLabel": "Założenia",
+        "missingInputsLabel": "Brakujące dane",
+        "notAvailableDescription": "Potrzebujemy dodatkowych danych, aby obliczyć świadczenie.",
+        "notEligible": "Nie spełniasz warunków, więc brak szacunku świadczenia.",
+        "notEligibleIncome": "Dochody przekraczają limit dla tego świadczenia.",
+        "breakdown": {
+          "zorg": {
+            "standardPremium": "Zastosowano składkę standardową i normatywną.",
+            "normPremium": "Składka normatywna liczona od progu dochodu.",
+            "income": "Zastosowano dochód gospodarstwa.",
+            "rounding": "Kwota miesięczna zaokrąglana w dół do pełnych euro."
+          },
+          "huur": {
+            "rekenhuur": "Czynsz ograniczony do limitu kwalifikowanego.",
+            "basishuur": "Odjęto czynsz bazowy przed częściami dopłaty.",
+            "correction": "Zastosowano korektę dochodową.",
+            "rounding": "Kwota miesięczna zaokrąglana w dół do pełnych euro."
+          },
+          "kgb": {
+            "maxAmount": "Kwota bazowa zależy od liczby dzieci.",
+            "ageSupplements": "Dodano dodatki za starsze dzieci.",
+            "incomeReduction": "Zastosowano zmniejszenie za dochód.",
+            "rounding": "Kwota miesięczna zaokrąglana w dół do pełnych euro."
+          },
+          "kot": {
+            "hourlyCap": "Stawka godzinowa ograniczona do maksimum.",
+            "hoursCap": "Godziny ograniczone do 230 miesięcznie.",
+            "incomePercent": "Zastosowano procent z progu dochodowego.",
+            "rounding": "Kwota miesięczna zaokrąglana w dół do pełnych euro."
+          }
+        },
+        "assumptions": {
+          "domesticInsurance": "Zakładamy ubezpieczenie w Holandii.",
+          "noMedebewoners": "Zakładamy brak dodatkowych domowników.",
+          "serviceCostsIgnored": "Koszty serwisu nie są uwzględniane w 2026.",
+          "childrenInNL": "Zakładamy, że dzieci mieszkają w UE/EOG/Szwajcarii (100%).",
+          "huur": {
+            "rentCapped": "Dla estymacji czynsz jest ograniczany do limitu obliczeniowego 2026.",
+            "serviceCostsExcluded": "Koszty serwisowe nie są uwzględniane w obliczeniach 2026.",
+            "kaleHuurOnly": "W 2026 liczy się tylko czynsz bazowy (kale huur)."
+          }
+        },
+        "missing": {
+          "incomeApplicant": "Dochód wnioskodawcy",
+          "incomePartner": "Dochód partnera",
+          "incomeHousehold": "Dochód gospodarstwa",
+          "age": "Wiek wnioskodawcy",
+          "rent": "Czynsz miesięczny",
+          "childrenCount": "Liczba dzieci",
+          "childrenCount12To15": "Dzieci w wieku 12-15",
+          "childrenCount16To17": "Dzieci w wieku 16-17",
+          "workedMonths": "Miesiące przepracowane w tym roku",
+          "childcareType": "Rodzaj opieki",
+          "hoursPerMonth": "Godziny opieki na miesiąc",
+          "costPerHour": "Stawka godzinowa opieki",
+          "childDetails": "Szczegóły dla każdego dziecka",
+          "householdSize": "Liczba osób w gospodarstwie"
+        },
+        "notEligibleChildren": "Brak kwalifikujących się dzieci dla tego świadczenia.",
+        "childLabel": "Dziecko {index}"
+      }
+    },
+    "checkout": {
+      "missing": {
+        "title": "Brak wniosku",
+        "description": "Zacznij od wyniku uprawnień."
+      },
+      "title": "Płatność",
+      "subtitle": "FinHub poprowadzi Twoją dopłatę od początku do końca.",
+      "description": "Po płatności utworzymy sprawę i poprosimy o dokumenty.",
+      "priceLabel": "Opłata serwisowa",
+      "sla": "Szacowany czas 3–6 tygodni",
+      "cta": "Przejdź do płatności",
+      "back": "Wróć do wyniku",
+      "processing": "Przekierowywanie...",
+      "errorTitle": "Błąd płatności",
+      "error": "Nie udało się rozpocząć płatności.",
+      "methods": "Metody płatności: iDEAL, karta"
+    },
+    "applications": {
+      "eyebrow": "Dopłaty",
+      "title": "Moje wnioski",
+      "subtitle": "Śledź wnioski, przesyłaj dokumenty i sprawdzaj postęp.",
+      "error": "Nie udało się wczytać wniosków.",
+      "errorTitle": "Błąd",
+      "loading": "Ładowanie wniosków",
+      "loadingDescription": "Pobieranie najnowszych danych.",
+      "empty": {
+        "title": "Brak wniosków",
+        "description": "Ukończ kreator uprawnień, aby zacząć."
+      },
+      "createdAt": "Utworzono",
+      "progress": "Status",
+      "separator": "-",
+      "cta": {
+        "view": "Zobacz wniosek",
+        "details": "Zobacz dopłatę"
+      },
+      "detail": {
+        "eyebrow": "Wniosek",
+        "subtitle": "Lista, oś czasu i aktualizacje.",
+        "back": "Wróć do wniosków",
+        "timeline": "Oś czasu",
+        "documents": "Lista dokumentów",
+        "upload": "Prześlij",
+        "uploading": "Przesyłanie...",
+        "uploaded": "Przesłano",
+        "missing": "Brak",
+        "notes": "Notatki admina",
+        "notesEmpty": "Brak notatek",
+        "notesEmptyDescription": "Będziemy tu publikować aktualizacje.",
+        "loading": "Ładowanie wniosku",
+        "loadingDescription": "Pobieranie statusu i dokumentów.",
+        "notFound": "Nie znaleziono wniosku",
+        "notFoundDescription": "Wniosek mógł zostać usunięty.",
+        "error": "Nie udało się wczytać wniosku.",
+        "errorTitle": "Błąd",
+        "uploadError": "Nie udało się przesłać dokumentu."
+      }
+    },
+    "admin": {
+      "eyebrow": "Admin",
+      "title": "Wnioski o dopłaty",
+      "subtitle": "Sprawdzaj status, proś o brakujące dokumenty i dodawaj notatki.",
+      "loading": "Ładowanie wniosków",
+      "loadingDescription": "Pobieranie danych admina.",
+      "error": "Żądanie admina nie powiodło się.",
+      "errorTitle": "Błąd admina",
+      "empty": {
+        "title": "Brak wniosków",
+        "description": "Nie ma jeszcze wniosków o dopłaty."
+      },
+      "userId": "ID użytkownika",
+      "requestDocs": "Poproś o dokumenty",
+      "notePlaceholder": "Dodaj notatkę lub poproś o szczegóły...",
+      "saving": "Zapisywanie...",
+      "requestDocsCta": "Poproś o dokumenty",
+      "addNote": "Dodaj notatkę"
+    },
+    "documents": {
+      "huurcontract": "Umowa najmu",
+      "rent_service_costs": "Czynsz + koszty usług",
+      "proof_income": "Potwierdzenie dochodów",
+      "id": "Dokument tożsamości",
+      "health_insurance": "Potwierdzenie ubezpieczenia zdrowotnego",
+      "partner_income": "Potwierdzenie dochodów partnera",
+      "children_birth": "Akty urodzenia dzieci",
+      "childcare_contract": "Umowa opieki nad dziećmi",
+      "childcare_invoice": "Faktury za opiekę",
+      "work_or_study_proof": "Potwierdzenie pracy lub nauki",
+      "household_composition": "Skład gospodarstwa",
+      "status": {
+        "missing": "Brak",
+        "uploaded": "Przesłano",
+        "approved": "Zatwierdzono",
+        "rejected": "Odrzucono"
+      }
+    },
+    "status": {
+      "draft": "Szkic",
+      "eligible_checked": "Uprawnienia sprawdzone",
+      "paid": "Opłacono",
+      "waiting_user": "Czekamy na Ciebie",
+      "under_review": "W trakcie weryfikacji",
+      "submitted": "Złożono",
+      "decision": "Decyzja otrzymana",
+      "done": "Zamknięto",
+      "cancelled": "Anulowano"
+    },
+    "errors": {
+      "tableMissing": "Kończymy konfigurację wniosków o dopłaty. Zastosuj migracje lub skontaktuj się z pomocą.",
+      "permissionDenied": "Nie masz uprawnień do wykonania tej akcji.",
+      "authRequired": "Zaloguj się, aby kontynuować.",
+      "invalidSlug": "Ten dodatek nie jest dostępny.",
+      "invalidApplication": "Nie znaleźliśmy tego wniosku.",
+      "missingApplicationId": "Nie znaleźliśmy identyfikatora Twojego wniosku.",
+      "paymentUnavailable": "Płatności są chwilowo niedostępne. Spróbuj ponownie później.",
+      "checkoutFailed": "Nie udało się rozpocząć płatności. Spróbuj ponownie.",
+      "network": "Błąd sieci. Sprawdź połączenie i spróbuj ponownie.",
+      "unknown": "Coś poszło nie tak. Spróbuj ponownie."
+    }
+  }
 }

@@ -1,99 +1,1104 @@
 {
-    "app":  {
-                "name":  "FinHub"
-            },
-    "landing":  {
-                    "title":  "Gestioneazï¿½\u001eï¿½\u0019-ï¿½ï¿½â¬ºi finanï¿½ï¿½â¬ºele Ã’Â®n Olanda",
-                    "cta":  "Ã’Å½ncepe",
-                    "lead":  {
-                                 "consent":  "Sunt de acord sÄƒ fiu contactat despre noutÄƒÈ›i FinHub.",
-                                 "createAccount":  "CreeazÄƒ cont",
-                                 "email":  "Email",
-                                 "error":  "A apÄƒrut o problemÄƒ. ÃŽncearcÄƒ din nou.",
-                                 "fullName":  "Nume complet",
-                                 "interests":  "MÄƒ intereseazÄƒ",
-                                 "phone":  "Telefon (opÈ›ional)",
-                                 "submit":  "Trimite",
-                                 "subtitle":  "LasÄƒ datele tale È™i ce te intereseazÄƒ â€” vom prioritiza Ã®n consecinÈ›Äƒ.",
-                                 "successBody":  "Te contactÄƒm cÃ¢nd deschidem noi locuri Ã®n beta.",
-                                 "successTitle":  "MulÈ›umim â€” am primit.",
-                                 "title":  "PrimeÈ™te noutÄƒÈ›i (beta)",
-                                 "interestLabels":  {
-                                                        "personal_finance":  "Personal finance",
-                                                        "taxes":  "Taxes (IB)",
-                                                        "voorlopige_aanslag":  "Provisional assessment (voorlopige aanslag)",
-                                                        "toeslagen":  "Allowances (toeslagen)",
-                                                        "mortgage":  "IpotecÄƒ",
-                                                        "personal_loan":  "Personal loan",
-                                                        "insurance":  "AsigurÄƒri"
-                                                    }
-                             }
-                },
-    "auth":  {
-                 "oauth":  {
-                               "google":  "Continua cu Google",
-                               "apple":  "Continua cu Apple"
-                           },
-                 "forgot":  {
-                                "sent":  "Daca emailul exista, vei primi un link de resetare a parolei.",
-                                "title":  "Resetare parola",
-                                "busy":  "Se trimite...",
-                                "submit":  "Trimite link",
-                                "backToLogin":  "Înapoi la autentificare"
-                            },
-                 "reset":  {
-                               "newPassword":  "Parola noua",
-                               "title":  "Seteaza o parola noua",
-                               "busy":  "Se actualizeaza...",
-                               "submit":  "Actualizeaza parola",
-                               "ok":  "Parola a fost actualizata."
-                           },
-                 "common":  {
-                                "email":  "Email",
-                                "error":  "Eroare",
-                                "info":  "Info",
-                                "password":  "Parola"
-                            },
-                 "legal":  {
-                               "and":  "?i",
-                               "continue":  "Continuând accep?i",
-                               "privacy":  "Politica de confiden?ialitate",
-                               "continueRegister":  "Creând un cont accep?i",
-                               "terms":  "Termenii"
-                           },
-                 "login":  {
-                               "emailNotConfirmedHint":  "Emailul nu este confirmat înca. Verifica inboxul sau retrimite confirmarea.",
-                               "goRegister":  "Înregistreaza-te",
-                               "resendBusy":  "Se retrimite...",
-                               "busy":  "Se autentifica...",
-                               "forgot":  "Ai uitat parola?",
-                               "noAccount":  "Nu ai cont?",
-                               "submit":  "Intra",
-                               "title":  "Autentificare",
-                               "resend":  "Retrimite confirmarea",
-                               "resendOk":  "Confirmarea a fost retrimisa. Verifica inboxul."
-                           },
-                 "register":  {
-                                  "busy":  "Se creeaza...",
-                                  "goLogin":  "Autentificare",
-                                  "checkEmail":  "Cont creat. Confirma emailul înainte de autentificare.",
-                                  "submit":  "Creeaza cont",
-                                  "haveAccount":  "Ai deja cont?",
-                                  "title":  "Creeaza cont"
-                              },
-                 "errors":  {
-                                "unknown":  "A aparut o eroare. Încearca din nou.",
-                                "weak_password":  "Parola nu îndepline?te cerin?ele.",
-                                "missing_code":  "Link invalid sau expirat.",
-                                "rate_limited":  "Prea multe încercari. Încearca mai târziu.",
-                                "invalid_request":  "Date invalide. Încearca din nou.",
-                                "email_not_confirmed":  "Email neconfirmat.",
-                                "user_exists":  "Exista deja un cont pentru acest email.",
-                                "invalid_credentials":  "Creden?iale invalide.",
-                                "oauth_failed":  "Autentificarea sociala a e?uat."
-                            }
-             },
-    "finny":  {
-                  "ask":  "Ã’Å½ntreabï¿½\u001eï¿½\u0019-l pe Finny"
-              }
+  "app": {
+    "name": "FinHub"
+  },
+  "landing": {
+    "title": "Gestioneaz-ți finanțele în Olanda",
+    "cta": "ncepe",
+    "lead": {
+      "consent": "Sunt de acord să fiu contactat despre noutăți FinHub.",
+      "createAccount": "Creeaz cont",
+      "email": "Email",
+      "error": "A aprut o problem. }ncearc din nou.",
+      "fullName": "Nume complet",
+      "interests": "M intereseaz",
+      "phone": "Telefon (opțional)",
+      "submit": "Trimite",
+      "subtitle": "Lasă datele tale și ce te interesează; vom prioritiza în consecință.",
+      "successBody": "Te contactm cnd deschidem noi locuri n beta.",
+      "successTitle": "Mulțumim, am primit.",
+      "title": "Primește noutăți (beta)",
+      "interestLabels": {
+        "personal_finance": "Personal finance",
+        "taxes": "Taxes (IB)",
+        "voorlopige_aanslag": "Provisional assessment (voorlopige aanslag)",
+        "toeslagen": "Allowances (toeslagen)",
+        "mortgage": "Ipotec",
+        "personal_loan": "Personal loan",
+        "insurance": "Asigurri"
+      }
+    }
+  },
+  "auth": {
+    "oauth": {
+      "google": "Continua cu Google",
+      "apple": "Continua cu Apple"
+    },
+    "forgot": {
+      "sent": "Daca emailul exista, vei primi un link de resetare a parolei.",
+      "title": "Resetare parola",
+      "busy": "Se trimite...",
+      "submit": "Trimite link",
+      "backToLogin": "napoi la autentificare"
+    },
+    "reset": {
+      "newPassword": "Parola noua",
+      "title": "Seteaza o parola noua",
+      "busy": "Se actualizeaza...",
+      "submit": "Actualizeaza parola",
+      "ok": "Parola a fost actualizata."
+    },
+    "common": {
+      "email": "Email",
+      "error": "Eroare",
+      "info": "Info",
+      "password": "Parola"
+    },
+    "legal": {
+      "and": "și",
+      "continue": "Continund accepși",
+      "privacy": "Politica de confidenșialitate",
+      "continueRegister": "Crend un cont accepși",
+      "terms": "Termenii"
+    },
+    "login": {
+      "emailNotConfirmedHint": "Emailul nu este confirmat înca. Verifica inboxul sau retrimite confirmarea.",
+      "goRegister": "nregistreaza-te",
+      "resendBusy": "Se retrimite...",
+      "busy": "Se autentifica...",
+      "forgot": "Ai uitat parola?",
+      "noAccount": "Nu ai cont?",
+      "submit": "Intra",
+      "title": "Autentificare",
+      "resend": "Retrimite confirmarea",
+      "resendOk": "Confirmarea a fost retrimisa. Verifica inboxul."
+    },
+    "register": {
+      "busy": "Se creeaza...",
+      "goLogin": "Autentificare",
+      "checkEmail": "Cont creat. Confirma emailul înainte de autentificare.",
+      "submit": "Creeaza cont",
+      "haveAccount": "Ai deja cont?",
+      "title": "Creeaza cont"
+    },
+    "errors": {
+      "unknown": "A aparut o eroare. ncearca din nou.",
+      "weak_password": "Parola nu îîîndeplinește cerințele.",
+      "missing_code": "Link invalid sau expirat.",
+      "rate_limited": "Prea multe ncercari. ncearca mai trziu.",
+      "invalid_request": "Date invalide. ncearca din nou.",
+      "email_not_confirmed": "Email neconfirmat.",
+      "user_exists": "Exista deja un cont pentru acest email.",
+      "invalid_credentials": "Credenșiale invalide.",
+      "oauth_failed": "Autentificarea sociala a eșuat."
+    }
+  },
+  "finny": {
+    "ask": "ntreab-l pe Finny"
+  },
+  "shell": {
+    "skipToContent": "Sari la conținut",
+    "sidebar": {
+      "toggleAria": "Comut bara lateral"
+    },
+    "section": {
+      "finances": "Finanțe",
+      "subsidies": "Subvenții",
+      "operations": "Operațiuni",
+      "account": "Cont",
+      "admin": "Admin"
+    },
+    "nav": {
+      "overview": "Prezentare general",
+      "transactions": "Tranzacții",
+      "subsidies": "Subvenții",
+      "documents": "Documente",
+      "cases": "Dosare",
+      "profile": "Profil",
+      "uikit": "UI Kit",
+      "admin": "Admin"
+    },
+    "search": {
+      "placeholder": "Caut sau execut...",
+      "ariaLabel": "Caut sau execut o comand",
+      "hint": "Cmd/Ctrl+K"
+    },
+    "notifications": {
+      "label": "Notificri"
+    },
+    "account": {
+      "label": "Cont",
+      "logout": "Deconectare"
+    },
+    "cmdk": {
+      "ariaLabel": "Palet de comenzi",
+      "inputPlaceholder": "Tasteaz pentru a cuta acșiuni...",
+      "inputAriaLabel": "Caut acșiuni",
+      "empty": "Fr rezultate.",
+      "enterHint": "Enter",
+      "footerHint": "Sus/Jos: navigheaz - Esc: închide",
+      "goToFinances": "Mergi la Finanțe",
+      "goToTransactions": "Mergi la Tranzacții",
+      "goToSubsidies": "Mergi la Subvenții",
+      "goToDocuments": "Mergi la Documente",
+      "goToCases": "Mergi la Dosare",
+      "goToProfile": "Mergi la Profil",
+      "goToUiKit": "Mergi la UI Kit",
+      "logoutHint": "POST /api/auth/logout"
+    },
+    "route": {
+      "dashboard": "Tablou de bord",
+      "finances": "Finanțe",
+      "subsidies": "Subvenții",
+      "transactions": "Tranzacții",
+      "newTransaction": "Tranzacșie nou",
+      "transactionDetail": "Detalii tranzacție",
+      "documents": "Documente",
+      "cases": "Dosare",
+      "case": "Dosar",
+      "profile": "Profil",
+      "admin": "Admin",
+      "detail": "Detaliu",
+      "new": "Nou",
+      "subsidyApplications": "Cereri de subvenții",
+      "subsidyCheckout": "Plată subvenție",
+      "subsidyDetail": "Detalii subvenție",
+      "subsidyResult": "Rezultat subvenție",
+      "subsidyWizard": "Asistent subvenție"
+    }
+  },
+  "finances": {
+    "dashboard": {
+      "topbar": {
+        "eyebrow": "Dashboard",
+        "title": "Finanțe",
+        "subtitle": "Centru de Comandă Financiar",
+        "search": "Caută",
+        "searchPlaceholder": "Caută sau sari la...",
+        "cmdk": "Cmd+K",
+        "notifications": "Notificări"
+      },
+      "header": {
+        "kicker": "Dashboard",
+        "title": "Finanțe",
+        "subtitle": "Centru de Comandă Financiar"
+      },
+      "actions": {
+        "viewAll": "Vezi toate",
+        "newTransaction": "Tranzacșie nouă",
+        "review": "Revizuiește"
+      },
+      "nav": {
+        "title": "Navigare",
+        "finances": "Finanțe",
+        "cases": "Dosare",
+        "documents": "Documente",
+        "profile": "Profil",
+        "uiKit": "UI Kit"
+      },
+      "kpis": {
+        "safeToSpend": "Disponibil de cheltuit",
+        "incomeReceived": "Venituri încasate",
+        "billsPaid": "Facturi plătite",
+        "budgetUsed": "Buget folosit",
+        "safeHint": "După costurile fixe",
+        "monthHint": "Luna aceasta ({month})",
+        "outflowHint": "Ieșiri în perioadă",
+        "budgetHint": "Folosire vs plan"
+      },
+      "inbox": {
+        "title": "Inbox tranzacșii",
+        "subtitle": "Activitate recentă",
+        "viewAll": "Vezi toate",
+        "emptyTitle": "Nu există tranzacșii",
+        "emptyBody": "Adaugă prima tranzacșie pentru a debloca insight-uri.",
+        "emptyCta": "Adaugă prima tranzacșie"
+      },
+      "table": {
+        "date": "Data",
+        "merchant": "Comerciant",
+        "category": "Categorie",
+        "status": "Status",
+        "amount": "Sumă"
+      },
+      "category": {
+        "groceries": "Alimente",
+        "transport": "Transport",
+        "entertainment": "Divertisment",
+        "uncategorized": "Fără categorie"
+      },
+      "status": {
+        "approved": "Aprobat",
+        "flagged": "Marcat"
+      },
+      "burndown": {
+        "title": "Evolușie lunară",
+        "subtitle": "Sold net în timp",
+        "currency": "EUR",
+        "emptyTitle": "Date insuficiente",
+        "emptyBody": "Nu sunt suficiente date pentru grafic."
+      },
+      "budgets": {
+        "title": "Bugete pe categorii",
+        "subtitle": "Bugete active pentru {month}",
+        "used": "Folosit",
+        "remaining": "Rămas",
+        "emptyTitle": "Fără bugete",
+        "emptyBody": "Definește bugete sau adaugă tranzacșii pentru o bază.",
+        "emptyCta": "Revizuiește tranzacșiile",
+        "status": {
+          "ok": "în grafic",
+          "warn": "Atenșie",
+          "risk": "Risc"
+        }
+      },
+      "states": {
+        "errorTitle": "Nu s-au putut încărca finanțele",
+        "errorBody": "Încearcă din nou în câteva momente.",
+        "retry": "Reîncearcă"
+      }
+    },
+    "transactions": {
+      "breadcrumbs": {
+        "finances": "Finanțe",
+        "transactions": "Tranzacții"
+      },
+      "title": "Tranzacții",
+      "monthLabel": "Luna: {month}",
+      "actions": {
+        "backToFinances": "napoi la Finanțe",
+        "newTransaction": "Tranzacșie nou"
+      },
+      "summary": {
+        "count": "{count} tranzacții"
+      },
+      "loading": "Se încarc...",
+      "errors": {
+        "title": "A aprut o problem",
+        "updateStatus": "Nu s-a putut actualiza statusul."
+      },
+      "table": {
+        "title": "Inbox tranzacții",
+        "subtitle": "Activitate ledger \"i editri rapide",
+        "date": "Data",
+        "merchant": "Comerciant",
+        "category": "Categorie",
+        "amount": "Sum",
+        "status": "Status",
+        "actions": "Acțiuni",
+        "open": "Deschide",
+        "statusAria": "Actualizeaz statusul",
+        "saving": "Se salveaz..."
+      },
+      "status": {
+        "pending": "n a\"teptare",
+        "approved": "Aprobat",
+        "hidden": "Ascuns"
+      },
+      "category": {
+        "uncategorized": "Fr categorie"
+      },
+      "empty": {
+        "title": "Nu exist tranzacșii",
+        "body": "Tranzacșiile vor aprea aici dup creare sau import.",
+        "cta": "Creeaz o tranzacșie"
+      },
+      "detail": {
+        "breadcrumb": "Detalii",
+        "title": "Detalii tranzacție",
+        "monthLabel": "Luna: {month}",
+        "actions": {
+          "backToList": "napoi la list",
+          "save": "Salveaz modificrile",
+          "saving": "Se salveaz..."
+        },
+        "save": {
+          "title": "Salvat",
+          "ok": "Modificri salvate.",
+          "error": "Nu s-au putut salva modificrile."
+        },
+        "notFound": {
+          "title": "Tranzacșia nu a fost gsit pentru aceast lun.",
+          "body": "Dac ai deschis URL-ul direct, revino la list pentru a alinia luna \"i ledger-ul."
+        },
+        "invalidId": {
+          "title": "ID tranzacție invalid",
+          "body": "Nu am putut citi ID-ul tranzacției din URL."
+        },
+        "merchant": {
+          "label": "Comerciant"
+        },
+        "amount": {
+          "label": "Sum"
+        },
+        "date": {
+          "label": "Data"
+        },
+        "status": {
+          "label": "Status"
+        },
+        "category": {
+          "label": "Categorie",
+          "none": "Fr categorie"
+        },
+        "note": {
+          "label": "Not",
+          "placeholder": "Opțional...",
+          "helper": "Adaug context pentru aceast tranzacșie."
+        },
+        "splits": {
+          "title": "Împărțiri",
+          "subtitle": "Împarte tranzacția pe categorii.",
+          "actions": {
+            "add": "Adaugă împărțire",
+            "reset": "Reseteaz",
+            "save": "Salveaz îÎmpărțiri",
+            "saving": "Se salveaz...",
+            "remove": "Elimin"
+          },
+          "totals": {
+            "total": "Total tranzacție",
+            "sum": "Total îÎmpărțiri",
+            "delta": "Diferență"
+          },
+          "loadError": "Nu s-au putut încrca îÎmpărțirile (HTTP {status}).",
+          "loadErrorFallback": "Nu s-au putut încrca îÎmpărțirile.",
+          "saveError": "Nu s-au putut salva îÎmpărțirile (HTTP {status}).",
+          "saveErrorFallback": "Nu s-au putut salva îÎmpărțirile.",
+          "saveOk": "Împărțiri salvate.",
+          "saveTitle": "Împărțiri actualizate",
+          "loading": "Se încarc îÎmpărțirile...",
+          "empty": "Fr îÎmpărțiri. Adaug una.",
+          "deltaError": "Împărțirile trebuie s fie egale cu suma tranzacșiei. Diferență: {delta}.",
+          "table": {
+            "category": "Categorie",
+            "amount": "Sum (EUR)",
+            "note": "Not",
+            "amountPlaceholder": "ex: 12.34",
+            "notePlaceholder": "Opțional..."
+          },
+          "rowError": "Rnd {index}: {error}",
+          "errors": {
+            "required": "Suma este obligatorie.",
+            "format": "Format invalid (folosete 12.34).",
+            "invalidNumber": "Numr invalid.",
+            "invalidDecimals": "Zecimale invalide."
+          }
+        },
+        "metadata": {
+          "title": "Metadate",
+          "source": "Surs",
+          "merchantNorm": "Comerciant normalizat",
+          "reviewedAt": "Revizuit la"
+        },
+        "ledger": {
+          "title": "Stare ledger",
+          "loading": "Se încarc",
+          "month": "Luna ledger",
+          "count": "Tranzacții"
+        }
+      }
+    },
+    "newTransaction": {
+      "breadcrumbs": {
+        "finances": "Finanțe",
+        "transactions": "Tranzacții",
+        "new": "Nou"
+      },
+      "title": "Tranzacșie nou",
+      "monthLabel": "Luna: {month}",
+      "actions": {
+        "backToList": "napoi la list",
+        "create": "Creeaz tranzacșie",
+        "creating": "Se creeaz..."
+      },
+      "errors": {
+        "title": "A aprut o problem",
+        "create": "Nu s-a putut crea tranzacția."
+      },
+      "form": {
+        "date": {
+          "label": "Data",
+          "placeholder": "YYYY-MM-DD",
+          "helper": "Folosete data tranzacției.",
+          "error": "Introdu o dat ISO valid."
+        },
+        "merchant": {
+          "label": "Comerciant",
+          "placeholder": "Albert Heijn, NS, Bol.com...",
+          "helper": "Introdu comerciantul sau beneficiar.",
+          "error": "Comerciantul este obligatoriu."
+        },
+        "amount": {
+          "label": "Sum (EUR)",
+          "placeholder": "12.34",
+          "helper": "Folosete valori negative pentru ieiri.",
+          "error": "Introdu o sum diferit de zero."
+        },
+        "category": {
+          "label": "Categorie",
+          "helper": "Alege o categorie pentru un buget ordonat.",
+          "none": "Fr categorie"
+        },
+        "note": {
+          "label": "Not",
+          "placeholder": "Opțional...",
+          "helper": "Adaug context pentru revizuiri."
+        }
+      }
+    }
+  },
+  "subsidies": {
+    "home": {
+      "eyebrow": "Subvenții",
+      "title": "Subvenții gestionate de FinHub",
+      "subtitle": "Verifică eligibilitatea rapid și lasă FinHub să gestioneze cererea, documentele și urmărirea.",
+      "badge": "Gestionat de FinHub",
+      "labels": {
+        "coverage": "Acoperă",
+        "audience": "Pentru",
+        "timeline": "Timp estimat",
+        "quickFacts": "Date cheie",
+        "signals": "Semnale"
+      },
+      "cta": {
+        "viewDetails": "Vezi detalii"
+      },
+      "howItWorks": {
+        "title": "Cum funcționează FinHub pentru subvenții",
+        "steps": {
+          "1": {
+            "eyebrow": "Pasul 1",
+            "title": "Verifică eligibilitatea",
+            "description": "Răspunde la un wizard scurt și obține un rezultat clar."
+          },
+          "2": {
+            "eyebrow": "Pasul 2",
+            "title": "Gestionăm cererea",
+            "description": "FinHub pregătește și trimite cererea ta."
+          },
+          "3": {
+            "eyebrow": "Pasul 3",
+            "title": "Urmărește progresul",
+            "description": "Încarcă documente și urmărește statusul într-un singur loc."
+          }
+        }
+      }
+    },
+    "catalog": {
+      "huurtoeslag": {
+        "title": "Huurtoeslag",
+        "description": "Sprijin pentru chirie",
+        "coverage": "Chirie + costuri de servicii eligibile",
+        "audience": "Chiriași în NL cu limite de venit",
+        "timeline": "36 sptmni"
+      },
+      "zorgtoeslag": {
+        "title": "Zorgtoeslag",
+        "description": "Sprijin pentru asigurarea de sănătate",
+        "coverage": "Indemnizație lunară pentru sănătate",
+        "audience": "Persoane cu asigurare de bază",
+        "timeline": "24 sptmni"
+      },
+      "kgb": {
+        "title": "Kindgebonden budget",
+        "description": "Sprijin pentru familie",
+        "coverage": "Sprijin pentru familii cu copii",
+        "audience": "Gospodării cu minori",
+        "timeline": "35 sptmni"
+      },
+      "kot": {
+        "title": "Kinderopvangtoeslag",
+        "description": "Sprijin pentru îngrijirea copiilor",
+        "coverage": "Ore și costuri de îngrijire",
+        "audience": "Părinți care lucrează sau studiază",
+        "timeline": "46 sptmni"
+      }
+    },
+    "metrics": {
+      "huurtoeslag": {
+        "primary": {
+          "label": "Verificare venit",
+          "value": "Se aplică limite"
+        },
+        "secondary": {
+          "label": "Plafoane chirie",
+          "value": "În interval"
+        },
+        "tertiary": {
+          "label": "Costuri servicii",
+          "value": "Elemente eligibile"
+        }
+      },
+      "zorgtoeslag": {
+        "primary": {
+          "label": "Asigurare",
+          "value": "Necesită plan de bază"
+        },
+        "secondary": {
+          "label": "Verificare venit",
+          "value": "Se aplică limite"
+        },
+        "tertiary": {
+          "label": "Gospodărie",
+          "value": "Partenerul contează"
+        }
+      },
+      "kgb": {
+        "primary": {
+          "label": "Copii",
+          "value": "Sub 18 ani"
+        },
+        "secondary": {
+          "label": "Verificare venit",
+          "value": "Se aplică limite"
+        },
+        "tertiary": {
+          "label": "Gospodărie",
+          "value": "Dimensiunea familiei"
+        }
+      },
+      "kot": {
+        "primary": {
+          "label": "Îngrijire copii",
+          "value": "Furnizor înregistrat"
+        },
+        "secondary": {
+          "label": "Muncă/studii",
+          "value": "Condiție părinte"
+        },
+        "tertiary": {
+          "label": "Ore și costuri",
+          "value": "În funcție de utilizare"
+        }
+      }
+    },
+    "facts": {
+      "huurtoeslag": {
+        "1": {
+          "label": "Chirie",
+          "value": "Chirie + costuri servicii"
+        },
+        "2": {
+          "label": "Vrst",
+          "value": "18+"
+        },
+        "3": {
+          "label": "Venit",
+          "value": "Limite gospodărie"
+        }
+      },
+      "zorgtoeslag": {
+        "1": {
+          "label": "Asigurare",
+          "value": "Acoperire de bază"
+        },
+        "2": {
+          "label": "Venit",
+          "value": "Limite gospodărie"
+        },
+        "3": {
+          "label": "Reședință",
+          "value": "Rezident NL"
+        }
+      },
+      "kgb": {
+        "1": {
+          "label": "Copii",
+          "value": "Sub 18 ani"
+        },
+        "2": {
+          "label": "Venit",
+          "value": "Limite gospodărie"
+        },
+        "3": {
+          "label": "Reședință",
+          "value": "Rezident NL"
+        }
+      },
+      "kot": {
+        "1": {
+          "label": "Îngrijire copii",
+          "value": "Înregistrată"
+        },
+        "2": {
+          "label": "Muncă/studii",
+          "value": "Obligatoriu"
+        },
+        "3": {
+          "label": "Ore",
+          "value": "Costuri lunare"
+        }
+      }
+    },
+    "detail": {
+      "badge": "Gestionat de FinHub",
+      "invalid": {
+        "title": "Subvenție negăsită",
+        "description": "Această subvenție nu este disponibilă."
+      },
+      "sections": {
+        "whatIs": "Ce este",
+        "coverage": "Acoperire și beneficiu tipic",
+        "requirements": "Cerințe",
+        "needs": "Ce va avea nevoie FinHub"
+      },
+      "disclaimer": "Estimările sunt orientative. Sumele finale depind de evaluarea oficială.",
+      "cta": {
+        "title": "Gata să verifici eligibilitatea?",
+        "description": "Răspunde la un wizard rapid și obține un rezultat clar.",
+        "back": "Înapoi la subvenții",
+        "check": "Verifică eligibilitatea"
+      },
+      "huurtoeslag": {
+        "title": "Huurtoeslag",
+        "subtitle": "Sprijin pentru reducerea presiunii chiriei lunare.",
+        "whatIs": "Indemnizație guvernamentală care ajută chiriașii eligibili să plătească o parte din chirie.",
+        "coverage": "Indemnizație lunară pentru chirie și costuri eligibile.",
+        "benefits": {
+          "1": "Sprijin lunar în funcție de chirie și venit.",
+          "2": "Conceput pentru a menține costurile locuinței gestionabile."
+        },
+        "requirements": {
+          "1": "Închiriezi o locuință în Olanda.",
+          "2": "Ai cel puțin 18 ani.",
+          "3": "Venitul gospodăriei este în limite.",
+          "4": "Chiria și costurile de servicii sunt în intervalul eligibil."
+        },
+        "needs": {
+          "1": "Contract de închiriere și detalii despre chiria lunară.",
+          "2": "Estimarea venitului gospodăriei.",
+          "3": "Document de identitate valid.",
+          "4": "Componența gospodăriei (partener/copii)."
+        }
+      },
+      "zorgtoeslag": {
+        "title": "Zorgtoeslag",
+        "subtitle": "Sprijin pentru costurile asigurării de sănătate din NL.",
+        "whatIs": "Indemnizație lunară pentru a compensa costul asigurării de bază.",
+        "coverage": "Indemnizație lunară în funcție de venit.",
+        "benefits": {
+          "1": "Ajută la reducerea costurilor lunare de asigurare.",
+          "2": "Ajustată după venitul gospodăriei."
+        },
+        "requirements": {
+          "1": "Ai asigurare de sănătate de bază în NL.",
+          "2": "Venitul gospodăriei este în limite.",
+          "3": "Locuiești în Olanda."
+        },
+        "needs": {
+          "1": "Dovadă de asigurare de sănătate.",
+          "2": "Estimarea venitului gospodăriei.",
+          "3": "Document de identitate valid."
+        }
+      },
+      "kgb": {
+        "title": "Kindgebonden budget",
+        "subtitle": "Sprijin suplimentar pentru familii cu copii.",
+        "whatIs": "Indemnizație pentru gospodării cu copii sub 18 ani.",
+        "coverage": "Sprijin lunar suplimentar pentru familii.",
+        "benefits": {
+          "1": "Sprijin suplimentar pentru cheltuieli familiale.",
+          "2": "Depinde de venitul gospodăriei."
+        },
+        "requirements": {
+          "1": "Ai cel puțin un copil sub 18 ani.",
+          "2": "Venitul gospodăriei este în limite.",
+          "3": "Locuiești în Olanda."
+        },
+        "needs": {
+          "1": "Datele copiilor (date de naștere).",
+          "2": "Estimarea venitului gospodăriei.",
+          "3": "Document de identitate valid."
+        }
+      },
+      "kot": {
+        "title": "Kinderopvangtoeslag",
+        "subtitle": "Sprijin pentru costurile de îngrijire a copiilor.",
+        "whatIs": "Subvenție pentru părinții care plătesc îngrijirea copiilor și lucrează sau studiază.",
+        "coverage": "Ore și costuri eligibile de îngrijire.",
+        "benefits": {
+          "1": "Reduce cheltuielile lunare pentru îngrijire.",
+          "2": "Se bazează pe venit și costuri de îngrijire."
+        },
+        "requirements": {
+          "1": "Plătești îngrijire înregistrată.",
+          "2": "Tu sau partenerul lucrați sau studiați.",
+          "3": "Venitul gospodăriei este în limite.",
+          "4": "Copiii sunt înregistrați la îngrijire."
+        },
+        "needs": {
+          "1": "Contract și facturi de îngrijire copii.",
+          "2": "Confirmare de muncă sau studii.",
+          "3": "Estimarea venitului gospodăriei.",
+          "4": "Document de identitate valid."
+        }
+      }
+    },
+    "wizard": {
+      "stepper": {
+        "progress": "Progres",
+        "step": "Pas"
+      },
+      "errors": {
+        "required": "Acest cmp este obligatoriu.",
+        "invalidNumber": "Introdu un număr valid."
+      },
+      "actions": {
+        "back": "Înapoi",
+        "next": "Continuă",
+        "finish": "Verifică eligibilitatea"
+      },
+      "common": {
+        "yes": "Da",
+        "no": "Nu",
+        "selectPlaceholder": "Selectează o opțiune",
+        "steps": {
+          "income": {
+            "title": "Venituri",
+            "description": "Folosește cea mai bună estimare pentru acest an."
+          }
+        },
+        "fields": {
+          "age": "Vrsta ta",
+          "hasPartner": "Ai un partener toeslag?",
+          "incomeSelf": "Venit anual (tu)",
+          "incomePartner": "Venit anual partener",
+          "incomeHousehold": "Venitul total al gospodăriei"
+        }
+      },
+      "huurtoeslag": {
+        "steps": {
+          "base": {
+            "title": "Gospodărie",
+            "description": "Spune-ne despre situația locativă."
+          },
+          "rent": {
+            "title": "Detalii chirie",
+            "description": "Chirie lunară și costuri de servicii."
+          }
+        },
+        "fields": {
+          "livesInRent": "Locuiești cu chirie?",
+          "rent": "Chirie lunară (kale huur)",
+          "serviceCosts": "Costuri eligibile de servicii",
+          "under21HasChildOrDisability": "Dacă ai sub 21 de ani, ai copil sau dizabilitate?",
+          "householdSize": "Număr de persoane în gospodărie"
+        }
+      },
+      "zorgtoeslag": {
+        "steps": {
+          "insurance": {
+            "title": "Asigurare de sănătate",
+            "description": "Confirmă asigurarea de bază."
+          }
+        },
+        "fields": {
+          "hasBasicInsurance": "Ai asigurare de bază în NL?"
+        }
+      },
+      "kgb": {
+        "steps": {
+          "family": {
+            "title": "Familie",
+            "description": "Spune-ne despre gospodăria ta."
+          }
+        },
+        "fields": {
+          "childrenCount": "Numărul de copii sub 18 ani",
+          "childrenCount12To15": "Copii între 12-15 ani",
+          "childrenCount16To17": "Copii între 16-17 ani"
+        }
+      },
+      "kot": {
+        "steps": {
+          "children": {
+            "title": "Copii",
+            "description": "Spune-ne despre îngrijirea copiilor."
+          },
+          "costs": {
+            "title": "Costuri",
+            "description": "Ore lunare și cost pe oră."
+          },
+          "work": {
+            "title": "Muncă sau studii",
+            "description": "Confirmă statutul de muncă sau studii."
+          }
+        },
+        "fields": {
+          "childrenCount": "Numărul de copii în îngrijire",
+          "childcareType": "Tip de îngrijire",
+          "hoursPerMonth": "Ore pe lună",
+          "costPerHour": "Cost pe oră",
+          "worksOrStudies": "Lucrezi sau studiezi?",
+          "partnerWorksOrStudies": "Partenerul lucrează sau studiază?",
+          "workedMonths": "Lunile lucrate în acest an"
+        },
+        "options": {
+          "dagopvang": "Îngrijire de zi",
+          "bso": "Îngrijire după școală (BSO)",
+          "gastouder": "Asistent maternal"
+        },
+        "child": {
+          "title": "Copil {index}"
+        },
+        "errors": {
+          "childrenCount": "Introdu un număr valid de copii (1-4).",
+          "childcareType": "Selectează tipul de îngrijire.",
+          "hoursPerMonth": "Introdu orele pe lună.",
+          "hourlyRate": "Introdu tariful pe oră."
+        }
+      }
+    },
+    "engine": {
+      "common": {
+        "missingIncome": "Avem nevoie de o estimare a venitului pentru evaluare.",
+        "missingRent": "Te rugăm să indici chiria lunară.",
+        "eligibleIncomeOk": "Venitul pare în interval.",
+        "invalidSlug": "Selecție de subvenție invalidă."
+      },
+      "huurtoeslag": {
+        "notRenting": "Ai indicat că nu stai în chirie.",
+        "ageTooLow": "Trebuie să ai cel puțin 18 ani.",
+        "incomeTooHigh": "Venitul gospodăriei pare peste limită.",
+        "rentTooHigh": "Chiria pare peste intervalul eligibil.",
+        "serviceCostsTooHigh": "Costurile de servicii par peste interval.",
+        "eligibleRentOk": "Chiria și costurile par eligibile."
+      },
+      "zorgtoeslag": {
+        "noBasicInsurance": "Ai indicat că nu ai asigurare de bază.",
+        "incomeTooHigh": "Venitul gospodăriei pare peste limită.",
+        "eligibleInsuranceOk": "Asigurarea de bază confirmată."
+      },
+      "kgb": {
+        "noChildren": "Ai indicat că nu ai copii sub 18 ani.",
+        "incomeTooHigh": "Venitul gospodăriei pare peste limită.",
+        "eligibleChildrenOk": "Gospodăria include copii eligibili."
+      },
+      "kot": {
+        "noChildren": "Ai indicat că nu ai copii în îngrijire.",
+        "noChildcareCosts": "Avem nevoie de ore și costuri de îngrijire.",
+        "noWorkOrStudy": "Cel puțin un părinte trebuie să lucreze sau să studieze.",
+        "incomeTooHigh": "Venitul gospodăriei pare peste limită.",
+        "eligibleChildcareOk": "Detaliile de îngrijire par eligibile."
+      }
+    },
+    "result": {
+      "empty": {
+        "title": "Fără date de eligibilitate",
+        "description": "Finalizează wizardul pentru a vedea rezultatul."
+      },
+      "header": {
+        "label": "Rezultat eligibilitate",
+        "eligible": "Probabil ești eligibil",
+        "notEligible": "Probabil nu ești eligibil",
+        "eligibleDescription": "Pe baza răspunsurilor, pari eligibil.",
+        "notEligibleDescription": "Pe baza răspunsurilor, nu îndeplinești criteriile."
+      },
+      "reasons": {
+        "title": "De ce acest rezultat"
+      },
+      "next": {
+        "title": "Următorul pas cu FinHub",
+        "description": "Vom gestiona cererea, documentele și urmărirea."
+      },
+      "paywall": {
+        "label": "Taxa FinHub",
+        "sla": "Durat estimat 36 sptmni"
+      },
+      "actions": {
+        "continue": "Continuă și plătește",
+        "saveReference": "Salvează ca referință",
+        "review": "Revizuiește răspunsurile",
+        "processing": "Se procesează...",
+        "errorTitle": "Nu am putut continua",
+        "error": "Te rugăm să încerci din nou."
+      },
+      "benefit": {
+        "title": "Estimare a subvenției",
+        "monthlyLabel": "Estimare lunară",
+        "annualLabel": "Estimare anuală",
+        "breakdownLabel": "Detaliere",
+        "assumptionsLabel": "Presupuneri",
+        "missingInputsLabel": "Date lipsă",
+        "notAvailableDescription": "Avem nevoie de mai multe detalii pentru calcul.",
+        "notEligible": "Nu ești eligibil, deci nu există estimare disponibilă.",
+        "notEligibleIncome": "Venitul depășește limita pentru această subvenție.",
+        "breakdown": {
+          "zorg": {
+            "standardPremium": "Se aplică prima standard și prima normată.",
+            "normPremium": "Prima normată calculată pe baza pragului de venit.",
+            "income": "Se aplică venitul gospodăriei.",
+            "rounding": "Suma lunară este rotunjită în jos la euro întregi."
+          },
+          "huur": {
+            "rekenhuur": "Chiria este plafonată la limita eligibilă.",
+            "basishuur": "Chiria de bază este scăzută înainte de părți.",
+            "correction": "Se aplică corecția în funcție de venit.",
+            "rounding": "Suma lunară este rotunjită în jos la euro întregi."
+          },
+          "kgb": {
+            "maxAmount": "Suma de bază depinde de numărul de copii.",
+            "ageSupplements": "Se adaug suplimente pentru vrsta copiilor.",
+            "incomeReduction": "Se aplică reducerea în funcție de venit.",
+            "rounding": "Suma lunară este rotunjită în jos la euro întregi."
+          },
+          "kot": {
+            "hourlyCap": "Tariful orar este plafonat la maximul oficial.",
+            "hoursCap": "Orele sunt plafonate la 230 pe lună.",
+            "incomePercent": "Se aplică procentul pentru tranșa de venit.",
+            "rounding": "Suma lunară este rotunjită în jos la euro întregi."
+          }
+        },
+        "assumptions": {
+          "domesticInsurance": "Presupune asigurare în Olanda.",
+          "noMedebewoners": "Presupune fără alți membri ai gospodăriei.",
+          "serviceCostsIgnored": "Costurile de servicii nu sunt incluse în 2026.",
+          "childrenInNL": "Presupune că copiii locuiesc în UE/SEE/Elveția (100%).",
+          "huur": {
+            "rentCapped": "Pentru estimare, chiria este plafonată la limita de calcul 2026.",
+            "serviceCostsExcluded": "Costurile de servicii nu sunt incluse în calculele din 2026.",
+            "kaleHuurOnly": "În 2026 se ia în calcul doar chiria de bază (kale huur)."
+          }
+        },
+        "missing": {
+          "incomeApplicant": "Venitul solicitantului",
+          "incomePartner": "Venitul partenerului",
+          "incomeHousehold": "Venitul gospodăriei",
+          "age": "Vrsta solicitantului",
+          "rent": "Chiria lunară",
+          "childrenCount": "Numărul de copii",
+          "childrenCount12To15": "Copii între 12-15 ani",
+          "childrenCount16To17": "Copii între 16-17 ani",
+          "workedMonths": "Lunile lucrate în acest an",
+          "childcareType": "Tip de îngrijire",
+          "hoursPerMonth": "Ore de îngrijire pe lună",
+          "costPerHour": "Tarif orar îngrijire",
+          "childDetails": "Detalii pentru fiecare copil",
+          "householdSize": "Număr de persoane în gospodărie"
+        },
+        "notEligibleChildren": "Nu există copii eligibili pentru această subvenție.",
+        "childLabel": "Copil {index}"
+      }
+    },
+    "checkout": {
+      "missing": {
+        "title": "Lipsește cererea",
+        "description": "Începe din rezultatul de eligibilitate."
+      },
+      "title": "Plată",
+      "subtitle": "FinHub va gestiona subvenția cap-coadă.",
+      "description": "După plată vom crea cazul și vom solicita documentele.",
+      "priceLabel": "Taxă de serviciu",
+      "sla": "Durat estimat 36 sptmni",
+      "cta": "Continuă la plată",
+      "back": "Înapoi la rezultat",
+      "processing": "Redirecționare...",
+      "errorTitle": "Eroare la plată",
+      "error": "Nu am putut porni plata.",
+      "methods": "Metode de plată: iDEAL, card"
+    },
+    "applications": {
+      "eyebrow": "Subvenții",
+      "title": "Cererile mele",
+      "subtitle": "Urmărește cererile, încarcă documente și vezi progresul.",
+      "error": "Nu am putut încărca cererile.",
+      "errorTitle": "Eroare",
+      "loading": "Se încarcă cererile",
+      "loadingDescription": "Se preiau cele mai recente date.",
+      "empty": {
+        "title": "Nu există cereri încă",
+        "description": "Finalizează wizardul de eligibilitate pentru a începe."
+      },
+      "createdAt": "Creat",
+      "progress": "Status",
+      "cta": {
+        "view": "Vezi cererea",
+        "details": "Vezi subvenția"
+      },
+      "detail": {
+        "eyebrow": "Cerere",
+        "subtitle": "Listă, cronologie și actualizări.",
+        "back": "Înapoi la cereri",
+        "timeline": "Cronologie",
+        "documents": "Lista documentelor",
+        "upload": "Încarcă",
+        "uploading": "Se încarcă...",
+        "uploaded": "Încărcat",
+        "missing": "Lipsă",
+        "notes": "Note admin",
+        "notesEmpty": "Nicio notă încă",
+        "notesEmptyDescription": "Vom publica actualizări aici.",
+        "loading": "Se încarcă cererea",
+        "loadingDescription": "Se preiau statusul și documentele.",
+        "notFound": "Cerere negăsită",
+        "notFoundDescription": "Această cerere poate fi ștearsă.",
+        "error": "Nu am putut încărca cererea.",
+        "errorTitle": "Eroare",
+        "uploadError": "Nu am putut încărca documentul."
+      },
+      "separator": "-"
+    },
+    "admin": {
+      "eyebrow": "Admin",
+      "title": "Cereri de subvenții",
+      "subtitle": "Revizuiește statusul, solicită documente lipsă și adaugă note.",
+      "loading": "Se încarcă cererile",
+      "loadingDescription": "Se preiau datele de admin.",
+      "error": "Cererea admin a eșuat.",
+      "errorTitle": "Eroare admin",
+      "empty": {
+        "title": "Fără cereri",
+        "description": "Încă nu există cereri de subvenții."
+      },
+      "userId": "ID utilizator",
+      "requestDocs": "Solicită documente",
+      "notePlaceholder": "Adaugă o notă sau solicită detalii...",
+      "saving": "Se salvează...",
+      "requestDocsCta": "Solicită documente",
+      "addNote": "Adaugă notă"
+    },
+    "documents": {
+      "huurcontract": "Contract de închiriere",
+      "rent_service_costs": "Chirie + costuri servicii",
+      "proof_income": "Dovadă venit",
+      "id": "Document de identitate",
+      "health_insurance": "Dovadă asigurare de sănătate",
+      "partner_income": "Dovadă venit partener",
+      "children_birth": "Certificate de naștere copii",
+      "childcare_contract": "Contract de îngrijire copii",
+      "childcare_invoice": "Facturi îngrijire copii",
+      "work_or_study_proof": "Dovadă de muncă sau studii",
+      "household_composition": "Componența gospodăriei",
+      "status": {
+        "missing": "Lipsă",
+        "uploaded": "Încărcat",
+        "approved": "Aprobat",
+        "rejected": "Respins"
+      }
+    },
+    "status": {
+      "draft": "Schiță",
+      "eligible_checked": "Eligibilitate verificată",
+      "paid": "Plătit",
+      "waiting_user": "Așteptăm de la tine",
+      "under_review": "În verificare",
+      "submitted": "Trimis",
+      "decision": "Decizie primită",
+      "done": "Închis",
+      "cancelled": "Anulat"
+    },
+    "errors": {
+      "tableMissing": "Finalizăm configurarea cererilor de subvenții. Aplică migrațiile sau contactează suportul.",
+      "permissionDenied": "Nu ai permisiunea de a continua această acțiune.",
+      "authRequired": "Autentifică-te pentru a continua.",
+      "invalidSlug": "Această subvenție nu este disponibilă.",
+      "invalidApplication": "Nu am găsit acea cerere.",
+      "missingApplicationId": "Nu am găsit identificatorul cererii tale.",
+      "paymentUnavailable": "Plile sunt temporar indisponibile. ncearc mai trziu.",
+      "checkoutFailed": "Nu am putut porni plata. Încearcă din nou.",
+      "network": "Eroare de rețea. Verifică conexiunea și încearcă din nou.",
+      "unknown": "Ceva nu a mers bine. Încearcă din nou."
+    }
+  }
 }

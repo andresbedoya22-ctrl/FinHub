@@ -13,18 +13,24 @@ type Props = {
   steps: ReadonlyArray<StepperStep>;
   activeKey: string;
   onStepChange?: (key: string) => void;
+  labels?: {
+    progress: string;
+    step: string;
+  };
   className?: string;
 };
 
-export function Stepper({ steps, activeKey, onStepChange, className }: Props) {
+export function Stepper({ steps, activeKey, onStepChange, labels, className }: Props) {
   const activeIndex = Math.max(0, steps.findIndex((s) => s.key === activeKey));
+  const progressLabel = labels?.progress ?? "Progreso";
+  const stepLabel = labels?.step ?? "Paso";
 
   return (
     <div className={cn("space-y-3", className)}>
       <div className="flex items-center justify-between">
-        <div className="text-sm font-medium text-fh-muted">Progreso</div>
+        <div className="text-sm font-medium text-fh-muted">{progressLabel}</div>
         <div className="text-xs text-fh-muted">
-          Paso {Math.min(activeIndex + 1, steps.length)} / {steps.length}
+          {stepLabel} {Math.min(activeIndex + 1, steps.length)} / {steps.length}
         </div>
       </div>
 

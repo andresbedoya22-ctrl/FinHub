@@ -31,7 +31,7 @@ export function ToggleGroup<T extends string>({
   const isControlled = value !== undefined;
   const [internal, setInternal] = React.useState<T | undefined>(defaultValue);
 
-  const current = (isControlled ? value : internal) ?? options[0]?.value;
+  const current = isControlled ? value : internal;
 
   function setNext(v: T) {
     if (disabled) return;

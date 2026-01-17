@@ -11,6 +11,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "pnpm -s check:encoding && eslint .",
+    "i18n:check": "node scripts/fix-i18n-utf8.mjs --check",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "format": "prettier . --write",
     "format:check": "prettier . --check",

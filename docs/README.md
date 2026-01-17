@@ -22,3 +22,6 @@ Este directorio contiene la documentación canónica del repositorio.
 
 ## Contribución
 - Guía de contribución: ./CONTRIBUTING.md
+
+## Checks rápidos
+- Mojibake ES (tildes rotas) en mensajes: `rg -n -F "?" src/i18n/messages/es.json`

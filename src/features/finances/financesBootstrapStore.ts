@@ -1,7 +1,6 @@
 import { create } from "zustand";
 
-import type { FinanceUserPlan } from "./financesTypes";
-import type { FinanceBootstrapDTO, FinanceRulesV1 } from "./financesBootstrapApi";
+import type { FinanceRulesV1, FinanceUserPlan, FinancesBootstrap } from "./financesTypes";
 import { getFinancesBootstrap, saveFinancesBootstrap } from "./financesBootstrapApi";
 
 type State = {
@@ -12,7 +11,7 @@ type State = {
   rules: FinanceRulesV1 | null;
 
   load: () => Promise<void>;
-  save: (next: FinanceBootstrapDTO) => Promise<void>;
+  save: (next: FinancesBootstrap) => Promise<void>;
 };
 
 export const useFinancesBootstrap = create<State>((set) => ({

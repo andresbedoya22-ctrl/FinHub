@@ -106,6 +106,16 @@ export interface FinanceUserPlan {
   fixedBudgets: FinanceFixedBudget[];  // user-defined list
 }
 
+export type FinanceRulesV1 = {
+  version: 1;
+  safeToSpendMode: "income-expense-fixedRemaining";
+};
+
+export type FinancesBootstrap = {
+  plan: FinanceUserPlan;
+  rules: FinanceRulesV1;
+};
+
 export interface FinanceListParams {
   month: IsoMonth; // fixed month scope for v1
   status?: FinanceTxStatus | "all";

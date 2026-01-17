@@ -1,14 +1,4 @@
-import type { FinanceUserPlan } from "./financesTypes";
-
-export type FinanceRulesV1 = {
-  version: 1;
-  safeToSpendMode: "income-expense-fixedRemaining";
-};
-
-export type FinanceBootstrapDTO = {
-  plan: FinanceUserPlan;
-  rules: FinanceRulesV1;
-};
+import type { FinancesBootstrap } from "./financesTypes";
 
 async function parseOrThrow(res: Response) {
   const txt = await res.text();
@@ -20,12 +10,12 @@ async function parseOrThrow(res: Response) {
   return json;
 }
 
-export async function getFinancesBootstrap(): Promise<FinanceBootstrapDTO> {
+export async function getFinancesBootstrap(): Promise<FinancesBootstrap> {
   const res = await fetch("/api/finances/bootstrap", { method: "GET", cache: "no-store" });
-  return parseOrThrow(res) as Promise<FinanceBootstrapDTO>;
+  return parseOrThrow(res) as Promise<FinancesBootstrap>;
 }
 
-export async function saveFinancesBootstrap(dto: FinanceBootstrapDTO): Promise<void> {
+export async function saveFinancesBootstrap(dto: FinancesBootstrap): Promise<void> {
   const res = await fetch("/api/finances/bootstrap", {
     method: "POST",
     headers: { "content-type": "application/json" },

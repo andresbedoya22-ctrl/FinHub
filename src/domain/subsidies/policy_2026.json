@@ -1,0 +1,26 @@
+{
+  "pricing": {
+    "serviceFeeCents": 6900,
+    "currency": "EUR"
+  },
+  "huurtoeslag": {
+    "minAge": 18,
+    "maxIncomeSingle": 42000,
+    "maxIncomePartner": 52000,
+    "maxRent": 880,
+    "maxServiceCosts": 60
+  },
+  "zorgtoeslag": {
+    "maxIncomeSingle": 39000,
+    "maxIncomePartner": 51000,
+    "requiresBasicInsurance": true
+  },
+  "kgb": {
+    "minChildren": 1,
+    "maxIncomeHousehold": 60000
+  },
+  "kot": {
+    "minChildren": 1,
+    "maxIncomeHousehold": 80000
+  }
+}
