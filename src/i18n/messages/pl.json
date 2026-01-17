@@ -159,7 +159,12 @@
       "profile": "Profil",
       "admin": "Admin",
       "detail": "Szczegóy",
-      "new": "Nowa"
+      "new": "Nowa",
+      "subsidyApplications": "Wnioski o dopłaty",
+      "subsidyCheckout": "Płatność dopłaty",
+      "subsidyDetail": "Szczegóły dopłaty",
+      "subsidyResult": "Wynik dopłaty",
+      "subsidyWizard": "Kreator dopłaty"
     }
   },
   "finances": {
@@ -1004,6 +1009,7 @@
       },
       "createdAt": "Utworzono",
       "progress": "Status",
+      "separator": "-",
       "cta": {
         "view": "Zobacz wniosek",
         "details": "Zobacz dopłatę"
@@ -1078,6 +1084,18 @@
       "decision": "Decyzja otrzymana",
       "done": "Zamknięto",
       "cancelled": "Anulowano"
+    },
+    "errors": {
+      "tableMissing": "Kończymy konfigurację wniosków o dopłaty. Spróbuj ponownie za chwilę.",
+      "permissionDenied": "Nie masz uprawnień do wykonania tej akcji.",
+      "authRequired": "Zaloguj się, aby kontynuować.",
+      "invalidSlug": "Ten dodatek nie jest dostępny.",
+      "invalidApplication": "Nie znaleźliśmy tego wniosku.",
+      "missingApplicationId": "Nie znaleźliśmy identyfikatora Twojego wniosku.",
+      "paymentUnavailable": "Płatności są chwilowo niedostępne. Spróbuj ponownie później.",
+      "checkoutFailed": "Nie udało się rozpocząć płatności. Spróbuj ponownie.",
+      "network": "Błąd sieci. Sprawdź połączenie i spróbuj ponownie.",
+      "unknown": "Coś poszło nie tak. Spróbuj ponownie."
     }
   }
 }

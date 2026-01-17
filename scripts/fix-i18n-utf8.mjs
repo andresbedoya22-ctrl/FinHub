@@ -6,7 +6,20 @@ const messagesDir = path.join(root, "src", "i18n", "messages");
 const files = fs.readdirSync(messagesDir).filter((file) => file.endsWith(".json"));
 const checkOnly = process.argv.includes("--check");
 
-const forbidden = ["Ã", "Â", "Å", "Ä", "â", "Ò", "Ç", "Ž", "¦", "¬", "¼", "½", "�", "Przegl?d"];
+const forbidden = [
+  "\u00c3",
+  "\u00c5",
+  "\u00c4",
+  "\u00d2",
+  "\u00c7",
+  "\u017d",
+  "\u00a6",
+  "\u00ac",
+  "\u00bc",
+  "\u00bd",
+  "\uFFFD",
+  "Przegl?d"
+];
 const explicitReplacements = [
   ["Przegl?d", "Przegląd"],
   ["ЗЅѓ'Єѓ??", "—"],
@@ -88,3 +101,5 @@ for (const file of files) {
 if (hasFailures) {
   process.exit(1);
 }
+
+

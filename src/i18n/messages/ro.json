@@ -159,7 +159,12 @@
       "profile": "Profil",
       "admin": "Admin",
       "detail": "Detaliu",
-      "new": "Nou"
+      "new": "Nou",
+      "subsidyApplications": "Cereri de subvenții",
+      "subsidyCheckout": "Plată subvenție",
+      "subsidyDetail": "Detalii subvenție",
+      "subsidyResult": "Rezultat subvenție",
+      "subsidyWizard": "Asistent subvenție"
     }
   },
   "finances": {
@@ -1025,7 +1030,8 @@
         "error": "Nu am putut încărca cererea.",
         "errorTitle": "Eroare",
         "uploadError": "Nu am putut încărca documentul."
-      }
+      },
+      "separator": "-"
     },
     "admin": {
       "eyebrow": "Admin",
@@ -1075,6 +1081,18 @@
       "decision": "Decizie primită",
       "done": "Închis",
       "cancelled": "Anulat"
+    },
+    "errors": {
+      "tableMissing": "Finalizăm configurarea cererilor de subvenții. Încearcă din nou în câteva momente.",
+      "permissionDenied": "Nu ai permisiunea de a continua această acțiune.",
+      "authRequired": "Autentifică-te pentru a continua.",
+      "invalidSlug": "Această subvenție nu este disponibilă.",
+      "invalidApplication": "Nu am găsit acea cerere.",
+      "missingApplicationId": "Nu am găsit identificatorul cererii tale.",
+      "paymentUnavailable": "Plățile sunt temporar indisponibile. Încearcă mai târziu.",
+      "checkoutFailed": "Nu am putut porni plata. Încearcă din nou.",
+      "network": "Eroare de rețea. Verifică conexiunea și încearcă din nou.",
+      "unknown": "Ceva nu a mers bine. Încearcă din nou."
     }
   }
 }

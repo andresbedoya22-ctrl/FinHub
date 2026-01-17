@@ -992,6 +992,18 @@
       "errorTitle": "Checkout error",
       "error": "Could not start checkout."
     },
+    "errors": {
+      "tableMissing": "We are finishing the setup for subsidy applications. Please try again in a moment.",
+      "permissionDenied": "You do not have permission to continue this action.",
+      "authRequired": "Please sign in to continue.",
+      "invalidSlug": "This subsidy is not available.",
+      "invalidApplication": "We could not find that application.",
+      "missingApplicationId": "We could not find your application id.",
+      "paymentUnavailable": "Payments are temporarily unavailable. Please try again later.",
+      "checkoutFailed": "We could not start checkout. Please try again.",
+      "network": "Network error. Check your connection and try again.",
+      "unknown": "Something went wrong. Please try again."
+    },
     "applications": {
       "eyebrow": "Subsidies",
       "title": "My applications",
@@ -1006,6 +1018,7 @@
       },
       "createdAt": "Created",
       "progress": "Status",
+      "separator": "-",
       "cta": {
         "view": "View application",
         "details": "View subsidy"

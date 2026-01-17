@@ -992,6 +992,18 @@
       "errorTitle": "Error de pago",
       "error": "No se pudo iniciar el checkout."
     },
+    "errors": {
+      "tableMissing": "Estamos terminando de configurar las solicitudes de subsidios. Int?ntalo de nuevo en unos minutos.",
+      "permissionDenied": "No tienes permiso para continuar con esta acci?n.",
+      "authRequired": "Inicia sesi?n para continuar.",
+      "invalidSlug": "Este subsidio no est? disponible.",
+      "invalidApplication": "No pudimos encontrar esa solicitud.",
+      "missingApplicationId": "No pudimos encontrar el identificador de tu solicitud.",
+      "paymentUnavailable": "Los pagos no est?n disponibles temporalmente. Int?ntalo m?s tarde.",
+      "checkoutFailed": "No pudimos iniciar el pago. Int?ntalo de nuevo.",
+      "network": "Error de red. Revisa tu conexi?n y vuelve a intentar.",
+      "unknown": "Algo sali? mal. Int?ntalo de nuevo."
+    },
     "applications": {
       "eyebrow": "Subsidios",
       "title": "Mis solicitudes",
@@ -1006,6 +1018,7 @@
       },
       "createdAt": "Creado",
       "progress": "Estado",
+      "separator": "-",
       "cta": {
         "view": "Ver solicitud",
         "details": "Ver subsidio"
