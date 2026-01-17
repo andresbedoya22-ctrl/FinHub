@@ -64,13 +64,6 @@ export function evaluateHuurtoeslag2026(
   if (totalIncome > maxIncome) blockingReasons.push("engine.huurtoeslag.incomeTooHigh");
 
   if (!isPositiveNumber(input.rent)) blockingReasons.push("engine.common.missingRent");
-  if (isPositiveNumber(input.rent) && input.rent > policy.huurtoeslag.maxRent) {
-    blockingReasons.push("engine.huurtoeslag.rentTooHigh");
-  }
-
-  if (isPositiveNumber(input.serviceCosts) && input.serviceCosts > policy.huurtoeslag.maxServiceCosts) {
-    blockingReasons.push("engine.huurtoeslag.serviceCostsTooHigh");
-  }
 
   if (blockingReasons.length === 0) {
     reasons.push("engine.common.eligibleIncomeOk");
