@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Card } from "@/ui/components/Card";
 import { InfoBox } from "@/ui/components/InfoBox";
 import { Screen } from "@/ui/components/Screen";
@@ -13,9 +13,11 @@ import type { EligibilityResult, SubsidySlug } from "@/domain/subsidies/types";
 import { useSubsidyWizardStore } from "@/domain/subsidies/wizardStore";
 import { createSubsidyApplication } from "@/app/(dashboard)/app/subsidies/actions";
 import { formatSubsidyError } from "@/domain/subsidies/errorMapper";
+import { formatCurrencyEUR } from "@/ui/lib/formatCurrency";
 
 export default function SubsidyResultClient({ slug }: { slug: string }) {
   const t = useTranslations("subsidies");
+  const locale = useLocale();
   const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -24,23 +26,11 @@ export default function SubsidyResultClient({ slug }: { slug: string }) {
   const resultBySlug = useSubsidyWizardStore((s) => s.resultBySlug);
 
   const priceLabel = useMemo(() => {
-    const { serviceFeeCents, currency } = DEFAULT_POLICY_2026.pricing;
-    return new Intl.NumberFormat(undefined, {
-      style: "currency",
-      currency,
-      minimumFractionDigits: 0,
-    }).format(serviceFeeCents / 100);
-  }, []);
+    const { serviceFeeCents } = DEFAULT_POLICY_2026.pricing;
+    return formatCurrencyEUR({ cents: serviceFeeCents, locale });
+  }, [locale]);
 
-  const formatEuro = useMemo(
-    () => (valueCents: number) =>
-      new Intl.NumberFormat(undefined, {
-        style: "currency",
-        currency: "EUR",
-        minimumFractionDigits: 0,
-      }).format(valueCents / 100),
-    []
-  );
+  const formatEuro = useMemo(() => (valueCents: number) => formatCurrencyEUR({ cents: valueCents, locale }), [locale]);
 
   if (!isSubsidySlug(slug)) {
     return (

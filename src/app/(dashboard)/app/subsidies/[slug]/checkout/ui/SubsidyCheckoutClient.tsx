@@ -3,29 +3,27 @@
 import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Card } from "@/ui/components/Card";
 import { InfoBox } from "@/ui/components/InfoBox";
 import { Screen } from "@/ui/components/Screen";
 import { DEFAULT_POLICY_2026 } from "@/domain/subsidies/policy";
 import { isSubsidySlug } from "@/domain/subsidies/registry";
 import { formatSubsidyError } from "@/domain/subsidies/errorMapper";
+import { formatCurrencyEUR } from "@/ui/lib/formatCurrency";
 
 export default function SubsidyCheckoutClient({ slug }: { slug: string }) {
   const t = useTranslations("subsidies");
+  const locale = useLocale();
   const params = useSearchParams();
   const applicationId = params.get("applicationId") ?? "";
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const priceLabel = useMemo(() => {
-    const { serviceFeeCents, currency } = DEFAULT_POLICY_2026.pricing;
-    return new Intl.NumberFormat(undefined, {
-      style: "currency",
-      currency,
-      minimumFractionDigits: 0,
-    }).format(serviceFeeCents / 100);
-  }, []);
+    const { serviceFeeCents } = DEFAULT_POLICY_2026.pricing;
+    return formatCurrencyEUR({ cents: serviceFeeCents, locale });
+  }, [locale]);
 
   if (!isSubsidySlug(slug)) {
     return (
