@@ -776,7 +776,9 @@
         "fields": {
           "livesInRent": "Locuiești cu chirie?",
           "rent": "Chirie lunară (kale huur)",
-          "serviceCosts": "Costuri eligibile de servicii"
+          "serviceCosts": "Costuri eligibile de servicii",
+          "under21HasChildOrDisability": "Dac? ai sub 21 de ani, ai copil sau dizabilitate?",
+          "householdSize": "Num?r de persoane ?n gospod?rie"
         }
       },
       "zorgtoeslag": {
@@ -798,7 +800,9 @@
           }
         },
         "fields": {
-          "childrenCount": "Numărul de copii sub 18 ani"
+          "childrenCount": "Numărul de copii sub 18 ani",
+          "childrenCount12To15": "Copii ?ntre 12-15 ani",
+          "childrenCount16To17": "Copii ?ntre 16-17 ani"
         }
       },
       "kot": {
@@ -822,7 +826,8 @@
           "hoursPerMonth": "Ore pe lună",
           "costPerHour": "Cost pe oră",
           "worksOrStudies": "Lucrezi sau studiezi?",
-          "partnerWorksOrStudies": "Partenerul lucrează sau studiază?"
+          "partnerWorksOrStudies": "Partenerul lucrează sau studiază?",
+          "workedMonths": "Lunile lucrate ?n acest an"
         },
         "options": {
           "dagopvang": "Îngrijire de zi",
@@ -884,7 +889,7 @@
         "description": "Vom gestiona cererea, documentele și urmărirea."
       },
       "paywall": {
-        "label": "Taxă de serviciu",
+        "label": "Taxa FinHub",
         "sla": "Durat estimat 36 sptmni"
       },
       "actions": {
@@ -894,6 +899,66 @@
         "processing": "Se procesează...",
         "errorTitle": "Nu am putut continua",
         "error": "Te rugăm să încerci din nou."
+      },
+      "benefit": {
+        "title": "Estimare a subven?iei",
+        "monthlyLabel": "Estimare lunar?",
+        "annualLabel": "Estimare anual?",
+        "breakdownLabel": "Detaliere",
+        "assumptionsLabel": "Presupuneri",
+        "missingInputsLabel": "Date lips?",
+        "notAvailableDescription": "Avem nevoie de mai multe detalii pentru calcul.",
+        "notEligible": "Nu e?ti eligibil, deci nu exist? estimare disponibil?.",
+        "notEligibleIncome": "Venitul dep??e?te limita pentru aceast? subven?ie.",
+        "breakdown": {
+          "zorg": {
+            "standardPremium": "Se aplic? prima standard ?i prima normat?.",
+            "normPremium": "Prima normat? calculat? pe baza pragului de venit.",
+            "income": "Se aplic? venitul gospod?riei.",
+            "rounding": "Suma lunar? este rotunjit? ?n jos la euro ?ntregi."
+          },
+          "huur": {
+            "rekenhuur": "Chiria este plafonat? la limita eligibil?.",
+            "basishuur": "Chiria de baz? este sc?zut? ?nainte de p?r?i.",
+            "correction": "Se aplic? corec?ia ?n func?ie de venit.",
+            "rounding": "Suma lunar? este rotunjit? ?n jos la euro ?ntregi."
+          },
+          "kgb": {
+            "maxAmount": "Suma de baz? depinde de num?rul de copii.",
+            "ageSupplements": "Se adaug? suplimente pentru v?rsta copiilor.",
+            "incomeReduction": "Se aplic? reducerea ?n func?ie de venit.",
+            "rounding": "Suma lunar? este rotunjit? ?n jos la euro ?ntregi."
+          },
+          "kot": {
+            "hourlyCap": "Tariful orar este plafonat la maximul oficial.",
+            "hoursCap": "Orele sunt plafonate la 230 pe lun?.",
+            "incomePercent": "Se aplic? procentul pentru tran?a de venit.",
+            "rounding": "Suma lunar? este rotunjit? ?n jos la euro ?ntregi."
+          }
+        },
+        "assumptions": {
+          "domesticInsurance": "Presupune asigurare ?n Olanda.",
+          "noMedebewoners": "Presupune f?r? al?i membri ai gospod?riei.",
+          "serviceCostsIgnored": "Costurile de servicii nu sunt incluse ?n 2026.",
+          "childrenInNL": "Presupune c? copiii locuiesc ?n UE/SEE/Elve?ia (100%)."
+        },
+        "missing": {
+          "incomeApplicant": "Venitul solicitantului",
+          "incomePartner": "Venitul partenerului",
+          "incomeHousehold": "Venitul gospod?riei",
+          "age": "V?rsta solicitantului",
+          "rent": "Chiria lunar?",
+          "childrenCount": "Num?rul de copii",
+          "childrenCount12To15": "Copii ?ntre 12-15 ani",
+          "childrenCount16To17": "Copii ?ntre 16-17 ani",
+          "workedMonths": "Lunile lucrate ?n acest an",
+          "childcareType": "Tip de ?ngrijire",
+          "hoursPerMonth": "Ore de ?ngrijire pe lun?",
+          "costPerHour": "Tarif orar ?ngrijire",
+          "childDetails": "Detalii pentru fiecare copil",
+          "householdSize": "Num?r de persoane ?n gospod?rie"
+        },
+        "notEligibleChildren": "Nu exist? copii eligibili pentru aceast? subven?ie."
       }
     },
     "checkout": {

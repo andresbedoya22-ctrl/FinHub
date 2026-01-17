@@ -781,7 +781,9 @@
         "fields": {
           "livesInRent": "Do you rent your home?",
           "rent": "Monthly rent (kale huur)",
-          "serviceCosts": "Eligible service costs"
+          "serviceCosts": "Eligible service costs",
+          "under21HasChildOrDisability": "If you are under 21, do you have a child or disability?",
+          "householdSize": "Household size (people living with you)"
         }
       },
       "zorgtoeslag": {
@@ -803,7 +805,9 @@
           }
         },
         "fields": {
-          "childrenCount": "Number of children under 18"
+          "childrenCount": "Number of children under 18",
+          "childrenCount12To15": "Children aged 12-15",
+          "childrenCount16To17": "Children aged 16-17"
         }
       },
       "kot": {
@@ -827,7 +831,8 @@
           "hoursPerMonth": "Hours per month",
           "costPerHour": "Cost per hour",
           "worksOrStudies": "Do you work or study?",
-          "partnerWorksOrStudies": "Does your partner work or study?"
+          "partnerWorksOrStudies": "Does your partner work or study?",
+          "workedMonths": "Months worked this year"
         },
         "options": {
           "dagopvang": "Daycare",
@@ -889,7 +894,7 @@
         "description": "We will manage the full request, documentation, and follow-up."
       },
       "paywall": {
-        "label": "Service fee",
+        "label": "FinHub fee",
         "sla": "Estimated turnaround 3-6 weeks"
       },
       "actions": {
@@ -899,6 +904,66 @@
         "processing": "Processing...",
         "errorTitle": "We could not continue",
         "error": "Please try again."
+      },
+      "benefit": {
+        "title": "Estimated benefit",
+        "monthlyLabel": "Monthly estimate",
+        "annualLabel": "Annual estimate",
+        "breakdownLabel": "Breakdown",
+        "assumptionsLabel": "Assumptions",
+        "missingInputsLabel": "Missing details",
+        "notAvailableDescription": "We need a few more details to calculate the benefit.",
+        "notEligible": "You are not eligible, so no benefit estimate is available.",
+        "notEligibleIncome": "Income is above the limit for this benefit.",
+        "breakdown": {
+          "zorg": {
+            "standardPremium": "Standard and norm premiums applied.",
+            "normPremium": "Norm premium calculated from threshold income.",
+            "income": "Household income applied.",
+            "rounding": "Monthly amount rounded down to whole euros."
+          },
+          "huur": {
+            "rekenhuur": "Rent capped to the eligible rent limit.",
+            "basishuur": "Base rent deducted before subsidy parts.",
+            "correction": "Income-dependent reduction applied.",
+            "rounding": "Monthly amount rounded down to whole euros."
+          },
+          "kgb": {
+            "maxAmount": "Base amount based on number of children.",
+            "ageSupplements": "Age supplements added for older children.",
+            "incomeReduction": "Income-based reduction applied.",
+            "rounding": "Monthly amount rounded down to whole euros."
+          },
+          "kot": {
+            "hourlyCap": "Hourly rate capped to the official maximum.",
+            "hoursCap": "Hours capped to 230 per month.",
+            "incomePercent": "Income bracket percentage applied.",
+            "rounding": "Monthly amount rounded down to whole euros."
+          }
+        },
+        "assumptions": {
+          "domesticInsurance": "Assumes you are insured in the Netherlands.",
+          "noMedebewoners": "Assumes no additional household members.",
+          "serviceCostsIgnored": "Service costs are not included in 2026 calculations.",
+          "childrenInNL": "Assumes children live in the EU/EEA/Switzerland (100%)."
+        },
+        "missing": {
+          "incomeApplicant": "Applicant income",
+          "incomePartner": "Partner income",
+          "incomeHousehold": "Household income",
+          "age": "Applicant age",
+          "rent": "Monthly rent",
+          "childrenCount": "Number of children",
+          "childrenCount12To15": "Children aged 12-15",
+          "childrenCount16To17": "Children aged 16-17",
+          "workedMonths": "Months worked this year",
+          "childcareType": "Childcare type",
+          "hoursPerMonth": "Childcare hours per month",
+          "costPerHour": "Childcare hourly rate",
+          "childDetails": "Per-child childcare details",
+          "householdSize": "Household size"
+        },
+        "notEligibleChildren": "No eligible children for this benefit."
       }
     },
     "checkout": {

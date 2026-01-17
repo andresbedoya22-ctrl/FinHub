@@ -779,7 +779,9 @@
         "fields": {
           "livesInRent": "Czy wynajmujesz mieszkanie?",
           "rent": "Miesięczny czynsz (kale huur)",
-          "serviceCosts": "Kwalifikowane koszty usług"
+          "serviceCosts": "Kwalifikowane koszty usług",
+          "under21HasChildOrDisability": "Je?li masz mniej ni? 21 lat, czy masz dziecko lub niepe?nosprawno???",
+          "householdSize": "Liczba os?b w gospodarstwie domowym"
         }
       },
       "zorgtoeslag": {
@@ -801,7 +803,9 @@
           }
         },
         "fields": {
-          "childrenCount": "Liczba dzieci poniżej 18 lat"
+          "childrenCount": "Liczba dzieci poniżej 18 lat",
+          "childrenCount12To15": "Dzieci w wieku 12-15",
+          "childrenCount16To17": "Dzieci w wieku 16-17"
         }
       },
       "kot": {
@@ -825,7 +829,8 @@
           "hoursPerMonth": "Godziny miesięcznie",
           "costPerHour": "Koszt za godzinę",
           "worksOrStudies": "Czy pracujesz lub się uczysz?",
-          "partnerWorksOrStudies": "Czy Twój partner pracuje lub się uczy?"
+          "partnerWorksOrStudies": "Czy Twój partner pracuje lub się uczy?",
+          "workedMonths": "Miesi?ce przepracowane w tym roku"
         },
         "options": {
           "dagopvang": "Opieka dzienna",
@@ -887,7 +892,7 @@
         "description": "Zajmiemy się wnioskiem, dokumentami i dalszymi krokami."
       },
       "paywall": {
-        "label": "Opłata serwisowa",
+        "label": "Op?ata FinHub",
         "sla": "Szacowany czas 3–6 tygodni"
       },
       "actions": {
@@ -897,6 +902,66 @@
         "processing": "Przetwarzanie...",
         "errorTitle": "Nie mogliśmy kontynuować",
         "error": "Spróbuj ponownie."
+      },
+      "benefit": {
+        "title": "Szacowane ?wiadczenie",
+        "monthlyLabel": "Szacunek miesi?czny",
+        "annualLabel": "Szacunek roczny",
+        "breakdownLabel": "Rozbicie",
+        "assumptionsLabel": "Za?o?enia",
+        "missingInputsLabel": "Brakuj?ce dane",
+        "notAvailableDescription": "Potrzebujemy dodatkowych danych, aby obliczy? ?wiadczenie.",
+        "notEligible": "Nie spe?niasz warunk?w, wi?c brak szacunku ?wiadczenia.",
+        "notEligibleIncome": "Dochody przekraczaj? limit dla tego ?wiadczenia.",
+        "breakdown": {
+          "zorg": {
+            "standardPremium": "Zastosowano sk?adk? standardow? i normatywn?.",
+            "normPremium": "Sk?adka normatywna liczona od progu dochodu.",
+            "income": "Zastosowano doch?d gospodarstwa.",
+            "rounding": "Kwota miesi?czna zaokr?glana w d?? do pe?nych euro."
+          },
+          "huur": {
+            "rekenhuur": "Czynsz ograniczony do limitu kwalifikowanego.",
+            "basishuur": "Odj?to czynsz bazowy przed cz??ciami dop?aty.",
+            "correction": "Zastosowano korekt? dochodow?.",
+            "rounding": "Kwota miesi?czna zaokr?glana w d?? do pe?nych euro."
+          },
+          "kgb": {
+            "maxAmount": "Kwota bazowa zale?y od liczby dzieci.",
+            "ageSupplements": "Dodano dodatki za starsze dzieci.",
+            "incomeReduction": "Zastosowano zmniejszenie za doch?d.",
+            "rounding": "Kwota miesi?czna zaokr?glana w d?? do pe?nych euro."
+          },
+          "kot": {
+            "hourlyCap": "Stawka godzinowa ograniczona do maksimum.",
+            "hoursCap": "Godziny ograniczone do 230 miesi?cznie.",
+            "incomePercent": "Zastosowano procent z progu dochodowego.",
+            "rounding": "Kwota miesi?czna zaokr?glana w d?? do pe?nych euro."
+          }
+        },
+        "assumptions": {
+          "domesticInsurance": "Zak?adamy ubezpieczenie w Holandii.",
+          "noMedebewoners": "Zak?adamy brak dodatkowych domownik?w.",
+          "serviceCostsIgnored": "Koszty serwisu nie s? uwzgl?dniane w 2026.",
+          "childrenInNL": "Zak?adamy, ?e dzieci mieszkaj? w UE/EOG/Szwajcarii (100%)."
+        },
+        "missing": {
+          "incomeApplicant": "Doch?d wnioskodawcy",
+          "incomePartner": "Doch?d partnera",
+          "incomeHousehold": "Doch?d gospodarstwa",
+          "age": "Wiek wnioskodawcy",
+          "rent": "Czynsz miesi?czny",
+          "childrenCount": "Liczba dzieci",
+          "childrenCount12To15": "Dzieci w wieku 12-15",
+          "childrenCount16To17": "Dzieci w wieku 16-17",
+          "workedMonths": "Miesi?ce przepracowane w tym roku",
+          "childcareType": "Rodzaj opieki",
+          "hoursPerMonth": "Godziny opieki na miesi?c",
+          "costPerHour": "Stawka godzinowa opieki",
+          "childDetails": "Szczeg??y dla ka?dego dziecka",
+          "householdSize": "Liczba os?b w gospodarstwie"
+        },
+        "notEligibleChildren": "Brak kwalifikuj?cych si? dzieci dla tego ?wiadczenia."
       }
     },
     "checkout": {
