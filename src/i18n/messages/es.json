@@ -782,8 +782,8 @@
           "livesInRent": "¿Vives en alquiler?",
           "rent": "Alquiler mensual (kale huur)",
           "serviceCosts": "Servicios elegibles",
-          "under21HasChildOrDisability": "Si tienes menos de 21, ?tienes hijo o discapacidad?",
-          "householdSize": "Tama?o del hogar (personas que viven contigo)"
+          "under21HasChildOrDisability": "Si tienes menos de 21, ¿tienes hijo o discapacidad?",
+          "householdSize": "Tamaño del hogar (personas que viven contigo)"
         }
       },
       "zorgtoeslag": {
@@ -832,7 +832,7 @@
           "costPerHour": "Coste por hora",
           "worksOrStudies": "¿Trabajas o estudias?",
           "partnerWorksOrStudies": "¿Tu pareja trabaja o estudia?",
-          "workedMonths": "Meses trabajados este a?o"
+          "workedMonths": "Meses trabajados este año"
         },
         "options": {
           "dagopvang": "Guardería",
@@ -843,8 +843,8 @@
           "title": "Hijo {index}"
         },
         "errors": {
-          "childrenCount": "Introduce un n?mero de hijos v?lido (1-4).",
-          "childcareType": "Selecciona un tipo de guarder?a.",
+          "childrenCount": "Introduce un número de hijos válido (1-4).",
+          "childcareType": "Selecciona un tipo de guardería.",
           "hoursPerMonth": "Introduce las horas por mes.",
           "hourlyRate": "Introduce la tarifa por hora."
         }
@@ -915,49 +915,49 @@
         "error": "Inténtalo de nuevo."
       },
       "benefit": {
-        "title": "Estimaci?n del subsidio",
-        "monthlyLabel": "Estimaci?n mensual",
-        "annualLabel": "Estimaci?n anual",
+        "title": "Estimación del subsidio",
+        "monthlyLabel": "Estimación mensual",
+        "annualLabel": "Estimación anual",
         "breakdownLabel": "Desglose",
         "assumptionsLabel": "Supuestos",
         "missingInputsLabel": "Faltan datos",
-        "notAvailableDescription": "Necesitamos algunos datos m?s para calcular la estimaci?n.",
-        "notEligible": "No eres elegible, por lo que no hay estimaci?n disponible.",
-        "notEligibleIncome": "El ingreso supera el l?mite para este subsidio.",
+        "notAvailableDescription": "Necesitamos algunos datos más para calcular la estimación.",
+        "notEligible": "No eres elegible, por lo que no hay estimación disponible.",
+        "notEligibleIncome": "El ingreso supera el límite para este subsidio.",
         "breakdown": {
           "zorg": {
-            "standardPremium": "Se aplican la prima est?ndar y la prima normativa.",
+            "standardPremium": "Se aplican la prima estándar y la prima normativa.",
             "normPremium": "La prima normativa se calcula con el ingreso umbral.",
             "income": "Se aplica el ingreso del hogar.",
             "rounding": "La cantidad mensual se redondea hacia abajo a euros enteros."
           },
           "huur": {
-            "rekenhuur": "El alquiler se limita al m?ximo elegible.",
+            "rekenhuur": "El alquiler se limita al máximo elegible.",
             "basishuur": "Se descuenta el alquiler base antes de las partes del subsidio.",
-            "correction": "Se aplica la correcci?n por ingresos.",
+            "correction": "Se aplica la corrección por ingresos.",
             "rounding": "La cantidad mensual se redondea hacia abajo a euros enteros."
           },
           "kgb": {
-            "maxAmount": "Importe base seg?n el n?mero de hijos.",
+            "maxAmount": "Importe base según el número de hijos.",
             "ageSupplements": "Se agregan suplementos por edad de los hijos.",
-            "incomeReduction": "Se aplica la reducci?n por ingresos.",
+            "incomeReduction": "Se aplica la reducción por ingresos.",
             "rounding": "La cantidad mensual se redondea hacia abajo a euros enteros."
           },
           "kot": {
-            "hourlyCap": "La tarifa por hora se limita al m?ximo oficial.",
+            "hourlyCap": "La tarifa por hora se limita al máximo oficial.",
             "hoursCap": "Las horas se limitan a 230 por mes.",
             "incomePercent": "Se aplica el porcentaje del tramo de ingresos.",
             "rounding": "La cantidad mensual se redondea hacia abajo a euros enteros."
           }
         },
         "assumptions": {
-          "domesticInsurance": "Supone que est?s asegurado en los Pa?ses Bajos.",
+          "domesticInsurance": "Supone que estás asegurado en los Países Bajos.",
           "noMedebewoners": "Supone que no hay otros miembros del hogar.",
           "serviceCostsIgnored": "Los costes de servicio no se incluyen en 2026.",
           "childrenInNL": "Supone que los hijos viven en la UE/EEE/Suiza (100%).",
           "huur": {
-            "rentCapped": "Para la estimaci?n, la renta se limita al tope de c?lculo 2026.",
-            "serviceCostsExcluded": "Los costes de servicio se excluyen en los c?lculos de 2026.",
+            "rentCapped": "Para la estimación, la renta se limita al tope de cálculo 2026.",
+            "serviceCostsExcluded": "Los costes de servicio se excluyen en los cálculos de 2026.",
             "kaleHuurOnly": "En 2026 solo cuenta la renta base (kale huur)."
           }
         },
@@ -967,15 +967,15 @@
           "incomeHousehold": "Ingreso del hogar",
           "age": "Edad del solicitante",
           "rent": "Alquiler mensual",
-          "childrenCount": "N?mero de hijos",
+          "childrenCount": "Número de hijos",
           "childrenCount12To15": "Hijos de 12 a 15",
           "childrenCount16To17": "Hijos de 16 a 17",
-          "workedMonths": "Meses trabajados este a?o",
-          "childcareType": "Tipo de guarder?a",
-          "hoursPerMonth": "Horas de guarder?a al mes",
-          "costPerHour": "Tarifa por hora de guarder?a",
+          "workedMonths": "Meses trabajados este año",
+          "childcareType": "Tipo de guardería",
+          "hoursPerMonth": "Horas de guardería al mes",
+          "costPerHour": "Tarifa por hora de guardería",
           "childDetails": "Detalles por hijo",
-          "householdSize": "Tama?o del hogar"
+          "householdSize": "Tamaño del hogar"
         },
         "notEligibleChildren": "No hay hijos elegibles para este subsidio.",
         "childLabel": "Hijo {index}"
@@ -995,19 +995,20 @@
       "back": "Volver al resultado",
       "processing": "Redirigiendo...",
       "errorTitle": "Error de pago",
-      "error": "No se pudo iniciar el checkout."
+      "error": "No se pudo iniciar el checkout.",
+      "methods": "Métodos de pago: iDEAL, tarjeta"
     },
     "errors": {
       "tableMissing": "Estamos terminando de configurar las solicitudes de subsidios. Aplica las migraciones o contacta soporte.",
-      "permissionDenied": "No tienes permiso para continuar con esta acci?n.",
-      "authRequired": "Inicia sesi?n para continuar.",
-      "invalidSlug": "Este subsidio no est? disponible.",
+      "permissionDenied": "No tienes permiso para continuar con esta acción.",
+      "authRequired": "Inicia sesión para continuar.",
+      "invalidSlug": "Este subsidio no está disponible.",
       "invalidApplication": "No pudimos encontrar esa solicitud.",
       "missingApplicationId": "No pudimos encontrar el identificador de tu solicitud.",
-      "paymentUnavailable": "Los pagos no est?n disponibles temporalmente. Int?ntalo m?s tarde.",
-      "checkoutFailed": "No pudimos iniciar el pago. Int?ntalo de nuevo.",
-      "network": "Error de red. Revisa tu conexi?n y vuelve a intentar.",
-      "unknown": "Algo sali? mal. Int?ntalo de nuevo."
+      "paymentUnavailable": "Los pagos no están disponibles temporalmente. Inténtalo más tarde.",
+      "checkoutFailed": "No pudimos iniciar el pago. Inténtalo de nuevo.",
+      "network": "Error de red. Revisa tu conexión y vuelve a intentar.",
+      "unknown": "Algo salió mal. Inténtalo de nuevo."
     },
     "applications": {
       "eyebrow": "Subsidios",

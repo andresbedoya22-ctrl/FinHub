@@ -105,6 +105,7 @@ Leaf keys used by Subsidies and related shell UI. Status indicates presence in e
 | subsidies.checkout.cta | present | present | present | present |
 | subsidies.checkout.description | present | present | present | present |
 | subsidies.checkout.errorTitle | present | present | present | present |
+| subsidies.checkout.methods | present | present | present | present |
 | subsidies.checkout.missing.description | present | present | present | present |
 | subsidies.checkout.missing.title | present | present | present | present |
 | subsidies.checkout.priceLabel | present | present | present | present |

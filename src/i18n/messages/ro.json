@@ -103,7 +103,7 @@
     },
     "section": {
       "finances": "Finan⬺e",
-      "subsidies": "Subven?ii",
+      "subsidies": "Subvenții",
       "operations": "Opera⬺iuni",
       "account": "Cont",
       "admin": "Admin"
@@ -111,7 +111,7 @@
     "nav": {
       "overview": "Prezentare general",
       "transactions": "Tranzac⬺ii",
-      "subsidies": "Subven?ii",
+      "subsidies": "Subvenții",
       "documents": "Documente",
       "cases": "Dosare",
       "profile": "Profil",
@@ -139,7 +139,7 @@
       "footerHint": "Sus/Jos: navigheaz - Esc: închide",
       "goToFinances": "Mergi la Finan⬺e",
       "goToTransactions": "Mergi la Tranzac⬺ii",
-      "goToSubsidies": "Mergi la Subven?ii",
+      "goToSubsidies": "Mergi la Subvenții",
       "goToDocuments": "Mergi la Documente",
       "goToCases": "Mergi la Dosare",
       "goToProfile": "Mergi la Profil",
@@ -149,7 +149,7 @@
     "route": {
       "dashboard": "Tablou de bord",
       "finances": "Finan⬺e",
-      "subsidies": "Subven?ii",
+      "subsidies": "Subvenții",
       "transactions": "Tranzac⬺ii",
       "newTransaction": "Tranzac:ie nou",
       "transactionDetail": "Detalii tranzac⬺ie",
@@ -782,8 +782,8 @@
           "livesInRent": "Locuiești cu chirie?",
           "rent": "Chirie lunară (kale huur)",
           "serviceCosts": "Costuri eligibile de servicii",
-          "under21HasChildOrDisability": "Dac? ai sub 21 de ani, ai copil sau dizabilitate?",
-          "householdSize": "Num?r de persoane ?n gospod?rie"
+          "under21HasChildOrDisability": "Dacă ai sub 21 de ani, ai copil sau dizabilitate?",
+          "householdSize": "Număr de persoane în gospodărie"
         }
       },
       "zorgtoeslag": {
@@ -806,8 +806,8 @@
         },
         "fields": {
           "childrenCount": "Numărul de copii sub 18 ani",
-          "childrenCount12To15": "Copii ?ntre 12-15 ani",
-          "childrenCount16To17": "Copii ?ntre 16-17 ani"
+          "childrenCount12To15": "Copii între 12-15 ani",
+          "childrenCount16To17": "Copii între 16-17 ani"
         }
       },
       "kot": {
@@ -832,7 +832,7 @@
           "costPerHour": "Cost pe oră",
           "worksOrStudies": "Lucrezi sau studiezi?",
           "partnerWorksOrStudies": "Partenerul lucrează sau studiază?",
-          "workedMonths": "Lunile lucrate ?n acest an"
+          "workedMonths": "Lunile lucrate în acest an"
         },
         "options": {
           "dagopvang": "Îngrijire de zi",
@@ -843,10 +843,10 @@
           "title": "Copil {index}"
         },
         "errors": {
-          "childrenCount": "Introdu un num?r valid de copii (1-4).",
-          "childcareType": "Selecteaz? tipul de ?ngrijire.",
-          "hoursPerMonth": "Introdu orele pe lun?.",
-          "hourlyRate": "Introdu tariful pe or?."
+          "childrenCount": "Introdu un număr valid de copii (1-4).",
+          "childcareType": "Selectează tipul de îngrijire.",
+          "hoursPerMonth": "Introdu orele pe lună.",
+          "hourlyRate": "Introdu tariful pe oră."
         }
       }
     },
@@ -915,69 +915,69 @@
         "error": "Te rugăm să încerci din nou."
       },
       "benefit": {
-        "title": "Estimare a subven?iei",
-        "monthlyLabel": "Estimare lunar?",
-        "annualLabel": "Estimare anual?",
+        "title": "Estimare a subvenției",
+        "monthlyLabel": "Estimare lunară",
+        "annualLabel": "Estimare anuală",
         "breakdownLabel": "Detaliere",
         "assumptionsLabel": "Presupuneri",
-        "missingInputsLabel": "Date lips?",
+        "missingInputsLabel": "Date lipsă",
         "notAvailableDescription": "Avem nevoie de mai multe detalii pentru calcul.",
-        "notEligible": "Nu e?ti eligibil, deci nu exist? estimare disponibil?.",
-        "notEligibleIncome": "Venitul dep??e?te limita pentru aceast? subven?ie.",
+        "notEligible": "Nu ești eligibil, deci nu există estimare disponibilă.",
+        "notEligibleIncome": "Venitul depășește limita pentru această subvenție.",
         "breakdown": {
           "zorg": {
-            "standardPremium": "Se aplic? prima standard ?i prima normat?.",
-            "normPremium": "Prima normat? calculat? pe baza pragului de venit.",
-            "income": "Se aplic? venitul gospod?riei.",
-            "rounding": "Suma lunar? este rotunjit? ?n jos la euro ?ntregi."
+            "standardPremium": "Se aplică prima standard și prima normată.",
+            "normPremium": "Prima normată calculată pe baza pragului de venit.",
+            "income": "Se aplică venitul gospodăriei.",
+            "rounding": "Suma lunară este rotunjită în jos la euro întregi."
           },
           "huur": {
-            "rekenhuur": "Chiria este plafonat? la limita eligibil?.",
-            "basishuur": "Chiria de baz? este sc?zut? ?nainte de p?r?i.",
-            "correction": "Se aplic? corec?ia ?n func?ie de venit.",
-            "rounding": "Suma lunar? este rotunjit? ?n jos la euro ?ntregi."
+            "rekenhuur": "Chiria este plafonată la limita eligibilă.",
+            "basishuur": "Chiria de bază este scăzută înainte de părți.",
+            "correction": "Se aplică corecția în funcție de venit.",
+            "rounding": "Suma lunară este rotunjită în jos la euro întregi."
           },
           "kgb": {
-            "maxAmount": "Suma de baz? depinde de num?rul de copii.",
-            "ageSupplements": "Se adaug? suplimente pentru v?rsta copiilor.",
-            "incomeReduction": "Se aplic? reducerea ?n func?ie de venit.",
-            "rounding": "Suma lunar? este rotunjit? ?n jos la euro ?ntregi."
+            "maxAmount": "Suma de bază depinde de numărul de copii.",
+            "ageSupplements": "Se adaug suplimente pentru vrsta copiilor.",
+            "incomeReduction": "Se aplică reducerea în funcție de venit.",
+            "rounding": "Suma lunară este rotunjită în jos la euro întregi."
           },
           "kot": {
             "hourlyCap": "Tariful orar este plafonat la maximul oficial.",
-            "hoursCap": "Orele sunt plafonate la 230 pe lun?.",
-            "incomePercent": "Se aplic? procentul pentru tran?a de venit.",
-            "rounding": "Suma lunar? este rotunjit? ?n jos la euro ?ntregi."
+            "hoursCap": "Orele sunt plafonate la 230 pe lună.",
+            "incomePercent": "Se aplică procentul pentru tranșa de venit.",
+            "rounding": "Suma lunară este rotunjită în jos la euro întregi."
           }
         },
         "assumptions": {
-          "domesticInsurance": "Presupune asigurare ?n Olanda.",
-          "noMedebewoners": "Presupune f?r? al?i membri ai gospod?riei.",
-          "serviceCostsIgnored": "Costurile de servicii nu sunt incluse ?n 2026.",
-          "childrenInNL": "Presupune c? copiii locuiesc ?n UE/SEE/Elve?ia (100%).",
+          "domesticInsurance": "Presupune asigurare în Olanda.",
+          "noMedebewoners": "Presupune fără alți membri ai gospodăriei.",
+          "serviceCostsIgnored": "Costurile de servicii nu sunt incluse în 2026.",
+          "childrenInNL": "Presupune că copiii locuiesc în UE/SEE/Elveția (100%).",
           "huur": {
-            "rentCapped": "Pentru estimare, chiria este plafonat? la limita de calcul 2026.",
-            "serviceCostsExcluded": "Costurile de servicii nu sunt incluse ?n calculele din 2026.",
-            "kaleHuurOnly": "?n 2026 se ia ?n calcul doar chiria de baz? (kale huur)."
+            "rentCapped": "Pentru estimare, chiria este plafonată la limita de calcul 2026.",
+            "serviceCostsExcluded": "Costurile de servicii nu sunt incluse în calculele din 2026.",
+            "kaleHuurOnly": "În 2026 se ia în calcul doar chiria de bază (kale huur)."
           }
         },
         "missing": {
           "incomeApplicant": "Venitul solicitantului",
           "incomePartner": "Venitul partenerului",
-          "incomeHousehold": "Venitul gospod?riei",
-          "age": "V?rsta solicitantului",
-          "rent": "Chiria lunar?",
-          "childrenCount": "Num?rul de copii",
-          "childrenCount12To15": "Copii ?ntre 12-15 ani",
-          "childrenCount16To17": "Copii ?ntre 16-17 ani",
-          "workedMonths": "Lunile lucrate ?n acest an",
-          "childcareType": "Tip de ?ngrijire",
-          "hoursPerMonth": "Ore de ?ngrijire pe lun?",
-          "costPerHour": "Tarif orar ?ngrijire",
+          "incomeHousehold": "Venitul gospodăriei",
+          "age": "Vrsta solicitantului",
+          "rent": "Chiria lunară",
+          "childrenCount": "Numărul de copii",
+          "childrenCount12To15": "Copii între 12-15 ani",
+          "childrenCount16To17": "Copii între 16-17 ani",
+          "workedMonths": "Lunile lucrate în acest an",
+          "childcareType": "Tip de îngrijire",
+          "hoursPerMonth": "Ore de îngrijire pe lună",
+          "costPerHour": "Tarif orar îngrijire",
           "childDetails": "Detalii pentru fiecare copil",
-          "householdSize": "Num?r de persoane ?n gospod?rie"
+          "householdSize": "Număr de persoane în gospodărie"
         },
-        "notEligibleChildren": "Nu exist? copii eligibili pentru aceast? subven?ie.",
+        "notEligibleChildren": "Nu există copii eligibili pentru această subvenție.",
         "childLabel": "Copil {index}"
       }
     },
@@ -995,7 +995,8 @@
       "back": "Înapoi la rezultat",
       "processing": "Redirecționare...",
       "errorTitle": "Eroare la plată",
-      "error": "Nu am putut porni plata."
+      "error": "Nu am putut porni plata.",
+      "methods": "Metode de plată: iDEAL, card"
     },
     "applications": {
       "eyebrow": "Subvenții",
@@ -1088,7 +1089,7 @@
       "cancelled": "Anulat"
     },
     "errors": {
-      "tableMissing": "Finaliz?m configurarea cererilor de subven?ii. Aplic? migra?iile sau contacteaz? suportul.",
+      "tableMissing": "Finalizăm configurarea cererilor de subvenții. Aplică migrațiile sau contactează suportul.",
       "permissionDenied": "Nu ai permisiunea de a continua această acțiune.",
       "authRequired": "Autentifică-te pentru a continua.",
       "invalidSlug": "Această subvenție nu este disponibilă.",

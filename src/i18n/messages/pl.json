@@ -139,7 +139,7 @@
       "footerHint": "Góra/Dó: nawiguj - Esc: zamknij",
       "goToFinances": "Przejdź do Finansów",
       "goToTransactions": "Przejdź do Transakcji",
-      "goToSubsidies": "Przejd? do Dop?at",
+      "goToSubsidies": "Przejdź do Dopłat",
       "goToDocuments": "Przejdź do Dokumentów",
       "goToCases": "Przejdź do Spraw",
       "goToProfile": "Przejdź do Profilu",
@@ -149,7 +149,7 @@
     "route": {
       "dashboard": "Pulpit",
       "finances": "Finanse",
-      "subsidies": "Dop?aty",
+      "subsidies": "Dopłaty",
       "transactions": "Transakcje",
       "newTransaction": "Nowa transakcja",
       "transactionDetail": "Szczegóy transakcji",
@@ -785,8 +785,8 @@
           "livesInRent": "Czy wynajmujesz mieszkanie?",
           "rent": "Miesięczny czynsz (kale huur)",
           "serviceCosts": "Kwalifikowane koszty usług",
-          "under21HasChildOrDisability": "Je?li masz mniej ni? 21 lat, czy masz dziecko lub niepe?nosprawno???",
-          "householdSize": "Liczba os?b w gospodarstwie domowym"
+          "under21HasChildOrDisability": "Jeśli masz mniej niż 21 lat, czy masz dziecko lub niepełnosprawność?",
+          "householdSize": "Liczba osób w gospodarstwie domowym"
         }
       },
       "zorgtoeslag": {
@@ -835,7 +835,7 @@
           "costPerHour": "Koszt za godzinę",
           "worksOrStudies": "Czy pracujesz lub się uczysz?",
           "partnerWorksOrStudies": "Czy Twój partner pracuje lub się uczy?",
-          "workedMonths": "Miesi?ce przepracowane w tym roku"
+          "workedMonths": "Miesiące przepracowane w tym roku"
         },
         "options": {
           "dagopvang": "Opieka dzienna",
@@ -846,10 +846,10 @@
           "title": "Dziecko {index}"
         },
         "errors": {
-          "childrenCount": "Podaj poprawn? liczb? dzieci (1-4).",
+          "childrenCount": "Podaj poprawną liczbę dzieci (1-4).",
           "childcareType": "Wybierz rodzaj opieki.",
-          "hoursPerMonth": "Podaj liczb? godzin na miesi?c.",
-          "hourlyRate": "Podaj stawk? za godzin?."
+          "hoursPerMonth": "Podaj liczbę godzin na miesiąc.",
+          "hourlyRate": "Podaj stawkę za godzinę."
         }
       }
     },
@@ -906,7 +906,7 @@
         "description": "Zajmiemy się wnioskiem, dokumentami i dalszymi krokami."
       },
       "paywall": {
-        "label": "Op?ata FinHub",
+        "label": "Opłata FinHub",
         "sla": "Szacowany czas 3–6 tygodni"
       },
       "actions": {
@@ -918,69 +918,69 @@
         "error": "Spróbuj ponownie."
       },
       "benefit": {
-        "title": "Szacowane ?wiadczenie",
-        "monthlyLabel": "Szacunek miesi?czny",
+        "title": "Szacowane świadczenie",
+        "monthlyLabel": "Szacunek miesięczny",
         "annualLabel": "Szacunek roczny",
         "breakdownLabel": "Rozbicie",
-        "assumptionsLabel": "Za?o?enia",
-        "missingInputsLabel": "Brakuj?ce dane",
-        "notAvailableDescription": "Potrzebujemy dodatkowych danych, aby obliczy? ?wiadczenie.",
-        "notEligible": "Nie spe?niasz warunk?w, wi?c brak szacunku ?wiadczenia.",
-        "notEligibleIncome": "Dochody przekraczaj? limit dla tego ?wiadczenia.",
+        "assumptionsLabel": "Założenia",
+        "missingInputsLabel": "Brakujące dane",
+        "notAvailableDescription": "Potrzebujemy dodatkowych danych, aby obliczyć świadczenie.",
+        "notEligible": "Nie spełniasz warunków, więc brak szacunku świadczenia.",
+        "notEligibleIncome": "Dochody przekraczają limit dla tego świadczenia.",
         "breakdown": {
           "zorg": {
-            "standardPremium": "Zastosowano sk?adk? standardow? i normatywn?.",
-            "normPremium": "Sk?adka normatywna liczona od progu dochodu.",
-            "income": "Zastosowano doch?d gospodarstwa.",
-            "rounding": "Kwota miesi?czna zaokr?glana w d?? do pe?nych euro."
+            "standardPremium": "Zastosowano składkę standardową i normatywną.",
+            "normPremium": "Składka normatywna liczona od progu dochodu.",
+            "income": "Zastosowano dochód gospodarstwa.",
+            "rounding": "Kwota miesięczna zaokrąglana w dół do pełnych euro."
           },
           "huur": {
             "rekenhuur": "Czynsz ograniczony do limitu kwalifikowanego.",
-            "basishuur": "Odj?to czynsz bazowy przed cz??ciami dop?aty.",
-            "correction": "Zastosowano korekt? dochodow?.",
-            "rounding": "Kwota miesi?czna zaokr?glana w d?? do pe?nych euro."
+            "basishuur": "Odjęto czynsz bazowy przed częściami dopłaty.",
+            "correction": "Zastosowano korektę dochodową.",
+            "rounding": "Kwota miesięczna zaokrąglana w dół do pełnych euro."
           },
           "kgb": {
-            "maxAmount": "Kwota bazowa zale?y od liczby dzieci.",
+            "maxAmount": "Kwota bazowa zależy od liczby dzieci.",
             "ageSupplements": "Dodano dodatki za starsze dzieci.",
-            "incomeReduction": "Zastosowano zmniejszenie za doch?d.",
-            "rounding": "Kwota miesi?czna zaokr?glana w d?? do pe?nych euro."
+            "incomeReduction": "Zastosowano zmniejszenie za dochód.",
+            "rounding": "Kwota miesięczna zaokrąglana w dół do pełnych euro."
           },
           "kot": {
             "hourlyCap": "Stawka godzinowa ograniczona do maksimum.",
-            "hoursCap": "Godziny ograniczone do 230 miesi?cznie.",
+            "hoursCap": "Godziny ograniczone do 230 miesięcznie.",
             "incomePercent": "Zastosowano procent z progu dochodowego.",
-            "rounding": "Kwota miesi?czna zaokr?glana w d?? do pe?nych euro."
+            "rounding": "Kwota miesięczna zaokrąglana w dół do pełnych euro."
           }
         },
         "assumptions": {
-          "domesticInsurance": "Zak?adamy ubezpieczenie w Holandii.",
-          "noMedebewoners": "Zak?adamy brak dodatkowych domownik?w.",
-          "serviceCostsIgnored": "Koszty serwisu nie s? uwzgl?dniane w 2026.",
-          "childrenInNL": "Zak?adamy, ?e dzieci mieszkaj? w UE/EOG/Szwajcarii (100%).",
+          "domesticInsurance": "Zakładamy ubezpieczenie w Holandii.",
+          "noMedebewoners": "Zakładamy brak dodatkowych domowników.",
+          "serviceCostsIgnored": "Koszty serwisu nie są uwzględniane w 2026.",
+          "childrenInNL": "Zakładamy, że dzieci mieszkają w UE/EOG/Szwajcarii (100%).",
           "huur": {
             "rentCapped": "Dla estymacji czynsz jest ograniczany do limitu obliczeniowego 2026.",
-            "serviceCostsExcluded": "Koszty serwisowe nie s? uwzgl?dniane w obliczeniach 2026.",
-            "kaleHuurOnly": "W 2026 liczy si? tylko czynsz bazowy (kale huur)."
+            "serviceCostsExcluded": "Koszty serwisowe nie są uwzględniane w obliczeniach 2026.",
+            "kaleHuurOnly": "W 2026 liczy się tylko czynsz bazowy (kale huur)."
           }
         },
         "missing": {
-          "incomeApplicant": "Doch?d wnioskodawcy",
-          "incomePartner": "Doch?d partnera",
-          "incomeHousehold": "Doch?d gospodarstwa",
+          "incomeApplicant": "Dochód wnioskodawcy",
+          "incomePartner": "Dochód partnera",
+          "incomeHousehold": "Dochód gospodarstwa",
           "age": "Wiek wnioskodawcy",
-          "rent": "Czynsz miesi?czny",
+          "rent": "Czynsz miesięczny",
           "childrenCount": "Liczba dzieci",
           "childrenCount12To15": "Dzieci w wieku 12-15",
           "childrenCount16To17": "Dzieci w wieku 16-17",
-          "workedMonths": "Miesi?ce przepracowane w tym roku",
+          "workedMonths": "Miesiące przepracowane w tym roku",
           "childcareType": "Rodzaj opieki",
-          "hoursPerMonth": "Godziny opieki na miesi?c",
+          "hoursPerMonth": "Godziny opieki na miesiąc",
           "costPerHour": "Stawka godzinowa opieki",
-          "childDetails": "Szczeg??y dla ka?dego dziecka",
-          "householdSize": "Liczba os?b w gospodarstwie"
+          "childDetails": "Szczegóły dla każdego dziecka",
+          "householdSize": "Liczba osób w gospodarstwie"
         },
-        "notEligibleChildren": "Brak kwalifikuj?cych si? dzieci dla tego ?wiadczenia.",
+        "notEligibleChildren": "Brak kwalifikujących się dzieci dla tego świadczenia.",
         "childLabel": "Dziecko {index}"
       }
     },
@@ -998,7 +998,8 @@
       "back": "Wróć do wyniku",
       "processing": "Przekierowywanie...",
       "errorTitle": "Błąd płatności",
-      "error": "Nie udało się rozpocząć płatności."
+      "error": "Nie udało się rozpocząć płatności.",
+      "methods": "Metody płatności: iDEAL, karta"
     },
     "applications": {
       "eyebrow": "Dopłaty",
@@ -1091,7 +1092,7 @@
       "cancelled": "Anulowano"
     },
     "errors": {
-      "tableMissing": "Ko?czymy konfiguracj? wniosk?w o dop?aty. Zastosuj migracje lub skontaktuj si? z pomoc?.",
+      "tableMissing": "Kończymy konfigurację wniosków o dopłaty. Zastosuj migracje lub skontaktuj się z pomocą.",
       "permissionDenied": "Nie masz uprawnień do wykonania tej akcji.",
       "authRequired": "Zaloguj się, aby kontynuować.",
       "invalidSlug": "Ten dodatek nie jest dostępny.",

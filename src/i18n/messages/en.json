@@ -995,7 +995,8 @@
       "back": "Back to result",
       "processing": "Redirecting...",
       "errorTitle": "Checkout error",
-      "error": "Could not start checkout."
+      "error": "Could not start checkout.",
+      "methods": "Payment methods: iDEAL, card"
     },
     "errors": {
       "tableMissing": "We are finishing the setup for subsidy applications. Apply the migrations or contact support.",
