@@ -139,7 +139,7 @@
       "footerHint": "Góra/Dó: nawiguj - Esc: zamknij",
       "goToFinances": "Przejdź do Finansów",
       "goToTransactions": "Przejdź do Transakcji",
-      "goToSubsidies": "Przejd§ do Dop'at",
+      "goToSubsidies": "Przejd? do Dop?at",
       "goToDocuments": "Przejdź do Dokumentów",
       "goToCases": "Przejdź do Spraw",
       "goToProfile": "Przejdź do Profilu",
@@ -149,7 +149,7 @@
     "route": {
       "dashboard": "Pulpit",
       "finances": "Finanse",
-      "subsidies": "Dop'aty",
+      "subsidies": "Dop?aty",
       "transactions": "Transakcje",
       "newTransaction": "Nowa transakcja",
       "transactionDetail": "Szczegóy transakcji",
@@ -186,7 +186,7 @@
       "nav": {
         "title": "Nawigacja",
         "finances": "Finanse",
-        "subsidies": "Dop'aty",
+        "subsidies": "Dop?aty",
         "cases": "Sprawy",
         "documents": "Dokumenty",
         "profile": "Profil",
@@ -257,7 +257,7 @@
     "transactions": {
       "breadcrumbs": {
         "finances": "Finanse",
-        "subsidies": "Dop'aty",
+        "subsidies": "Dop?aty",
         "transactions": "Transakcje"
       },
       "title": "Transakcje",
@@ -399,7 +399,7 @@
     "newTransaction": {
       "breadcrumbs": {
         "finances": "Finanse",
-        "subsidies": "Dop'aty",
+        "subsidies": "Dop?aty",
         "transactions": "Transakcje",
         "new": "Nowa"
       },

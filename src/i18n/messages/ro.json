@@ -103,7 +103,7 @@
     },
     "section": {
       "finances": "Finan⬺e",
-      "subsidies": "Subven>ii",
+      "subsidies": "Subven?ii",
       "operations": "Opera⬺iuni",
       "account": "Cont",
       "admin": "Admin"
@@ -111,7 +111,7 @@
     "nav": {
       "overview": "Prezentare general",
       "transactions": "Tranzac⬺ii",
-      "subsidies": "Subven>ii",
+      "subsidies": "Subven?ii",
       "documents": "Documente",
       "cases": "Dosare",
       "profile": "Profil",
@@ -139,7 +139,7 @@
       "footerHint": "Sus/Jos: navigheaz - Esc: închide",
       "goToFinances": "Mergi la Finan⬺e",
       "goToTransactions": "Mergi la Tranzac⬺ii",
-      "goToSubsidies": "Mergi la Subven>ii",
+      "goToSubsidies": "Mergi la Subven?ii",
       "goToDocuments": "Mergi la Documente",
       "goToCases": "Mergi la Dosare",
       "goToProfile": "Mergi la Profil",
@@ -149,7 +149,7 @@
     "route": {
       "dashboard": "Tablou de bord",
       "finances": "Finan⬺e",
-      "subsidies": "Subven>ii",
+      "subsidies": "Subven?ii",
       "transactions": "Tranzac⬺ii",
       "newTransaction": "Tranzac:ie nou",
       "transactionDetail": "Detalii tranzac⬺ie",
