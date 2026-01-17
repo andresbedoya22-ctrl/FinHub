@@ -79,6 +79,7 @@ export default function SubsidyWizardClient({ slug }: { slug: string }) {
   const subsidySlug = slug as SubsidySlug;
   const initialStepIndex = useMemo(() => getPersistedStepIndex(subsidySlug), [subsidySlug]);
   const [stepIndex, setStepIndex] = useState(initialStepIndex);
+  // Step navigation is controlled by stepIndex; next/back are pure.
   const totalSteps = steps.length;
   const clampedStepIndex = totalSteps > 0 ? Math.min(Math.max(stepIndex, 0), totalSteps - 1) : 0;
   const activeStep = totalSteps > 0 ? steps[clampedStepIndex] : undefined;
@@ -245,20 +246,22 @@ export default function SubsidyWizardClient({ slug }: { slug: string }) {
 
               if (field.type === "toggle") {
                 return (
-                  <ToggleGroup
-                    key={field.id}
-                    label={t(field.labelKey)}
-                    value={fieldValue || undefined}
-                    options={(field.options ?? []).map((o) => ({
-                      ...o,
-                      label: t(o.labelKey),
-                      description: o.descriptionKey ? t(o.descriptionKey) : undefined,
-                    }))}
-                    onValueChange={(value) => {
-                      setFieldValue(field, value);
-                      setErrors((prev) => ({ ...prev, [field.id]: "" }));
-                    }}
-                  />
+                  <div key={field.id} className="space-y-1">
+                    <ToggleGroup
+                      label={t(field.labelKey)}
+                      value={fieldValue || undefined}
+                      options={(field.options ?? []).map((o) => ({
+                        ...o,
+                        label: t(o.labelKey),
+                        description: o.descriptionKey ? t(o.descriptionKey) : undefined,
+                      }))}
+                      onValueChange={(value) => {
+                        setFieldValue(field, value);
+                        setErrors((prev) => ({ ...prev, [field.id]: "" }));
+                      }}
+                    />
+                    {error ? <div className="text-xs text-red-300">{error}</div> : null}
+                  </div>
                 );
               }
 
