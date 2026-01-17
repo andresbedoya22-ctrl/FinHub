@@ -27,8 +27,6 @@ export default function SubsidiesHomeClient() {
             badgeLabel={t("home.badge")}
             coverageLabel={t("home.labels.coverage")}
             coverageValue={t(subsidy.catalog.coverageKey)}
-            audienceLabel={t("home.labels.audience")}
-            audienceValue={t(subsidy.catalog.audienceKey)}
             timelineLabel={t("home.labels.timeline")}
             timelineValue={t(subsidy.catalog.timelineKey)}
             ctaLabel={t("home.cta.viewDetails")}

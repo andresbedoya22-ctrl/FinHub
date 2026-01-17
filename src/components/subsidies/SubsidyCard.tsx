@@ -28,8 +28,8 @@ export function SubsidyCard({
   badgeLabel: string;
   coverageLabel: string;
   coverageValue: string;
-  audienceLabel: string;
-  audienceValue: string;
+  audienceLabel?: string;
+  audienceValue?: string;
   timelineLabel: string;
   timelineValue: string;
   ctaLabel: string;
@@ -47,7 +47,7 @@ export function SubsidyCard({
 
   if (variant === "compact") {
     return (
-      <Card className="flex h-full min-h-[170px] flex-col gap-3 bg-gradient-to-br from-fh-surface via-fh-surface to-fh-surface-2">
+      <Card className="flex h-full min-h-[150px] flex-col gap-3 bg-gradient-to-br from-fh-surface via-fh-surface to-fh-surface-2">
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-center gap-3">
             <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-fh-primary/15">
@@ -58,9 +58,6 @@ export function SubsidyCard({
               <div className="text-xs text-fh-muted line-clamp-1">{description}</div>
             </div>
           </div>
-          <Badge variant="neutral" className="px-2 py-0.5 text-[10px] uppercase">
-            {badgeLabel}
-          </Badge>
         </div>
 
         <div className="flex flex-wrap gap-2">
@@ -69,8 +66,8 @@ export function SubsidyCard({
             <span className="ml-2 text-fh-text">{coverageValue}</span>
           </div>
           <div className="rounded-full border border-fh-border/70 bg-fh-surface-2 px-3 py-1 text-xs">
-            <span className="text-[10px] uppercase text-fh-muted">{audienceLabel}</span>
-            <span className="ml-2 text-fh-text">{audienceValue}</span>
+            <span className="text-[10px] uppercase text-fh-muted">{timelineLabel}</span>
+            <span className="ml-2 text-fh-text">{timelineValue}</span>
           </div>
         </div>
 
@@ -109,10 +106,12 @@ export function SubsidyCard({
           <div className="text-[11px] uppercase text-fh-muted">{coverageLabel}</div>
           <div className="text-sm font-medium text-fh-text">{coverageValue}</div>
         </div>
-        <div className="rounded-xl border border-fh-border/70 bg-fh-surface-2 px-3 py-2 text-sm">
-          <div className="text-[11px] uppercase text-fh-muted">{audienceLabel}</div>
-          <div className="text-sm font-medium text-fh-text">{audienceValue}</div>
-        </div>
+        {audienceLabel && audienceValue ? (
+          <div className="rounded-xl border border-fh-border/70 bg-fh-surface-2 px-3 py-2 text-sm">
+            <div className="text-[11px] uppercase text-fh-muted">{audienceLabel}</div>
+            <div className="text-sm font-medium text-fh-text">{audienceValue}</div>
+          </div>
+        ) : null}
         {primaryMetric ? (
           <div className="rounded-xl border border-fh-border/70 bg-fh-surface-2 px-3 py-2 text-sm">
             <div className="text-[11px] uppercase text-fh-muted">{primaryMetric.label}</div>
