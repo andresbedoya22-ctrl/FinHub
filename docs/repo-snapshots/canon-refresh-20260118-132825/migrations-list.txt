@@ -1,0 +1,35 @@
+﻿
+Name                                                                Length
+----                                                                ------
+20251222194856_expand_case_step_keys.sql                                 0
+20251222195258_expand_case_step_keys_v2.sql                            400
+20251222210000_schema_v1.sql                                          4162
+20251222210010_rls_v1.sql                                             4426
+20251222210144_admin_roles_and_policies.sql                           1400
+20251222210317_seed_admin_role.sql                                     545
+20251223214703_add_notes_to_documents.sql                               67
+20251223215020_add_status_to_documents.sql                             244
+20251223215300_align_documents_columns.sql                             598
+20251223215816_align_documents_schema.sql                             1429
+20251223220143_documents_storage_path_nullable.sql                     275
+20251226113642_align_documents_contract.sql                           1969
+20251226113916_storage_vault_bucket_and_policies.sql                  1601
+20251226114843_documents_status_check_fix.sql                          546
+20251226133000_payments_stripe_unique_indexes.sql                      476
+20251226174819_sync_step_key_constraints.sql                           762
+20251226183045_enforce_paid_to_access_locked_steps.sql                2062
+20251226210000_fix_documents_status_check.sql                         1264
+20251226220000_documents_ocr_v1.sql                                   7708
+20251227130000_fix_documents_type_remove_machtigingsregistratie.sql    685
+20251227141000_add_documents_ocr_kind.sql                              523
+20251227200908_documents_type_allow_machtigingsregistratie.sql         517
+20251227202547_documents_rls_drop_admin_policy.sql                     531
+20251231221500_marketing_leads_v1.sql                                 1662
+20260102145406_marketing_leads_v2.sql                                 1392
+20260110123957_finance_core_v1.sql                                    4649
+20260110124002_finance_core_rls_v1.sql                                5006
+20260113101000_subsidies_v1.sql                                       7532
+20260113102000_storage_subsidies_bucket.sql                           1391
+
+
+
