@@ -1,0 +1,543 @@
+﻿Listado de rutas de carpetas
+El n·mero de serie del volumen es FE82-DFA6
+C:\USERS\USER\FINHUB\FINHUB-WEB\SRC
+|   instrumentation-client.ts
+|   instrumentation.ts
+|   proxy.ts
+|   
++---app
+|   |   global-error.tsx
+|   |   layout.tsx
+|   |   layout.tsx.bak.20260101-165307
+|   |   layout.tsx.bak.20260101-165635
+|   |   layout.tsx.bak.20260101-165904
+|   |   page.tsx
+|   |   robots.ts
+|   |   sitemap.ts
+|   |   
+|   +---(auth)
+|   |   +---callback
+|   |   |       route.ts
+|   |   |       
+|   |   +---forgot-password
+|   |   |   |   page.tsx
+|   |   |   |   
+|   |   |   \---ui
+|   |   |           ForgotPasswordClient.tsx
+|   |   |           
+|   |   +---login
+|   |   |   |   page.tsx
+|   |   |   |   
+|   |   |   \---ui
+|   |   |           LoginClient.tsx
+|   |   |           
+|   |   +---register
+|   |   |   |   page.tsx
+|   |   |   |   
+|   |   |   \---ui
+|   |   |           RegisterClient.tsx
+|   |   |           
+|   |   \---reset-password
+|   |       |   page.tsx
+|   |       |   
+|   |       \---ui
+|   |               ResetPasswordClient.tsx
+|   |               
+|   +---(dashboard)
+|   |   |   layout.tsx
+|   |   |   
+|   |   +---app
+|   |   |   |   layout.tsx
+|   |   |   |   page.tsx
+|   |   |   |   providers.tsx
+|   |   |   |   
+|   |   |   +---admin
+|   |   |   |   |   layout.tsx
+|   |   |   |   |   page.tsx
+|   |   |   |   |   
+|   |   |   |   +---cases
+|   |   |   |   |       page.tsx
+|   |   |   |   |       
+|   |   |   |   +---documents
+|   |   |   |   |       page.tsx
+|   |   |   |   |       
+|   |   |   |   +---subsidies
+|   |   |   |   |   |   actions.ts
+|   |   |   |   |   |   page.tsx
+|   |   |   |   |   |   
+|   |   |   |   |   \---ui
+|   |   |   |   |           AdminSubsidiesClient.tsx
+|   |   |   |   |           
+|   |   |   |   \---users
+|   |   |   |           page.tsx
+|   |   |   |           
+|   |   |   +---cases
+|   |   |   |   |   page.tsx
+|   |   |   |   |   
+|   |   |   |   +---new
+|   |   |   |   |   |   page.tsx
+|   |   |   |   |   |   
+|   |   |   |   |   \---ui
+|   |   |   |   |           NewCaseClient.tsx
+|   |   |   |   |           
+|   |   |   |   +---ui
+|   |   |   |   |       CasesListClient.tsx
+|   |   |   |   |       
+|   |   |   |   \---[id]
+|   |   |   |       |   page.tsx
+|   |   |   |       |   
+|   |   |   |       +---ui
+|   |   |   |       |       CaseOverviewClient.tsx
+|   |   |   |       |       
+|   |   |   |       \---[stepKey]
+|   |   |   |           |   page.tsx
+|   |   |   |           |   
+|   |   |   |           \---ui
+|   |   |   |                   StepClient.tsx
+|   |   |   |                   
+|   |   |   +---documents
+|   |   |   |   |   page.tsx
+|   |   |   |   |   
+|   |   |   |   +---ocr-review
+|   |   |   |   |   |   page.tsx
+|   |   |   |   |   |   
+|   |   |   |   |   +---ui
+|   |   |   |   |   |       OcrReviewListClient.tsx
+|   |   |   |   |   |       
+|   |   |   |   |   \---[id]
+|   |   |   |   |       |   page.tsx
+|   |   |   |   |       |   
+|   |   |   |   |       \---ui
+|   |   |   |   |               OcrReviewDetailClient.tsx
+|   |   |   |   |               
+|   |   |   |   \---ui
+|   |   |   |           DocumentsClient.tsx
+|   |   |   |           
+|   |   |   +---finances
+|   |   |   |   |   FinancesBurndownChart.tsx
+|   |   |   |   |   FinancesOverviewClient.tsx
+|   |   |   |   |   page.tsx
+|   |   |   |   |   
+|   |   |   |   \---transactions
+|   |   |   |       |   page.tsx
+|   |   |   |       |   
+|   |   |   |       +---new
+|   |   |   |       |   |   page.tsx
+|   |   |   |       |   |   
+|   |   |   |       |   \---ui
+|   |   |   |       |           NewTransactionClient.tsx
+|   |   |   |       |           
+|   |   |   |       +---ui
+|   |   |   |       |       TransactionsListClient.tsx
+|   |   |   |       |       
+|   |   |   |       \---[id]
+|   |   |   |           |   page.tsx
+|   |   |   |           |   
+|   |   |   |           \---ui
+|   |   |   |                   TransactionDetailClient.tsx
+|   |   |   |                   
+|   |   |   +---profile
+|   |   |   |   |   page.tsx
+|   |   |   |   |   
+|   |   |   |   +---ui
+|   |   |   |   |       ProfileClient.tsx
+|   |   |   |   |       
+|   |   |   |   \---whoami
+|   |   |   |           page.tsx
+|   |   |   |           
+|   |   |   +---subsidies
+|   |   |   |   |   actions.ts
+|   |   |   |   |   page.tsx
+|   |   |   |   |   
+|   |   |   |   +---applications
+|   |   |   |   |   |   page.tsx
+|   |   |   |   |   |   
+|   |   |   |   |   +---ui
+|   |   |   |   |   |       SubsidyApplicationsClient.tsx
+|   |   |   |   |   |       
+|   |   |   |   |   \---[id]
+|   |   |   |   |       |   page.tsx
+|   |   |   |   |       |   
+|   |   |   |   |       \---ui
+|   |   |   |   |               SubsidyApplicationDetailClient.tsx
+|   |   |   |   |               
+|   |   |   |   +---ui
+|   |   |   |   |       SubsidiesHomeClient.tsx
+|   |   |   |   |       
+|   |   |   |   \---[slug]
+|   |   |   |       |   page.tsx
+|   |   |   |       |   
+|   |   |   |       +---checkout
+|   |   |   |       |   |   page.tsx
+|   |   |   |       |   |   
+|   |   |   |       |   \---ui
+|   |   |   |       |           SubsidyCheckoutClient.tsx
+|   |   |   |       |           
+|   |   |   |       +---result
+|   |   |   |       |   |   page.tsx
+|   |   |   |       |   |   
+|   |   |   |       |   \---ui
+|   |   |   |       |           SubsidyResultClient.tsx
+|   |   |   |       |           
+|   |   |   |       +---ui
+|   |   |   |       |       SubsidyDetailClient.tsx
+|   |   |   |       |       
+|   |   |   |       \---wizard
+|   |   |   |           |   page.tsx
+|   |   |   |           |   
+|   |   |   |           \---ui
+|   |   |   |                   SubsidyWizardClient.tsx
+|   |   |   |                   
+|   |   |   \---ui-kit
+|   |   |           page.tsx
+|   |   |           
+|   |   \---ui
+|   |           CommandPalette.tsx
+|   |           dashboardNav.ts
+|   |           dashboardRouteMeta.ts
+|   |           DashboardShell.tsx
+|   |           
+|   +---(marketing)
+|   |   +---landing
+|   |   |   |   opengraph-image.tsx
+|   |   |   |   page.tsx
+|   |   |   |   twitter-image.tsx
+|   |   |   |   
+|   |   |   \---ui
+|   |   |           HeroIllustration.tsx
+|   |   |           HubDiagram.tsx
+|   |   |           LandingCard.tsx
+|   |   |           LandingLeadForm.tsx
+|   |   |           LandingTelemetry.tsx
+|   |   |           
+|   |   +---privacy
+|   |   |       page.tsx
+|   |   |       
+|   |   \---terms
+|   |           page.tsx
+|   |           
+|   \---api
+|       +---admin
+|       |   \---documents
+|       |       \---signed-url
+|       |               route.ts
+|       |               
+|       +---assistant
+|       |   \---chat
+|       |           route.ts
+|       |           
+|       +---auth
+|       |   +---forgot-password
+|       |   |       route.ts
+|       |   |       
+|       |   +---login
+|       |   |       route.ts
+|       |   |       
+|       |   +---logout
+|       |   |       route.ts
+|       |   |       
+|       |   +---oauth
+|       |   |   \---start
+|       |   |           route.ts
+|       |   |           
+|       |   +---register
+|       |   |       route.ts
+|       |   |       
+|       |   +---resend-verification
+|       |   |       route.ts
+|       |   |       
+|       |   \---reset-password
+|       |           route.ts
+|       |           
+|       +---debug
+|       |   +---admin
+|       |   |       route.ts
+|       |   |       
+|       |   +---cookies
+|       |   |       route.ts
+|       |   |       
+|       |   +---documents
+|       |   |       route.ts
+|       |   |       
+|       |   \---i18n
+|       |           route.ts
+|       |           
+|       +---documents
+|       |   |   route.ts
+|       |   |   
+|       |   +---my
+|       |   |       route.ts
+|       |   |       
+|       |   \---[id]
+|       |       |   route.ts
+|       |       |   
+|       |       +---extraction
+|       |       |       route.ts
+|       |       |       
+|       |       +---ocr
+|       |       |       route.ts
+|       |       |       
+|       |       +---verify
+|       |       |       route.ts
+|       |       |       
+|       |       \---_shared
+|       |               ocrGuard.ts
+|       |               
+|       +---finances
+|       |   +---bootstrap
+|       |   |       route.ts
+|       |   |       
+|       |   +---ledger
+|       |   |   |   route.ts
+|       |   |   |   
+|       |   |   \---seed
+|       |   |           route.ts
+|       |   |           
+|       |   +---receipt-links
+|       |   |       route.ts
+|       |   |       
+|       |   \---transactions
+|       |       |   route.ts
+|       |       |   
+|       |       \---[id]
+|       |           |   route.ts
+|       |           |   
+|       |           \---splits
+|       |                   route.ts
+|       |                   
+|       +---i18n
+|       |   \---locale
+|       |           route.ts
+|       |           
+|       +---marketing
+|       |   \---leads
+|       |           route.ts
+|       |           
+|       +---payments
+|       |   +---checkout
+|       |   |       route.ts
+|       |   |       
+|       |   \---status
+|       |           route.ts
+|       |           
+|       +---profile
+|       |   +---delete
+|       |   |       route.ts
+|       |   |       
+|       |   \---export
+|       |           route.ts
+|       |           
+|       +---stripe
+|       |   \---webhook
+|       |           route.ts
+|       |           
+|       \---subsidies
+|           \---checkout
+|                   route.ts
+|                   
++---components
+|   \---subsidies
+|           SubsidyCard.tsx
+|           SubsidyHero.tsx
+|           SubsidyIcon.tsx
+|           SubsidyTimeline.tsx
+|           
++---config
+|       env.ts
+|       
++---domain
+|   \---subsidies
+|       |   eligibilityEngine.ts
+|       |   engine.ts
+|       |   errorMapper.ts
+|       |   policy.ts
+|       |   policy_2026.json
+|       |   registry.ts
+|       |   types.ts
+|       |   wizardSchemas.ts
+|       |   wizardStore.ts
+|       |   
+|       \---calculators
+|           |   helpers.ts
+|           |   huurtoeslag2026.ts
+|           |   index.ts
+|           |   kgb2026.ts
+|           |   kot2026.ts
+|           |   types.ts
+|           |   zorgtoeslag2026.ts
+|           |   
+|           +---params
+|           |       2026.ts
+|           |       index.ts
+|           |       
+|           \---__tests__
+|                   huurtoeslag2026.test.ts
+|                   kgb2026.test.ts
+|                   kot2026.test.ts
+|                   zorgtoeslag2026.test.ts
+|                   
++---features
+|   |   README.md
+|   |   
+|   +---ai
+|   |   \---llm
+|   |           getLlmProvider.ts
+|   |           llmProvider.ts
+|   |           mockLlmProvider.test.ts
+|   |           mockLlmProvider.ts
+|   |           openaiLlmProvider.ts
+|   |           
+|   +---assistant
+|   |   \---finny
+|   |       |   faqRegistry.ts
+|   |       |   finnyApiClient.ts
+|   |       |   finnyPrompt.ts
+|   |       |   
+|   |       \---ui
+|   |               FinnyWidget.tsx
+|   |               
+|   +---auth
+|   |       authErrors.ts
+|   |       origin.ts
+|   |       roleClient.ts
+|   |       safeRedirect.ts
+|   |       
+|   +---cases
+|   |       casesClient.ts
+|   |       casesConfig.ts
+|   |       casesStorage.ts
+|   |       casesStore.ts
+|   |       caseStepDataClient.ts
+|   |       casesTypes.ts
+|   |       steps.ts
+|   |       
+|   +---documents
+|   |   |   documentOcrRegistry.test.ts
+|   |   |   documentOcrRegistry.ts
+|   |   |   documentsClient.ts
+|   |   |   documentsStore.tsx
+|   |   |   documentsTypes.ts
+|   |   |   machtigingsregistratieSchema.test.ts
+|   |   |   machtigingsregistratieSchema.ts
+|   |   |   ocrApiClient.ts
+|   |   |   
+|   |   +---document-schemas
+|   |   |       machtigingsregistratie.v1.ts
+|   |   |       registry.test.ts
+|   |   |       registry.ts
+|   |   |       
+|   |   \---ocr
+|   |       |   getOcrTextProvider.ts
+|   |       |   machtigingsregistratieTextParser.ts
+|   |       |   README.md
+|   |       |   
+|   |       \---providers
+|   |               azureDocumentIntelligenceOcrTextProvider.ts
+|   |               mockOcrTextProvider.ts
+|   |               ocrTextProvider.ts
+|   |               
+|   +---finances
+|   |   |   financesBootstrapApi.ts
+|   |   |   financesBootstrapStore.ts
+|   |   |   financesClient.ts
+|   |   |   financesConfig.ts
+|   |   |   financesCsv.ts
+|   |   |   financesFormat.ts
+|   |   |   financesLedgerApi.ts
+|   |   |   financesLedgerStore.ts
+|   |   |   financesSelectors.ts
+|   |   |   financesShortcuts.ts
+|   |   |   financesStore.ts
+|   |   |   financesTypes.ts
+|   |   |   
+|   |   \---ui
+|   |           BurndownChart.tsx
+|   |           CategoryDrawer.tsx
+|   |           CategoryGrid.tsx
+|   |           mockData.ts
+|   |           SafeToSpendCard.tsx
+|   |           TransactionsInboxTable.tsx
+|   |           
+|   +---i18n
+|   |       lang.ts
+|   |       
+|   +---marketing
+|   |       leadsClient.ts
+|   |       leadsStore.ts
+|   |       leadsTypes.ts
+|   |       
+|   +---observability
+|   |       productTelemetry.ts
+|   |       
+|   \---payments
+|           usePaymentStatus.ts
+|           
++---i18n
+|   |   config.ts
+|   |   getLocale.ts
+|   |   getMessages.ts
+|   |   I18nProvider.tsx
+|   |   I18nProvider.tsx.bak.20260101-165306
+|   |   I18nProvider.tsx.bak.20260101-165635
+|   |   request.ts
+|   |   request.ts.bak.20260101-165307
+|   |   request.ts.bak.20260101-165635
+|   |   
+|   \---messages
+|           en.json
+|           es.json
+|           pl.json
+|           ro.json
+|           
++---lib
+|   |   supabaseAdminClient.ts
+|   |   supabaseBrowserClient.ts
+|   |   supabaseServerClient.ts
+|   |   
+|   +---db
+|   |   \---subsidies
+|   |           adminClient.ts
+|   |           client.ts
+|   |           policy.ts
+|   |           
+|   \---supabase
+|           browser.ts
+|           middleware.ts
+|           routeClient.ts
+|           
++---request-guards
+|       index.ts
+|       rateLimit.ts
+|       
++---styles
+|       globals.css
+|       
++---ui
+|   |   cn.ts
+|   |   
+|   +---components
+|   |       AppShell.tsx
+|   |       Badge.tsx
+|   |       Button.tsx
+|   |       Card.tsx
+|   |       CommandPalette.tsx
+|   |       Header.tsx
+|   |       InfoBox.tsx
+|   |       Input.tsx
+|   |       LanguageSwitcher.tsx
+|   |       Screen.tsx
+|   |       Stepper.tsx
+|   |       ToggleGroup.tsx
+|   |       
+|   \---lib
+|       |   formatCurrency.ts
+|       |   
+|       \---__tests__
+|               formatCurrency.test.ts
+|               
+\---__tests__
+        ocrGuard.test.ts
+        productTelemetry.test.ts
+        smoke.test.ts
+        
+

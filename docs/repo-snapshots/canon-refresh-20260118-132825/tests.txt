@@ -1,0 +1,13 @@
+﻿C:\Users\User\FinHub\finhub-web\src\__tests__\ocrGuard.test.ts
+C:\Users\User\FinHub\finhub-web\src\__tests__\productTelemetry.test.ts
+C:\Users\User\FinHub\finhub-web\src\__tests__\smoke.test.ts
+C:\Users\User\FinHub\finhub-web\src\domain\subsidies\calculators\__tests__\huurtoeslag2026.test.ts
+C:\Users\User\FinHub\finhub-web\src\domain\subsidies\calculators\__tests__\kgb2026.test.ts
+C:\Users\User\FinHub\finhub-web\src\domain\subsidies\calculators\__tests__\kot2026.test.ts
+C:\Users\User\FinHub\finhub-web\src\domain\subsidies\calculators\__tests__\zorgtoeslag2026.test.ts
+C:\Users\User\FinHub\finhub-web\src\features\ai\llm\mockLlmProvider.test.ts
+C:\Users\User\FinHub\finhub-web\src\features\documents\documentOcrRegistry.test.ts
+C:\Users\User\FinHub\finhub-web\src\features\documents\document-schemas\registry.test.ts
+C:\Users\User\FinHub\finhub-web\src\features\documents\machtigingsregistratieSchema.test.ts
+C:\Users\User\FinHub\finhub-web\src\ui\lib\__tests__\formatCurrency.test.ts
+

@@ -1,0 +1,1794 @@
+﻿
+==== PATTERN: supabase ====
+
+
+src\config\env.ts:2:  | "NEXT_PUBLIC_SUPABASE_URL"
+src\config\env.ts:3:  | "NEXT_PUBLIC_SUPABASE_ANON_KEY"
+src\config\env.ts:4:  | "SUPABASE_SERVICE_ROLE_KEY"
+src\config\env.ts:14: * Supabase server-side usage (service role).
+src\config\env.ts:15: * WARNING: SUPABASE_SERVICE_ROLE_KEY must never be used on the client.
+src\config\env.ts:17:export function assertSupabaseServerEnv() {
+src\config\env.ts:19:    "NEXT_PUBLIC_SUPABASE_URL",
+src\config\env.ts:20:    "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+src\config\env.ts:21:    "SUPABASE_SERVICE_ROLE_KEY",
+src\config\env.ts:26:      `Missing required Supabase env vars: ${missing.join(", ")}. Check .env.local / deployment config.`
+src\config\env.ts:61:  NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL!,
+src\config\env.ts:62:  NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+src\config\env.ts:63:  SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY!,
+docs\architecture\system-map.md:17:- Supabase (clients server/admin/browser)
+docs\architecture\system-map.md:24:- RLS / aislamiento multi-tenant (confirmar en supabase/migrations)
+docs\architecture\data-map.md:4:- Revisar supabase/migrations y schema para listar tablas reales.
+src\__tests__\ocrGuard.test.ts:4:type SupabaseErr = { message: string };
+src\__tests__\ocrGuard.test.ts:6:function makeSupabase(args: {
+src\__tests__\ocrGuard.test.ts:8:  docErr?: SupabaseErr | null;
+src\__tests__\ocrGuard.test.ts:20:        return { error: null as SupabaseErr | null };
+src\__tests__\ocrGuard.test.ts:28:    const supabase = makeSupabase({ doc: null, docErr: { message: "boom" } });
+src\__tests__\ocrGuard.test.ts:30:      supabase,
+src\__tests__\ocrGuard.test.ts:42:    const supabase = makeSupabase({ doc: null });
+src\__tests__\ocrGuard.test.ts:44:      supabase,
+src\__tests__\ocrGuard.test.ts:56:    const supabase = makeSupabase({ doc: { id: "d1", user_id: "u2", ocr_kind: "machtigingsregistratie" } });
+src\__tests__\ocrGuard.test.ts:58:      supabase,
+src\__tests__\ocrGuard.test.ts:71:    const supabase = makeSupabase({
+src\__tests__\ocrGuard.test.ts:77:      supabase,
+src\__tests__\ocrGuard.test.ts:91:    const supabase = makeSupabase({ doc: { id: "d1", user_id: "u1", ocr_kind: "machtigingsregistratie" } });
+src\__tests__\ocrGuard.test.ts:93:      supabase,
+docs\subsidies-applications-db.md:6:- `supabase/migrations/20260113101000_subsidies_v1.sql`
+docs\subsidies-applications-db.md:9:- `supabase/migrations/20260113102000_storage_subsidies_bucket.sql`
+docs\subsidies-applications-db.md:13:1. `supabase db reset`
+docs\subsidies-applications-db.md:14:   - or `supabase migration up` if you want to preserve data.
+docs\subsidies-applications-db.md:15:2. Restart the local Supabase stack to refresh the schema cache.
+docs\subsidies-applications-db.md:16:3. (Optional) Regenerate types if you use them: `supabase gen types typescript --local > src/types/supabase.ts`.
+docs\subsidies-applications-db.md:18:## Apply in hosted Supabase
+docs\subsidies-applications-db.md:21:   - Supabase Dashboard ÔåÆ Settings ÔåÆ API ÔåÆ Reload schema cache, or
+docs\subsidies-applications-db.md:22:   - `supabase db remote commit` (if your workflow already reloads the cache).
+src\app\api\subsidies\checkout\route.ts:3:import { createSupabaseServerClient } from "@/lib/supabaseServerClient";
+src\app\api\subsidies\checkout\route.ts:13:    const supabase = await createSupabaseServerClient();
+src\app\api\subsidies\checkout\route.ts:14:    const { data: userData, error: userErr } = await supabase.auth.getUser();
+src\app\api\subsidies\checkout\route.ts:27:    const { data: app, error: appErr } = await supabase
+src\app\api\subsidies\checkout\route.ts:82:    const { error: updateErr } = await supabase
+src\app\api\stripe\webhook\route.ts:3:import { createSupabaseAdminClient } from "@/lib/supabaseAdminClient";
+src\app\api\stripe\webhook\route.ts:40:    const admin = createSupabaseAdminClient();
+src\app\api\profile\export\route.ts:2:import { createSupabaseServerClient } from "@/lib/supabaseServerClient";
+src\app\api\profile\export\route.ts:12:type SupabaseLike = {
+src\app\api\profile\export\route.ts:21:async function safeSelect(supabase: SupabaseLike, table: string, limit = 2000): Promise<TableDump> {
+src\app\api\profile\export\route.ts:23:    const { data, error } = await supabase.from(table).select("*").limit(limit);
+src\app\api\profile\export\route.ts:34:    const supabase = (await createSupabaseServerClient()) as unknown as SupabaseLike;
+src\app\api\profile\export\route.ts:35:    const { data, error } = await supabase.auth.getUser();
+src\app\api\profile\export\route.ts:47:      dumps.push(await safeSelect(supabase, t));
+src\app\api\profile\delete\route.ts:2:import { createSupabaseServerClient } from "@/lib/supabaseServerClient";
+src\app\api\profile\delete\route.ts:4:type SupabaseLike = {
+src\app\api\profile\delete\route.ts:15:async function safeUpdateById(supabase: SupabaseLike, table: string, id: string, patch: Record<string, unknown>) {
+src\app\api\profile\delete\route.ts:17:    const { data, error } = await supabase.from(table).update(patch).eq("id", id);
+src\app\api\profile\delete\route.ts:26:async function safeDeleteByUserId(supabase: SupabaseLike, table: string, userId: string) {
+src\app\api\profile\delete\route.ts:28:    const { data, error } = await supabase.from(table).delete().eq("user_id", userId);
+src\app\api\profile\delete\route.ts:44:    const supabase = (await createSupabaseServerClient()) as unknown as SupabaseLike;
+src\app\api\profile\delete\route.ts:45:    const { data, error } = await supabase.auth.getUser();
+src\app\api\profile\delete\route.ts:53:    const soft = await safeUpdateById(supabase, "profiles", userId, { deleted_at: new Date().toISOString() });
+src\app\api\profile\delete\route.ts:55:    const delDocs = await safeDeleteByUserId(supabase, "documents", userId);
+src\app\api\profile\delete\route.ts:56:    const delCases = await safeDeleteByUserId(supabase, "cases", userId);
+src\app\api\profile\delete\route.ts:57:    const delExtr = await safeDeleteByUserId(supabase, "document_extractions", userId);
+src\app\api\profile\delete\route.ts:59:    await supabase.auth.signOut();
+docs\repo-snapshots\integrations-grep.txt:2:src\config\env.ts:2:  | "NEXT_PUBLIC_SUPABASE_URL"
+docs\repo-snapshots\integrations-grep.txt:3:src\config\env.ts:3:  | "NEXT_PUBLIC_SUPABASE_ANON_KEY"
+docs\repo-snapshots\integrations-grep.txt:4:src\config\env.ts:4:  | "SUPABASE_SERVICE_ROLE_KEY"
+docs\repo-snapshots\integrations-grep.txt:8:src\config\env.ts:14: * Supabase server-side usage (service role).
+docs\repo-snapshots\integrations-grep.txt:9:src\config\env.ts:15: * WARNING: SUPABASE_SERVICE_ROLE_KEY must never be used on the client.
+docs\repo-snapshots\integrations-grep.txt:10:src\config\env.ts:17:export function assertSupabaseServerEnv() {
+docs\repo-snapshots\integrations-grep.txt:11:src\config\env.ts:19:    "NEXT_PUBLIC_SUPABASE_URL",
+docs\repo-snapshots\integrations-grep.txt:12:src\config\env.ts:20:    "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+docs\repo-snapshots\integrations-grep.txt:13:src\config\env.ts:21:    "SUPABASE_SERVICE_ROLE_KEY",
+docs\repo-snapshots\integrations-grep.txt:14:src\config\env.ts:26:      `Missing required Supabase env vars: ${missing.join(", ")}. Check .env.local / deployment config.`
+docs\repo-snapshots\integrations-grep.txt:23:src\config\env.ts:61:  NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL!,
+docs\repo-snapshots\integrations-grep.txt:24:src\config\env.ts:62:  NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+docs\repo-snapshots\integrations-grep.txt:25:src\config\env.ts:63:  SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY!,
+docs\repo-snapshots\integrations-grep.txt:29:src\lib\supabaseAdminClient.ts:1:import { createClient } from "@supabase/supabase-js";
+docs\repo-snapshots\integrations-grep.txt:30:src\lib\supabaseAdminClient.ts:3:export function createSupabaseAdminClient() {
+docs\repo-snapshots\integrations-grep.txt:31:src\lib\supabaseAdminClient.ts:4:  const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+docs\repo-snapshots\integrations-grep.txt:32:src\lib\supabaseAdminClient.ts:5:  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+docs\repo-snapshots\integrations-grep.txt:33:src\lib\supabaseAdminClient.ts:7:    throw new Error("Missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY");
+docs\repo-snapshots\integrations-grep.txt:34:src\lib\supabaseBrowserClient.ts:1:import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+docs\repo-snapshots\integrations-grep.txt:35:src\lib\supabaseBrowserClient.ts:3:let _client: SupabaseClient | null = null;
+docs\repo-snapshots\integrations-grep.txt:36:src\lib\supabaseBrowserClient.ts:5:export function createSupabaseBrowserClient(): SupabaseClient {
+docs\repo-snapshots\integrations-grep.txt:37:src\lib\supabaseBrowserClient.ts:8:  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+docs\repo-snapshots\integrations-grep.txt:38:src\lib\supabaseBrowserClient.ts:9:  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+docs\repo-snapshots\integrations-grep.txt:39:src\lib\supabaseBrowserClient.ts:12:    throw new Error("Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY");
+docs\repo-snapshots\integrations-grep.txt:40:src\lib\supabaseServerClient.ts:2:import { createServerClient } from "@supabase/ssr";
+docs\repo-snapshots\integrations-grep.txt:41:src\lib\supabaseServerClient.ts:4:export async function createSupabaseServerClient() {
+docs\repo-snapshots\integrations-grep.txt:42:src\lib\supabaseServerClient.ts:5:  const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+docs\repo-snapshots\integrations-grep.txt:43:src\lib\supabaseServerClient.ts:6:  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+docs\repo-snapshots\integrations-grep.txt:44:src\lib\supabaseServerClient.ts:7:  if (!url || !anonKey) throw new Error("Missing NEXT_PUBLIC_SUPABASE_URL or 
+docs\repo-snapshots\integrations-grep.txt:45:NEXT_PUBLIC_SUPABASE_ANON_KEY");
+docs\repo-snapshots\integrations-grep.txt:47:src\__tests__\ocrGuard.test.ts:4:type SupabaseErr = { message: string };
+docs\repo-snapshots\integrations-grep.txt:48:src\__tests__\ocrGuard.test.ts:6:function makeSupabase(args: {
+docs\repo-snapshots\integrations-grep.txt:49:src\__tests__\ocrGuard.test.ts:8:  docErr?: SupabaseErr | null;
+docs\repo-snapshots\integrations-grep.txt:50:src\__tests__\ocrGuard.test.ts:20:        return { error: null as SupabaseErr | null };
+docs\repo-snapshots\integrations-grep.txt:52:src\__tests__\ocrGuard.test.ts:28:    const supabase = makeSupabase({ doc: null, docErr: { message: "boom" } });
+docs\repo-snapshots\integrations-grep.txt:54:src\__tests__\ocrGuard.test.ts:30:      supabase,
+docs\repo-snapshots\integrations-grep.txt:57:src\__tests__\ocrGuard.test.ts:42:    const supabase = makeSupabase({ doc: null });
+docs\repo-snapshots\integrations-grep.txt:59:src\__tests__\ocrGuard.test.ts:44:      supabase,
+docs\repo-snapshots\integrations-grep.txt:62:src\__tests__\ocrGuard.test.ts:56:    const supabase = makeSupabase({ doc: { id: "d1", user_id: "u2", ocr_kind: "machtigingsregistratie" } 
+docs\repo-snapshots\integrations-grep.txt:65:src\__tests__\ocrGuard.test.ts:58:      supabase,
+docs\repo-snapshots\integrations-grep.txt:68:src\__tests__\ocrGuard.test.ts:71:    const supabase = makeSupabase({
+docs\repo-snapshots\integrations-grep.txt:71:src\__tests__\ocrGuard.test.ts:77:      supabase,
+docs\repo-snapshots\integrations-grep.txt:73:src\__tests__\ocrGuard.test.ts:91:    const supabase = makeSupabase({ doc: { id: "d1", user_id: "u1", ocr_kind: "machtigingsregistratie" } 
+docs\repo-snapshots\integrations-grep.txt:76:src\__tests__\ocrGuard.test.ts:93:      supabase,
+docs\repo-snapshots\f00-2-20251231-203838-tree-supabase.txt:3:C:\USERS\USER\FINHUB\FINHUB-WEB\SUPABASE
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:249:|   |   supabaseAdminClient.ts
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:250:|   |   supabaseBrowserClient.ts
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:251:|   |   supabaseServerClient.ts
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:253:|   \---supabase
+docs\repo-snapshots\f00-2-20251231-203838-tree-docs.txt:39:        f00-2-20251231-203838-tree-supabase.txt
+src\app\api\payments\status\route.ts:2:import { createSupabaseServerClient } from "@/lib/supabaseServerClient";
+src\app\api\payments\status\route.ts:24:    const supabase = await createSupabaseServerClient();
+src\app\api\payments\status\route.ts:26:    const { data: userData, error: userErr } = await supabase.auth.getUser();
+src\app\api\payments\status\route.ts:31:    const { data, error } = await supabase
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-supabase.txt:3:C:\USERS\USER\FINHUB\FINHUB-WEB\SUPABASE
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:493:|   |   supabaseAdminClient.ts
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:494:|   |   supabaseBrowserClient.ts
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:495:|   |   supabaseServerClient.ts
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:503:|   \---supabase
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-docs.txt:76:    |   f00-2-20251231-203838-tree-supabase.txt
+docs\repo-snapshots\canon-refresh-20260118-132825\modules-dirs.txt:28:C:\Users\User\FinHub\finhub-web\src\lib\supabase                          
+docs\repo-snapshots\canon-refresh-20260118-132825\env-keys-env.local.txt:5:NEXT_PUBLIC_SUPABASE_ANON_KEY
+docs\repo-snapshots\canon-refresh-20260118-132825\env-keys-env.local.txt:6:NEXT_PUBLIC_SUPABASE_URL
+docs\repo-snapshots\canon-refresh-20260118-132825\env-keys-env.local.txt:10:SUPABASE_SERVICE_ROLE_KEY
+src\app\api\payments\checkout\route.ts:3:import { createSupabaseServerClient } from "@/lib/supabaseServerClient";
+src\app\api\payments\checkout\route.ts:25:    const supabase = await createSupabaseServerClient();
+src\app\api\payments\checkout\route.ts:27:    const { data: userData, error: userErr } = await supabase.auth.getUser();
+src\app\api\payments\checkout\route.ts:86:    const { error: insErr } = await supabase.from("payments").insert({
+src\app\api\payments\checkout\route.ts:101:      const { error: updErr } = await supabase
+docs\phase-8\release-readiness.md:18:- [ ] Se documenta d├│nde viven los datos (Supabase/Postgres/Storage) y qui├®n accede
+src\app\api\marketing\leads\route.ts:2:import { createSupabaseServerClient } from "@/lib/supabaseServerClient";
+src\app\api\marketing\leads\route.ts:76:    const supabase = await createSupabaseServerClient();
+src\app\api\marketing\leads\route.ts:95:    const { data, error } = await supabase
+docs\phase-7\ops-v1.md:6:### Supabase (Auth + DB)
+docs\phase-7\ops-v1.md:7:- NEXT_PUBLIC_SUPABASE_URL
+docs\phase-7\ops-v1.md:8:- NEXT_PUBLIC_SUPABASE_ANON_KEY
+docs\phase-7\ops-v1.md:9:- SUPABASE_SERVICE_ROLE_KEY (solo scripts/admin/e2e; nunca en cliente)
+docs\phase-7\ops-v1.md:21:- El endpoint /api/assistant/chat exige usuario autenticado (guard Supabase) para evitar abuso p├║blico.
+docs\phase-7\ops-v1.md:56:  - Requiere Supabase env (URL/keys) y el server corriendo en BASE_URL (por defecto http://localhost:3000).
+docs\phase-7\ops-v1.md:78:- NEXT_PUBLIC_SUPABASE_URL (requerida para auth guard)
+docs\phase-7\ops-v1.md:79:- NEXT_PUBLIC_SUPABASE_ANON_KEY (requerida para auth guard)
+src\proxy.ts:2:import { updateSession } from "./lib/supabase/middleware";
+src\app\api\finances\transactions\[id]\splits\route.ts:3:import { supabaseRouteClient } from "@/lib/supabase/routeClient";
+src\app\api\finances\transactions\[id]\splits\route.ts:46:  const supabase = await supabaseRouteClient();
+src\app\api\finances\transactions\[id]\splits\route.ts:47:  const { data: auth, error: authErr } = await supabase.auth.getUser();
+src\app\api\finances\transactions\[id]\splits\route.ts:52:  const { data, error } = await supabase
+src\app\api\finances\transactions\[id]\splits\route.ts:72:  const supabase = await supabaseRouteClient();
+src\app\api\finances\transactions\[id]\splits\route.ts:73:  const { data: auth, error: authErr } = await supabase.auth.getUser();
+src\app\api\finances\transactions\[id]\splits\route.ts:82:  const { error: delErr } = await supabase
+src\app\api\finances\transactions\[id]\splits\route.ts:102:  const { data, error: insErr } = await supabase
+src\app\api\finances\transactions\[id]\route.ts:3:import { supabaseRouteClient } from "@/lib/supabase/routeClient";
+src\app\api\finances\transactions\[id]\route.ts:17:  const supabase = await supabaseRouteClient();
+src\app\api\finances\transactions\[id]\route.ts:18:  const { data: auth, error: authErr } = await supabase.auth.getUser();
+src\app\api\finances\transactions\[id]\route.ts:36:  const { data, error } = await supabase
+src\app\api\finances\transactions\[id]\route.ts:63:  const supabase = await supabaseRouteClient();
+src\app\api\finances\transactions\[id]\route.ts:64:  const { data: auth, error: authErr } = await supabase.auth.getUser();
+src\app\api\finances\transactions\[id]\route.ts:69:  const { error } = await supabase
+src\app\api\finances\transactions\route.ts:3:import { supabaseRouteClient } from "@/lib/supabase/routeClient";
+src\app\api\finances\transactions\route.ts:34:  const supabase = await supabaseRouteClient();
+src\app\api\finances\transactions\route.ts:35:  const { data: auth, error: authErr } = await supabase.auth.getUser();
+src\app\api\finances\transactions\route.ts:53:  const { data, error } = await supabase
+src\app\api\finances\receipt-links\route.ts:3:import { supabaseRouteClient } from "@/lib/supabase/routeClient";
+src\app\api\finances\receipt-links\route.ts:21:  const supabase = await supabaseRouteClient();
+src\app\api\finances\receipt-links\route.ts:22:  const { data: auth, error: authErr } = await supabase.auth.getUser();
+src\app\api\finances\receipt-links\route.ts:36:  const { data, error } = await supabase
+src\lib\supabaseServerClient.ts:2:import { createServerClient } from "@supabase/ssr";
+src\lib\supabaseServerClient.ts:4:export async function createSupabaseServerClient() {
+src\lib\supabaseServerClient.ts:5:  const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+src\lib\supabaseServerClient.ts:6:  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+src\lib\supabaseServerClient.ts:7:  if (!url || !anonKey) throw new Error("Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY");
+src\lib\supabaseBrowserClient.ts:1:import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+src\lib\supabaseBrowserClient.ts:3:let _client: SupabaseClient | null = null;
+src\lib\supabaseBrowserClient.ts:5:export function createSupabaseBrowserClient(): SupabaseClient {
+src\lib\supabaseBrowserClient.ts:8:  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+src\lib\supabaseBrowserClient.ts:9:  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+src\lib\supabaseBrowserClient.ts:12:    throw new Error("Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY");
+src\lib\supabaseAdminClient.ts:1:import { createClient } from "@supabase/supabase-js";
+src\lib\supabaseAdminClient.ts:3:export function createSupabaseAdminClient() {
+src\lib\supabaseAdminClient.ts:4:  const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+src\lib\supabaseAdminClient.ts:5:  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+src\lib\supabaseAdminClient.ts:7:    throw new Error("Missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY");
+src\app\api\finances\ledger\seed\route.ts:3:import { supabaseRouteClient } from "@/lib/supabase/routeClient";
+src\app\api\finances\ledger\seed\route.ts:40:  const supabase = await supabaseRouteClient();
+src\app\api\finances\ledger\seed\route.ts:41:  const { data: auth, error: authErr } = await supabase.auth.getUser();
+src\app\api\finances\ledger\seed\route.ts:60:  const { data: existing, error: exErr } = await supabase
+src\app\api\finances\ledger\seed\route.ts:71:    const { error: insCatErr } = await supabase.from("finance_categories").insert(
+src\app\api\finances\ledger\seed\route.ts:83:  const { data: cats, error: catErr } = await supabase
+src\app\api\finances\ledger\seed\route.ts:132:  const { error: txErr } = await supabase.from("finance_transactions").insert(rows);
+src\app\api\finances\ledger\route.ts:3:import { supabaseRouteClient } from "@/lib/supabase/routeClient";
+src\app\api\finances\ledger\route.ts:59:  const supabase = await supabaseRouteClient();
+src\app\api\finances\ledger\route.ts:60:  const { data: auth, error: authErr } = await supabase.auth.getUser();
+src\app\api\finances\ledger\route.ts:71:  const { data: categories, error: catErr } = await supabase
+src\app\api\finances\ledger\route.ts:82:  const { data: transactions, error: txErr } = await supabase
+src\app\api\finances\ledger\route.ts:98:    const { data: splits, error: splitErr } = await supabase
+
+==== PATTERN: stripe ====
+
+
+docs\architecture\system-map.md:7:- API: /api/auth/*, /api/documents/*, /api/payments/*, /api/stripe/webhook, /api/assistant/chat
+docs\architecture\system-map.md:18:- Stripe (checkout + webhook)
+docs\architecture\system-map.md:25:- Seguridad webhook Stripe (firma/secret)
+docs\architecture\payments-map.md:6:- POST /api/stripe/webhook
+docs\architecture\payments-map.md:9:- Confirmar si se crean via dashboard Stripe o via config.
+docs\subsidies-payments.md:1:# Subsidies payments (Stripe + iDEAL)
+docs\subsidies-payments.md:4:- Subsidies uses Stripe Checkout sessions created in `src/app/api/subsidies/checkout/route.ts`.
+docs\subsidies-payments.md:8:1. Stripe Dashboard ? Settings ? Payment methods ? Enable iDEAL.
+docs\subsidies-payments.md:13:- `STRIPE_SECRET_KEY`
+docs\subsidies-payments.md:14:- `STRIPE_WEBHOOK_SECRET`
+docs\subsidies-payments.md:18:- If iDEAL is not enabled, Stripe will hide it automatically.
+docs\repo-snapshots\integrations-grep.txt:5:src\config\env.ts:5:  | "STRIPE_SECRET_KEY"
+docs\repo-snapshots\integrations-grep.txt:6:src\config\env.ts:6:  | "STRIPE_WEBHOOK_SECRET"
+docs\repo-snapshots\integrations-grep.txt:7:src\config\env.ts:7:  | "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY";
+docs\repo-snapshots\integrations-grep.txt:15:src\config\env.ts:32: * Stripe server-side usage for checkout creation.
+docs\repo-snapshots\integrations-grep.txt:16:src\config\env.ts:34:export function assertStripeCheckoutEnv() {
+docs\repo-snapshots\integrations-grep.txt:17:src\config\env.ts:35:  const required: EnvKey[] = ["STRIPE_SECRET_KEY"];
+docs\repo-snapshots\integrations-grep.txt:18:src\config\env.ts:39:      `Missing required Stripe env vars (checkout): ${missing.join(", ")}. Check .env.local / deployment config.`
+docs\repo-snapshots\integrations-grep.txt:19:src\config\env.ts:45: * Stripe server-side usage for webhook verification.
+docs\repo-snapshots\integrations-grep.txt:20:src\config\env.ts:47:export function assertStripeWebhookEnv() {
+docs\repo-snapshots\integrations-grep.txt:21:src\config\env.ts:48:  const required: EnvKey[] = ["STRIPE_SECRET_KEY", "STRIPE_WEBHOOK_SECRET"];
+docs\repo-snapshots\integrations-grep.txt:22:src\config\env.ts:52:      `Missing required Stripe env vars (webhook): ${missing.join(", ")}. Check .env.local / deployment config.`
+docs\repo-snapshots\integrations-grep.txt:26:src\config\env.ts:64:  STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY!,
+docs\repo-snapshots\integrations-grep.txt:27:src\config\env.ts:65:  STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET!,
+docs\repo-snapshots\integrations-grep.txt:28:src\config\env.ts:66:  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
+docs\repo-snapshots\f00-2-20251231-203838-tree-supabase.txt:32:    |   20251226133000_payments_stripe_unique_indexes.sql
+docs\repo-snapshots\f00-2-20251231-203838-tree-supabase.txt:46:    |       20251226133000_payments_stripe_unique_indexes.sql.bak_20251226185706
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:175:|       \---stripe
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-supabase.txt:32:    |   20251226133000_payments_stripe_unique_indexes.sql
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-supabase.txt:52:    |       20251226133000_payments_stripe_unique_indexes.sql.bak_20251226185706
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:330:|       +---stripe
+docs\repo-snapshots\canon-refresh-20260118-132825\routes-api.txt:33:C:\Users\User\FinHub\finhub-web\src\app\api\stripe\webhook\route.ts
+docs\repo-snapshots\canon-refresh-20260118-132825\migrations-list.txt:18:20251226133000_payments_stripe_unique_indexes.sql                      476
+docs\repo-snapshots\canon-refresh-20260118-132825\env-keys-env.local.txt:4:NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+docs\repo-snapshots\canon-refresh-20260118-132825\env-keys-env.local.txt:8:STRIPE_SECRET_KEY
+docs\repo-snapshots\canon-refresh-20260118-132825\env-keys-env.local.txt:9:STRIPE_WEBHOOK_SECRET
+docs\phase-7\ops-v1.md:15:### Stripe (si aplica en tu entorno)
+docs\phase-7\ops-v1.md:16:- STRIPE_SECRET_KEY
+docs\phase-7\ops-v1.md:17:- STRIPE_WEBHOOK_SECRET
+docs\phase-7\ops-v1.md:18:- NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+docs\openapi\finhub-v1.yaml:158:      summary: Create Stripe checkout session for current case
+docs\openapi\finhub-v1.yaml:171:  /stripe/webhook:
+docs\openapi\finhub-v1.yaml:174:      summary: Stripe webhook handler
+docs\domain\model-v1.md:102:- provider ("stripe")
+docs\domain\model-v1.md:105:- providerRefs (stripeSessionId/stripePaymentIntentId)
+docs\decisions\adr-0001-canon2-scope.md:8:- Payments: checkout/status + Stripe webhook.
+docs\decisions\adr-0001-canon2-scope.md:9:- Integraciones: Supabase clients, Stripe, OCR provider (Azure Document Intelligence), LLM provider (OpenAI) + mocks.
+docs\decisions\adr-0001-canon2-scope.md:17:- Cat├ílogo de productos/precios Stripe + lifecycle y provisi├│n.
+docs\decisions\adr-0001-canon2-scope.md:23:- Webhook Stripe: firma, idempotencia, replay.
+src\config\env.ts:5:  | "STRIPE_SECRET_KEY"
+src\config\env.ts:6:  | "STRIPE_WEBHOOK_SECRET"
+src\config\env.ts:7:  | "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY";
+src\config\env.ts:32: * Stripe server-side usage for checkout creation.
+src\config\env.ts:34:export function assertStripeCheckoutEnv() {
+src\config\env.ts:35:  const required: EnvKey[] = ["STRIPE_SECRET_KEY"];
+src\config\env.ts:39:      `Missing required Stripe env vars (checkout): ${missing.join(", ")}. Check .env.local / deployment config.`
+src\config\env.ts:45: * Stripe server-side usage for webhook verification.
+src\config\env.ts:47:export function assertStripeWebhookEnv() {
+src\config\env.ts:48:  const required: EnvKey[] = ["STRIPE_SECRET_KEY", "STRIPE_WEBHOOK_SECRET"];
+src\config\env.ts:52:      `Missing required Stripe env vars (webhook): ${missing.join(", ")}. Check .env.local / deployment config.`
+src\config\env.ts:64:  STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY!,
+src\config\env.ts:65:  STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET!,
+src\config\env.ts:66:  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
+src\app\api\subsidies\checkout\route.ts:2:import Stripe from "stripe";
+src\app\api\subsidies\checkout\route.ts:4:import { assertStripeCheckoutEnv } from "@/config/env";
+src\app\api\subsidies\checkout\route.ts:11:  assertStripeCheckoutEnv();
+src\app\api\subsidies\checkout\route.ts:41:    const secretKey = process.env.STRIPE_SECRET_KEY;
+src\app\api\subsidies\checkout\route.ts:44:    const stripe = new Stripe(secretKey);
+src\app\api\subsidies\checkout\route.ts:53:    const session = await stripe.checkout.sessions.create({
+src\app\api\subsidies\checkout\route.ts:77:      return NextResponse.json({ ok: false, error: "stripe_session_invalid" }, { status: 502 });
+src\app\api\subsidies\checkout\route.ts:85:        stripe_checkout_session_id: session.id,
+src\app\api\subsidies\checkout\route.ts:86:        stripe_payment_intent_id: (session.payment_intent ?? null) as string | null,
+src\app\api\stripe\webhook\route.ts:2:import Stripe from "stripe";
+src\app\api\stripe\webhook\route.ts:4:import { assertStripeWebhookEnv } from "@/config/env";
+src\app\api\stripe\webhook\route.ts:17:  assertStripeWebhookEnv();
+src\app\api\stripe\webhook\route.ts:19:    const secretKey = process.env.STRIPE_SECRET_KEY;
+src\app\api\stripe\webhook\route.ts:20:    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+src\app\api\stripe\webhook\route.ts:22:    if (!secretKey) return NextResponse.json({ ok: false, error: "Missing STRIPE_SECRET_KEY" }, { status: 500 });
+src\app\api\stripe\webhook\route.ts:23:    if (!webhookSecret) return NextResponse.json({ ok: false, error: "Missing STRIPE_WEBHOOK_SECRET" }, { status: 500 });
+src\app\api\stripe\webhook\route.ts:25:    const stripe = new Stripe(secretKey);
+src\app\api\stripe\webhook\route.ts:27:    const sig = req.headers.get("stripe-signature");
+src\app\api\stripe\webhook\route.ts:28:    if (!sig) return NextResponse.json({ ok: false, error: "Missing stripe-signature" }, { status: 400 });
+src\app\api\stripe\webhook\route.ts:31:    let event: Stripe.Event;
+src\app\api\stripe\webhook\route.ts:34:      event = stripe.webhooks.constructEvent(rawBody, sig, webhookSecret);
+src\app\api\stripe\webhook\route.ts:45:      const session = event.data.object as Stripe.Checkout.Session;
+src\app\api\stripe\webhook\route.ts:47:      const stripeSessionId = session.id;
+src\app\api\stripe\webhook\route.ts:59:        .eq("stripe_session_id", stripeSessionId)
+src\app\api\stripe\webhook\route.ts:67:            stripe_payment_intent_id: paymentIntentId,
+src\app\api\stripe\webhook\route.ts:84:          provider: "stripe",
+src\app\api\stripe\webhook\route.ts:88:          stripe_session_id: stripeSessionId,
+src\app\api\stripe\webhook\route.ts:89:          stripe_payment_intent_id: paymentIntentId,
+src\app\api\stripe\webhook\route.ts:101:      const pi = event.data.object as Stripe.PaymentIntent;
+src\app\api\stripe\webhook\route.ts:110:        .eq("stripe_payment_intent_id", paymentIntentId);
+src\app\api\payments\checkout\route.ts:2:import Stripe from "stripe";
+src\app\api\payments\checkout\route.ts:4:import { assertStripeCheckoutEnv } from "@/config/env";
+src\app\api\payments\checkout\route.ts:23:assertStripeCheckoutEnv();
+src\app\api\payments\checkout\route.ts:45:    const secretKey = process.env.STRIPE_SECRET_KEY;
+src\app\api\payments\checkout\route.ts:46:    if (!secretKey) return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: "Missing STRIPE_SECRET_KEY" }, { status: 500 }));
+src\app\api\payments\checkout\route.ts:48:    const stripe = new Stripe(secretKey);
+src\app\api\payments\checkout\route.ts:57:    const session = await stripe.checkout.sessions.create({
+src\app\api\payments\checkout\route.ts:79:      return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: "Stripe session inv├ílida" }, { status: 502 }));
+src\app\api\payments\checkout\route.ts:85:    // Si Stripe reintenta o el cliente repite, el ├¡ndice ├║nico en stripe_session_id previene duplicados.
+src\app\api\payments\checkout\route.ts:89:      provider: "stripe",
+src\app\api\payments\checkout\route.ts:93:      stripe_session_id: session.id,
+src\app\api\payments\checkout\route.ts:94:      stripe_payment_intent_id: (session.payment_intent ?? null) as string | null,
+src\app\api\payments\checkout\route.ts:105:          stripe_payment_intent_id: (session.payment_intent ?? null) as string | null,
+src\app\api\payments\checkout\route.ts:108:        .eq("stripe_session_id", session.id);
+src\lib\db\subsidies\client.ts:16:  stripe_checkout_session_id: string | null;
+src\lib\db\subsidies\client.ts:17:  stripe_payment_intent_id: string | null;
+src\lib\db\subsidies\client.ts:50:    stripeCheckoutSessionId: row.stripe_checkout_session_id ?? null,
+src\lib\db\subsidies\client.ts:51:    stripePaymentIntentId: row.stripe_payment_intent_id ?? null,
+src\lib\db\subsidies\client.ts:86:      "id,user_id,slug,status,eligibility_snapshot,intake_data,stripe_checkout_session_id,stripe_payment_intent_id,created_at,updated_at,paid_at"
+src\lib\db\subsidies\client.ts:99:      "id,user_id,slug,status,eligibility_snapshot,intake_data,stripe_checkout_session_id,stripe_payment_intent_id,created_at,updated_at,paid_at"
+src\domain\subsidies\types.ts:33:  stripeCheckoutSessionId?: string | null;
+src\domain\subsidies\types.ts:34:  stripePaymentIntentId?: string | null;
+src\domain\subsidies\errorMapper.ts:11:  stripe_session_invalid: "errors.paymentUnavailable",
+
+==== PATTERN: webhook ====
+
+
+docs\architecture\system-map.md:7:- API: /api/auth/*, /api/documents/*, /api/payments/*, /api/stripe/webhook, /api/assistant/chat
+docs\architecture\system-map.md:13:- Payments ÔåÆ checkout/status ÔåÆ webhook
+docs\architecture\system-map.md:18:- Stripe (checkout + webhook)
+docs\architecture\system-map.md:25:- Seguridad webhook Stripe (firma/secret)
+docs\architecture\payments-map.md:6:- POST /api/stripe/webhook
+docs\architecture\payments-map.md:15:- Validaci├│n de webhook + idempotencia
+docs\subsidies-payments.md:14:- `STRIPE_WEBHOOK_SECRET`
+docs\decisions\adr-0001-canon2-scope.md:8:- Payments: checkout/status + Stripe webhook.
+docs\decisions\adr-0001-canon2-scope.md:23:- Webhook Stripe: firma, idempotencia, replay.
+docs\repo-snapshots\integrations-grep.txt:6:src\config\env.ts:6:  | "STRIPE_WEBHOOK_SECRET"
+docs\repo-snapshots\integrations-grep.txt:19:src\config\env.ts:45: * Stripe server-side usage for webhook verification.
+docs\repo-snapshots\integrations-grep.txt:20:src\config\env.ts:47:export function assertStripeWebhookEnv() {
+docs\repo-snapshots\integrations-grep.txt:21:src\config\env.ts:48:  const required: EnvKey[] = ["STRIPE_SECRET_KEY", "STRIPE_WEBHOOK_SECRET"];
+docs\repo-snapshots\integrations-grep.txt:22:src\config\env.ts:52:      `Missing required Stripe env vars (webhook): ${missing.join(", ")}. Check .env.local / deployment config.`
+docs\repo-snapshots\integrations-grep.txt:27:src\config\env.ts:65:  STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET!,
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:176:|           \---webhook
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:331:|       |   \---webhook
+docs\repo-snapshots\canon-refresh-20260118-132825\env-keys-env.local.txt:9:STRIPE_WEBHOOK_SECRET
+docs\phase-7\ops-v1.md:17:- STRIPE_WEBHOOK_SECRET
+docs\repo-snapshots\canon-refresh-20260118-132825\routes-api.txt:33:C:\Users\User\FinHub\finhub-web\src\app\api\stripe\webhook\route.ts
+docs\openapi\finhub-v1.yaml:171:  /stripe/webhook:
+docs\openapi\finhub-v1.yaml:174:      summary: Stripe webhook handler
+src\config\env.ts:6:  | "STRIPE_WEBHOOK_SECRET"
+src\config\env.ts:45: * Stripe server-side usage for webhook verification.
+src\config\env.ts:47:export function assertStripeWebhookEnv() {
+src\config\env.ts:48:  const required: EnvKey[] = ["STRIPE_SECRET_KEY", "STRIPE_WEBHOOK_SECRET"];
+src\config\env.ts:52:      `Missing required Stripe env vars (webhook): ${missing.join(", ")}. Check .env.local / deployment config.`
+src\config\env.ts:65:  STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET!,
+src\app\api\stripe\webhook\route.ts:4:import { assertStripeWebhookEnv } from "@/config/env";
+src\app\api\stripe\webhook\route.ts:17:  assertStripeWebhookEnv();
+src\app\api\stripe\webhook\route.ts:20:    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+src\app\api\stripe\webhook\route.ts:23:    if (!webhookSecret) return NextResponse.json({ ok: false, error: "Missing STRIPE_WEBHOOK_SECRET" }, { status: 500 });
+src\app\api\stripe\webhook\route.ts:34:      event = stripe.webhooks.constructEvent(rawBody, sig, webhookSecret);
+src\app\api\stripe\webhook\route.ts:36:      const msg = err instanceof Error ? err.message : "Webhook signature verification failed";
+
+==== PATTERN: ocr ====
+
+
+docs\db\schema-v1.sql:87:-- OCR runs
+docs\db\schema-v1.sql:88:create table if not exists public.document_ocr_runs (
+docs\db\schema-v1.sql:104:create index if not exists idx_document_ocr_runs_document on public.document_ocr_runs(document_id, created_at desc);
+docs\db\schema-v1.sql:105:create index if not exists idx_document_ocr_runs_user on public.document_ocr_runs(user_id, created_at desc);
+docs\db\schema-v1.sql:106:create index if not exists idx_document_ocr_runs_status on public.document_ocr_runs(status);
+docs\db\schema-v1.sql:112:  run_id uuid null references public.document_ocr_runs(id) on delete set null,
+docs\db\schema-v1.sql:140:    'ocr_requested','ocr_failed','ocr_succeeded',
+docs\db\schema-v1.sql:151:-- === PATCH: documents.ocr_kind (OCR intent; separate from DocumentType) ===
+docs\db\schema-v1.sql:153:  add column if not exists ocr_kind text null;
+docs\db\schema-v1.sql:160:    where conname = 'documents_ocr_kind_check'
+docs\db\schema-v1.sql:163:      add constraint documents_ocr_kind_check
+docs\db\schema-v1.sql:164:      check (ocr_kind is null or ocr_kind in ('machtigingsregistratie'));
+docs\db\schema-v1.sql:168:create index if not exists documents_ocr_kind_idx on public.documents (ocr_kind);
+src\__tests__\ocrGuard.test.ts:2:import { requireOcrKind } from "../app/api/documents/[id]/_shared/ocrGuard";
+src\__tests__\ocrGuard.test.ts:26:describe("ocrGuard.requireOcrKind", () => {
+src\__tests__\ocrGuard.test.ts:29:    const r = await requireOcrKind({
+src\__tests__\ocrGuard.test.ts:34:      select: "id,user_id,ocr_kind",
+src\__tests__\ocrGuard.test.ts:35:      endpoint: "ocr",
+src\__tests__\ocrGuard.test.ts:43:    const r = await requireOcrKind({
+src\__tests__\ocrGuard.test.ts:48:      select: "id,user_id,ocr_kind",
+src\__tests__\ocrGuard.test.ts:49:      endpoint: "ocr",
+src\__tests__\ocrGuard.test.ts:56:    const supabase = makeSupabase({ doc: { id: "d1", user_id: "u2", ocr_kind: "machtigingsregistratie" } });
+src\__tests__\ocrGuard.test.ts:57:    const r = await requireOcrKind({
+src\__tests__\ocrGuard.test.ts:62:      select: "id,user_id,ocr_kind",
+src\__tests__\ocrGuard.test.ts:69:  it("400 cuando ocr_kind no coincide y escribe auditor├¡a (best-effort)", async () => {
+src\__tests__\ocrGuard.test.ts:72:      doc: { id: "d1", user_id: "u1", ocr_kind: null },
+src\__tests__\ocrGuard.test.ts:76:    const r = await requireOcrKind({
+src\__tests__\ocrGuard.test.ts:81:      select: "id,user_id,ocr_kind",
+src\__tests__\ocrGuard.test.ts:91:    const supabase = makeSupabase({ doc: { id: "d1", user_id: "u1", ocr_kind: "machtigingsregistratie" } });
+src\__tests__\ocrGuard.test.ts:92:    const r = await requireOcrKind({
+src\__tests__\ocrGuard.test.ts:97:      select: "id,user_id,ocr_kind",
+src\__tests__\ocrGuard.test.ts:98:      endpoint: "ocr",
+docs\db\migrations\2026-01-04_finance_core.sql:18:  create type public.finance_tx_source as enum ('manual','ocr');
+docs\repo-snapshots\integrations-grep.txt:46:src\__tests__\ocrGuard.test.ts:2:import { requireOcrKind } from "../app/api/documents/[id]/_shared/ocrGuard";
+docs\repo-snapshots\integrations-grep.txt:47:src\__tests__\ocrGuard.test.ts:4:type SupabaseErr = { message: string };
+docs\repo-snapshots\integrations-grep.txt:48:src\__tests__\ocrGuard.test.ts:6:function makeSupabase(args: {
+docs\repo-snapshots\integrations-grep.txt:49:src\__tests__\ocrGuard.test.ts:8:  docErr?: SupabaseErr | null;
+docs\repo-snapshots\integrations-grep.txt:50:src\__tests__\ocrGuard.test.ts:20:        return { error: null as SupabaseErr | null };
+docs\repo-snapshots\integrations-grep.txt:51:src\__tests__\ocrGuard.test.ts:26:describe("ocrGuard.requireOcrKind", () => {
+docs\repo-snapshots\integrations-grep.txt:52:src\__tests__\ocrGuard.test.ts:28:    const supabase = makeSupabase({ doc: null, docErr: { message: "boom" } });
+docs\repo-snapshots\integrations-grep.txt:53:src\__tests__\ocrGuard.test.ts:29:    const r = await requireOcrKind({
+docs\repo-snapshots\integrations-grep.txt:54:src\__tests__\ocrGuard.test.ts:30:      supabase,
+docs\repo-snapshots\integrations-grep.txt:55:src\__tests__\ocrGuard.test.ts:34:      select: "id,user_id,ocr_kind",
+docs\repo-snapshots\integrations-grep.txt:56:src\__tests__\ocrGuard.test.ts:35:      endpoint: "ocr",
+docs\repo-snapshots\integrations-grep.txt:57:src\__tests__\ocrGuard.test.ts:42:    const supabase = makeSupabase({ doc: null });
+docs\repo-snapshots\integrations-grep.txt:58:src\__tests__\ocrGuard.test.ts:43:    const r = await requireOcrKind({
+docs\repo-snapshots\integrations-grep.txt:59:src\__tests__\ocrGuard.test.ts:44:      supabase,
+docs\repo-snapshots\integrations-grep.txt:60:src\__tests__\ocrGuard.test.ts:48:      select: "id,user_id,ocr_kind",
+docs\repo-snapshots\integrations-grep.txt:61:src\__tests__\ocrGuard.test.ts:49:      endpoint: "ocr",
+docs\repo-snapshots\integrations-grep.txt:62:src\__tests__\ocrGuard.test.ts:56:    const supabase = makeSupabase({ doc: { id: "d1", user_id: "u2", ocr_kind: "machtigingsregistratie" } 
+docs\repo-snapshots\integrations-grep.txt:64:src\__tests__\ocrGuard.test.ts:57:    const r = await requireOcrKind({
+docs\repo-snapshots\integrations-grep.txt:65:src\__tests__\ocrGuard.test.ts:58:      supabase,
+docs\repo-snapshots\integrations-grep.txt:66:src\__tests__\ocrGuard.test.ts:62:      select: "id,user_id,ocr_kind",
+docs\repo-snapshots\integrations-grep.txt:67:src\__tests__\ocrGuard.test.ts:69:  it("400 cuando ocr_kind no coincide y escribe auditor├¡a (best-effort)", async () => {
+docs\repo-snapshots\integrations-grep.txt:68:src\__tests__\ocrGuard.test.ts:71:    const supabase = makeSupabase({
+docs\repo-snapshots\integrations-grep.txt:69:src\__tests__\ocrGuard.test.ts:72:      doc: { id: "d1", user_id: "u1", ocr_kind: null },
+docs\repo-snapshots\integrations-grep.txt:70:src\__tests__\ocrGuard.test.ts:76:    const r = await requireOcrKind({
+docs\repo-snapshots\integrations-grep.txt:71:src\__tests__\ocrGuard.test.ts:77:      supabase,
+docs\repo-snapshots\integrations-grep.txt:72:src\__tests__\ocrGuard.test.ts:81:      select: "id,user_id,ocr_kind",
+docs\repo-snapshots\integrations-grep.txt:73:src\__tests__\ocrGuard.test.ts:91:    const supabase = makeSupabase({ doc: { id: "d1", user_id: "u1", ocr_kind: "machtigingsregistratie" } 
+docs\repo-snapshots\integrations-grep.txt:75:src\__tests__\ocrGuard.test.ts:92:    const r = await requireOcrKind({
+docs\repo-snapshots\integrations-grep.txt:76:src\__tests__\ocrGuard.test.ts:93:      supabase,
+docs\repo-snapshots\integrations-grep.txt:77:src\__tests__\ocrGuard.test.ts:97:      select: "id,user_id,ocr_kind",
+docs\repo-snapshots\integrations-grep.txt:78:src\__tests__\ocrGuard.test.ts:98:      endpoint: "ocr",
+docs\repo-snapshots\features-inventory.txt:94:d-----     27/12/2025  01:37 p. m.                ocr                                                                                      
+docs\repo-snapshots\features-inventory.txt:95:-a----     27/12/2025  05:40 p. m.           1114 documentOcrRegistry.test.ts                                                              
+docs\repo-snapshots\features-inventory.txt:96:-a----     27/12/2025  05:39 p. m.            746 documentOcrRegistry.ts                                                                   
+docs\repo-snapshots\features-inventory.txt:102:-a----     30/12/2025  07:43 p. m.           3770 ocrApiClient.ts                                                                          
+docs\repo-snapshots\features-inventory.txt:115:    Directorio: C:\Users\User\FinHub\finhub-web\src\features\documents\ocr
+docs\repo-snapshots\features-inventory.txt:121:-a----     27/12/2025  01:31 p. m.            506 getOcrTextProvider.ts                                                                    
+docs\repo-snapshots\features-inventory.txt:126:    Directorio: C:\Users\User\FinHub\finhub-web\src\features\documents\ocr\providers
+docs\repo-snapshots\features-inventory.txt:131:-a----     27/12/2025  01:34 p. m.           2826 azureDocumentIntelligenceOcrTextProvider.ts                                              
+docs\repo-snapshots\features-inventory.txt:132:-a----     27/12/2025  01:30 p. m.           1074 mockOcrTextProvider.ts                                                                   
+docs\repo-snapshots\features-inventory.txt:133:-a----     27/12/2025  01:30 p. m.            346 ocrTextProvider.ts                                                                       
+docs\repo-snapshots\f00-2-20251231-204404-package-summary.txt:10:- e2e:phase7: powershell -NoProfile -ExecutionPolicy Bypass -File scripts/e2e/run-ocr-extract-verify-v1.ps1
+docs\repo-snapshots\f00-2-20251231-203838-tree-supabase.txt:36:    |   20251226220000_documents_ocr_v1.sql
+docs\repo-snapshots\f00-2-20251231-203838-tree-supabase.txt:38:    |   20251227141000_add_documents_ocr_kind.sql
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:73:|   |       |   +---ocr-review
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:77:|   |       |   |   |       OcrReviewListClient.tsx
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:83:|   |       |   |               OcrReviewDetailClient.tsx
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:152:|       |       +---ocr
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:159:|       |               ocrGuard.ts
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:215:|   |   |   documentOcrRegistry.test.ts
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:216:|   |   |   documentOcrRegistry.ts
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:222:|   |   |   ocrApiClient.ts
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:229:|   |   \---ocr
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:230:|   |       |   getOcrTextProvider.ts
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:235:|   |               azureDocumentIntelligenceOcrTextProvider.ts
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:236:|   |               mockOcrTextProvider.ts
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:237:|   |               ocrTextProvider.ts
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:273:        ocrGuard.test.ts
+docs\repo-snapshots\f00-2-20251231-203838-tree-scripts.txt:11:|       test-rls-ocr-isolation.ps1
+docs\repo-snapshots\f00-2-20251231-203838-tree-scripts.txt:12:|       test-rls-ocr-isolation.sql
+docs\repo-snapshots\f00-2-20251231-203838-tree-scripts.txt:17:    |   run-ocr-extract-verify-v1.ps1
+docs\repo-snapshots\f00-2-20251231-203838-tree-scripts.txt:18:    |   run-ocr-v1.ps1
+docs\phase-7\ops-v1.md:1:# Fase 7 ÔÇö Operaci├│n v1 (OCR + Finny)
+docs\phase-7\ops-v1.md:29:### Documents / OCR / Verify (referencia)
+docs\phase-7\ops-v1.md:32:- /api/documents/[id]/ocr
+docs\phase-7\ops-v1.md:37:- /app/documents/ocr-review
+docs\phase-7\ops-v1.md:38:- /app/documents/ocr-review/[id]
+docs\phase-7\ops-v1.md:59:1) OCR registry y schema OK (tests verdes).
+docs\phase-7\ops-v1.md:60:2) UI de revisi├│n OCR accesible y no rompe con data inv├ílida (manejo de errores).
+docs\repo-snapshots\f00-2-20251231-203838-meta.txt:14:7bf42bd chore(f9.5): non-PII telemetry for core API + OCR/verify (#20)
+docs\openapi\finhub-v1.yaml:99:  /documents/{id}/ocr:
+docs\openapi\finhub-v1.yaml:102:      summary: Request OCR (mock v1) and create run + extraction + audit
+docs\openapi\finhub-v1.yaml:111:                $ref: "#/components/schemas/OcrRequestResponse"
+docs\openapi\finhub-v1.yaml:248:    OcrRun:
+docs\openapi\finhub-v1.yaml:273:    OcrRequestResponse:
+docs\openapi\finhub-v1.yaml:278:        run: { $ref: "#/components/schemas/OcrRun" }
+src\ui\components\AppShell.tsx:73:      { id: "nav_documents", label: "Ir a Documentos", hint: "/app/documents", keywords: ["docs", "documentos", "ocr"], run: () => router.push("/app/documents") },
+docs\marketing\landing-structure.md:14:- OCR + revisi├│n humana cuando aplica
+docs\marketing\claims-and-guardrails.md:7:- OCR con revisi├│n humana cuando aplica.
+docs\domain\scope-v1.md:22:- OCR real con proveedor externo (solo modelo y endpoint; implementaci├│n en Fase 7).
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-supabase.txt:36:    |   20251226220000_documents_ocr_v1.sql
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-supabase.txt:38:    |   20251227141000_add_documents_ocr_kind.sql
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:101:|   |   |   |   +---ocr-review
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:105:|   |   |   |   |   |       OcrReviewListClient.tsx
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:111:|   |   |   |   |               OcrReviewDetailClient.tsx
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:277:|       |       +---ocr
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:284:|       |               ocrGuard.ts
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:415:|   |   |   documentOcrRegistry.test.ts
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:416:|   |   |   documentOcrRegistry.ts
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:422:|   |   |   ocrApiClient.ts
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:429:|   |   \---ocr
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:430:|   |       |   getOcrTextProvider.ts
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:435:|   |               azureDocumentIntelligenceOcrTextProvider.ts
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:436:|   |               mockOcrTextProvider.ts
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:437:|   |               ocrTextProvider.ts
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:539:        ocrGuard.test.ts
+docs\architecture\system-map.md:12:- Documents ÔåÆ OCR ÔåÆ verify ÔåÆ OCR review (admin)
+docs\architecture\system-map.md:19:- OCR (Azure Document Intelligence provider)
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-scripts.txt:12:|       test-rls-ocr-isolation.ps1
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-scripts.txt:13:|       test-rls-ocr-isolation.sql
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-scripts.txt:18:    |   run-ocr-extract-verify-v1.ps1
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-scripts.txt:19:    |   run-ocr-v1.ps1
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-docs.txt:21:|       ocr-map.md
+docs\repo-snapshots\canon-refresh-20260118-132825\tests.txt:1:C:\Users\User\FinHub\finhub-web\src\__tests__\ocrGuard.test.ts
+docs\repo-snapshots\canon-refresh-20260118-132825\tests.txt:9:C:\Users\User\FinHub\finhub-web\src\features\documents\documentOcrRegistry.test.ts
+docs\repo-snapshots\canon-refresh-20260118-132825\routes-pages.txt:14:C:\Users\User\FinHub\finhub-web\src\app\(dashboard)\app\documents\ocr-review\[id]\page.tsx
+docs\repo-snapshots\canon-refresh-20260118-132825\routes-pages.txt:15:C:\Users\User\FinHub\finhub-web\src\app\(dashboard)\app\documents\ocr-review\page.tsx
+docs\architecture\route-map.md:18:- /app/documents/ocr-review
+docs\architecture\route-map.md:19:- /app/documents/ocr-review/[id]
+docs\repo-snapshots\canon-refresh-20260118-132825\routes-api.txt:15:C:\Users\User\FinHub\finhub-web\src\app\api\documents\[id]\ocr\route.ts
+docs\repo-snapshots\canon-refresh-20260118-132825\modules-dirs.txt:18:C:\Users\User\FinHub\finhub-web\src\features\documents\ocr                
+docs\repo-snapshots\canon-refresh-20260118-132825\modules-dirs.txt:19:C:\Users\User\FinHub\finhub-web\src\features\documents\ocr\providers      
+docs\repo-snapshots\canon-refresh-20260118-132825\migrations-list.txt:22:20251226220000_documents_ocr_v1.sql                                   7708
+docs\repo-snapshots\canon-refresh-20260118-132825\migrations-list.txt:24:20251227141000_add_documents_ocr_kind.sql                              523
+docs\architecture\ocr-map.md:1:# OCR Map (v2.2)
+docs\architecture\ocr-map.md:4:- POST /api/documents/[id]/ocr
+docs\architecture\ocr-map.md:7:- UI: /app/documents/ocr-review (+ detalle)
+docs\architecture\ocr-map.md:10:- upload ÔåÆ storage ÔåÆ OCR text provider ÔåÆ parser/schema ÔåÆ extraction ÔåÆ verify ÔåÆ human review
+docs\README.md:17:## Fase 7 ÔÇö OCR/IA (operaci├│n)
+docs\README.md:18:- Operaci├│n v1 (OCR + review): ./phase-7/ops-v1.md
+docs\architecture\data-map.md:13:- Ver si hay jobs para OCR, expiraci├│n signed URLs, limpieza, etc.
+docs\decisions\adr-0001-canon2-scope.md:7:- Documents: listado + OCR endpoints + OCR review UI.
+docs\decisions\adr-0001-canon2-scope.md:9:- Integraciones: Supabase clients, Stripe, OCR provider (Azure Document Intelligence), LLM provider (OpenAI) + mocks.
+docs\decisions\adr-0001-canon2-scope.md:10:- Observabilidad: Sentry con enfoque no-PII (telemetr├¡a de producto y API core/OCR).
+docs\decisions\adr-0001-canon2-scope.md:22:- PII en logs/telemetr├¡a/OCR outputs.
+docs\decisions\adr-0001-canon2-scope.md:24:- Costes OCR/LLM y rate limiting.
+src\features\observability\productTelemetry.ts:39:  | "ocr.start"
+src\features\observability\productTelemetry.ts:40:  | "ocr.finish"
+src\features\observability\productTelemetry.ts:41:  | "ocr.fail"
+src\features\observability\productTelemetry.ts:59:  | "product.ocr.start"
+src\features\observability\productTelemetry.ts:60:  | "product.ocr.success"
+src\features\observability\productTelemetry.ts:61:  | "product.ocr.fail"
+src\features\assistant\finny\finnyPrompt.ts:16:      "- Puedes explicar: documentos, OCR, extracci├│n IA, verificaci├│n, perfil, casos, pasos y qu├® significa cada campo.",
+src\features\assistant\finny\finnyPrompt.ts:36:    "- You can explain: documents, OCR, AI extraction, verification, profile, cases, steps, and what each field means.",
+src\features\finances\ui\TransactionsInboxTable.tsx:138:                      <div className="text-xs text-fh-muted">{t.source === "ocr" ? "OCR" : "Manual"}</div>
+src\app\api\debug\documents\route.ts:15:      .select("id,user_id,case_id,file_name,type,status,storage_path,ocr_kind,created_at,updated_at", { count: "exact" })
+src\features\finances\ui\mockData.ts:131:        source: isPending ? "ocr" : "manual",
+src\features\assistant\finny\faqRegistry.ts:34:    triggers: ["documento", "documentos", "subir", "upload", "ocr"],
+src\features\assistant\finny\faqRegistry.ts:36:      es: "Puedes subir documentos en *Documentos*. Si el documento es compatible con OCR, lo procesamos, extraemos campos y luego puedes revisarlos antes de enviarlo a verificaci├│n.",
+src\features\assistant\finny\faqRegistry.ts:37:      en: "You can upload documents in *Documents*. If the document supports OCR, we process it, extract fields, and you can review them before verification.",
+src\features\finances\financesTypes.ts:2:export type FinanceTxSource = "manual" | "ocr";
+src\features\finances\financesClient.ts:103:  // Receipt links (OCR -> tx)
+src\features\documents\documentOcrRegistry.ts:1:import type { DocumentType, OcrKind } from "./documentsTypes";
+src\features\documents\documentOcrRegistry.ts:4: * Registro central de reglas OCR:
+src\features\documents\documentOcrRegistry.ts:5: * - Define qu├® documentos tienen OCR estructurado.
+src\features\documents\documentOcrRegistry.ts:6: * - Define el ocr_kind por defecto basado en el tipo.
+src\features\documents\documentOcrRegistry.ts:9:export function inferOcrKindFromType(type: DocumentType): OcrKind | null {
+src\features\documents\documentOcrRegistry.ts:15: * Convierte input (string/unknown) a OcrKind v├ílido o null.
+src\features\documents\documentOcrRegistry.ts:18:export function parseOcrKind(input: unknown): OcrKind | null {
+src\features\documents\ocrApiClient.ts:10:  ocr_kind: string | null;
+src\features\documents\ocrApiClient.ts:41:export async function requestOcr(documentId: string): Promise<{ run: unknown; extraction: unknown }> {
+src\features\documents\ocrApiClient.ts:42:  const res = await fetch(`/api/documents/${encodeURIComponent(documentId)}/ocr`, { method: "POST" });
+src\features\documents\ocrApiClient.ts:44:  assertOk(res, json, "OCR request failed");
+src\features\documents\documentOcrRegistry.test.ts:2:import { inferOcrKindFromType, parseOcrKind } from "./documentOcrRegistry";
+src\features\documents\documentOcrRegistry.test.ts:4:describe("documentOcrRegistry", () => {
+src\features\documents\documentOcrRegistry.test.ts:5:  it("inferOcrKindFromType: machtigingsregistratie -> machtigingsregistratie", () => {
+src\features\documents\documentOcrRegistry.test.ts:6:    expect(inferOcrKindFromType("machtigingsregistratie")).toBe("machtigingsregistratie");
+src\features\documents\documentOcrRegistry.test.ts:9:  it("inferOcrKindFromType: other types -> null", () => {
+src\features\documents\documentOcrRegistry.test.ts:10:    expect(inferOcrKindFromType("id")).toBe(null);
+src\features\documents\documentOcrRegistry.test.ts:11:    expect(inferOcrKindFromType("income")).toBe(null);
+src\features\documents\documentOcrRegistry.test.ts:12:    expect(inferOcrKindFromType("bank")).toBe(null);
+src\features\documents\documentOcrRegistry.test.ts:13:    expect(inferOcrKindFromType("rental")).toBe(null);
+src\features\documents\documentOcrRegistry.test.ts:14:    expect(inferOcrKindFromType("tax")).toBe(null);
+src\features\documents\documentOcrRegistry.test.ts:15:    expect(inferOcrKindFromType("other")).toBe(null);
+src\features\documents\documentOcrRegistry.test.ts:18:  it("parseOcrKind: accepts only valid values", () => {
+src\features\documents\documentOcrRegistry.test.ts:19:    expect(parseOcrKind("machtigingsregistratie")).toBe("machtigingsregistratie");
+src\features\documents\documentOcrRegistry.test.ts:20:    expect(parseOcrKind("  MACHTIGINGSREGISTRATIE ")).toBe("machtigingsregistratie");
+
+==== PATTERN: document intelligence ====
+
+
+docs\decisions\adr-0001-canon2-scope.md:9:- Integraciones: Supabase clients, Stripe, OCR provider (Azure Document Intelligence), LLM provider (OpenAI) + mocks.
+docs\architecture\system-map.md:19:- OCR (Azure Document Intelligence provider)
+src\features\documents\ocr\README.md:12:- `azure`: Azure AI Document Intelligence (prebuilt-read por defecto).
+
+==== PATTERN: azure ====
+
+
+docs\decisions\adr-0001-canon2-scope.md:9:- Integraciones: Supabase clients, Stripe, OCR provider (Azure Document Intelligence), LLM provider (OpenAI) + mocks.
+docs\repo-snapshots\features-inventory.txt:131:-a----     27/12/2025  01:34 p. m.           2826 azureDocumentIntelligenceOcrTextProvider.ts                                              
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:235:|   |               azureDocumentIntelligenceOcrTextProvider.ts
+docs\architecture\system-map.md:19:- OCR (Azure Document Intelligence provider)
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:435:|   |               azureDocumentIntelligenceOcrTextProvider.ts
+src\features\documents\ocr\README.md:12:- `azure`: Azure AI Document Intelligence (prebuilt-read por defecto).
+src\features\documents\ocr\README.md:15:- `FINHUB_OCR_PROVIDER=mock|azure`
+src\features\documents\ocr\README.md:17:### Azure (si FINHUB_OCR_PROVIDER=azure)
+src\features\documents\ocr\README.md:19:- `AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT`
+src\features\documents\ocr\README.md:20:- `AZURE_DOCUMENT_INTELLIGENCE_KEY`
+src\features\documents\ocr\README.md:23:- `AZURE_DOCUMENT_INTELLIGENCE_API_VERSION` (default `2024-11-30`)
+src\features\documents\ocr\README.md:24:- `AZURE_DOCUMENT_INTELLIGENCE_MODEL_ID` (default `prebuilt-read`)
+src\features\documents\ocr\providers\azureDocumentIntelligenceOcrTextProvider.ts:26:export class AzureDocumentIntelligenceOcrTextProvider implements OcrTextProvider {
+src\features\documents\ocr\providers\azureDocumentIntelligenceOcrTextProvider.ts:27:  public readonly name = "azure-document-intelligence";
+src\features\documents\ocr\providers\azureDocumentIntelligenceOcrTextProvider.ts:30:    const endpoint = normalizeEndpoint(mustEnv("AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT"));
+src\features\documents\ocr\providers\azureDocumentIntelligenceOcrTextProvider.ts:31:    const key = mustEnv("AZURE_DOCUMENT_INTELLIGENCE_KEY");
+src\features\documents\ocr\providers\azureDocumentIntelligenceOcrTextProvider.ts:32:    const apiVersion = process.env.AZURE_DOCUMENT_INTELLIGENCE_API_VERSION ?? "2024-11-30";
+src\features\documents\ocr\providers\azureDocumentIntelligenceOcrTextProvider.ts:33:    const modelId = process.env.AZURE_DOCUMENT_INTELLIGENCE_MODEL_ID ?? "prebuilt-read";
+src\features\documents\ocr\providers\azureDocumentIntelligenceOcrTextProvider.ts:48:      throw new Error(`Azure OCR analyze failed (${postRes.status}): ${txt.slice(0, 400)}`);
+src\features\documents\ocr\providers\azureDocumentIntelligenceOcrTextProvider.ts:52:    if (!opLoc) throw new Error("Azure OCR: missing Operation-Location header");
+src\features\documents\ocr\providers\azureDocumentIntelligenceOcrTextProvider.ts:79:        throw new Error(msg || "Azure OCR failed");
+src\features\documents\ocr\providers\azureDocumentIntelligenceOcrTextProvider.ts:83:    throw new Error("Azure OCR timed out (polling exceeded)");
+src\features\documents\ocr\getOcrTextProvider.ts:3:import { AzureDocumentIntelligenceOcrTextProvider } from "./providers/azureDocumentIntelligenceOcrTextProvider";
+src\features\documents\ocr\getOcrTextProvider.ts:8:  if (v === "azure") return new AzureDocumentIntelligenceOcrTextProvider();
+
+==== PATTERN: openai ====
+
+
+docs\repo-snapshots\features-inventory.txt:36:-a----     30/12/2025  07:43 p. m.           2290 openaiLlmProvider.ts                                                                     
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:191:|   |           openaiLlmProvider.ts
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:388:|   |           openaiLlmProvider.ts
+docs\decisions\adr-0001-canon2-scope.md:9:- Integraciones: Supabase clients, Stripe, OCR provider (Azure Document Intelligence), LLM provider (OpenAI) + mocks.
+docs\architecture\system-map.md:20:- LLM (OpenAI provider + mock)
+docs\phase-7\ops-v1.md:11:### OpenAI (Finny LLM fallback)
+docs\phase-7\ops-v1.md:12:- OPENAI_API_KEY
+docs\phase-7\ops-v1.md:13:- FINNY_OPENAI_MODEL (opcional; default conservador en el c├│digo)
+docs\phase-7\ops-v1.md:63:   - LLM fallback funciona si OPENAI_API_KEY est├í.
+docs\phase-7\ops-v1.md:76:- OPENAI_API_KEY (requerida para modo LLM)
+docs\phase-7\ops-v1.md:77:- FINNY_OPENAI_MODEL (opcional; default del servidor)
+src\features\ai\llm\openaiLlmProvider.ts:1:import OpenAI from "openai";
+src\features\ai\llm\openaiLlmProvider.ts:25:export class OpenAiLlmProvider implements LlmProvider {
+src\features\ai\llm\openaiLlmProvider.ts:26:  name = "openai";
+src\features\ai\llm\openaiLlmProvider.ts:27:  private client: OpenAI;
+src\features\ai\llm\openaiLlmProvider.ts:30:    const apiKey = process.env.OPENAI_API_KEY;
+src\features\ai\llm\openaiLlmProvider.ts:31:    if (!apiKey) throw new Error("Missing env: OPENAI_API_KEY");
+src\features\ai\llm\openaiLlmProvider.ts:32:    this.client = new OpenAI({ apiKey });
+src\features\ai\llm\openaiLlmProvider.ts:36:    // Default estable para structured extraction (puedes sobreescribir con OPENAI_MODEL)
+src\features\ai\llm\openaiLlmProvider.ts:37:    const model = args.model || process.env.OPENAI_MODEL || "gpt-4o-mini";
+src\features\ai\llm\openaiLlmProvider.ts:62:      const msg = e instanceof Error ? e.message : "OpenAI request failed";
+src\features\ai\llm\getLlmProvider.ts:3:import { OpenAiLlmProvider } from "./openaiLlmProvider";
+src\features\ai\llm\getLlmProvider.ts:8:  if (v === "openai") return new OpenAiLlmProvider();
+src\app\api\assistant\chat\route.ts:2:import OpenAI from "openai";
+src\app\api\assistant\chat\route.ts:130:  const apiKey = process.env.OPENAI_API_KEY;
+src\app\api\assistant\chat\route.ts:132:    return bad("OPENAI_API_KEY no est├í configurada en el servidor", 501);
+src\app\api\assistant\chat\route.ts:135:  const client = new OpenAI({ apiKey });
+src\app\api\assistant\chat\route.ts:138:  const model = (process.env.FINNY_OPENAI_MODEL ?? "gpt-4.1-mini").toString();
+src\app\api\assistant\chat\route.ts:148:    return bad("FINNY_OPENAI_MODEL no permitido por pol├¡tica del servidor", 500);
+
+==== PATTERN: assistant ====
+
+
+docs\phase-7\ops-v1.md:21:- El endpoint /api/assistant/chat exige usuario autenticado (guard Supabase) para evitar abuso p├║blico.
+docs\phase-7\ops-v1.md:24:### Assistant
+docs\phase-7\ops-v1.md:25:- POST /api/assistant/chat
+docs\phase-7\ops-v1.md:42:- El assistant es "language-aware":
+docs\phase-7\ops-v1.md:54:- E2E assistant (auth + idioma):
+docs\phase-7\ops-v1.md:55:  - pnpm e2e:assistant
+docs\phase-7\ops-v1.md:66:   - /api/assistant/chat requiere sesi├│n (401 si no auth).
+docs\phase-7\ops-v1.md:69:   - pnpm e2e:assistant OK sin prompts interactivos.
+docs\phase-7\ops-v1.md:73:## Finny (Assistant) ÔÇô Operaci├│n
+docs\phase-7\ops-v1.md:82:- El endpoint /api/assistant/chat requiere sesi├│n (401 si no hay usuario).
+docs\repo-snapshots\features-inventory.txt:9:d-----     28/12/2025  01:15 p. m.                assistant                                                                                
+docs\repo-snapshots\features-inventory.txt:39:    Directorio: C:\Users\User\FinHub\finhub-web\src\features\assistant
+docs\repo-snapshots\features-inventory.txt:47:    Directorio: C:\Users\User\FinHub\finhub-web\src\features\assistant\finny
+docs\repo-snapshots\features-inventory.txt:58:    Directorio: C:\Users\User\FinHub\finhub-web\src\features\assistant\finny\ui
+docs\repo-snapshots\f00-2-20251231-204404-package-summary.txt:8:- e2e:assistant: powershell -NoProfile -ExecutionPolicy Bypass -File scripts/e2e/run-assistant-chat-v1.ps1
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:116:|       +---assistant
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:193:|   +---assistant
+docs\repo-snapshots\f00-2-20251231-203838-tree-scripts.txt:15:    |   run-assistant-chat-v1.ps1
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:225:|       +---assistant
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:390:|   +---assistant
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-scripts.txt:16:    |   run-assistant-chat-v1.ps1
+docs\architecture\system-map.md:7:- API: /api/auth/*, /api/documents/*, /api/payments/*, /api/stripe/webhook, /api/assistant/chat
+docs\architecture\system-map.md:14:- Finny (assistant) ÔåÆ /api/assistant/chat
+docs\repo-snapshots\canon-refresh-20260118-132825\routes-api.txt:2:C:\Users\User\FinHub\finhub-web\src\app\api\assistant\chat\route.ts
+docs\repo-snapshots\canon-refresh-20260118-132825\modules-dirs.txt:11:C:\Users\User\FinHub\finhub-web\src\features\assistant                    
+docs\repo-snapshots\canon-refresh-20260118-132825\modules-dirs.txt:12:C:\Users\User\FinHub\finhub-web\src\features\assistant\finny              
+docs\repo-snapshots\canon-refresh-20260118-132825\modules-dirs.txt:13:C:\Users\User\FinHub\finhub-web\src\features\assistant\finny\ui           
+docs\architecture\finny-map.md:4:- src/features/assistant/finny/*
+docs\architecture\finny-map.md:7:- API: /api/assistant/chat
+src\features\observability\productTelemetry.ts:67:  | "product.assistant.chat.success"
+src\features\observability\productTelemetry.ts:68:  | "product.assistant.chat.fail"
+src\features\assistant\finny\ui\FinnyWidget.tsx:6:type Msg = { role: "user" | "assistant"; text: string; mode?: "faq" | "llm" | "error" };
+src\features\assistant\finny\ui\FinnyWidget.tsx:58:    { role: "assistant", text: t.hello, mode: "faq" },
+src\features\assistant\finny\ui\FinnyWidget.tsx:74:      const res = await fetch("/api/assistant/chat", {
+src\features\assistant\finny\ui\FinnyWidget.tsx:84:        setMessages((m) => [...m, { role: "assistant", text: err, mode: "error" }]);
+src\features\assistant\finny\ui\FinnyWidget.tsx:90:          setMessages((m) => [...m, { role: "assistant", text: err, mode: "error" }]);
+src\features\assistant\finny\ui\FinnyWidget.tsx:94:          setMessages((m) => [...m, { role: "assistant", text: answer, mode }]);
+src\features\assistant\finny\ui\FinnyWidget.tsx:99:      setMessages((m) => [...m, { role: "assistant", text: err, mode: "error" }]);
+src\features\assistant\finny\ui\FinnyWidget.tsx:141:                  {m.role === "assistant" && m.mode ? (
+src\features\assistant\finny\finnyPrompt.ts:26:    "You are Finny, an assistant inside FinHub (Netherlands).",
+src\features\assistant\finny\finnyApiClient.ts:20:  const res = await fetch("/api/assistant/chat", {
+src\app\api\assistant\chat\route.ts:3:import { matchFinnyFaq } from "@/features/assistant/finny/faqRegistry";
+src\app\api\assistant\chat\route.ts:4:import { buildFinnySystemPrompt } from "@/features/assistant/finny/finnyPrompt";
+src\app\api\assistant\chat\route.ts:51:const __FINHUB_TELEMETRY_ROUTE = "/api/assistant/chat";
+src\app\api\assistant\chat\route.ts:52:const __FINHUB_TELEMETRY_PAIR = { success: "product.assistant.chat.success", fail: "product.assistant.chat.fail" } as const;
+src\app\(dashboard)\app\layout.tsx:7:import FinnyWidget from "@/features/assistant/finny/ui/FinnyWidget";
+
+==== PATTERN: finny ====
+
+
+docs\architecture\finny-map.md:1:# Finny Map (v2.2)
+docs\architecture\finny-map.md:4:- src/features/assistant/finny/*
+docs\architecture\finny-map.md:5:- UI widget: FinnyWidget.tsx
+docs\architecture\finny-map.md:6:- Prompt: finnyPrompt.ts
+docs\architecture\system-map.md:14:- Finny (assistant) ÔåÆ /api/assistant/chat
+docs\marketing\landing-structure.md:37:- Hook a Finny Lite
+docs\phase-7\ops-v1.md:1:# Fase 7 ÔÇö Operaci├│n v1 (OCR + Finny)
+docs\phase-7\ops-v1.md:11:### OpenAI (Finny LLM fallback)
+docs\phase-7\ops-v1.md:13:- FINNY_OPENAI_MODEL (opcional; default conservador en el c├│digo)
+docs\phase-7\ops-v1.md:39:- Widget Finny: inyectado en layout del dashboard (UI flotante).
+docs\phase-7\ops-v1.md:61:3) Finny:
+docs\phase-7\ops-v1.md:73:## Finny (Assistant) ÔÇô Operaci├│n
+docs\phase-7\ops-v1.md:77:- FINNY_OPENAI_MODEL (opcional; default del servidor)
+docs\marketing\events-taxonomy.md:54:### finny_lite_open
+docs\marketing\events-taxonomy.md:55:Cu├índo: abrir widget Finny Lite.
+docs\marketing\events-taxonomy.md:60:### finny_lite_question
+docs\repo-snapshots\features-inventory.txt:44:d-----     30/12/2025  07:43 p. m.                finny                                                                                    
+docs\repo-snapshots\features-inventory.txt:47:    Directorio: C:\Users\User\FinHub\finhub-web\src\features\assistant\finny
+docs\repo-snapshots\features-inventory.txt:54:-a----     30/12/2025  07:43 p. m.           1147 finnyApiClient.ts                                                                        
+docs\repo-snapshots\features-inventory.txt:55:-a----     30/12/2025  07:43 p. m.           1969 finnyPrompt.ts                                                                           
+docs\repo-snapshots\features-inventory.txt:58:    Directorio: C:\Users\User\FinHub\finhub-web\src\features\assistant\finny\ui
+docs\repo-snapshots\features-inventory.txt:63:-a----     30/12/2025  07:43 p. m.           6777 FinnyWidget.tsx                                                                          
+docs\marketing\claims-and-guardrails.md:21:## Guardrails Finny Lite
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:194:|   |   \---finny
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:196:|   |       |   finnyApiClient.ts
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:197:|   |       |   finnyPrompt.ts
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:200:|   |               FinnyWidget.tsx
+docs\i18n\i18n-decision.md:4:Foundation (P0) para evitar refactors antes de Landing/Auth/Finny.
+docs\i18n\coverage-matrix.md:6:- Finny Lite (Landing) + Finny Pro (App)
+src\i18n\messages\ro.json:96:  "finny": {
+src\i18n\messages\ro.json:97:    "ask": "ntreab-l pe Finny"
+src\i18n\messages\pl.json:96:  "finny": {
+src\i18n\messages\pl.json:97:    "ask": "Zapytaj Finny"
+src\i18n\messages\es.json:96:  "finny": {
+src\i18n\messages\es.json:97:    "ask": "Preg├║ntale a Finny"
+src\i18n\messages\en.json:96:  "finny": {
+src\i18n\messages\en.json:97:    "ask": "Ask Finny"
+docs\decisions\adr-0001-canon2-scope.md:18:- Guardrails finales de Finny + pol├¡ticas de contenido en app.
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:391:|   |   \---finny
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:393:|   |       |   finnyApiClient.ts
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:394:|   |       |   finnyPrompt.ts
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:397:|   |               FinnyWidget.tsx
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-docs.txt:20:|       finny-map.md
+docs\repo-snapshots\canon-refresh-20260118-132825\modules-dirs.txt:12:C:\Users\User\FinHub\finhub-web\src\features\assistant\finny              
+docs\repo-snapshots\canon-refresh-20260118-132825\modules-dirs.txt:13:C:\Users\User\FinHub\finhub-web\src\features\assistant\finny\ui           
+src\features\assistant\finny\faqRegistry.ts:3:export type FinnyFaq = {
+src\features\assistant\finny\faqRegistry.ts:50:export function matchFinnyFaq(message: string, lang: AppLang): FinnyFaq | null {
+src\features\assistant\finny\finnyApiClient.ts:3:export type FinnyChatMode = "faq" | "llm";
+src\features\assistant\finny\finnyApiClient.ts:7:  mode: FinnyChatMode;
+src\features\assistant\finny\finnyApiClient.ts:19:export async function finnyChat(message: string, lang: AppLang): Promise<ApiResp> {
+src\features\assistant\finny\finnyApiClient.ts:39:      mode: (r.mode === "faq" ? "faq" : "llm") as FinnyChatMode,
+src\features\assistant\finny\finnyPrompt.ts:3:export function buildFinnySystemPrompt(lang: AppLang) {
+src\features\assistant\finny\finnyPrompt.ts:6:      "Eres Finny, un asistente dentro de FinHub (Pa├¡ses Bajos).",
+src\features\assistant\finny\finnyPrompt.ts:26:    "You are Finny, an assistant inside FinHub (Netherlands).",
+src\app\(dashboard)\app\layout.tsx:7:import FinnyWidget from "@/features/assistant/finny/ui/FinnyWidget";
+src\app\(dashboard)\app\layout.tsx:38:      <FinnyWidget />
+src\features\assistant\finny\ui\FinnyWidget.tsx:27:    hello: "Hola, soy Finny. Puedo ayudarte a navegar FinHub y resolver dudas frecuentes. ┬┐Qu├® necesitas?",
+src\features\assistant\finny\ui\FinnyWidget.tsx:37:    hello: "Hi, I'm Finny. I can help you navigate FinHub and answer common questions. What do you need?",
+src\features\assistant\finny\ui\FinnyWidget.tsx:48:export default function FinnyWidget() {
+src\features\assistant\finny\ui\FinnyWidget.tsx:118:                <div className="text-sm font-semibold">Finny</div>
+src\features\assistant\finny\ui\FinnyWidget.tsx:177:          aria-label="Abrir Finny"
+src\features\assistant\finny\ui\FinnyWidget.tsx:178:          title="Abrir Finny"
+src\app\api\assistant\chat\route.ts:3:import { matchFinnyFaq } from "@/features/assistant/finny/faqRegistry";
+src\app\api\assistant\chat\route.ts:4:import { buildFinnySystemPrompt } from "@/features/assistant/finny/finnyPrompt";
+src\app\api\assistant\chat\route.ts:105:  const faq = matchFinnyFaq(message, textLang);
+src\app\api\assistant\chat\route.ts:108:    // AUDIT_CONSOLE: finny_chat_faq (MVP)
+src\app\api\assistant\chat\route.ts:112:          evt: "finny_chat",
+src\app\api\assistant\chat\route.ts:138:  const model = (process.env.FINNY_OPENAI_MODEL ?? "gpt-4.1-mini").toString();
+src\app\api\assistant\chat\route.ts:141:  // FINNY_HARDENING: allowlist models + max_output_tokens
+src\app\api\assistant\chat\route.ts:148:    return bad("FINNY_OPENAI_MODEL no permitido por pol├¡tica del servidor", 500);
+src\app\api\assistant\chat\route.ts:151:  const system = buildFinnySystemPrompt(textLang);
+src\app\api\assistant\chat\route.ts:170:    // AUDIT_CONSOLE: finny_chat_llm (MVP)
+src\app\api\assistant\chat\route.ts:174:          evt: "finny_chat",
+
+==== PATTERN: toeslag ====
+
+
+docs\subsidies-smoke.md:7:- /app/subsidies/huurtoeslag (Detail)
+docs\subsidies-smoke.md:8:- /app/subsidies/huurtoeslag/wizard (Wizard)
+docs\subsidies-smoke.md:9:- /app/subsidies/huurtoeslag/result (Result)
+docs\subsidies-smoke.md:10:- /app/subsidies/huurtoeslag/checkout (Checkout)
+docs\subsidies-smoke.md:24:- Huurtoeslag with rent > 1000: should NOT show ineligible solely due to rent.
+docs\subsidies-i18n-inventory.md:196:| subsidies.catalog.huurtoeslag.description | present | present | present | present |
+docs\subsidies-i18n-inventory.md:197:| subsidies.catalog.huurtoeslag.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:202:| subsidies.catalog.zorgtoeslag.description | present | present | present | present |
+docs\subsidies-i18n-inventory.md:203:| subsidies.catalog.zorgtoeslag.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:204:| subsidies.detail.huurtoeslag.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:207:| subsidies.detail.zorgtoeslag.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:208:| subsidies.facts.huurtoeslag.1.label | present | present | present | present |
+docs\subsidies-i18n-inventory.md:209:| subsidies.facts.huurtoeslag.1.value | present | present | present | present |
+docs\subsidies-i18n-inventory.md:210:| subsidies.facts.huurtoeslag.2.label | present | present | present | present |
+docs\subsidies-i18n-inventory.md:211:| subsidies.facts.huurtoeslag.2.value | present | present | present | present |
+docs\subsidies-i18n-inventory.md:212:| subsidies.facts.huurtoeslag.3.label | present | present | present | present |
+docs\subsidies-i18n-inventory.md:213:| subsidies.facts.huurtoeslag.3.value | present | present | present | present |
+docs\subsidies-i18n-inventory.md:226:| subsidies.facts.zorgtoeslag.1.label | present | present | present | present |
+docs\subsidies-i18n-inventory.md:227:| subsidies.facts.zorgtoeslag.1.value | present | present | present | present |
+docs\subsidies-i18n-inventory.md:228:| subsidies.facts.zorgtoeslag.2.label | present | present | present | present |
+docs\subsidies-i18n-inventory.md:229:| subsidies.facts.zorgtoeslag.2.value | present | present | present | present |
+docs\subsidies-i18n-inventory.md:230:| subsidies.facts.zorgtoeslag.3.label | present | present | present | present |
+docs\subsidies-i18n-inventory.md:231:| subsidies.facts.zorgtoeslag.3.value | present | present | present | present |
+docs\subsidies-i18n-inventory.md:232:| subsidies.metrics.huurtoeslag.primary.label | present | present | present | present |
+docs\subsidies-i18n-inventory.md:233:| subsidies.metrics.huurtoeslag.primary.value | present | present | present | present |
+docs\subsidies-i18n-inventory.md:234:| subsidies.metrics.huurtoeslag.secondary.label | present | present | present | present |
+docs\subsidies-i18n-inventory.md:235:| subsidies.metrics.huurtoeslag.secondary.value | present | present | present | present |
+docs\subsidies-i18n-inventory.md:236:| subsidies.metrics.huurtoeslag.tertiary.label | present | present | present | present |
+docs\subsidies-i18n-inventory.md:237:| subsidies.metrics.huurtoeslag.tertiary.value | present | present | present | present |
+docs\subsidies-i18n-inventory.md:250:| subsidies.metrics.zorgtoeslag.primary.label | present | present | present | present |
+docs\subsidies-i18n-inventory.md:251:| subsidies.metrics.zorgtoeslag.primary.value | present | present | present | present |
+docs\subsidies-i18n-inventory.md:252:| subsidies.metrics.zorgtoeslag.secondary.label | present | present | present | present |
+docs\subsidies-i18n-inventory.md:253:| subsidies.metrics.zorgtoeslag.secondary.value | present | present | present | present |
+docs\subsidies-i18n-inventory.md:254:| subsidies.metrics.zorgtoeslag.tertiary.label | present | present | present | present |
+docs\subsidies-i18n-inventory.md:255:| subsidies.metrics.zorgtoeslag.tertiary.value | present | present | present | present |
+docs\subsidies-i18n-inventory.md:265:| subsidies.wizard.huurtoeslag.fields.householdSize | present | present | present | present |
+docs\subsidies-i18n-inventory.md:266:| subsidies.wizard.huurtoeslag.fields.livesInRent | present | present | present | present |
+docs\subsidies-i18n-inventory.md:267:| subsidies.wizard.huurtoeslag.fields.rent | present | present | present | present |
+docs\subsidies-i18n-inventory.md:268:| subsidies.wizard.huurtoeslag.fields.serviceCosts | present | present | present | present |
+docs\subsidies-i18n-inventory.md:269:| subsidies.wizard.huurtoeslag.fields.under21HasChildOrDisability | present | present | present | present |
+docs\subsidies-i18n-inventory.md:270:| subsidies.wizard.huurtoeslag.steps.base.description | present | present | present | present |
+docs\subsidies-i18n-inventory.md:271:| subsidies.wizard.huurtoeslag.steps.base.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:272:| subsidies.wizard.huurtoeslag.steps.rent.description | present | present | present | present |
+docs\subsidies-i18n-inventory.md:273:| subsidies.wizard.huurtoeslag.steps.rent.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:291:| subsidies.wizard.zorgtoeslag.fields.hasBasicInsurance | present | present | present | present |
+docs\subsidies-i18n-inventory.md:292:| subsidies.wizard.zorgtoeslag.steps.insurance.description | present | present | present | present |
+docs\subsidies-i18n-inventory.md:293:| subsidies.wizard.zorgtoeslag.steps.insurance.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:348:| engine.huurtoeslag.ageTooLow | missing | missing | missing | missing |
+docs\subsidies-i18n-inventory.md:349:| engine.huurtoeslag.eligibleRentOk | missing | missing | missing | missing |
+docs\subsidies-i18n-inventory.md:350:| engine.huurtoeslag.incomeTooHigh | missing | missing | missing | missing |
+docs\subsidies-i18n-inventory.md:351:| engine.huurtoeslag.notRenting | missing | missing | missing | missing |
+docs\subsidies-i18n-inventory.md:360:| engine.zorgtoeslag.eligibleInsuranceOk | missing | missing | missing | missing |
+docs\subsidies-i18n-inventory.md:361:| engine.zorgtoeslag.incomeTooHigh | missing | missing | missing | missing |
+docs\subsidies-i18n-inventory.md:362:| engine.zorgtoeslag.noBasicInsurance | missing | missing | missing | missing |
+docs\subsidies-calculation-2026.md:7:- Zorgtoeslag 2026 (Berekening zorgtoeslag 2026, PDF)
+docs\subsidies-calculation-2026.md:8:  - https://download.belastingdienst.nl/toeslagen/docs/berekening_zorgtoeslag_tg0821z61fd.pdf
+docs\subsidies-calculation-2026.md:9:- Huurtoeslag 2026 (Berekening huurtoeslag 2026, PDF)
+docs\subsidies-calculation-2026.md:10:  - https://download.belastingdienst.nl/toeslagen/docs/berekening_huurtoeslag_tg0831z61fd.pdf
+docs\subsidies-calculation-2026.md:11:- Dienst Toeslagen 2026 change notes (no huurgrens as eligibility condition)
+docs\subsidies-calculation-2026.md:12:  - https://www.belastingdienst.nl/wps/wcm/connect/nl/toeslagen/content/wat-verandert-er-in-2026
+docs\subsidies-calculation-2026.md:14:  - https://www.rijksoverheid.nl/actueel/nieuws/2025/11/25/maximum-huurgrenzen-vervallen-als-voorwaarde-voor-de-huurtoeslag
+docs\subsidies-calculation-2026.md:16:  - https://download.belastingdienst.nl/toeslagen/docs/berekening_kindgebonden_budget_tg0811z61fd.pdf
+docs\subsidies-calculation-2026.md:17:- Kinderopvangtoeslag 2026 (Berekening kinderopvangtoeslag 2026, PDF)
+docs\subsidies-calculation-2026.md:18:  - https://download.belastingdienst.nl/toeslagen/docs/berekening_kinderopvangtoeslag_tg0801z61fd.pdf
+docs\subsidies-calculation-2026.md:22:- Zorgtoeslag
+docs\subsidies-calculation-2026.md:26:- Huurtoeslag
+docs\subsidies-calculation-2026.md:40:- Kinderopvangtoeslag (KOT)
+docs\subsidies-calculation-2026.md:48:- Zorgtoeslag: monthly amount rounded down to whole euros.
+docs\subsidies-calculation-2026.md:49:- Huurtoeslag: monthly amount rounded down to whole euros.
+docs\marketing\landing-structure.md:21:- Subsidios / Toeslagen (Huur/Zorg/Kinderopvang)
+docs\i18n\i18n-decision.md:29:2) Glosario fiscal: t├®rmino NL fijo + traducci├│n (p.ej. "toeslag (allowance/subsidio)").
+docs\i18n\glossary-nl-to-all.md:9:- toeslag: allowance/subsidio/subwencja/subven╚øie
+docs\db\schema-v1.sql:24:    'toeslag_huur','toeslag_zorg','toeslag_kinderopvang',
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:362:|           |   huurtoeslag2026.ts
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:367:|           |   zorgtoeslag2026.ts
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:374:|                   huurtoeslag2026.test.ts
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:377:|                   zorgtoeslag2026.test.ts
+docs\domain\scope-v1.md:6:- Toeslagen:
+docs\domain\scope-v1.md:7:  - Tipos: `toeslag_huur`, `toeslag_zorg`, `toeslag_kinderopvang`
+docs\repo-snapshots\canon-refresh-20260118-132825\tests.txt:4:C:\Users\User\FinHub\finhub-web\src\domain\subsidies\calculators\__tests__\huurtoeslag2026.test.ts
+docs\repo-snapshots\canon-refresh-20260118-132825\tests.txt:7:C:\Users\User\FinHub\finhub-web\src\domain\subsidies\calculators\__tests__\zorgtoeslag2026.test.ts
+src\ui\components\CommandPalette.tsx:96:            placeholder="Buscar: casos, documentos, toeslagen, impuestosÔÇª"
+src\ui\components\AppShell.tsx:21:    case "toeslag_huur":
+src\ui\components\AppShell.tsx:22:      return "Huurtoeslag";
+src\ui\components\AppShell.tsx:23:    case "toeslag_zorg":
+src\ui\components\AppShell.tsx:24:      return "Zorgtoeslag";
+src\ui\components\AppShell.tsx:25:    case "toeslag_kinderopvang":
+src\ui\components\AppShell.tsx:26:      return "Kinderopvangtoeslag";
+src\ui\components\AppShell.tsx:41:  "toeslag_huur",
+src\ui\components\AppShell.tsx:42:  "toeslag_zorg",
+src\ui\components\AppShell.tsx:43:  "toeslag_kinderopvang",
+docs\domain\model-v1.md:6:- toeslag_huur
+docs\domain\model-v1.md:7:- toeslag_zorg
+docs\domain\model-v1.md:8:- toeslag_kinderopvang
+src\i18n\messages\ro.json:25:        "toeslagen": "Allowances (toeslagen)",
+src\i18n\messages\ro.json:489:      "huurtoeslag": {
+src\i18n\messages\ro.json:490:        "title": "Huurtoeslag",
+src\i18n\messages\ro.json:496:      "zorgtoeslag": {
+src\i18n\messages\ro.json:497:        "title": "Zorgtoeslag",
+src\i18n\messages\ro.json:511:        "title": "Kinderopvangtoeslag",
+src\i18n\messages\ro.json:519:      "huurtoeslag": {
+src\i18n\messages\ro.json:533:      "zorgtoeslag": {
+src\i18n\messages\ro.json:577:      "huurtoeslag": {
+src\i18n\messages\ro.json:591:      "zorgtoeslag": {
+src\i18n\messages\ro.json:653:      "huurtoeslag": {
+src\i18n\messages\ro.json:654:        "title": "Huurtoeslag",
+src\i18n\messages\ro.json:675:      "zorgtoeslag": {
+src\i18n\messages\ro.json:676:        "title": "Zorgtoeslag",
+src\i18n\messages\ro.json:716:        "title": "Kinderopvangtoeslag",
+src\i18n\messages\ro.json:764:          "hasPartner": "Ai un partener toeslag?",
+src\i18n\messages\ro.json:770:      "huurtoeslag": {
+src\i18n\messages\ro.json:789:      "zorgtoeslag": {
+src\i18n\messages\ro.json:860:      "huurtoeslag": {
+src\i18n\messages\ro.json:868:      "zorgtoeslag": {
+src\i18n\messages\pl.json:25:        "toeslagen": "Allowances (toeslagen)",
+src\i18n\messages\pl.json:492:      "huurtoeslag": {
+src\i18n\messages\pl.json:493:        "title": "Huurtoeslag",
+src\i18n\messages\pl.json:499:      "zorgtoeslag": {
+src\i18n\messages\pl.json:500:        "title": "Zorgtoeslag",
+src\i18n\messages\pl.json:514:        "title": "Kinderopvangtoeslag",
+src\i18n\messages\pl.json:522:      "huurtoeslag": {
+src\i18n\messages\pl.json:536:      "zorgtoeslag": {
+src\i18n\messages\pl.json:580:      "huurtoeslag": {
+src\i18n\messages\pl.json:594:      "zorgtoeslag": {
+src\i18n\messages\pl.json:656:      "huurtoeslag": {
+src\i18n\messages\pl.json:657:        "title": "Huurtoeslag",
+src\i18n\messages\pl.json:678:      "zorgtoeslag": {
+src\i18n\messages\pl.json:679:        "title": "Zorgtoeslag",
+src\i18n\messages\pl.json:719:        "title": "Kinderopvangtoeslag",
+src\i18n\messages\pl.json:767:          "hasPartner": "Czy masz toeslagpartnera?",
+src\i18n\messages\pl.json:773:      "huurtoeslag": {
+src\i18n\messages\pl.json:792:      "zorgtoeslag": {
+src\i18n\messages\pl.json:863:      "huurtoeslag": {
+src\i18n\messages\pl.json:871:      "zorgtoeslag": {
+src\i18n\messages\es.json:25:        "toeslagen": "Allowances (toeslagen)",
+src\i18n\messages\es.json:489:      "huurtoeslag": {
+src\i18n\messages\es.json:490:        "title": "Huurtoeslag",
+src\i18n\messages\es.json:496:      "zorgtoeslag": {
+src\i18n\messages\es.json:497:        "title": "Zorgtoeslag",
+src\i18n\messages\es.json:511:        "title": "Kinderopvangtoeslag",
+src\i18n\messages\es.json:519:      "huurtoeslag": {
+src\i18n\messages\es.json:533:      "zorgtoeslag": {
+src\i18n\messages\es.json:577:      "huurtoeslag": {
+src\i18n\messages\es.json:591:      "zorgtoeslag": {
+src\i18n\messages\es.json:653:      "huurtoeslag": {
+src\i18n\messages\es.json:654:        "title": "Huurtoeslag",
+src\i18n\messages\es.json:675:      "zorgtoeslag": {
+src\i18n\messages\es.json:676:        "title": "Zorgtoeslag",
+src\i18n\messages\es.json:716:        "title": "Kinderopvangtoeslag",
+src\i18n\messages\es.json:764:          "hasPartner": "┬┐Tienes toeslagpartner?",
+src\i18n\messages\es.json:770:      "huurtoeslag": {
+src\i18n\messages\es.json:789:      "zorgtoeslag": {
+src\i18n\messages\es.json:860:      "huurtoeslag": {
+src\i18n\messages\es.json:868:      "zorgtoeslag": {
+src\i18n\messages\en.json:25:        "toeslagen": "Allowances (toeslagen)",
+src\i18n\messages\en.json:453:      "eyebrow": "Toeslagen",
+src\i18n\messages\en.json:489:      "huurtoeslag": {
+src\i18n\messages\en.json:490:        "title": "Huurtoeslag",
+src\i18n\messages\en.json:496:      "zorgtoeslag": {
+src\i18n\messages\en.json:497:        "title": "Zorgtoeslag",
+src\i18n\messages\en.json:511:        "title": "Kinderopvangtoeslag",
+src\i18n\messages\en.json:519:      "huurtoeslag": {
+src\i18n\messages\en.json:533:      "zorgtoeslag": {
+src\i18n\messages\en.json:577:      "huurtoeslag": {
+src\i18n\messages\en.json:591:      "zorgtoeslag": {
+src\i18n\messages\en.json:653:      "huurtoeslag": {
+src\i18n\messages\en.json:654:        "title": "Huurtoeslag",
+src\i18n\messages\en.json:675:      "zorgtoeslag": {
+src\i18n\messages\en.json:676:        "title": "Zorgtoeslag",
+src\i18n\messages\en.json:716:        "title": "Kinderopvangtoeslag",
+src\i18n\messages\en.json:764:          "hasPartner": "Do you have a toeslag partner?",
+src\i18n\messages\en.json:770:      "huurtoeslag": {
+src\i18n\messages\en.json:789:      "zorgtoeslag": {
+src\i18n\messages\en.json:860:      "huurtoeslag": {
+src\i18n\messages\en.json:868:      "zorgtoeslag": {
+src\features\marketing\leadsTypes.ts:7:  | "toeslagen"
+src\features\marketing\leadsStore.ts:7:  { key: "toeslagen", order: 40 },
+src\domain\subsidies\wizardStore.ts:20:  huurtoeslag: {},
+src\domain\subsidies\wizardStore.ts:21:  zorgtoeslag: {},
+src\domain\subsidies\wizardStore.ts:27:  huurtoeslag: null,
+src\domain\subsidies\wizardStore.ts:28:  zorgtoeslag: null,
+src\domain\subsidies\wizardStore.ts:34:  huurtoeslag: 0,
+src\domain\subsidies\wizardStore.ts:35:  zorgtoeslag: 0,
+src\domain\subsidies\wizardSchemas.ts:32:  huurtoeslag: [
+src\domain\subsidies\wizardSchemas.ts:35:      titleKey: "wizard.huurtoeslag.steps.base.title",
+src\domain\subsidies\wizardSchemas.ts:36:      descriptionKey: "wizard.huurtoeslag.steps.base.description",
+src\domain\subsidies\wizardSchemas.ts:38:        { id: "livesInRent", type: "toggle", labelKey: "wizard.huurtoeslag.fields.livesInRent", options: COMMON_YN_OPTIONS },
+src\domain\subsidies\wizardSchemas.ts:41:        { id: "householdSize", type: "number", labelKey: "wizard.huurtoeslag.fields.householdSize" },
+src\domain\subsidies\wizardSchemas.ts:45:          labelKey: "wizard.huurtoeslag.fields.under21HasChildOrDisability",
+src\domain\subsidies\wizardSchemas.ts:61:      titleKey: "wizard.huurtoeslag.steps.rent.title",
+src\domain\subsidies\wizardSchemas.ts:62:      descriptionKey: "wizard.huurtoeslag.steps.rent.description",
+src\domain\subsidies\wizardSchemas.ts:64:        { id: "rent", type: "currency", labelKey: "wizard.huurtoeslag.fields.rent" },
+src\domain\subsidies\wizardSchemas.ts:65:        { id: "serviceCosts", type: "currency", labelKey: "wizard.huurtoeslag.fields.serviceCosts" },
+src\domain\subsidies\wizardSchemas.ts:69:  zorgtoeslag: [
+src\domain\subsidies\wizardSchemas.ts:72:      titleKey: "wizard.zorgtoeslag.steps.insurance.title",
+src\domain\subsidies\wizardSchemas.ts:73:      descriptionKey: "wizard.zorgtoeslag.steps.insurance.description",
+src\domain\subsidies\wizardSchemas.ts:78:          labelKey: "wizard.zorgtoeslag.fields.hasBasicInsurance",
+src\domain\subsidies\types.ts:1:export type SubsidySlug = "huurtoeslag" | "zorgtoeslag" | "kgb" | "kot";
+src\domain\subsidies\registry.ts:49:    slug: "huurtoeslag",
+src\domain\subsidies\registry.ts:52:      titleKey: "catalog.huurtoeslag.title",
+
+==== PATTERN: subsid ====
+
+
+docs\subsidies-smoke.md:1:# Subsidies smoke checklist
+docs\subsidies-smoke.md:3:Run these checks after any Subsidies change. Use all locales: ES, EN, PL, RO.
+docs\subsidies-smoke.md:6:- /app/subsidies (Home)
+docs\subsidies-smoke.md:7:- /app/subsidies/huurtoeslag (Detail)
+docs\subsidies-smoke.md:8:- /app/subsidies/huurtoeslag/wizard (Wizard)
+docs\subsidies-smoke.md:9:- /app/subsidies/huurtoeslag/result (Result)
+docs\subsidies-smoke.md:10:- /app/subsidies/huurtoeslag/checkout (Checkout)
+docs\subsidies-smoke.md:11:- /app/subsidies/applications (Applications)
+docs\subsidies-smoke.md:12:- /app/subsidies/applications/[id] (Application detail)
+docs\subsidies-payments.md:1:# Subsidies payments (Stripe + iDEAL)
+docs\subsidies-payments.md:4:- Subsidies uses Stripe Checkout sessions created in `src/app/api/subsidies/checkout/route.ts`.
+docs\subsidies-payments.md:10:3. Use EUR currency (already enforced for Subsidies).
+docs\subsidies-payments.md:17:- The UI text references iDEAL via `subsidies.checkout.methods`.
+docs\subsidies-i18n-inventory.md:1:# Subsidies i18n inventory
+docs\subsidies-i18n-inventory.md:3:Leaf keys used by Subsidies and related shell UI. Status indicates presence in each locale.
+docs\subsidies-i18n-inventory.md:9:| subsidies.home.badge | present | present | present | present |
+docs\subsidies-i18n-inventory.md:10:| subsidies.home.cta.viewDetails | present | present | present | present |
+docs\subsidies-i18n-inventory.md:11:| subsidies.home.eyebrow | present | present | present | present |
+docs\subsidies-i18n-inventory.md:12:| subsidies.home.howItWorks.steps.1.description | present | present | present | present |
+docs\subsidies-i18n-inventory.md:13:| subsidies.home.howItWorks.steps.1.eyebrow | present | present | present | present |
+docs\subsidies-i18n-inventory.md:14:| subsidies.home.howItWorks.steps.1.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:15:| subsidies.home.howItWorks.steps.2.description | present | present | present | present |
+docs\subsidies-i18n-inventory.md:16:| subsidies.home.howItWorks.steps.2.eyebrow | present | present | present | present |
+docs\subsidies-i18n-inventory.md:17:| subsidies.home.howItWorks.steps.2.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:18:| subsidies.home.howItWorks.steps.3.description | present | present | present | present |
+docs\subsidies-i18n-inventory.md:19:| subsidies.home.howItWorks.steps.3.eyebrow | present | present | present | present |
+docs\subsidies-i18n-inventory.md:20:| subsidies.home.howItWorks.steps.3.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:21:| subsidies.home.howItWorks.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:22:| subsidies.home.labels.coverage | present | present | present | present |
+docs\subsidies-i18n-inventory.md:23:| subsidies.home.labels.timeline | present | present | present | present |
+docs\subsidies-i18n-inventory.md:24:| subsidies.home.subtitle | present | present | present | present |
+docs\subsidies-i18n-inventory.md:25:| subsidies.home.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:31:| subsidies.detail.badge | present | present | present | present |
+docs\subsidies-i18n-inventory.md:32:| subsidies.detail.cta.back | present | present | present | present |
+docs\subsidies-i18n-inventory.md:33:| subsidies.detail.cta.check | present | present | present | present |
+docs\subsidies-i18n-inventory.md:34:| subsidies.detail.cta.description | present | present | present | present |
+docs\subsidies-i18n-inventory.md:35:| subsidies.detail.cta.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:36:| subsidies.detail.disclaimer | present | present | present | present |
+docs\subsidies-i18n-inventory.md:37:| subsidies.detail.invalid.description | present | present | present | present |
+docs\subsidies-i18n-inventory.md:38:| subsidies.detail.invalid.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:39:| subsidies.detail.sections.coverage | present | present | present | present |
+docs\subsidies-i18n-inventory.md:40:| subsidies.detail.sections.needs | present | present | present | present |
+docs\subsidies-i18n-inventory.md:41:| subsidies.detail.sections.requirements | present | present | present | present |
+docs\subsidies-i18n-inventory.md:42:| subsidies.detail.sections.whatIs | present | present | present | present |
+docs\subsidies-i18n-inventory.md:48:| subsidies.detail.invalid.description | present | present | present | present |
+docs\subsidies-i18n-inventory.md:49:| subsidies.detail.invalid.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:50:| subsidies.wizard.actions.back | present | present | present | present |
+docs\subsidies-i18n-inventory.md:51:| subsidies.wizard.actions.finish | present | present | present | present |
+docs\subsidies-i18n-inventory.md:52:| subsidies.wizard.actions.next | present | present | present | present |
+docs\subsidies-i18n-inventory.md:53:| subsidies.wizard.common.selectPlaceholder | present | present | present | present |
+docs\subsidies-i18n-inventory.md:54:| subsidies.wizard.errors.invalidNumber | present | present | present | present |
+docs\subsidies-i18n-inventory.md:55:| subsidies.wizard.errors.required | present | present | present | present |
+docs\subsidies-i18n-inventory.md:56:| subsidies.wizard.kot.child.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:57:| subsidies.wizard.kot.errors.childcareType | present | present | present | present |
+docs\subsidies-i18n-inventory.md:58:| subsidies.wizard.kot.errors.childrenCount | present | present | present | present |
+docs\subsidies-i18n-inventory.md:59:| subsidies.wizard.kot.errors.hourlyRate | present | present | present | present |
+docs\subsidies-i18n-inventory.md:60:| subsidies.wizard.kot.errors.hoursPerMonth | present | present | present | present |
+docs\subsidies-i18n-inventory.md:61:| subsidies.wizard.kot.fields.childcareType | present | present | present | present |
+docs\subsidies-i18n-inventory.md:62:| subsidies.wizard.kot.fields.costPerHour | present | present | present | present |
+docs\subsidies-i18n-inventory.md:63:| subsidies.wizard.kot.fields.hoursPerMonth | present | present | present | present |
+docs\subsidies-i18n-inventory.md:64:| subsidies.wizard.kot.options.bso | present | present | present | present |
+docs\subsidies-i18n-inventory.md:65:| subsidies.wizard.kot.options.dagopvang | present | present | present | present |
+docs\subsidies-i18n-inventory.md:66:| subsidies.wizard.kot.options.gastouder | present | present | present | present |
+docs\subsidies-i18n-inventory.md:67:| subsidies.wizard.stepper.progress | present | present | present | present |
+docs\subsidies-i18n-inventory.md:68:| subsidies.wizard.stepper.step | present | present | present | present |
+docs\subsidies-i18n-inventory.md:74:| subsidies.detail.invalid.description | present | present | present | present |
+docs\subsidies-i18n-inventory.md:75:| subsidies.detail.invalid.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:76:| subsidies.result.actions.continue | present | present | present | present |
+docs\subsidies-i18n-inventory.md:77:| subsidies.result.actions.errorTitle | present | present | present | present |
+docs\subsidies-i18n-inventory.md:78:| subsidies.result.actions.processing | present | present | present | present |
+docs\subsidies-i18n-inventory.md:79:| subsidies.result.actions.review | present | present | present | present |
+docs\subsidies-i18n-inventory.md:80:| subsidies.result.benefit.annualLabel | present | present | present | present |
+docs\subsidies-i18n-inventory.md:81:| subsidies.result.benefit.assumptionsLabel | present | present | present | present |
+docs\subsidies-i18n-inventory.md:82:| subsidies.result.benefit.breakdownLabel | present | present | present | present |
+docs\subsidies-i18n-inventory.md:83:| subsidies.result.benefit.missingInputsLabel | present | present | present | present |
+docs\subsidies-i18n-inventory.md:84:| subsidies.result.benefit.monthlyLabel | present | present | present | present |
+docs\subsidies-i18n-inventory.md:85:| subsidies.result.benefit.notAvailableDescription | present | present | present | present |
+docs\subsidies-i18n-inventory.md:86:| subsidies.result.benefit.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:87:| subsidies.result.empty.description | present | present | present | present |
+docs\subsidies-i18n-inventory.md:88:| subsidies.result.empty.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:89:| subsidies.result.header.eligible | present | present | present | present |
+docs\subsidies-i18n-inventory.md:90:| subsidies.result.header.eligibleDescription | present | present | present | present |
+docs\subsidies-i18n-inventory.md:91:| subsidies.result.header.label | present | present | present | present |
+docs\subsidies-i18n-inventory.md:92:| subsidies.result.header.notEligible | present | present | present | present |
+docs\subsidies-i18n-inventory.md:93:| subsidies.result.header.notEligibleDescription | present | present | present | present |
+docs\subsidies-i18n-inventory.md:94:| subsidies.result.next.description | present | present | present | present |
+docs\subsidies-i18n-inventory.md:95:| subsidies.result.next.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:96:| subsidies.result.paywall.label | present | present | present | present |
+docs\subsidies-i18n-inventory.md:97:| subsidies.result.paywall.sla | present | present | present | present |
+docs\subsidies-i18n-inventory.md:98:| subsidies.result.reasons.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:104:| subsidies.checkout.back | present | present | present | present |
+docs\subsidies-i18n-inventory.md:105:| subsidies.checkout.cta | present | present | present | present |
+docs\subsidies-i18n-inventory.md:106:| subsidies.checkout.description | present | present | present | present |
+docs\subsidies-i18n-inventory.md:107:| subsidies.checkout.errorTitle | present | present | present | present |
+docs\subsidies-i18n-inventory.md:108:| subsidies.checkout.methods | present | present | present | present |
+docs\subsidies-i18n-inventory.md:109:| subsidies.checkout.missing.description | present | present | present | present |
+docs\subsidies-i18n-inventory.md:110:| subsidies.checkout.missing.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:111:| subsidies.checkout.priceLabel | present | present | present | present |
+docs\subsidies-i18n-inventory.md:112:| subsidies.checkout.processing | present | present | present | present |
+docs\subsidies-i18n-inventory.md:113:| subsidies.checkout.sla | present | present | present | present |
+docs\subsidies-i18n-inventory.md:114:| subsidies.checkout.subtitle | present | present | present | present |
+docs\subsidies-i18n-inventory.md:115:| subsidies.checkout.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:116:| subsidies.detail.invalid.description | present | present | present | present |
+docs\subsidies-i18n-inventory.md:117:| subsidies.detail.invalid.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:123:| subsidies.applications.createdAt | present | present | present | present |
+docs\subsidies-i18n-inventory.md:124:| subsidies.applications.cta.details | present | present | present | present |
+docs\subsidies-i18n-inventory.md:125:| subsidies.applications.cta.view | present | present | present | present |
+docs\subsidies-i18n-inventory.md:126:| subsidies.applications.empty.description | present | present | present | present |
+docs\subsidies-i18n-inventory.md:127:| subsidies.applications.empty.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:128:| subsidies.applications.errorTitle | present | present | present | present |
+docs\subsidies-i18n-inventory.md:129:| subsidies.applications.eyebrow | present | present | present | present |
+docs\subsidies-i18n-inventory.md:130:| subsidies.applications.loading | present | present | present | present |
+docs\subsidies-i18n-inventory.md:131:| subsidies.applications.loadingDescription | present | present | present | present |
+docs\subsidies-i18n-inventory.md:132:| subsidies.applications.progress | present | present | present | present |
+docs\subsidies-i18n-inventory.md:133:| subsidies.applications.separator | present | present | present | present |
+docs\subsidies-i18n-inventory.md:134:| subsidies.applications.subtitle | present | present | present | present |
+docs\subsidies-i18n-inventory.md:135:| subsidies.applications.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:136:| subsidies.status.cancelled | present | present | present | present |
+docs\subsidies-i18n-inventory.md:137:| subsidies.status.decision | present | present | present | present |
+docs\subsidies-i18n-inventory.md:138:| subsidies.status.done | present | present | present | present |
+docs\subsidies-i18n-inventory.md:139:| subsidies.status.draft | present | present | present | present |
+docs\subsidies-i18n-inventory.md:140:| subsidies.status.eligible_checked | present | present | present | present |
+docs\subsidies-i18n-inventory.md:141:| subsidies.status.paid | present | present | present | present |
+docs\subsidies-i18n-inventory.md:142:| subsidies.status.submitted | present | present | present | present |
+docs\subsidies-i18n-inventory.md:143:| subsidies.status.under_review | present | present | present | present |
+docs\subsidies-i18n-inventory.md:144:| subsidies.status.waiting_user | present | present | present | present |
+docs\subsidies-i18n-inventory.md:150:| subsidies.applications.detail.back | present | present | present | present |
+docs\subsidies-i18n-inventory.md:151:| subsidies.applications.detail.documents | present | present | present | present |
+docs\subsidies-i18n-inventory.md:152:| subsidies.applications.detail.errorTitle | present | present | present | present |
+docs\subsidies-i18n-inventory.md:153:| subsidies.applications.detail.eyebrow | present | present | present | present |
+docs\subsidies-i18n-inventory.md:154:| subsidies.applications.detail.loading | present | present | present | present |
+docs\subsidies-i18n-inventory.md:155:| subsidies.applications.detail.loadingDescription | present | present | present | present |
+docs\subsidies-i18n-inventory.md:156:| subsidies.applications.detail.missing | present | present | present | present |
+docs\subsidies-i18n-inventory.md:157:| subsidies.applications.detail.notFound | present | present | present | present |
+docs\subsidies-i18n-inventory.md:158:| subsidies.applications.detail.notFoundDescription | present | present | present | present |
+docs\subsidies-i18n-inventory.md:159:| subsidies.applications.detail.notes | present | present | present | present |
+docs\subsidies-i18n-inventory.md:160:| subsidies.applications.detail.notesEmpty | present | present | present | present |
+docs\subsidies-i18n-inventory.md:161:| subsidies.applications.detail.notesEmptyDescription | present | present | present | present |
+docs\subsidies-i18n-inventory.md:162:| subsidies.applications.detail.subtitle | present | present | present | present |
+docs\subsidies-i18n-inventory.md:163:| subsidies.applications.detail.timeline | present | present | present | present |
+docs\subsidies-i18n-inventory.md:164:| subsidies.applications.detail.upload | present | present | present | present |
+docs\subsidies-i18n-inventory.md:165:| subsidies.applications.detail.uploaded | present | present | present | present |
+docs\subsidies-i18n-inventory.md:166:| subsidies.applications.detail.uploading | present | present | present | present |
+docs\subsidies-i18n-inventory.md:167:| subsidies.documents.childcare_contract | present | present | present | present |
+docs\subsidies-i18n-inventory.md:168:| subsidies.documents.childcare_invoice | present | present | present | present |
+docs\subsidies-i18n-inventory.md:169:| subsidies.documents.children_birth | present | present | present | present |
+docs\subsidies-i18n-inventory.md:170:| subsidies.documents.health_insurance | present | present | present | present |
+docs\subsidies-i18n-inventory.md:171:| subsidies.documents.household_composition | present | present | present | present |
+docs\subsidies-i18n-inventory.md:172:| subsidies.documents.huurcontract | present | present | present | present |
+docs\subsidies-i18n-inventory.md:173:| subsidies.documents.id | present | present | present | present |
+docs\subsidies-i18n-inventory.md:174:| subsidies.documents.partner_income | present | present | present | present |
+docs\subsidies-i18n-inventory.md:175:| subsidies.documents.proof_income | present | present | present | present |
+docs\subsidies-i18n-inventory.md:176:| subsidies.documents.rent_service_costs | present | present | present | present |
+docs\subsidies-i18n-inventory.md:177:| subsidies.documents.status.approved | present | present | present | present |
+docs\subsidies-i18n-inventory.md:178:| subsidies.documents.status.missing | present | present | present | present |
+docs\subsidies-i18n-inventory.md:179:| subsidies.documents.status.rejected | present | present | present | present |
+docs\subsidies-i18n-inventory.md:180:| subsidies.documents.status.uploaded | present | present | present | present |
+docs\subsidies-i18n-inventory.md:181:| subsidies.documents.work_or_study_proof | present | present | present | present |
+docs\subsidies-i18n-inventory.md:182:| subsidies.status.cancelled | present | present | present | present |
+docs\subsidies-i18n-inventory.md:183:| subsidies.status.decision | present | present | present | present |
+docs\subsidies-i18n-inventory.md:184:| subsidies.status.done | present | present | present | present |
+docs\subsidies-i18n-inventory.md:185:| subsidies.status.draft | present | present | present | present |
+docs\subsidies-i18n-inventory.md:186:| subsidies.status.eligible_checked | present | present | present | present |
+docs\subsidies-i18n-inventory.md:187:| subsidies.status.paid | present | present | present | present |
+docs\subsidies-i18n-inventory.md:188:| subsidies.status.submitted | present | present | present | present |
+docs\subsidies-i18n-inventory.md:189:| subsidies.status.under_review | present | present | present | present |
+docs\subsidies-i18n-inventory.md:190:| subsidies.status.waiting_user | present | present | present | present |
+docs\subsidies-i18n-inventory.md:196:| subsidies.catalog.huurtoeslag.description | present | present | present | present |
+docs\subsidies-i18n-inventory.md:197:| subsidies.catalog.huurtoeslag.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:198:| subsidies.catalog.kgb.description | present | present | present | present |
+docs\subsidies-i18n-inventory.md:199:| subsidies.catalog.kgb.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:200:| subsidies.catalog.kot.description | present | present | present | present |
+docs\subsidies-i18n-inventory.md:201:| subsidies.catalog.kot.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:202:| subsidies.catalog.zorgtoeslag.description | present | present | present | present |
+docs\subsidies-i18n-inventory.md:203:| subsidies.catalog.zorgtoeslag.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:204:| subsidies.detail.huurtoeslag.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:205:| subsidies.detail.kgb.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:206:| subsidies.detail.kot.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:207:| subsidies.detail.zorgtoeslag.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:208:| subsidies.facts.huurtoeslag.1.label | present | present | present | present |
+docs\subsidies-i18n-inventory.md:209:| subsidies.facts.huurtoeslag.1.value | present | present | present | present |
+docs\subsidies-i18n-inventory.md:210:| subsidies.facts.huurtoeslag.2.label | present | present | present | present |
+docs\subsidies-i18n-inventory.md:211:| subsidies.facts.huurtoeslag.2.value | present | present | present | present |
+docs\subsidies-i18n-inventory.md:212:| subsidies.facts.huurtoeslag.3.label | present | present | present | present |
+docs\subsidies-i18n-inventory.md:213:| subsidies.facts.huurtoeslag.3.value | present | present | present | present |
+docs\subsidies-i18n-inventory.md:214:| subsidies.facts.kgb.1.label | present | present | present | present |
+docs\subsidies-i18n-inventory.md:215:| subsidies.facts.kgb.1.value | present | present | present | present |
+docs\subsidies-i18n-inventory.md:216:| subsidies.facts.kgb.2.label | present | present | present | present |
+docs\subsidies-i18n-inventory.md:217:| subsidies.facts.kgb.2.value | present | present | present | present |
+docs\subsidies-i18n-inventory.md:218:| subsidies.facts.kgb.3.label | present | present | present | present |
+docs\subsidies-i18n-inventory.md:219:| subsidies.facts.kgb.3.value | present | present | present | present |
+docs\subsidies-i18n-inventory.md:220:| subsidies.facts.kot.1.label | present | present | present | present |
+docs\subsidies-i18n-inventory.md:221:| subsidies.facts.kot.1.value | present | present | present | present |
+docs\subsidies-i18n-inventory.md:222:| subsidies.facts.kot.2.label | present | present | present | present |
+docs\subsidies-i18n-inventory.md:223:| subsidies.facts.kot.2.value | present | present | present | present |
+docs\subsidies-i18n-inventory.md:224:| subsidies.facts.kot.3.label | present | present | present | present |
+docs\subsidies-i18n-inventory.md:225:| subsidies.facts.kot.3.value | present | present | present | present |
+docs\subsidies-i18n-inventory.md:226:| subsidies.facts.zorgtoeslag.1.label | present | present | present | present |
+docs\subsidies-i18n-inventory.md:227:| subsidies.facts.zorgtoeslag.1.value | present | present | present | present |
+docs\subsidies-i18n-inventory.md:228:| subsidies.facts.zorgtoeslag.2.label | present | present | present | present |
+
+==== PATTERN: belasting ====
+
+
+docs\subsidies-calculation-2026.md:8:  - https://download.belastingdienst.nl/toeslagen/docs/berekening_zorgtoeslag_tg0821z61fd.pdf
+docs\subsidies-calculation-2026.md:10:  - https://download.belastingdienst.nl/toeslagen/docs/berekening_huurtoeslag_tg0831z61fd.pdf
+docs\subsidies-calculation-2026.md:12:  - https://www.belastingdienst.nl/wps/wcm/connect/nl/toeslagen/content/wat-verandert-er-in-2026
+docs\subsidies-calculation-2026.md:16:  - https://download.belastingdienst.nl/toeslagen/docs/berekening_kindgebonden_budget_tg0811z61fd.pdf
+docs\subsidies-calculation-2026.md:18:  - https://download.belastingdienst.nl/toeslagen/docs/berekening_kinderopvangtoeslag_tg0801z61fd.pdf
+docs\i18n\glossary-nl-to-all.md:10:- Belastingdienst: Tax Administration/Agencia Tributaria NL/Urzad Skarbowy NL/Administra╚øia fiscal─â NL
+src\features\finances\ui\mockData.ts:45:    "Belastingdienst",
+src\features\finances\ui\mockData.ts:117:      if (/belasting/i.test(merchant)) catKey = "taxes";
+
+==== PATTERN: tax ====
+
+
+docs\domain\scope-v1.md:10:  - Tipos: `tax_ib`, `tax_voorlopige_aanslag`
+docs\domain\model-v1.md:9:- tax_ib
+docs\domain\model-v1.md:10:- tax_voorlopige_aanslag
+docs\domain\model-v1.md:39:- tax
+docs\db\schema-v1.sql:25:    'tax_ib','tax_voorlopige_aanslag',
+docs\db\schema-v1.sql:70:    check (type in ('id','income','bank','rental','tax','other')),
+docs\db\documents.sql:27:-- - type por defecto 'unknown', pero en la app se usa union DocumentType (id/income/bank/rental/tax/other).
+docs\openapi\finhub-v1.yaml:199:      enum: [id, income, bank, rental, tax, other]
+docs\marketing\events-taxonomy.md:1:# FinHub ÔÇö Events Taxonomy (F02.2.1 P0)
+docs\i18n\glossary-nl-to-all.md:10:- Belastingdienst: Tax Administration/Agencia Tributaria NL/Urzad Skarbowy NL/Administra╚øia fiscal─â NL
+src\ui\components\AppShell.tsx:27:    case "tax_ib":
+src\ui\components\AppShell.tsx:29:    case "tax_voorlopige_aanslag":
+src\ui\components\AppShell.tsx:44:  "tax_ib",
+src\ui\components\AppShell.tsx:45:  "tax_voorlopige_aanslag",
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-docs.txt:53:|       events-taxonomy.md
+src\features\README.md:9:- taxes
+src\i18n\messages\ro.json:23:        "taxes": "Taxes (IB)",
+src\i18n\messages\ro.json:906:        "label": "Taxa FinHub",
+src\i18n\messages\ro.json:992:      "priceLabel": "Tax─â de serviciu",
+src\i18n\messages\pl.json:23:        "taxes": "Taxes (IB)",
+src\i18n\messages\es.json:23:        "taxes": "Taxes (IB)",
+src\i18n\messages\en.json:23:        "taxes": "Taxes (IB)",
+src\features\marketing\leadsTypes.ts:5:  | "taxes"
+src\features\marketing\leadsStore.ts:5:  { key: "taxes", order: 20 },
+src\features\documents\documentsTypes.ts:1:export type DocumentType = "id" | "income" | "bank" | "rental" | "tax" | "other" | "machtigingsregistratie";
+src\features\documents\documentOcrRegistry.test.ts:14:    expect(inferOcrKindFromType("tax")).toBe(null);
+src\features\finances\ui\mockData.ts:117:      if (/belasting/i.test(merchant)) catKey = "taxes";
+src\features\cases\steps.ts:3:  | `tax_${string}`
+src\features\cases\steps.ts:49:  if (t.startsWith("tax_") || t.startsWith("finances_")) {
+src\features\cases\casesTypes.ts:1:export type CaseType = | "toeslag_huur" | "toeslag_zorg" | "toeslag_kinderopvang" | "tax_ib" | "tax_voorlopige_aanslag" | "finances_intake" | "document_review";
+src\features\finances\financesConfig.ts:15:  taxes: "taxes",
+src\features\finances\financesConfig.ts:30:  { key: FINANCE_CATEGORY_KEYS.taxes,         label: "Impuestos / Gobierno",   sortOrder: 70, isSystem: true },
+src\features\cases\casesStore.ts:56:  if (type.startsWith("tax_")) return "intake";
+src\features\cases\casesConfig.ts:13:  const taxes: CaseStep[] = [
+src\features\cases\casesConfig.ts:33:    case "tax_ib":
+src\features\cases\casesConfig.ts:34:    case "tax_voorlopige_aanslag":
+src\features\cases\casesConfig.ts:35:      return taxes;
+src\features\cases\casesConfig.ts:51:    case "tax_ib":
+src\features\cases\casesConfig.ts:53:    case "tax_voorlopige_aanslag":
+src\features\assistant\finny\finnyPrompt.ts:37:    "- For personalized high-risk tax/legal advice, require human review and suggest opening a case or contacting support.",
+src\features\assistant\finny\faqRegistry.ts:21:      en: "A *machtigingsregistratie* is an authorization that allows an advisor/intermediary to act on your behalf in tax processes. In FinHub you can upload the letter, review extracted data, and send it for human review.",
+src\app\(marketing)\landing\page.tsx:19:  | "taxes"
+src\app\(marketing)\landing\page.tsx:66:        "A finance hub for migrants: personal finance control + guided flows for taxes, toeslagen, loans, mortgages, and insurance.",
+src\app\(marketing)\landing\page.tsx:80:        "Core personal finance gives you clarity. From there, you activate only the flows you need ÔÇö taxes, toeslagen, mortgages, loans, insurance.",
+src\app\(marketing)\landing\page.tsx:105:        { q: "What areas does FinHub cover?", a: "Personal finance, taxes, toeslagen, mortgages, personal loans, insurance, and document flows." },
+src\app\(marketing)\landing\page.tsx:123:        taxes: "Taxes (IB)",
+src\app\(marketing)\landing\page.tsx:197:        taxes: "Impuestos (IB)",
+src\app\(marketing)\landing\page.tsx:271:        taxes: "Podatki (IB)",
+src\app\(marketing)\landing\page.tsx:288:        "Hub financiar pentru migran╚øi: finan╚øe personale + fluxuri ghidate pentru taxe, toeslagen, credite, ipoteci ╚Öi asigur─âri.",
+src\app\(marketing)\landing\page.tsx:302:        "Finan╚øele personale ├«╚øi dau claritate. Apoi activezi doar fluxurile necesare ÔÇö taxe, toeslagen, ipoteci, credite, asigur─âri.",
+src\app\(marketing)\landing\page.tsx:327:        { q: "Ce acoper─â FinHub?", a: "Finan╚øe personale, taxe, toeslagen, ipoteci, credite, asigur─âri ╚Öi documente." },
+src\app\(marketing)\landing\page.tsx:345:        taxes: "Taxe (IB)",
+src\app\(marketing)\landing\opengraph-image.tsx:33:            Personal finance control + guided flows for taxes, toeslagen, mortgages, loans, and insurance.
+src\app\(marketing)\landing\opengraph-image.tsx:38:          {["Personal finance", "Taxes", "Toeslagen", "Mortgages", "Loans", "Insurance"].map((x) => (
+src\app\(marketing)\landing\ui\HubDiagram.tsx:40:        { x: 160, y: 140, label: "Taxes (IB)" },
+src\app\(marketing)\landing\ui\LandingLeadForm.tsx:13:  | "taxes"
+src\app\(marketing)\landing\ui\LandingLeadForm.tsx:22:  "taxes",
+src\app\(dashboard)\app\finances\FinancesOverviewClient.tsx:218:  const transportTokens = ["transport", "taxi", "uber", "metro", "bus", "train", "tram"];
+src\app\(dashboard)\app\documents\ui\DocumentsClient.tsx:17:  { value: "tax", label: "Impuestos" },
+src\app\(dashboard)\app\cases\new\ui\NewCaseClient.tsx:14:  { value: "tax_ib", label: "IB Aangifte" },
+src\app\(dashboard)\app\cases\new\ui\NewCaseClient.tsx:15:  { value: "tax_voorlopige_aanslag", label: "Voorlopige aanslag" },
+
+==== PATTERN: case ====
+
+
+docs\db-notes.md:4:- El CHECK constraint de profiles.preferred_language es case-sensitive.
+docs\db-notes.md:10:- Valida que cases.step_key y case_step_data.step_key bloqueen steps uthorization/documents/review/intake/submission/done si no existe un payment con status='paid'.
+docs\subsidies-smoke.md:23:## Special cases
+docs\db\schema-v1.sql:18:-- cases
+docs\db\schema-v1.sql:19:create table if not exists public.cases (
+docs\db\schema-v1.sql:44:create index if not exists idx_cases_user_created on public.cases(user_id, created_at desc);
+docs\db\schema-v1.sql:45:create index if not exists idx_cases_status on public.cases(status);
+docs\db\schema-v1.sql:47:-- case_step_data
+docs\db\schema-v1.sql:48:create table if not exists public.case_step_data (
+docs\db\schema-v1.sql:50:  case_id uuid not null references public.cases(id) on delete cascade,
+docs\db\schema-v1.sql:57:  constraint uq_case_step unique (case_id, step_key)
+docs\db\schema-v1.sql:60:create index if not exists idx_case_step_case on public.case_step_data(case_id);
+docs\db\schema-v1.sql:66:  case_id uuid null references public.cases(id) on delete set null,
+docs\db\schema-v1.sql:83:create index if not exists idx_documents_case on public.documents(case_id);
+docs\db\rls-v1.md:7:- cases: solo filas con (user_id = auth.uid()).
+docs\db\rls-v1.md:8:- case_step_data: acceso solo si el case asociado pertenece al usuario.
+docs\db\rls-v1.md:21:- /admin/cases requiere rol admin/operator (claim en JWT o tabla roles).
+docs\db\rls-v1.md:22:- Admin puede leer cases (y opcionalmente documents) para revisi├│n humana.
+docs\subsidies-i18n-inventory.md:374:| shell.cmdk.goToCases | present | present | present | present |
+docs\subsidies-i18n-inventory.md:385:| shell.nav.cases | present | present | present | present |
+docs\subsidies-i18n-inventory.md:394:| shell.route.case | present | present | present | present |
+docs\subsidies-i18n-inventory.md:395:| shell.route.cases | present | present | present | present |
+docs\db\documents.sql:11:-- case_id uuid NULL
+docs\db\documents.sql:39:-- documents_case_id_fkey: FOREIGN KEY (case_id) REFERENCES cases(id) ON DELETE CASCADE
+docs\openapi\finhub-v1.yaml:78:      summary: Update document (status/case_id/notes)
+docs\openapi\finhub-v1.yaml:158:      summary: Create Stripe checkout session for current case
+docs\openapi\finhub-v1.yaml:166:      summary: Payment status for current user/case
+docs\openapi\finhub-v1.yaml:213:        caseId: { type: string, nullable: true }
+docs\openapi\finhub-v1.yaml:226:        caseId: { type: string, nullable: true }
+docs\openapi\finhub-v1.yaml:245:        caseId: { type: string, nullable: true }
+docs\repo-snapshots\features-inventory.txt:11:d-----     30/12/2025  07:12 p. m.                cases                                                                                    
+docs\repo-snapshots\features-inventory.txt:74:    Directorio: C:\Users\User\FinHub\finhub-web\src\features\cases
+docs\repo-snapshots\features-inventory.txt:79:-a----     26/12/2025  01:10 p. m.           1312 casesClient.ts                                                                           
+docs\repo-snapshots\features-inventory.txt:80:-a----     26/12/2025  01:10 p. m.           1833 casesConfig.ts                                                                           
+docs\repo-snapshots\features-inventory.txt:81:-a----     26/12/2025  01:10 p. m.            648 casesStorage.ts                                                                          
+docs\repo-snapshots\features-inventory.txt:82:-a----     23/12/2025  07:03 p. m.           5919 casesStore.ts                                                                            
+docs\repo-snapshots\features-inventory.txt:83:-a----     26/12/2025  01:10 p. m.           2079 caseStepDataClient.ts                                                                    
+docs\repo-snapshots\features-inventory.txt:84:-a----     26/12/2025  01:10 p. m.            956 casesTypes.ts                                                                            
+src\ui\lib\formatCurrency.ts:10:  const base = locale.toLowerCase().split("-")[0] || "en";
+docs\repo-snapshots\f00-2-20251231-203838-tree-supabase.txt:18:    |   20251222194856_expand_case_step_keys.sql
+docs\repo-snapshots\f00-2-20251231-203838-tree-supabase.txt:19:    |   20251222195258_expand_case_step_keys_v2.sql
+docs\repo-snapshots\f00-2-20251231-203838-tree-supabase.txt:51:            20251222195258_expand_case_step_keys_v2.sql.bak_20251226184759
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:37:|   |       |   +---cases
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:46:|   |       +---cases
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:53:|   |       |   |           NewCaseClient.tsx
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:56:|   |       |   |       CasesListClient.tsx
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:62:|   |       |       |       CaseOverviewClient.tsx
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:205:|   +---cases
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:206:|   |       casesClient.ts
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:207:|   |       casesConfig.ts
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:208:|   |       casesStorage.ts
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:209:|   |       casesStore.ts
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:210:|   |       caseStepDataClient.ts
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:211:|   |       casesTypes.ts
+docs\architecture\system-map.md:6:- Dashboard app: /app (cases, documents, profile, ui-kit, admin)
+docs\architecture\system-map.md:11:- Cases wizard ÔåÆ pasos por stepKey
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-supabase.txt:18:    |   20251222194856_expand_case_step_keys.sql
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-supabase.txt:19:    |   20251222195258_expand_case_step_keys_v2.sql
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-supabase.txt:57:            20251222195258_expand_case_step_keys_v2.sql.bak_20251226184759
+docs\architecture\route-map.md:13:- /app/cases
+docs\architecture\route-map.md:14:- /app/cases/new
+docs\architecture\route-map.md:15:- /app/cases/[id]
+docs\architecture\route-map.md:16:- /app/cases/[id]/[stepKey]
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:58:|   |   |   |   +---cases
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:74:|   |   |   +---cases
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:81:|   |   |   |   |           NewCaseClient.tsx
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:84:|   |   |   |   |       CasesListClient.tsx
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:90:|   |   |   |       |       CaseOverviewClient.tsx
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:405:|   +---cases
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:406:|   |       casesClient.ts
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:407:|   |       casesConfig.ts
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:408:|   |       casesStorage.ts
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:409:|   |       casesStore.ts
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:410:|   |       caseStepDataClient.ts
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:411:|   |       casesTypes.ts
+docs\architecture\ocr-map.md:13:- Confirmar buckets, paths y trazabilidad (requestId/caseId/documentId)
+docs\architecture\data-map.md:7:- Cases Ôåö CaseStepData Ôåö Documents (hip├│tesis; confirmar en schema)
+src\ui\components\LanguageSwitcher.tsx:21:  const raw = (readCookie("locale") ?? readCookie("NEXT_LOCALE") ?? "en").toLowerCase();
+docs\i18n\coverage-matrix.md:10:- Cases core (steps comunes)
+src\ui\components\CommandPalette.tsx:27:    const query = q.trim().toLowerCase();
+src\ui\components\CommandPalette.tsx:30:      const hay = [a.label, a.hint ?? "", ...(a.keywords ?? [])].join(" ").toLowerCase();
+src\ui\components\CommandPalette.tsx:43:      const key = (e.key || "").toLowerCase();
+src\ui\components\AppShell.tsx:9:import { useCases } from "@/features/cases/casesStore";
+src\ui\components\AppShell.tsx:10:import type { CaseType } from "@/features/cases/casesTypes";
+src\ui\components\AppShell.tsx:11:import { defaultTitleForCaseType } from "@/features/cases/casesConfig";
+src\ui\components\AppShell.tsx:19:function displayLabelForCaseType(type: CaseType): string {
+src\ui\components\AppShell.tsx:21:    case "toeslag_huur":
+src\ui\components\AppShell.tsx:23:    case "toeslag_zorg":
+src\ui\components\AppShell.tsx:25:    case "toeslag_kinderopvang":
+src\ui\components\AppShell.tsx:27:    case "tax_ib":
+src\ui\components\AppShell.tsx:29:    case "tax_voorlopige_aanslag":
+src\ui\components\AppShell.tsx:31:    case "finances_intake":
+src\ui\components\AppShell.tsx:33:    case "document_review":
+src\ui\components\AppShell.tsx:40:const CASE_TYPES: CaseType[] = [
+src\ui\components\AppShell.tsx:64:  const createCase = useCases((s) => s.createCase);
+src\ui\components\AppShell.tsx:72:      { id: "nav_cases", label: "Ir a Casos", hint: "/app/cases", keywords: ["cases", "casos", "historial"], run: () => router.push("/app/cases") },
+src\ui\components\AppShell.tsx:78:    const create: CommandAction[] = CASE_TYPES.map((t) => ({
+src\ui\components\AppShell.tsx:79:      id: `case_${t}`,
+src\ui\components\AppShell.tsx:80:      label: `Crear caso: ${displayLabelForCaseType(t)}`,
+src\ui\components\AppShell.tsx:81:      hint: defaultTitleForCaseType(t),
+src\ui\components\AppShell.tsx:82:      keywords: ["crear", "nuevo", "case", t],
+src\ui\components\AppShell.tsx:84:        const id = await createCase(t);
+src\ui\components\AppShell.tsx:85:        router.push(`/app/cases/${id}`);
+src\ui\components\AppShell.tsx:90:  }, [router, createCase, isAdmin]);
+docs\domain\scope-v1.md:5:- Flujos tipo Case con wizard por `stepKey`.
+docs\domain\scope-v1.md:15:- Document Vault v1: gesti├│n de documentos (tipo/estado/notas) y asociaci├│n opcional a Case.
+docs\domain\scope-v1.md:25:- Persistencia actual en frontend: `localStorage` (estado v1 de cases y documents).
+docs\domain\scope-v1.md:27:  - enums actuales de frontend (`CaseType`, `CaseStatus`, `StepKey`, `DocumentType`, `DocumentStatus`)
+docs\domain\model-v1.md:5:### CaseType
+docs\domain\model-v1.md:14:### CaseStatus
+docs\domain\model-v1.md:51:### Case
+docs\domain\model-v1.md:56:- type: CaseType
+docs\domain\model-v1.md:58:- status: CaseStatus
+docs\domain\model-v1.md:65:### CaseDraft (drafts por step)
+docs\domain\model-v1.md:72:- draftsByCaseId: Record<caseId, CaseDraft>
+docs\domain\model-v1.md:74:### CaseStepData (canonical en backend)
+docs\domain\model-v1.md:76:- caseId
+docs\domain\model-v1.md:90:- caseId?: string (asociaci├│n opcional a Case)
+docs\domain\model-v1.md:101:- id, userId, caseId?
+docs\domain\model-v1.md:118:Estos son estados de negocio compatibles con tus `CaseStatus` actuales:
+docs\domain\mapping-localstorage-to-db.md:4:- Cases: `fh_cases_state_v1`
+docs\domain\mapping-localstorage-to-db.md:9:## 1) Cases (fh_cases_state_v1)
+docs\domain\mapping-localstorage-to-db.md:12:CasesState:
+docs\domain\mapping-localstorage-to-db.md:13:- cases: CaseEntity[]
+docs\domain\mapping-localstorage-to-db.md:14:- draftsByCaseId: Record<string, CaseDraft>
+docs\domain\mapping-localstorage-to-db.md:16:CaseEntity:
+docs\domain\mapping-localstorage-to-db.md:19:CaseDraft:
+docs\domain\mapping-localstorage-to-db.md:23:Tabla `cases`:
+docs\domain\mapping-localstorage-to-db.md:26:- type (CaseType)
+docs\domain\mapping-localstorage-to-db.md:28:- status (CaseStatus)
+docs\domain\mapping-localstorage-to-db.md:33:Tabla `case_step_data` (normalizaci├│n de drafts):
+docs\domain\mapping-localstorage-to-db.md:35:- case_id (uuid)
+docs\domain\mapping-localstorage-to-db.md:40:- constraint unique (case_id, step_key)
+docs\domain\mapping-localstorage-to-db.md:43:Para cada `CaseEntity`:
+docs\domain\mapping-localstorage-to-db.md:44:- insertar/actualizar fila en `cases`.
+docs\domain\mapping-localstorage-to-db.md:46:Para cada `draftsByCaseId[caseId]`:
+docs\domain\mapping-localstorage-to-db.md:47:- por cada key del objeto (cada `stepKey`), upsert en `case_step_data`:
+docs\domain\mapping-localstorage-to-db.md:48:  - (case_id, step_key) ├║nico
+docs\domain\mapping-localstorage-to-db.md:60:- id, fileName, type, status, caseId?, notes?, createdAt, updatedAt
+docs\domain\mapping-localstorage-to-db.md:66:- case_id nullable
+docs\domain\mapping-localstorage-to-db.md:77:- si `caseId` existe, setear `case_id`.
+docs\decisions\adr-0001-canon2-scope.md:6:- Cases: listado + new + detalle + wizard por stepKey.
+docs\repo-snapshots\canon-refresh-20260118-132825\modules-dirs.txt:15:C:\Users\User\FinHub\finhub-web\src\features\cases                        
+docs\repo-snapshots\canon-refresh-20260118-132825\migrations-list.txt:4:20251222194856_expand_case_step_keys.sql                                 0
+docs\repo-snapshots\canon-refresh-20260118-132825\migrations-list.txt:5:20251222195258_expand_case_step_keys_v2.sql                            400
+docs\repo-snapshots\canon-refresh-20260118-132825\routes-pages.txt:5:C:\Users\User\FinHub\finhub-web\src\app\(dashboard)\app\admin\cases\page.tsx
+docs\repo-snapshots\canon-refresh-20260118-132825\routes-pages.txt:10:C:\Users\User\FinHub\finhub-web\src\app\(dashboard)\app\cases\[id]\[stepKey]\page.tsx
+docs\repo-snapshots\canon-refresh-20260118-132825\routes-pages.txt:11:C:\Users\User\FinHub\finhub-web\src\app\(dashboard)\app\cases\[id]\page.tsx
+docs\repo-snapshots\canon-refresh-20260118-132825\routes-pages.txt:12:C:\Users\User\FinHub\finhub-web\src\app\(dashboard)\app\cases\new\page.tsx
+docs\repo-snapshots\canon-refresh-20260118-132825\routes-pages.txt:13:C:\Users\User\FinHub\finhub-web\src\app\(dashboard)\app\cases\page.tsx
+src\i18n\request.ts:8:  const raw = (v ?? "").toLowerCase().trim();
+src\i18n\request.ts:26:    case "en":
+src\i18n\request.ts:28:    case "es":
+src\i18n\request.ts:30:    case "pl":
+src\i18n\request.ts:32:    case "ro":
+src\i18n\messages\ro.json:116:      "cases": "Dosare",
+src\i18n\messages\ro.json:144:      "goToCases": "Mergi la Dosare",
+src\i18n\messages\ro.json:157:      "cases": "Dosare",
+src\i18n\messages\ro.json:158:      "case": "Dosar",
+src\i18n\messages\ro.json:194:        "cases": "Dosare",
+src\i18n\messages\pl.json:116:      "cases": "Sprawy",
+src\i18n\messages\pl.json:144:      "goToCases": "Przejd┼║ do Spraw",
+src\i18n\messages\pl.json:157:      "cases": "Sprawy",
+src\i18n\messages\pl.json:158:      "case": "Sprawa",
+src\i18n\messages\pl.json:195:        "cases": "Sprawy",
+src\i18n\messages\es.json:116:      "cases": "Casos",
+src\i18n\messages\es.json:144:      "goToCases": "Ir a Casos",
+src\i18n\messages\es.json:162:      "cases": "Casos",
+src\i18n\messages\es.json:163:      "case": "Caso",
+src\i18n\messages\es.json:194:        "cases": "Casos",
+src\i18n\messages\en.json:116:      "cases": "Cases",
+src\i18n\messages\en.json:144:      "goToCases": "Go to Cases",
+src\i18n\messages\en.json:162:      "cases": "Cases",
+src\i18n\messages\en.json:163:      "case": "Case",
+src\i18n\messages\en.json:194:        "cases": "Cases",
+src\i18n\messages\en.json:991:      "description": "After payment, we will create your case and request your documents.",
+src\i18n\getMessages.ts:8:    case "en":
+src\i18n\getMessages.ts:10:    case "es":
+src\i18n\getMessages.ts:12:    case "pl":
+src\i18n\getMessages.ts:14:    case "ro":
+src\features\README.md:5:- cases
+src\features\payments\usePaymentStatus.ts:12:export function usePaymentStatus(caseId?: string) {
+src\features\payments\usePaymentStatus.ts:19:  const safeCaseId = useMemo(() => (caseId ?? "").toString().trim(), [caseId]);
+src\features\payments\usePaymentStatus.ts:22:    if (!safeCaseId) {
+src\features\payments\usePaymentStatus.ts:23:      setState({ loading: false, paid: false, status: "no_case" });
+src\features\payments\usePaymentStatus.ts:30:      const res = await fetch(`/api/payments/status?caseId=${encodeURIComponent(safeCaseId)}`, { method: "GET" });
+src\features\payments\usePaymentStatus.ts:54:  }, [safeCaseId]);
+src\features\observability\productTelemetry.ts:37:  | "case.create"
+src\features\observability\productTelemetry.ts:115:    const lk = k.toLowerCase();
+src\features\i18n\lang.ts:5:  const s = (x ?? "").toString().toLowerCase().trim();
+src\features\ai\llm\mockLlmProvider.ts:11:  if (schemaName.toLowerCase().includes("machtigingsregistratie")) {
+src\features\ai\llm\mockLlmProvider.ts:13:      text.match(/activeringscode\s*[:-]?\s*([A-Z0-9]{6,})/i)?.[1]?.toUpperCase() ?? "";
+src\features\ai\llm\mockLlmProvider.ts:15:      text.match(/briefkenmerk\s*[:-]?\s*([A-Z0-9-]{4,})/i)?.[1]?.toUpperCase() ?? "";
+src\features\ai\llm\mockLlmProvider.ts:17:      text.match(/intrekkingscode\s*[:-]?\s*([A-Z0-9-]{4,})/i)?.[1]?.toUpperCase() ?? "";
+src\features\finances\ui\TransactionsInboxTable.tsx:66:      const key = (e.key || "").toLowerCase();
+src\features\ai\llm\getLlmProvider.ts:6:  const v = (process.env.LLM_PROVIDER ?? "mock").toLowerCase().trim();
+src\features\finances\ui\mockData.ts:84:      id: `tx_fixed_${f.name.toLowerCase()}`,
+src\components\subsidies\SubsidyIcon.tsx:14:    case "home":
+src\components\subsidies\SubsidyIcon.tsx:20:    case "health":
+src\components\subsidies\SubsidyIcon.tsx:27:    case "kids":
+
+==== PATTERN: wizard ====
+
+
+docs\subsidies-smoke.md:8:- /app/subsidies/huurtoeslag/wizard (Wizard)
+docs\subsidies-smoke.md:18:- Wizard navigation works: Back/Continue, and final Continue opens Result.
+docs\subsidies-i18n-inventory.md:44:## Wizard
+docs\subsidies-i18n-inventory.md:50:| subsidies.wizard.actions.back | present | present | present | present |
+docs\subsidies-i18n-inventory.md:51:| subsidies.wizard.actions.finish | present | present | present | present |
+docs\subsidies-i18n-inventory.md:52:| subsidies.wizard.actions.next | present | present | present | present |
+docs\subsidies-i18n-inventory.md:53:| subsidies.wizard.common.selectPlaceholder | present | present | present | present |
+docs\subsidies-i18n-inventory.md:54:| subsidies.wizard.errors.invalidNumber | present | present | present | present |
+docs\subsidies-i18n-inventory.md:55:| subsidies.wizard.errors.required | present | present | present | present |
+docs\subsidies-i18n-inventory.md:56:| subsidies.wizard.kot.child.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:57:| subsidies.wizard.kot.errors.childcareType | present | present | present | present |
+docs\subsidies-i18n-inventory.md:58:| subsidies.wizard.kot.errors.childrenCount | present | present | present | present |
+docs\subsidies-i18n-inventory.md:59:| subsidies.wizard.kot.errors.hourlyRate | present | present | present | present |
+docs\subsidies-i18n-inventory.md:60:| subsidies.wizard.kot.errors.hoursPerMonth | present | present | present | present |
+docs\subsidies-i18n-inventory.md:61:| subsidies.wizard.kot.fields.childcareType | present | present | present | present |
+docs\subsidies-i18n-inventory.md:62:| subsidies.wizard.kot.fields.costPerHour | present | present | present | present |
+docs\subsidies-i18n-inventory.md:63:| subsidies.wizard.kot.fields.hoursPerMonth | present | present | present | present |
+docs\subsidies-i18n-inventory.md:64:| subsidies.wizard.kot.options.bso | present | present | present | present |
+docs\subsidies-i18n-inventory.md:65:| subsidies.wizard.kot.options.dagopvang | present | present | present | present |
+docs\subsidies-i18n-inventory.md:66:| subsidies.wizard.kot.options.gastouder | present | present | present | present |
+docs\subsidies-i18n-inventory.md:67:| subsidies.wizard.stepper.progress | present | present | present | present |
+docs\subsidies-i18n-inventory.md:68:| subsidies.wizard.stepper.step | present | present | present | present |
+docs\subsidies-i18n-inventory.md:256:| subsidies.wizard.common.fields.age | present | present | present | present |
+docs\subsidies-i18n-inventory.md:257:| subsidies.wizard.common.fields.hasPartner | present | present | present | present |
+docs\subsidies-i18n-inventory.md:258:| subsidies.wizard.common.fields.incomeHousehold | present | present | present | present |
+docs\subsidies-i18n-inventory.md:259:| subsidies.wizard.common.fields.incomePartner | present | present | present | present |
+docs\subsidies-i18n-inventory.md:260:| subsidies.wizard.common.fields.incomeSelf | present | present | present | present |
+docs\subsidies-i18n-inventory.md:261:| subsidies.wizard.common.no | present | present | present | present |
+docs\subsidies-i18n-inventory.md:262:| subsidies.wizard.common.steps.income.description | present | present | present | present |
+docs\subsidies-i18n-inventory.md:263:| subsidies.wizard.common.steps.income.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:264:| subsidies.wizard.common.yes | present | present | present | present |
+docs\subsidies-i18n-inventory.md:265:| subsidies.wizard.huurtoeslag.fields.householdSize | present | present | present | present |
+docs\subsidies-i18n-inventory.md:266:| subsidies.wizard.huurtoeslag.fields.livesInRent | present | present | present | present |
+docs\subsidies-i18n-inventory.md:267:| subsidies.wizard.huurtoeslag.fields.rent | present | present | present | present |
+docs\subsidies-i18n-inventory.md:268:| subsidies.wizard.huurtoeslag.fields.serviceCosts | present | present | present | present |
+docs\subsidies-i18n-inventory.md:269:| subsidies.wizard.huurtoeslag.fields.under21HasChildOrDisability | present | present | present | present |
+docs\subsidies-i18n-inventory.md:270:| subsidies.wizard.huurtoeslag.steps.base.description | present | present | present | present |
+docs\subsidies-i18n-inventory.md:271:| subsidies.wizard.huurtoeslag.steps.base.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:272:| subsidies.wizard.huurtoeslag.steps.rent.description | present | present | present | present |
+docs\subsidies-i18n-inventory.md:273:| subsidies.wizard.huurtoeslag.steps.rent.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:274:| subsidies.wizard.kgb.fields.childrenCount | present | present | present | present |
+docs\subsidies-i18n-inventory.md:275:| subsidies.wizard.kgb.fields.childrenCount12To15 | present | present | present | present |
+docs\subsidies-i18n-inventory.md:276:| subsidies.wizard.kgb.fields.childrenCount16To17 | present | present | present | present |
+docs\subsidies-i18n-inventory.md:277:| subsidies.wizard.kgb.steps.family.description | present | present | present | present |
+docs\subsidies-i18n-inventory.md:278:| subsidies.wizard.kgb.steps.family.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:279:| subsidies.wizard.kot.fields.childrenCount | present | present | present | present |
+docs\subsidies-i18n-inventory.md:280:| subsidies.wizard.kot.fields.costPerHour | present | present | present | present |
+docs\subsidies-i18n-inventory.md:281:| subsidies.wizard.kot.fields.hoursPerMonth | present | present | present | present |
+docs\subsidies-i18n-inventory.md:282:| subsidies.wizard.kot.fields.partnerWorksOrStudies | present | present | present | present |
+docs\subsidies-i18n-inventory.md:283:| subsidies.wizard.kot.fields.workedMonths | present | present | present | present |
+docs\subsidies-i18n-inventory.md:284:| subsidies.wizard.kot.fields.worksOrStudies | present | present | present | present |
+docs\subsidies-i18n-inventory.md:285:| subsidies.wizard.kot.steps.children.description | present | present | present | present |
+docs\subsidies-i18n-inventory.md:286:| subsidies.wizard.kot.steps.children.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:287:| subsidies.wizard.kot.steps.costs.description | present | present | present | present |
+docs\subsidies-i18n-inventory.md:288:| subsidies.wizard.kot.steps.costs.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:289:| subsidies.wizard.kot.steps.work.description | present | present | present | present |
+docs\subsidies-i18n-inventory.md:290:| subsidies.wizard.kot.steps.work.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:291:| subsidies.wizard.zorgtoeslag.fields.hasBasicInsurance | present | present | present | present |
+docs\subsidies-i18n-inventory.md:292:| subsidies.wizard.zorgtoeslag.steps.insurance.description | present | present | present | present |
+docs\subsidies-i18n-inventory.md:293:| subsidies.wizard.zorgtoeslag.steps.insurance.title | present | present | present | present |
+docs\subsidies-i18n-inventory.md:408:| shell.route.subsidyWizard | present | present | present | present |
+docs\subsidies-calculation-2026.md:25:  - Assumes domestic insurance (no CAK/woonlandfactor scenarios in wizard)
+docs\architecture\system-map.md:11:- Cases wizard ÔåÆ pasos por stepKey
+docs\domain\scope-v1.md:5:- Flujos tipo Case con wizard por `stepKey`.
+docs\domain\model-v1.md:52:Representa un flujo guiado (wizard) por pasos (`stepKey`).
+docs\domain\model-v1.md:128:- `stepKey` es la fuente de verdad del punto del wizard.
+docs\decisions\adr-0001-canon2-scope.md:6:- Cases: listado + new + detalle + wizard por stepKey.
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:185:|   |   |   |       \---wizard
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:189:|   |   |   |                   SubsidyWizardClient.tsx
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:357:|       |   wizardSchemas.ts
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:358:|       |   wizardStore.ts
+src\i18n\messages\ro.json:167:      "subsidyWizard": "Asistent subven╚øie"
+src\i18n\messages\ro.json:473:            "description": "R─âspunde la un wizard scurt ╚Öi ob╚øine un rezultat clar."
+src\i18n\messages\ro.json:649:        "description": "R─âspunde la un wizard rapid ╚Öi ob╚øine un rezultat clar.",
+src\i18n\messages\ro.json:738:    "wizard": {
+src\i18n\messages\ro.json:889:        "description": "Finalizeaz─â wizardul pentru a vedea rezultatul."
+src\i18n\messages\ro.json:1011:        "description": "Finalizeaz─â wizardul de eligibilitate pentru a ├«ncepe."
+src\i18n\messages\pl.json:167:      "subsidyWizard": "Kreator dop┼éaty"
+src\i18n\messages\pl.json:741:    "wizard": {
+src\i18n\messages\es.json:155:      "subsidyWizard": "Wizard de elegibilidad",
+src\i18n\messages\es.json:473:            "description": "Responde un wizard corto y obt├®n un resultado claro."
+src\i18n\messages\es.json:649:        "description": "Responde un wizard r├ípido y obt├®n un resultado claro.",
+src\i18n\messages\es.json:738:    "wizard": {
+src\i18n\messages\es.json:889:        "description": "Completa el wizard para ver el resultado."
+src\i18n\messages\es.json:1023:        "description": "Completa el wizard de elegibilidad para empezar."
+src\i18n\messages\en.json:155:      "subsidyWizard": "Eligibility wizard",
+src\i18n\messages\en.json:473:            "description": "Answer a short wizard and get a clear result."
+src\i18n\messages\en.json:649:        "description": "Answer a quick wizard and get a clear outcome.",
+src\i18n\messages\en.json:738:    "wizard": {
+src\i18n\messages\en.json:889:        "description": "Complete the wizard to see your result."
+src\i18n\messages\en.json:1023:        "description": "Complete the eligibility wizard to start."
+docs\repo-snapshots\canon-refresh-20260118-132825\routes-pages.txt:27:C:\Users\User\FinHub\finhub-web\src\app\(dashboard)\app\subsidies\[slug]\wizard\page.tsx
+src\domain\subsidies\wizardStore.ts:7:export type SubsidyWizardAnswers = Record<string, unknown>;
+src\domain\subsidies\wizardStore.ts:9:type WizardState = {
+src\domain\subsidies\wizardStore.ts:10:  answersBySlug: Record<SubsidySlug, SubsidyWizardAnswers>;
+src\domain\subsidies\wizardStore.ts:13:  setAnswer: (slug: SubsidySlug, fieldId: string, value: SubsidyWizardAnswers[string]) => void;
+src\domain\subsidies\wizardStore.ts:19:const EMPTY: Record<SubsidySlug, SubsidyWizardAnswers> = {
+src\domain\subsidies\wizardStore.ts:40:export const useSubsidyWizardStore = create<WizardState>()(
+src\domain\subsidies\wizardStore.ts:68:    { name: "finhub.subsidies.wizard.v1" }
+src\domain\subsidies\wizardSchemas.ts:3:export type WizardFieldType = "toggle" | "number" | "currency" | "select";
+src\domain\subsidies\wizardSchemas.ts:5:export type WizardOption = {
+src\domain\subsidies\wizardSchemas.ts:11:export type WizardField = {
+src\domain\subsidies\wizardSchemas.ts:13:  type: WizardFieldType;
+src\domain\subsidies\wizardSchemas.ts:16:  options?: WizardOption[];
+src\domain\subsidies\wizardSchemas.ts:19:export type WizardStep = {
+src\domain\subsidies\wizardSchemas.ts:23:  fields: WizardField[];
+src\domain\subsidies\wizardSchemas.ts:26:const COMMON_YN_OPTIONS: WizardOption[] = [
+src\domain\subsidies\wizardSchemas.ts:27:  { value: "yes", labelKey: "wizard.common.yes" },
+src\domain\subsidies\wizardSchemas.ts:28:  { value: "no", labelKey: "wizard.common.no" },
+src\domain\subsidies\wizardSchemas.ts:31:export const WIZARD_STEPS_BY_SLUG: Record<SubsidySlug, WizardStep[]> = {
+src\domain\subsidies\wizardSchemas.ts:35:      titleKey: "wizard.huurtoeslag.steps.base.title",
+src\domain\subsidies\wizardSchemas.ts:36:      descriptionKey: "wizard.huurtoeslag.steps.base.description",
+src\domain\subsidies\wizardSchemas.ts:38:        { id: "livesInRent", type: "toggle", labelKey: "wizard.huurtoeslag.fields.livesInRent", options: COMMON_YN_OPTIONS },
+src\domain\subsidies\wizardSchemas.ts:39:        { id: "age", type: "number", labelKey: "wizard.common.fields.age" },
+src\domain\subsidies\wizardSchemas.ts:40:        { id: "hasPartner", type: "toggle", labelKey: "wizard.common.fields.hasPartner", options: COMMON_YN_OPTIONS },
+src\domain\subsidies\wizardSchemas.ts:41:        { id: "householdSize", type: "number", labelKey: "wizard.huurtoeslag.fields.householdSize" },
+src\domain\subsidies\wizardSchemas.ts:45:          labelKey: "wizard.huurtoeslag.fields.under21HasChildOrDisability",
+src\domain\subsidies\wizardSchemas.ts:52:      titleKey: "wizard.common.steps.income.title",
+src\domain\subsidies\wizardSchemas.ts:53:      descriptionKey: "wizard.common.steps.income.description",
+src\domain\subsidies\wizardSchemas.ts:55:        { id: "incomeSelf", type: "currency", labelKey: "wizard.common.fields.incomeSelf" },
+src\domain\subsidies\wizardSchemas.ts:56:        { id: "incomePartner", type: "currency", labelKey: "wizard.common.fields.incomePartner" },
+src\domain\subsidies\wizardSchemas.ts:61:      titleKey: "wizard.huurtoeslag.steps.rent.title",
+src\domain\subsidies\wizardSchemas.ts:62:      descriptionKey: "wizard.huurtoeslag.steps.rent.description",
+src\domain\subsidies\wizardSchemas.ts:64:        { id: "rent", type: "currency", labelKey: "wizard.huurtoeslag.fields.rent" },
+src\domain\subsidies\wizardSchemas.ts:65:        { id: "serviceCosts", type: "currency", labelKey: "wizard.huurtoeslag.fields.serviceCosts" },
+src\domain\subsidies\wizardSchemas.ts:72:      titleKey: "wizard.zorgtoeslag.steps.insurance.title",
+src\domain\subsidies\wizardSchemas.ts:73:      descriptionKey: "wizard.zorgtoeslag.steps.insurance.description",
+src\domain\subsidies\wizardSchemas.ts:78:          labelKey: "wizard.zorgtoeslag.fields.hasBasicInsurance",
+src\domain\subsidies\wizardSchemas.ts:81:        { id: "hasPartner", type: "toggle", labelKey: "wizard.common.fields.hasPartner", options: COMMON_YN_OPTIONS },
+src\domain\subsidies\wizardSchemas.ts:86:      titleKey: "wizard.common.steps.income.title",
+src\domain\subsidies\wizardSchemas.ts:87:      descriptionKey: "wizard.common.steps.income.description",
+src\domain\subsidies\wizardSchemas.ts:89:        { id: "incomeSelf", type: "currency", labelKey: "wizard.common.fields.incomeSelf" },
+src\domain\subsidies\wizardSchemas.ts:90:        { id: "incomePartner", type: "currency", labelKey: "wizard.common.fields.incomePartner" },
+src\domain\subsidies\wizardSchemas.ts:97:      titleKey: "wizard.kgb.steps.family.title",
+src\domain\subsidies\wizardSchemas.ts:98:      descriptionKey: "wizard.kgb.steps.family.description",
+src\domain\subsidies\wizardSchemas.ts:100:        { id: "childrenCount", type: "number", labelKey: "wizard.kgb.fields.childrenCount" },
+src\domain\subsidies\wizardSchemas.ts:101:        { id: "childrenCount12To15", type: "number", labelKey: "wizard.kgb.fields.childrenCount12To15" },
+src\domain\subsidies\wizardSchemas.ts:102:        { id: "childrenCount16To17", type: "number", labelKey: "wizard.kgb.fields.childrenCount16To17" },
+src\domain\subsidies\wizardSchemas.ts:103:        { id: "hasPartner", type: "toggle", labelKey: "wizard.common.fields.hasPartner", options: COMMON_YN_OPTIONS },
+src\domain\subsidies\wizardSchemas.ts:108:      titleKey: "wizard.common.steps.income.title",
+src\domain\subsidies\wizardSchemas.ts:109:      descriptionKey: "wizard.common.steps.income.description",
+src\domain\subsidies\wizardSchemas.ts:110:      fields: [{ id: "incomeHousehold", type: "currency", labelKey: "wizard.common.fields.incomeHousehold" }],
+src\domain\subsidies\wizardSchemas.ts:116:      titleKey: "wizard.kot.steps.children.title",
+src\domain\subsidies\wizardSchemas.ts:117:      descriptionKey: "wizard.kot.steps.children.description",
+src\domain\subsidies\wizardSchemas.ts:119:        { id: "childrenCount", type: "number", labelKey: "wizard.kot.fields.childrenCount" },
+src\domain\subsidies\wizardSchemas.ts:124:      titleKey: "wizard.kot.steps.costs.title",
+src\domain\subsidies\wizardSchemas.ts:125:      descriptionKey: "wizard.kot.steps.costs.description",
+src\domain\subsidies\wizardSchemas.ts:127:        { id: "hoursPerMonth", type: "number", labelKey: "wizard.kot.fields.hoursPerMonth" },
+src\domain\subsidies\wizardSchemas.ts:128:        { id: "costPerHour", type: "currency", labelKey: "wizard.kot.fields.costPerHour" },
+src\domain\subsidies\wizardSchemas.ts:133:      titleKey: "wizard.kot.steps.work.title",
+src\domain\subsidies\wizardSchemas.ts:134:      descriptionKey: "wizard.kot.steps.work.description",
+src\domain\subsidies\wizardSchemas.ts:136:        { id: "worksOrStudies", type: "toggle", labelKey: "wizard.kot.fields.worksOrStudies", options: COMMON_YN_OPTIONS },
+src\domain\subsidies\wizardSchemas.ts:137:        { id: "partnerWorksOrStudies", type: "toggle", labelKey: "wizard.kot.fields.partnerWorksOrStudies", options: COMMON_YN_OPTIONS },
+src\domain\subsidies\wizardSchemas.ts:138:        { id: "workedMonths", type: "number", labelKey: "wizard.kot.fields.workedMonths" },
+src\domain\subsidies\wizardSchemas.ts:143:      titleKey: "wizard.common.steps.income.title",
+src\domain\subsidies\wizardSchemas.ts:144:      descriptionKey: "wizard.common.steps.income.description",
+src\domain\subsidies\wizardSchemas.ts:145:      fields: [{ id: "incomeHousehold", type: "currency", labelKey: "wizard.common.fields.incomeHousehold" }],
+src\app\(dashboard)\ui\dashboardRouteMeta.ts:74:  const subsidyMatch = pathname.match(/^\/app\/subsidies\/([^/]+)(?:\/(wizard|result|checkout))?$/);
+src\app\(dashboard)\ui\dashboardRouteMeta.ts:91:      if (step === "wizard") {
+src\app\(dashboard)\ui\dashboardRouteMeta.ts:92:        return mk(shellT("route.subsidyWizard"), [
+src\app\(dashboard)\ui\dashboardRouteMeta.ts:94:          { href: pathname, label: shellT("route.subsidyWizard") },
+src\app\(dashboard)\app\subsidies\[slug]\wizard\ui\SubsidyWizardClient.tsx:12:import { WIZARD_STEPS_BY_SLUG, type WizardField } from "@/domain/subsidies/wizardSchemas";
+src\app\(dashboard)\app\subsidies\[slug]\wizard\ui\SubsidyWizardClient.tsx:18:import { useSubsidyWizardStore } from "@/domain/subsidies/wizardStore";
+src\app\(dashboard)\app\subsidies\[slug]\wizard\ui\SubsidyWizardClient.tsx:67:    const raw = window.localStorage.getItem("finhub.subsidies.wizard.v1");
+src\app\(dashboard)\app\subsidies\[slug]\wizard\ui\SubsidyWizardClient.tsx:77:export default function SubsidyWizardClient({ slug }: { slug: string }) {
+src\app\(dashboard)\app\subsidies\[slug]\wizard\ui\SubsidyWizardClient.tsx:86:  const setAnswer = useSubsidyWizardStore((s) => s.setAnswer);
+src\app\(dashboard)\app\subsidies\[slug]\wizard\ui\SubsidyWizardClient.tsx:87:  const setResult = useSubsidyWizardStore((s) => s.setResult);
+src\app\(dashboard)\app\subsidies\[slug]\wizard\ui\SubsidyWizardClient.tsx:88:  const setStoredStepIndex = useSubsidyWizardStore((s) => s.setStepIndex);
+src\app\(dashboard)\app\subsidies\[slug]\wizard\ui\SubsidyWizardClient.tsx:89:  const answersBySlug = useSubsidyWizardStore((s) => s.answersBySlug);
+src\app\(dashboard)\app\subsidies\[slug]\wizard\ui\SubsidyWizardClient.tsx:92:  const steps = useMemo(() => (isValidSlug ? WIZARD_STEPS_BY_SLUG[slug] : []), [isValidSlug, slug]);
+src\app\(dashboard)\app\subsidies\[slug]\wizard\ui\SubsidyWizardClient.tsx:121:      console.warn("[SubsidyWizard] Navigation buttons not mounted.");
+src\app\(dashboard)\app\subsidies\[slug]\wizard\ui\SubsidyWizardClient.tsx:145:  function setFieldValue(field: WizardField, value: string) {
+src\app\(dashboard)\app\subsidies\[slug]\wizard\ui\SubsidyWizardClient.tsx:182:        nextErrors.childrenCount = t("wizard.kot.errors.childrenCount");
+src\app\(dashboard)\app\subsidies\[slug]\wizard\ui\SubsidyWizardClient.tsx:188:          nextErrors[`child.${i}.childcareType`] = t("wizard.kot.errors.childcareType");
+src\app\(dashboard)\app\subsidies\[slug]\wizard\ui\SubsidyWizardClient.tsx:191:          nextErrors[`child.${i}.hoursPerMonth`] = t("wizard.kot.errors.hoursPerMonth");
+src\app\(dashboard)\app\subsidies\[slug]\wizard\ui\SubsidyWizardClient.tsx:194:          nextErrors[`child.${i}.hourlyRate`] = t("wizard.kot.errors.hourlyRate");
+src\app\(dashboard)\app\subsidies\[slug]\wizard\ui\SubsidyWizardClient.tsx:205:        nextErrors.childrenCount = t("wizard.kot.errors.childrenCount");
+src\app\(dashboard)\app\subsidies\[slug]\wizard\ui\SubsidyWizardClient.tsx:215:        if (!value) nextErrors[field.id] = t("wizard.errors.required");
+src\app\(dashboard)\app\subsidies\[slug]\wizard\ui\SubsidyWizardClient.tsx:218:          nextErrors[field.id] = t("wizard.errors.invalidNumber");
+src\app\(dashboard)\app\subsidies\[slug]\wizard\ui\SubsidyWizardClient.tsx:366:          labels={{ progress: t("wizard.stepper.progress"), step: t("wizard.stepper.step") }}
+src\app\(dashboard)\app\subsidies\[slug]\wizard\ui\SubsidyWizardClient.tsx:371:            <div className="text-xs uppercase tracking-wide text-fh-muted">{t("wizard.stepper.step")}</div>
+src\app\(dashboard)\app\subsidies\[slug]\wizard\ui\SubsidyWizardClient.tsx:392:                    <div className="text-sm font-semibold text-fh-text">{t("wizard.kot.child.title", { index: index + 1 })}</div>
+src\app\(dashboard)\app\subsidies\[slug]\wizard\ui\SubsidyWizardClient.tsx:395:                        <div className="text-sm font-medium text-fh-muted">{t("wizard.kot.fields.childcareType")}</div>
+src\app\(dashboard)\app\subsidies\[slug]\wizard\ui\SubsidyWizardClient.tsx:404:                          <option value="">{t("wizard.common.selectPlaceholder")}</option>
+src\app\(dashboard)\app\subsidies\[slug]\wizard\ui\SubsidyWizardClient.tsx:405:                          <option value="dagopvang">{t("wizard.kot.options.dagopvang")}</option>
+src\app\(dashboard)\app\subsidies\[slug]\wizard\ui\SubsidyWizardClient.tsx:406:                          <option value="bso">{t("wizard.kot.options.bso")}</option>
+src\app\(dashboard)\app\subsidies\[slug]\wizard\ui\SubsidyWizardClient.tsx:407:                          <option value="gastouder">{t("wizard.kot.options.gastouder")}</option>
+src\app\(dashboard)\app\subsidies\[slug]\wizard\ui\SubsidyWizardClient.tsx:413:                        label={t("wizard.kot.fields.hoursPerMonth")}
+src\app\(dashboard)\app\subsidies\[slug]\wizard\ui\SubsidyWizardClient.tsx:426:                        label={t("wizard.kot.fields.costPerHour")}
+src\app\(dashboard)\app\subsidies\[slug]\wizard\ui\SubsidyWizardClient.tsx:481:                        <option value="">{t("wizard.common.selectPlaceholder")}</option>
+src\app\(dashboard)\app\subsidies\[slug]\wizard\ui\SubsidyWizardClient.tsx:523:              {t("wizard.actions.back")}
+src\app\(dashboard)\app\subsidies\[slug]\wizard\ui\SubsidyWizardClient.tsx:532:              {clampedStepIndex === steps.length - 1 ? t("wizard.actions.finish") : t("wizard.actions.next")}
+src\app\(dashboard)\app\subsidies\[slug]\wizard\page.tsx:1:import SubsidyWizardClient from "./ui/SubsidyWizardClient";
+src\app\(dashboard)\app\subsidies\[slug]\wizard\page.tsx:3:export default async function SubsidyWizardPage({
+src\app\(dashboard)\app\subsidies\[slug]\wizard\page.tsx:9:  return <SubsidyWizardClient slug={slug} />;
+src\app\(dashboard)\app\subsidies\[slug]\ui\SubsidyDetailClient.tsx:94:            href={`/app/subsidies/${slug}/wizard`}
+src\app\(dashboard)\app\subsidies\[slug]\result\ui\SubsidyResultClient.tsx:13:import { useSubsidyWizardStore } from "@/domain/subsidies/wizardStore";
+src\app\(dashboard)\app\subsidies\[slug]\result\ui\SubsidyResultClient.tsx:25:  const answersBySlug = useSubsidyWizardStore((s) => s.answersBySlug);
+src\app\(dashboard)\app\subsidies\[slug]\result\ui\SubsidyResultClient.tsx:26:  const resultBySlug = useSubsidyWizardStore((s) => s.resultBySlug);
+src\app\(dashboard)\app\subsidies\[slug]\result\ui\SubsidyResultClient.tsx:192:                  href={`/app/subsidies/${subsidySlug}/wizard`}
+
+==== PATTERN: machtiging ====
+
+
+src\__tests__\ocrGuard.test.ts:33:      required: "machtigingsregistratie",
+src\__tests__\ocrGuard.test.ts:47:      required: "machtigingsregistratie",
+src\__tests__\ocrGuard.test.ts:56:    const supabase = makeSupabase({ doc: { id: "d1", user_id: "u2", ocr_kind: "machtigingsregistratie" } });
+src\__tests__\ocrGuard.test.ts:61:      required: "machtigingsregistratie",
+src\__tests__\ocrGuard.test.ts:80:      required: "machtigingsregistratie",
+src\__tests__\ocrGuard.test.ts:91:    const supabase = makeSupabase({ doc: { id: "d1", user_id: "u1", ocr_kind: "machtigingsregistratie" } });
+src\__tests__\ocrGuard.test.ts:96:      required: "machtigingsregistratie",
+docs\repo-snapshots\integrations-grep.txt:62:src\__tests__\ocrGuard.test.ts:56:    const supabase = makeSupabase({ doc: { id: "d1", user_id: "u2", ocr_kind: "machtigingsregistratie" } 
+docs\repo-snapshots\integrations-grep.txt:73:src\__tests__\ocrGuard.test.ts:91:    const supabase = makeSupabase({ doc: { id: "d1", user_id: "u1", ocr_kind: "machtigingsregistratie" } 
+docs\repo-snapshots\features-inventory.txt:100:-a----     26/12/2025  10:02 p. m.           1108 machtigingsregistratieSchema.test.ts                                                     
+docs\repo-snapshots\features-inventory.txt:101:-a----     26/12/2025  10:02 p. m.           3907 machtigingsregistratieSchema.ts                                                          
+docs\repo-snapshots\features-inventory.txt:110:-a----     30/12/2025  07:43 p. m.           1620 machtigingsregistratie.v1.ts                                                             
+docs\repo-snapshots\features-inventory.txt:122:-a----     27/12/2025  01:34 p. m.           1043 machtigingsregistratieTextParser.ts                                                      
+docs\repo-snapshots\f00-2-20251231-203838-tree-supabase.txt:37:    |   20251227130000_fix_documents_type_remove_machtigingsregistratie.sql
+docs\repo-snapshots\f00-2-20251231-203838-tree-supabase.txt:39:    |   20251227200908_documents_type_allow_machtigingsregistratie.sql
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:220:|   |   |   machtigingsregistratieSchema.test.ts
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:221:|   |   |   machtigingsregistratieSchema.ts
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:225:|   |   |       machtigingsregistratie.v1.ts
+docs\repo-snapshots\f00-2-20251231-203838-tree-src.txt:231:|   |       |   machtigingsregistratieTextParser.ts
+docs\repo-snapshots\f00-2-20251231-203838-tree-scripts.txt:22:            machtigingsregistratie_sample.png
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-supabase.txt:37:    |   20251227130000_fix_documents_type_remove_machtigingsregistratie.sql
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-supabase.txt:39:    |   20251227200908_documents_type_allow_machtigingsregistratie.sql
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:420:|   |   |   machtigingsregistratieSchema.test.ts
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:421:|   |   |   machtigingsregistratieSchema.ts
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:425:|   |   |       machtigingsregistratie.v1.ts
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-src.txt:431:|   |       |   machtigingsregistratieTextParser.ts
+docs\repo-snapshots\canon-refresh-20260118-132825\tree-scripts.txt:23:            machtigingsregistratie_sample.png
+docs\repo-snapshots\canon-refresh-20260118-132825\tests.txt:11:C:\Users\User\FinHub\finhub-web\src\features\documents\machtigingsregistratieSchema.test.ts
+docs\repo-snapshots\canon-refresh-20260118-132825\migrations-list.txt:23:20251227130000_fix_documents_type_remove_machtigingsregistratie.sql    685
+docs\repo-snapshots\canon-refresh-20260118-132825\migrations-list.txt:25:20251227200908_documents_type_allow_machtigingsregistratie.sql         517
+docs\marketing\landing-structure.md:15:- Sin credenciales DigiD (solo machtiging/autorizaci├│n cuando corresponde)
+docs\marketing\landing-structure.md:28:4. Autorizaci├│n / machtiging (sin contrase├▒a)
+src\app\api\documents\[id]\_shared\ocrGuard.ts:9:  required: "machtigingsregistratie";
+src\features\documents\ocr\README.md:5:- `extraction_type = "machtigingsregistratie"`
+src\features\documents\ocr\README.md:6:- `schema_version = MACHTIGINGSREGISTRATIE_SCHEMA_VERSION`
+src\features\documents\ocr\README.md:7:- `fields` validados por `validateForSaveMachtigingsregistratieFieldsV1`
+docs\db\schema-v1.sql:115:  extraction_type text not null default 'machtigingsregistratie',
+docs\db\schema-v1.sql:164:      check (ocr_kind is null or ocr_kind in ('machtigingsregistratie'));
+src\features\documents\ocr\providers\mockOcrTextProvider.ts:20:      `Machtigingsregistratie\n` +
+src\features\documents\ocr\machtigingsregistratieTextParser.ts:1:import { validateForSaveMachtigingsregistratieFieldsV1, type MachtigingsregistratieFieldsV1 } from "@/features/documents/machtigingsregistratieSchema";
+src\features\documents\ocr\machtigingsregistratieTextParser.ts:3:export function extractMachtigingsregistratieFieldsFromText(rawText: string): {
+src\features\documents\ocr\machtigingsregistratieTextParser.ts:5:  fields: MachtigingsregistratieFieldsV1;
+src\features\documents\ocr\machtigingsregistratieTextParser.ts:21:  const candidate: MachtigingsregistratieFieldsV1 = {
+src\features\documents\ocr\machtigingsregistratieTextParser.ts:28:  const validated = validateForSaveMachtigingsregistratieFieldsV1(candidate);
+src\features\documents\machtigingsregistratieSchema.ts:1:export const MACHTIGINGSREGISTRATIE_SCHEMA_VERSION = 1 as const;
+src\features\documents\machtigingsregistratieSchema.ts:3:export type MachtigingsregistratieFieldsV1 = {
+src\features\documents\machtigingsregistratieSchema.ts:67:export function emptyMachtigingsregistratieFieldsV1(): MachtigingsregistratieFieldsV1 {
+src\features\documents\machtigingsregistratieSchema.ts:79:export function validateForSaveMachtigingsregistratieFieldsV1(
+src\features\documents\machtigingsregistratieSchema.ts:82:  | { ok: true; value: MachtigingsregistratieFieldsV1 }
+src\features\documents\machtigingsregistratieSchema.ts:92:  const out: MachtigingsregistratieFieldsV1 = {};
+src\features\documents\machtigingsregistratieSchema.ts:110:export function validateForVerifyMachtigingsregistratieFieldsV1(
+src\features\documents\machtigingsregistratieSchema.ts:113:  | { ok: true; value: MachtigingsregistratieFieldsV1 }
+src\features\documents\machtigingsregistratieSchema.ts:115:  const saved = validateForSaveMachtigingsregistratieFieldsV1(input);
+src\features\documents\machtigingsregistratieSchema.test.ts:3:  validateForSaveMachtigingsregistratieFieldsV1,
+src\features\documents\machtigingsregistratieSchema.test.ts:4:  validateForVerifyMachtigingsregistratieFieldsV1,
+src\features\documents\machtigingsregistratieSchema.test.ts:5:} from "./machtigingsregistratieSchema";
+src\features\documents\machtigingsregistratieSchema.test.ts:7:describe("machtigingsregistratieSchema", () => {
+src\features\documents\machtigingsregistratieSchema.test.ts:9:    const r = validateForSaveMachtigingsregistratieFieldsV1({ activeringscode: "ABC-123", hack: true } as unknown);
+src\features\documents\machtigingsregistratieSchema.test.ts:14:    const r = validateForSaveMachtigingsregistratieFieldsV1({ activeringscode: "ab c-12 3" } as unknown);
+src\features\documents\machtigingsregistratieSchema.test.ts:20:    const r = validateForVerifyMachtigingsregistratieFieldsV1({ activeringscode: "" } as unknown);
+src\features\documents\machtigingsregistratieSchema.test.ts:25:    const r = validateForVerifyMachtigingsregistratieFieldsV1({ activeringscode: "ABC-123" } as unknown);
+src\features\documents\documentsTypes.ts:1:export type DocumentType = "id" | "income" | "bank" | "rental" | "tax" | "other" | "machtigingsregistratie";
+src\features\documents\documentsTypes.ts:3:export type OcrKind = "machtigingsregistratie";
+src\features\documents\documentsClient.ts:32:    ocrKind: ((r as { ocr_kind?: string | null }).ocr_kind === "machtigingsregistratie" ? ("machtigingsregistratie" as OcrKind) : null),
+src\app\api\documents\[id]\verify\route.ts:4:import { validateForVerifyMachtigingsregistratieFieldsV1 } from "@/features/documents/machtigingsregistratieSchema";
+src\app\api\documents\[id]\verify\route.ts:37:      required: "machtigingsregistratie",
+src\app\api\documents\[id]\verify\route.ts:56:    const validated = validateForVerifyMachtigingsregistratieFieldsV1(ex.fields);
+src\features\documents\documentOcrRegistry.ts:10:  if (type === "machtigingsregistratie") return "machtigingsregistratie";
+src\features\documents\documentOcrRegistry.ts:21:  if (v === "machtigingsregistratie") return "machtigingsregistratie";
+src\features\documents\documentOcrRegistry.test.ts:5:  it("inferOcrKindFromType: machtigingsregistratie -> machtigingsregistratie", () => {
+src\features\documents\documentOcrRegistry.test.ts:6:    expect(inferOcrKindFromType("machtigingsregistratie")).toBe("machtigingsregistratie");
+src\features\documents\documentOcrRegistry.test.ts:19:    expect(parseOcrKind("machtigingsregistratie")).toBe("machtigingsregistratie");
+src\features\documents\documentOcrRegistry.test.ts:20:    expect(parseOcrKind("  MACHTIGINGSREGISTRATIE ")).toBe("machtigingsregistratie");
+src\app\api\documents\[id]\ocr\route.ts:5:import { MACHTIGINGSREGISTRATIE_SCHEMA_VERSION } from "@/features/documents/machtigingsregistratieSchema";
+src\app\api\documents\[id]\ocr\route.ts:7:import { extractMachtigingsregistratieFieldsFromText } from "@/features/documents/ocr/machtigingsregistratieTextParser";
+src\app\api\documents\[id]\ocr\route.ts:78:      required: "machtigingsregistratie",
+src\app\api\documents\[id]\ocr\route.ts:86:    const extraction_type = "machtigingsregistratie" as const;
+src\app\api\documents\[id]\ocr\route.ts:161:    const parsed = extractMachtigingsregistratieFieldsFromText(ocr.rawText);
+src\app\api\documents\[id]\ocr\route.ts:203:        schema_version: MACHTIGINGSREGISTRATIE_SCHEMA_VERSION,
+src\features\documents\document-schemas\registry.ts:2:import * as MR1 from "./machtigingsregistratie.v1";
+src\features\documents\document-schemas\registry.ts:14:  if (kind === "machtigingsregistratie") {
+src\features\documents\document-schemas\registry.test.ts:5:  it("returns machtigingsregistratie v1 spec", () => {
+src\features\documents\document-schemas\registry.test.ts:6:    const spec = getExtractionSpec("machtigingsregistratie");
+src\features\documents\document-schemas\registry.test.ts:7:    expect(spec.extractionType).toBe("machtigingsregistratie");
+src\features\documents\document-schemas\registry.test.ts:9:    expect(spec.schemaName).toContain("machtigingsregistratie");
+src\features\documents\document-schemas\machtigingsregistratie.v1.ts:2:  MACHTIGINGSREGISTRATIE_SCHEMA_VERSION,
+src\features\documents\document-schemas\machtigingsregistratie.v1.ts:3:  validateForSaveMachtigingsregistratieFieldsV1,
+src\features\documents\document-schemas\machtigingsregistratie.v1.ts:4:} from "../machtigingsregistratieSchema";
+src\features\documents\document-schemas\machtigingsregistratie.v1.ts:6:export const EXTRACTION_TYPE = "machtigingsregistratie" as const;
+src\features\documents\document-schemas\machtigingsregistratie.v1.ts:7:export const SCHEMA_VERSION = MACHTIGINGSREGISTRATIE_SCHEMA_VERSION;
+src\features\documents\document-schemas\machtigingsregistratie.v1.ts:9:export const SCHEMA_NAME = "machtigingsregistratie_v1";
+src\features\documents\document-schemas\machtigingsregistratie.v1.ts:39:  return validateForSaveMachtigingsregistratieFieldsV1(input);
+src\app\api\documents\[id]\extraction\route.ts:7:  MACHTIGINGSREGISTRATIE_SCHEMA_VERSION,
+src\app\api\documents\[id]\extraction\route.ts:8:  validateForSaveMachtigingsregistratieFieldsV1,
+src\app\api\documents\[id]\extraction\route.ts:9:} from "@/features/documents/machtigingsregistratieSchema";
+src\app\api\documents\[id]\extraction\route.ts:48: * Nota: hoy solo soporta ocr_kind=machtigingsregistratie (Fase 7.E v1).
+src\app\api\documents\[id]\extraction\route.ts:69:      required: "machtigingsregistratie",
+src\app\api\documents\[id]\extraction\route.ts:75:    const spec = getExtractionSpec("machtigingsregistratie");
+src\app\api\documents\[id]\extraction\route.ts:219:      required: "machtigingsregistratie",
+src\app\api\documents\[id]\extraction\route.ts:240:      const validated = validateForSaveMachtigingsregistratieFieldsV1(body.fields);
+src\app\api\documents\[id]\extraction\route.ts:252:          extraction_type: "machtigingsregistratie",
+src\app\api\documents\[id]\extraction\route.ts:253:          schema_version: MACHTIGINGSREGISTRATIE_SCHEMA_VERSION,
+src\app\api\documents\route.ts:37:    ocrKind: (r.ocr_kind === "machtigingsregistratie" ? ("machtigingsregistratie" as OcrKind) : null),
+src\app\api\documents\my\route.ts:32:    ocrKind: (r.ocr_kind === "machtigingsregistratie" ? ("machtigingsregistratie" as OcrKind) : null),
+src\features\assistant\finny\faqRegistry.ts:17:    id: "what-is-machtiging",
+src\features\assistant\finny\faqRegistry.ts:18:    triggers: ["machtiging", "machtigingsregistratie", "autorizaci├│n", "authorization"],
+src\features\assistant\finny\faqRegistry.ts:20:      es: "La *machtigingsregistratie* es una autorizaci├│n para que un asesor/intermediario act├║e en tu nombre en procesos fiscales. En FinHub puedes subir la carta, revisar los datos extra├¡dos y enviarla a revisi├│n.",
+src\features\assistant\finny\faqRegistry.ts:21:      en: "A *machtigingsregistratie* is an authorization that allows an advisor/intermediary to act on your behalf in tax processes. In FinHub you can upload the letter, review extracted data, and send it for human review.",
+src\features\ai\llm\mockLlmProvider.ts:11:  if (schemaName.toLowerCase().includes("machtigingsregistratie")) {
+src\features\ai\llm\mockLlmProvider.test.ts:9:  it("extracts fields for machtigingsregistratie", async () => {
+src\features\ai\llm\mockLlmProvider.test.ts:14:      schemaName: "machtigingsregistratie_v1",
+src\app\(dashboard)\app\documents\ui\DocumentsClient.tsx:133:              <option value="machtigingsregistratie">Machtigingsregistratie</option>
+src\app\(dashboard)\app\documents\ocr-review\[id]\ui\OcrReviewDetailClient.tsx:25:  emptyMachtigingsregistratieFieldsV1,
+src\app\(dashboard)\app\documents\ocr-review\[id]\ui\OcrReviewDetailClient.tsx:26:  validateForSaveMachtigingsregistratieFieldsV1,
+src\app\(dashboard)\app\documents\ocr-review\[id]\ui\OcrReviewDetailClient.tsx:27:  validateForVerifyMachtigingsregistratieFieldsV1,
+src\app\(dashboard)\app\documents\ocr-review\[id]\ui\OcrReviewDetailClient.tsx:28:  type MachtigingsregistratieFieldsV1,
+src\app\(dashboard)\app\documents\ocr-review\[id]\ui\OcrReviewDetailClient.tsx:29:} from "@/features/documents/machtigingsregistratieSchema";
+src\app\(dashboard)\app\documents\ocr-review\[id]\ui\OcrReviewDetailClient.tsx:145: * Machtigingsregistratie extra JSON parsing
+src\app\(dashboard)\app\documents\ocr-review\[id]\ui\OcrReviewDetailClient.tsx:188:  const [fields, setFields] = useState<MachtigingsregistratieFieldsV1>(emptyMachtigingsregistratieFieldsV1());
+src\app\(dashboard)\app\documents\ocr-review\[id]\ui\OcrReviewDetailClient.tsx:208:    const candidate: MachtigingsregistratieFieldsV1 = { ...fields, extra: parsedExtra.ok ? parsedExtra.value : fields.extra };
+src\app\(dashboard)\app\documents\ocr-review\[id]\ui\OcrReviewDetailClient.tsx:209:    const v = validateForVerifyMachtigingsregistratieFieldsV1(candidate);
+src\app\(dashboard)\app\documents\ocr-review\[id]\ui\OcrReviewDetailClient.tsx:233:      const validated = validateForSaveMachtigingsregistratieFieldsV1(rawFields);
+src\app\(dashboard)\app\documents\ocr-review\[id]\ui\OcrReviewDetailClient.tsx:235:        setFields({ ...emptyMachtigingsregistratieFieldsV1(), ...validated.value });
+src\app\(dashboard)\app\documents\ocr-review\[id]\ui\OcrReviewDetailClient.tsx:238:        setFields(emptyMachtigingsregistratieFieldsV1());
+src\app\(dashboard)\app\documents\ocr-review\[id]\ui\OcrReviewDetailClient.tsx:312:    const candidate: MachtigingsregistratieFieldsV1 = { ...fields, extra: parsedExtra.value };
+src\app\(dashboard)\app\documents\ocr-review\[id]\ui\OcrReviewDetailClient.tsx:313:    const validated = validateForSaveMachtigingsregistratieFieldsV1(candidate);
+src\app\(dashboard)\app\documents\ocr-review\[id]\ui\OcrReviewDetailClient.tsx:351:  function setField<K extends keyof MachtigingsregistratieFieldsV1>(key: K, value: MachtigingsregistratieFieldsV1[K]) {
+src\app\(dashboard)\app\documents\ocr-review\[id]\ui\OcrReviewDetailClient.tsx:439:    // We do NOT assume OCR kind. This prevents confusing UX on machtigingsregistratie.
+src\app\(dashboard)\app\documents\ocr-review\[id]\ui\OcrReviewDetailClient.tsx:464:        ) : doc.ocr_kind !== "machtigingsregistratie" ? (
+src\app\(dashboard)\app\documents\ocr-review\[id]\ui\OcrReviewDetailClient.tsx:466:            Este documento no es ocr_kind <b>machtigingsregistratie</b>.
+src\app\(dashboard)\app\documents\ocr-review\[id]\ui\OcrReviewDetailClient.tsx:658:                Conversi├│n a transacci├│n: disponible solo para documentos tipo recibo/bon (para evitar confusi├│n en machtigingsregistratie).
+src\app\(dashboard)\app\documents\ocr-review\ui\OcrReviewListClient.tsx:37:  const items = useMemo(() => docs.filter((d) => d.ocrKind === "machtigingsregistratie"), [docs]);
+src\app\(dashboard)\app\documents\ocr-review\ui\OcrReviewListClient.tsx:55:      <Header title="OCR Review" subtitle="Machtigingsregistratie: ejecutar OCR, editar y verificar campos." />
+src\app\(dashboard)\app\documents\ocr-review\ui\OcrReviewListClient.tsx:58:        Esta pantalla es el flujo dedicado de OCR. Aqu├¡ solo aparecen documentos con ocr_kind <b>machtigingsregistratie</b>.
+src\app\(dashboard)\app\documents\ocr-review\ui\OcrReviewListClient.tsx:67:          <div>No tienes documentos con ocr_kind=machtigingsregistratie todav├¡a.</div>
+

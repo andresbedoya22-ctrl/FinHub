@@ -1,0 +1,25 @@
+﻿Listado de rutas de carpetas
+El n·mero de serie del volumen es FE82-DFA6
+C:\USERS\USER\FINHUB\FINHUB-WEB\SCRIPTS
+|   check-no-bom.mjs
+|   fix-i18n-utf8.mjs
+|   
++---db
+|       test-paid-gate.ps1
+|       test-paid-gate.sql
+|       test-rls-isolation.ps1
+|       test-rls-isolation.sql
+|       test-rls-ocr-isolation.ps1
+|       test-rls-ocr-isolation.sql
+|       
+\---e2e
+    |   run-assistant-chat-v1.ps1
+    |   run-dashboard-smoke-v1.ps1
+    |   run-ocr-extract-verify-v1.ps1
+    |   run-ocr-v1.ps1
+    |   run-suite-local.ps1
+    |   
+    \---fixtures
+            machtigingsregistratie_sample.png
+            
+

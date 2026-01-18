@@ -1,0 +1,85 @@
+﻿Listado de rutas de carpetas
+El n·mero de serie del volumen es FE82-DFA6
+C:\USERS\USER\FINHUB\FINHUB-WEB\DOCS
+|   Canon.docx
+|   CONTRIBUTING.md
+|   db-notes.md
+|   phase-4-closure.md
+|   README.md
+|   subsidies-applications-db.md
+|   subsidies-calculation-2026.md
+|   subsidies-i18n-inventory.md
+|   subsidies-payments.md
+|   subsidies-smoke.md
+|   
++---adr
+|       0000-template.md
+|       
++---architecture
+|       data-map.md
+|       finny-map.md
+|       ocr-map.md
+|       payments-map.md
+|       route-map.md
+|       system-map.md
+|       
++---auth
+|       auth-strategy.md
+|       
++---db
+|   |   documents.sql
+|   |   rls-v1.md
+|   |   schema-v1.sql
+|   |   
+|   \---migrations
+|           2026-01-04_finance_core.sql
+|           
++---decisions
+|       adr-0001-canon2-scope.md
+|       
++---domain
+|       mapping-localstorage-to-db.md
+|       model-v1.md
+|       scope-v1.md
+|       
++---i18n
+|       coverage-matrix.md
+|       glossary-nl-to-all.md
+|       i18n-decision.md
+|       style-guide-per-language.md
+|       
++---marketing
+|       claims-and-guardrails.md
+|       events-taxonomy.md
+|       landing-structure.md
+|       seo-plan.md
+|       
++---openapi
+|       finhub-v1.yaml
+|       
++---phase-7
+|       ops-v1.md
+|       
++---phase-8
+|       release-readiness.md
+|       
++---phase-9
+|       observability-sentry.md
+|       
+\---repo-snapshots
+    |   f00-2-20251231-203838-env-inventory.txt
+    |   f00-2-20251231-203838-meta.txt
+    |   f00-2-20251231-203838-package-summary.txt
+    |   f00-2-20251231-203838-tree-docs.txt
+    |   f00-2-20251231-203838-tree-scripts.txt
+    |   f00-2-20251231-203838-tree-src.txt
+    |   f00-2-20251231-203838-tree-supabase.txt
+    |   f00-2-20251231-204009-package-summary.txt
+    |   f00-2-20251231-204404-package-summary.txt
+    |   features-inventory.txt
+    |   integrations-grep.txt
+    |   
+    \---canon-refresh-20260118-132825
+            tree-src.txt
+            
+
