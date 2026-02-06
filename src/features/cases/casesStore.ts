@@ -3,61 +3,30 @@
 import React, { useEffect } from "react";
 import { create } from "zustand";
 import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
-import type { CaseStatus, CaseType } from "@/features/cases/casesTypes";
-import { defaultTitleForCaseType } from "@/features/cases/casesConfig";
-
-type CaseRow = {
-  id: string;
-  title: string;
-  type: string;
-  status: string;
-  step_key: string;
-  updated_at: string;
-  [key: string]: unknown;
-};
-
-export type CaseItem = {
-  id: string;
-  title: string;
-  type: CaseType | string;
-  status: CaseStatus | string;
-  stepKey: string;
-  updatedAt: string;
-};
+import type { CaseEntity, CaseStatus, CaseStepKey, CaseType } from "./casesTypes";
+import { createCase as apiCreateCase, listCases } from "./casesApi";
+import { defaultTitleForCaseType } from "./casesConfig";
 
 type CasesState = {
-  cases: CaseItem[];
+  cases: CaseEntity[];
   isLoading: boolean;
   error: string | null;
 };
 
 type CasesActions = {
   loadCases: () => Promise<void>;
-  createCase: (type: CaseType, title?: string) => Promise<string>;
-  deleteCase: (id: string) => Promise<void>;
-
-  // helpers usados por la UI
-  getCase: (id: string) => CaseItem | undefined;
+  createCase: (type: CaseType, title?: string, productSlug?: string) => Promise<string>;
   setStatus: (id: string, status: CaseStatus) => Promise<void>;
-  setStepKey: (id: string, stepKey: string) => Promise<void>;
+  setStepKey: (id: string, stepKey: CaseStepKey) => Promise<void>;
+  getCase: (id: string) => CaseEntity | undefined;
 };
 
 type CasesStore = CasesActions & {
   state: CasesState;
-
-  // compatibilidad flat
-  cases: CaseItem[];
+  cases: CaseEntity[];
   isLoading: boolean;
   error: string | null;
 };
-
-function initialStepKeyForType(type: string) {
-  if (type.startsWith("toeslag_")) return "eligibility";
-  if (type.startsWith("tax_")) return "intake";
-  if (type.startsWith("finances_")) return "intake";
-  // fallback seguro: debe existir en tu StepKey
-  return "intake";
-}
 
 function setAll(
   set: (fn: (prev: CasesStore) => Partial<CasesStore>) => void,
@@ -87,80 +56,26 @@ export const useCases = create<CasesStore>((set, get) => ({
 
   getCase: (id: string) => get().state.cases.find((c) => c.id === id),
 
-  // Drafts: por ahora local (se cambia a DB en el siguiente bloque Fase 4)
-loadCases: async () => {
-    const supabase = createSupabaseBrowserClient();
+  loadCases: async () => {
     setAll(set, { isLoading: true, error: null });
-
-    const { data: userData, error: userErr } = await supabase.auth.getUser();
-    if (userErr) {
-      setAll(set, { isLoading: false, error: userErr.message });
-      return;
+    try {
+      const cases = await listCases();
+      setAll(set, { cases, isLoading: false, error: null });
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : "Failed to load cases";
+      setAll(set, { isLoading: false, error: msg });
     }
-    if (!userData.user) {
-      setAll(set, { cases: [], isLoading: false, error: null });
-      return;
-    }
-
-    const { data, error } = await supabase
-      .from("cases")
-      .select("id,title,type,status,step_key,updated_at")
-      .order("created_at", { ascending: false });
-
-    if (error) {
-      setAll(set, { isLoading: false, error: error.message });
-      return;
-    }
-
-    const cases: CaseItem[] = (data ?? []).map((r: CaseRow) => ({
-      id: r.id,
-      title: r.title,
-      type: r.type,
-      status: r.status,
-      stepKey: r.step_key,
-      updatedAt: r.updated_at,
-    }));
-
-    setAll(set, { cases, isLoading: false, error: null });
   },
 
-  createCase: async (type: CaseType, title?: string) => {
-    const supabase = createSupabaseBrowserClient();
-
-    const { data: userData, error: userErr } = await supabase.auth.getUser();
-    if (userErr) throw new Error(userErr.message);
-    if (!userData.user) throw new Error("No authenticated user");
-
-    const finalTitle =
-      title && title.trim().length > 0
-        ? title.trim()
-        : defaultTitleForCaseType(type);
-
-    const stepKey = initialStepKeyForType(type);
-
-    const { data, error } = await supabase
-      .from("cases")
-      .insert({
-        user_id: userData.user.id,
-        title: finalTitle,
-        status: "created",
-        type,
-        step_key: stepKey,
-      })
-      .select("id")
-      .single();
-
-    if (error) throw new Error(error.message);
-
+  createCase: async (type: CaseType, title?: string, productSlug?: string) => {
+    const finalTitle = title && title.trim().length > 0 ? title.trim() : defaultTitleForCaseType(type);
+    const created = await apiCreateCase({
+      type,
+      title: finalTitle,
+      productSlug: productSlug?.trim() ? productSlug.trim() : null,
+    });
     await get().loadCases();
-    return data.id as string;
-  },
-
-  deleteCase: async (id: string) => {
-    const supabase = createSupabaseBrowserClient();
-    const { error } = await supabase.from("cases").delete().eq("id", id);
-    if (error) throw new Error(error.message);
-    await get().loadCases();
+    return created.id;
   },
 
   setStatus: async (id: string, status: CaseStatus) => {
@@ -178,7 +93,7 @@ loadCases: async () => {
     await get().loadCases();
   },
 
-  setStepKey: async (id: string, stepKey: string) => {
+  setStepKey: async (id: string, stepKey: CaseStepKey) => {
     const supabase = createSupabaseBrowserClient();
     const { data: userData, error: userErr } = await supabase.auth.getUser();
     if (userErr) throw new Error(userErr.message);

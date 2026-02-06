@@ -989,12 +989,22 @@
         "title": "Brak wniosku",
         "description": "Zacznij od wyniku uprawnień."
       },
+      "missingCase": {
+        "title": "Brak sprawy",
+        "description": "Nie udało się jeszcze połączyć tego wniosku ze sprawą."
+      },
+      "paid": {
+        "title": "Płatność potwierdzona",
+        "description": "Płatność została potwierdzona. Możesz przejść do autoryzacji.",
+        "cta": "Opłacone"
+      },
       "title": "Płatność",
       "subtitle": "FinHub poprowadzi Twoją dopłatę od początku do końca.",
       "description": "Po płatności utworzymy sprawę i poprosimy o dokumenty.",
       "priceLabel": "Opłata serwisowa",
       "sla": "Szacowany czas 3–6 tygodni",
       "cta": "Przejdź do płatności",
+      "next": "Przejdź do autoryzacji",
       "back": "Wróć do wyniku",
       "processing": "Przekierowywanie...",
       "errorTitle": "Błąd płatności",
@@ -1016,14 +1026,16 @@
       "createdAt": "Utworzono",
       "progress": "Status",
       "separator": "-",
-      "cta": {
-        "view": "Zobacz wniosek",
-        "details": "Zobacz dopłatę"
-      },
-      "detail": {
-        "eyebrow": "Wniosek",
-        "subtitle": "Lista, oś czasu i aktualizacje.",
-        "back": "Wróć do wniosków",
+        "cta": {
+          "view": "Zobacz wniosek",
+          "case": "Otwórz sprawę",
+          "details": "Zobacz dopłatę"
+        },
+        "detail": {
+          "eyebrow": "Wniosek",
+          "subtitle": "Lista, oś czasu i aktualizacje.",
+          "openCase": "Otwórz sprawę",
+          "back": "Wróć do wniosków",
         "timeline": "Oś czasu",
         "documents": "Lista dokumentów",
         "upload": "Prześlij",
@@ -1061,6 +1073,139 @@
       "requestDocsCta": "Poproś o dokumenty",
       "addNote": "Dodaj notatkę"
     },
+    "case": {
+      "steps": {
+        "eligibility": {
+          "eyebrow": "Krok kwalifikacji",
+          "cta": "Przejdź do wyniku"
+        },
+        "result": {
+          "eyebrow": "Krok wyniku",
+          "cta": "Przejdź do płatności"
+        },
+        "authorization": {
+          "eyebrow": "Autoryzacja",
+          "title": "Autoryzacja (Tryb A)",
+          "description": "Potwierdź autoryzację i prześlij podpisane upoważnienie.",
+          "statusLabel": "Status autoryzacji",
+          "status": {
+            "not_started": "Nie rozpoczęto",
+            "pending_user": "Czeka na potwierdzenie",
+            "submitted": "Wysłano",
+            "verified": "Zweryfikowano",
+            "rejected": "Odrzucono"
+          },
+          "modeA": {
+            "title": "Tryb A (bez DigiD)",
+            "description": "Składamy wniosek w Twoim imieniu na podstawie podpisanego upoważnienia. Nigdy nie prosimy o dane DigiD.",
+            "confirm": "Potwierdź autoryzację"
+          },
+          "upload": {
+            "title": "Prześlij upoważnienie",
+            "description": "Prześlij podpisany dokument machtigingsregistratie.",
+            "cta": "Prześlij dokument"
+          },
+          "uploading": "Przesyłanie...",
+          "uploaded": "Dokument autoryzacji został przesłany.",
+          "next": "Przejdź do dokumentów",
+          "error": "Nie udało się zaktualizować autoryzacji.",
+          "errorTitle": "Błąd autoryzacji"
+        },
+        "documents": {
+          "eyebrow": "Dokumenty",
+          "title": "Lista dokumentów",
+          "description": "Prześlij wymagane dokumenty dla tej dopłaty.",
+          "error": "Nie udało się wczytać dokumentów.",
+          "errorTitle": "Błąd dokumentów",
+          "loading": "Ładowanie dokumentów",
+          "loadingDescription": "Pobieranie checklisty.",
+          "empty": "Brak dokumentów",
+          "emptyDescription": "Nie znaleźliśmy checklisty dla tego wniosku.",
+          "upload": "Prześlij",
+          "uploading": "Przesyłanie...",
+          "next": "Przejdź do przeglądu"
+        },
+        "review": {
+          "eyebrow": "Przegląd",
+          "title": "Status przeglądu",
+          "description": "Weryfikujemy Twój wniosek i dokumenty.",
+          "error": "Nie udało się wczytać przeglądu.",
+          "errorTitle": "Błąd przeglądu",
+          "loading": "Ładowanie przeglądu",
+          "loadingDescription": "Pobieranie najnowszego statusu.",
+          "summaryTitle": "Podsumowanie",
+          "summary": {
+            "status": "Status wniosku",
+            "payment": "Płatność",
+            "paymentPaid": "Opłacone",
+            "paymentPending": "Oczekuje",
+            "authorization": "Autoryzacja",
+            "documents": "Dokumenty",
+            "documentsComplete": "Kompletne",
+            "documentsMissing": "Braki"
+          },
+          "adminNotes": "Notatki admina",
+          "notesEmpty": "Brak notatek",
+          "notesEmptyDescription": "Aktualizacje pojawią się tutaj."
+        },
+        "done": {
+          "eyebrow": "Zakończone",
+          "title": "Sprawa zamknięta",
+          "description": "Ten wniosek o dopłatę został zakończony.",
+          "completedTitle": "Zakończone",
+          "completedDescription": "Twoja sprawa jest zamknięta. Poinformujemy o wyniku.",
+          "pendingTitle": "Oczekuje na zamknięcie",
+          "pendingDescription": "Admin musi jeszcze zamknąć tę sprawę."
+        }
+      }
+    },
+    "adminSubsidyCases": {
+      "eyebrow": "Admin",
+      "title": "Sprawy dopłat",
+      "subtitle": "Przypisuj, kontroluj SLA i przesuwaj sprawy przez autoryzację oraz przegląd.",
+      "errorTitle": "Błąd admina",
+      "loading": "Ładowanie spraw",
+      "loadingDescription": "Pobieranie spraw i przypisań.",
+      "empty": {
+        "title": "Brak spraw",
+        "description": "Brak spraw pasujących do filtra."
+      },
+      "searchPlaceholder": "Szukaj po sprawie, wniosku, id użytkownika lub email",
+      "filters": {
+        "statusAll": "Wszystkie statusy",
+        "authAll": "Wszystkie statusy autoryzacji",
+        "slugAll": "Wszystkie dopłaty",
+        "assignedPlaceholder": "ID przypisanego admina",
+        "slaAll": "Wszystkie SLA",
+        "slaOverdue": "Po terminie",
+        "slaNext": "Następne 7 dni"
+      },
+      "labels": {
+        "applicationId": "Wniosek",
+        "caseId": "Sprawa",
+        "userId": "Użytkownik",
+        "unlinked": "Brak powiązania",
+        "status": "Status",
+        "authorization": "Autoryzacja",
+        "sla": "Termin SLA"
+      },
+      "notePlaceholder": "Dodaj notatkę wewnętrzną",
+      "timelineTitle": "Oś czasu",
+      "actions": {
+        "assign": "Przypisz do mnie",
+        "unassign": "Odłącz",
+        "moveReview": "Przenieś do przeglądu",
+        "moveDone": "Przenieś do zakończenia",
+        "addNote": "Dodaj notatkę",
+        "saving": "Zapisywanie..."
+      },
+      "links": {
+        "case": "Otwórz sprawę",
+        "application": "Otwórz wniosek",
+        "payment": "Płatność",
+        "documents": "Otwórz dokumenty"
+      }
+    },
     "documents": {
       "huurcontract": "Umowa najmu",
       "rent_service_costs": "Czynsz + koszty usług",
@@ -1093,7 +1238,7 @@
     },
     "errors": {
       "tableMissing": "Kończymy konfigurację wniosków o dopłaty. Zastosuj migracje lub skontaktuj się z pomocą.",
-      "permissionDenied": "Nie masz uprawnień do wykonania tej akcji.",
+      "permissionDenied": "Odmowa dostępu (403). Nie możemy kontynuować tej akcji. Jeśli problem się powtarza, skontaktuj się z pomocą.",
       "authRequired": "Zaloguj się, aby kontynuować.",
       "invalidSlug": "Ten dodatek nie jest dostępny.",
       "invalidApplication": "Nie znaleźliśmy tego wniosku.",
@@ -1103,5 +1248,75 @@
       "network": "Błąd sieci. Sprawdź połączenie i spróbuj ponownie.",
       "unknown": "Coś poszło nie tak. Spróbuj ponownie."
     }
+  },
+  "cases": {
+    "list": {
+      "title": "Sprawy",
+      "subtitle": "Case Engine v1: lista i nawigacja spraw.",
+      "create": "Utworz sprawe",
+      "loadingTitle": "Ladowanie",
+      "loadingBody": "Ladowanie Twoich spraw...",
+      "errorTitle": "Blad ladowania spraw",
+      "retry": "Sprobuj ponownie",
+      "emptyTitle": "Brak spraw",
+      "emptyBody": "Utworz pierwsza sprawe, aby zaczac.",
+      "refresh": "Odswiez",
+      "updatedAt": "Zaktualizowano",
+      "open": "Otworz",
+      "stepLabel": "Krok"
+    },
+    "new": {
+      "title": "Utworz sprawe",
+      "subtitle": "Utworz sprawe dla silnika case.",
+      "form": {
+        "type": "Typ",
+        "productSlug": "Slug produktu (opcjonalnie)",
+        "productSlugPlaceholder": "np. huurtoeslag",
+        "title": "Tytul (opcjonalnie)",
+        "submit": "Utworz i otworz",
+        "submitting": "Tworzenie..."
+      },
+      "types": {
+        "toeslagen": "Doplaty",
+        "taxes": "Podatki",
+        "mortgage": "Hipoteka",
+        "credit": "Kredyt",
+        "insurance": "Ubezpieczenia"
+      },
+      "error": "Nie udalo sie utworzyc sprawy."
+    },
+    "detail": {
+      "title": "Szczegoly sprawy",
+      "subtitle": "Podsumowanie i os czasu",
+      "back": "Wroc",
+      "loadingTitle": "Ladowanie sprawy",
+      "loadingBody": "Pobieranie szczegolow sprawy...",
+      "errorTitle": "Blad sprawy",
+      "error": "Nie udalo sie wczytac sprawy.",
+      "notFoundTitle": "Nie znaleziono sprawy",
+      "notFoundBody": "Ta sprawa mogla zostac usunieta.",
+      "statusLabel": "Status",
+      "stepLabel": "Biezacy krok",
+      "tasks": {
+        "title": "Zadania",
+        "emptyTitle": "Brak zadan",
+        "emptyBody": "Zadania pojawia sie po utworzeniu.",
+        "updatedAt": "Zaktualizowano"
+      },
+      "documents": {
+        "title": "Dokumenty",
+        "emptyTitle": "Brak dokumentow",
+        "emptyBody": "Powiazane dokumenty pojawia sie tutaj.",
+        "table": {
+          "file": "Plik",
+          "type": "Typ",
+          "status": "Status",
+          "updatedAt": "Zaktualizowano"
+        }
+      }
+    }
   }
 }
+
+
+
