@@ -1,4 +1,4 @@
-ï»¿"use client";
+"use client";
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -18,34 +18,22 @@ function cx(...xs: Array<string | false | null | undefined>) {
 
 function displayLabelForCaseType(type: CaseType): string {
   switch (type) {
-    case "toeslag_huur":
-      return "Huurtoeslag";
-    case "toeslag_zorg":
-      return "Zorgtoeslag";
-    case "toeslag_kinderopvang":
-      return "Kinderopvangtoeslag";
-    case "tax_ib":
-      return "IB Aangifte";
-    case "tax_voorlopige_aanslag":
-      return "Voorlopige aanslag";
-    case "finances_intake":
-      return "Finanzas personales (intake)";
-    case "document_review":
-      return "RevisiÃ³n de documentos";
+    case "toeslagen":
+      return "Toeslagen";
+    case "taxes":
+      return "Taxes";
+    case "mortgage":
+      return "Mortgage";
+    case "credit":
+      return "Credit";
+    case "insurance":
+      return "Insurance";
     default:
       return type;
   }
 }
 
-const CASE_TYPES: CaseType[] = [
-  "toeslag_huur",
-  "toeslag_zorg",
-  "toeslag_kinderopvang",
-  "tax_ib",
-  "tax_voorlopige_aanslag",
-  "finances_intake",
-  "document_review",
-];
+const CASE_TYPES: CaseType[] = ["toeslagen", "taxes", "mortgage", "credit", "insurance"];
 
 export function AppShell({
   navItems,
@@ -113,9 +101,9 @@ export function AppShell({
             <button
               className="md:hidden rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm hover:bg-fh-surface-2"
               onClick={() => setMobileOpen((v) => !v)}
-              aria-label="Abrir navegaciÃ³n"
+              aria-label="Abrir navegación"
             >
-              MenÃº
+              Menú
             </button>
 
             <Link href="/app/finances" className="text-sm font-semibold tracking-tight">
@@ -141,7 +129,7 @@ export function AppShell({
       <div className="fh-container flex gap-6 py-6">
         <aside className="hidden md:block w-[260px] shrink-0">
           <div className="rounded-2xl border border-fh-border bg-fh-surface p-3">
-            <div className="text-xs text-fh-muted mb-2">NavegaciÃ³n</div>
+            <div className="text-xs text-fh-muted mb-2">Navegación</div>
             <nav className="flex flex-col gap-1">
               {navItems.map((it) => (
                 <NavLink key={it.href} href={it.href} label={it.label} />
@@ -154,7 +142,7 @@ export function AppShell({
                 className="mt-2 w-full rounded-xl bg-fh-accent px-3 py-2 text-sm font-medium text-white hover:opacity-95"
                 onClick={() => setPaletteOpen(true)}
               >
-                Crear / Ir aâ€¦
+                Crear / Ir a…
               </button>
               <div className="mt-2 text-xs text-fh-muted">Tip: Ctrl/Cmd+K</div>
             </div>
@@ -179,7 +167,7 @@ export function AppShell({
             </div>
 
             <div className="mt-4">
-              <div className="text-xs text-fh-muted mb-2">NavegaciÃ³n</div>
+              <div className="text-xs text-fh-muted mb-2">Navegación</div>
               <nav className="flex flex-col gap-1">
                 {navItems.map((it) => (
                   <NavLink key={it.href} href={it.href} label={it.label} />
@@ -193,7 +181,7 @@ export function AppShell({
                   setPaletteOpen(true);
                 }}
               >
-                Crear / Ir aâ€¦
+                Crear / Ir a…
               </button>
             </div>
           </div>

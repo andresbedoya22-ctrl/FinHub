@@ -986,12 +986,22 @@
         "title": "Falta la solicitud",
         "description": "Empieza desde el resultado de elegibilidad."
       },
+      "missingCase": {
+        "title": "Falta el caso",
+        "description": "Aún no pudimos vincular esta solicitud a un caso."
+      },
+      "paid": {
+        "title": "Pago confirmado",
+        "description": "Tu pago fue confirmado. Puedes continuar con la autorización.",
+        "cta": "Pagado"
+      },
       "title": "Pago",
       "subtitle": "FinHub gestionará tu subsidio de punta a punta.",
       "description": "Tras el pago crearemos tu caso y pediremos documentos.",
       "priceLabel": "Tarifa del servicio",
       "sla": "Tiempo estimado 3-6 semanas",
       "cta": "Continuar al pago",
+      "next": "Continuar a autorización",
       "back": "Volver al resultado",
       "processing": "Redirigiendo...",
       "errorTitle": "Error de pago",
@@ -1000,7 +1010,7 @@
     },
     "errors": {
       "tableMissing": "Estamos terminando de configurar las solicitudes de subsidios. Aplica las migraciones o contacta soporte.",
-      "permissionDenied": "No tienes permiso para continuar con esta acción.",
+      "permissionDenied": "Acceso denegado (403). No pudimos continuar esta acción. Si persiste, contacta con soporte.",
       "authRequired": "Inicia sesión para continuar.",
       "invalidSlug": "Este subsidio no está disponible.",
       "invalidApplication": "No pudimos encontrar esa solicitud.",
@@ -1027,11 +1037,13 @@
       "separator": "-",
       "cta": {
         "view": "Ver solicitud",
+        "case": "Abrir caso",
         "details": "Ver subsidio"
       },
       "detail": {
         "eyebrow": "Solicitud",
         "subtitle": "Checklist, timeline y actualizaciones.",
+        "openCase": "Abrir caso",
         "back": "Volver a solicitudes",
         "timeline": "Timeline",
         "documents": "Checklist de documentos",
@@ -1070,6 +1082,139 @@
       "requestDocsCta": "Pedir documentos",
       "addNote": "Agregar nota"
     },
+    "case": {
+      "steps": {
+        "eligibility": {
+          "eyebrow": "Paso de elegibilidad",
+          "cta": "Continuar al resultado"
+        },
+        "result": {
+          "eyebrow": "Paso de resultado",
+          "cta": "Continuar a checkout"
+        },
+        "authorization": {
+          "eyebrow": "Autorización",
+          "title": "Autorización (Modo A)",
+          "description": "Confirma la autorización y sube la carta firmada.",
+          "statusLabel": "Estado de autorización",
+          "status": {
+            "not_started": "No iniciado",
+            "pending_user": "Esperando tu confirmación",
+            "submitted": "Enviado",
+            "verified": "Verificado",
+            "rejected": "Rechazado"
+          },
+          "modeA": {
+            "title": "Modo A (sin DigiD)",
+            "description": "Presentamos en tu nombre con carta de autorización firmada. Nunca pedimos credenciales DigiD.",
+            "confirm": "Confirmar autorización"
+          },
+          "upload": {
+            "title": "Subir carta de autorización",
+            "description": "Sube la carta firmada de machtigingsregistratie.",
+            "cta": "Subir documento"
+          },
+          "uploading": "Subiendo...",
+          "uploaded": "Documento de autorización subido.",
+          "next": "Continuar a documentos",
+          "error": "No se pudo actualizar la autorización.",
+          "errorTitle": "Error de autorización"
+        },
+        "documents": {
+          "eyebrow": "Documentos",
+          "title": "Checklist de documentos",
+          "description": "Sube los documentos requeridos para este subsidio.",
+          "error": "No se pudieron cargar los documentos.",
+          "errorTitle": "Error de documentos",
+          "loading": "Cargando documentos",
+          "loadingDescription": "Cargando tu checklist.",
+          "empty": "Sin documentos",
+          "emptyDescription": "No encontramos un checklist para esta solicitud.",
+          "upload": "Subir",
+          "uploading": "Subiendo...",
+          "next": "Continuar a revisión"
+        },
+        "review": {
+          "eyebrow": "Revisión",
+          "title": "Estado de revisión",
+          "description": "Estamos revisando tu envío y documentos.",
+          "error": "No se pudo cargar la revisión.",
+          "errorTitle": "Error de revisión",
+          "loading": "Cargando revisión",
+          "loadingDescription": "Cargando el estado más reciente.",
+          "summaryTitle": "Resumen",
+          "summary": {
+            "status": "Estado de la solicitud",
+            "payment": "Pago",
+            "paymentPaid": "Pagado",
+            "paymentPending": "Pendiente",
+            "authorization": "Autorización",
+            "documents": "Documentos",
+            "documentsComplete": "Completo",
+            "documentsMissing": "Faltan"
+          },
+          "adminNotes": "Notas admin",
+          "notesEmpty": "Sin notas",
+          "notesEmptyDescription": "Compartiremos actualizaciones aquí."
+        },
+        "done": {
+          "eyebrow": "Cerrado",
+          "title": "Caso cerrado",
+          "description": "Esta solicitud de subsidio está completada.",
+          "completedTitle": "Completado",
+          "completedDescription": "Tu caso está cerrado. Te avisaremos del resultado final.",
+          "pendingTitle": "Pendiente de cierre",
+          "pendingDescription": "Un admin aún debe cerrar este caso."
+        }
+      }
+    },
+    "adminSubsidyCases": {
+      "eyebrow": "Admin",
+      "title": "Casos de subsidios",
+      "subtitle": "Asigna, controla SLA y mueve casos entre autorización y revisión.",
+      "errorTitle": "Error admin",
+      "loading": "Cargando casos",
+      "loadingDescription": "Cargando casos y asignaciones.",
+      "empty": {
+        "title": "Sin casos",
+        "description": "No hay casos que coincidan con este filtro."
+      },
+      "searchPlaceholder": "Buscar por caso, solicitud, id de usuario o email",
+      "filters": {
+        "statusAll": "Todos los estados",
+        "authAll": "Todos los estados de autorización",
+        "slugAll": "Todos los subsidios",
+        "assignedPlaceholder": "ID admin asignado",
+        "slaAll": "Todos los SLA",
+        "slaOverdue": "Vencidos",
+        "slaNext": "Próximos 7 días"
+      },
+      "labels": {
+        "applicationId": "Solicitud",
+        "caseId": "Caso",
+        "userId": "Usuario",
+        "unlinked": "Sin vínculo",
+        "status": "Estado",
+        "authorization": "Autorización",
+        "sla": "SLA"
+      },
+      "notePlaceholder": "Añadir nota interna",
+      "timelineTitle": "Timeline",
+      "actions": {
+        "assign": "Asignar a mí",
+        "unassign": "Desasignar",
+        "moveReview": "Mover a revisión",
+        "moveDone": "Mover a cerrado",
+        "addNote": "Agregar nota",
+        "saving": "Guardando..."
+      },
+      "links": {
+        "case": "Abrir caso",
+        "application": "Abrir solicitud",
+        "payment": "Pago",
+        "documents": "Abrir documentos"
+      }
+    },
     "documents": {
       "huurcontract": "Contrato de alquiler",
       "rent_service_costs": "Alquiler + servicios",
@@ -1100,5 +1245,75 @@
       "done": "Cerrado",
       "cancelled": "Cancelado"
     }
+  },
+  "cases": {
+    "list": {
+      "title": "Casos",
+      "subtitle": "Case Engine v1: lista y navegacion de casos.",
+      "create": "Crear caso",
+      "loadingTitle": "Cargando",
+      "loadingBody": "Cargando tus casos...",
+      "errorTitle": "Error al cargar casos",
+      "retry": "Reintentar",
+      "emptyTitle": "Sin casos",
+      "emptyBody": "Crea tu primer caso para empezar.",
+      "refresh": "Refrescar",
+      "updatedAt": "Actualizado",
+      "open": "Abrir",
+      "stepLabel": "Paso"
+    },
+    "new": {
+      "title": "Crear caso",
+      "subtitle": "Crea un caso para el motor.",
+      "form": {
+        "type": "Tipo",
+        "productSlug": "Slug de producto (opcional)",
+        "productSlugPlaceholder": "ej. huurtoeslag",
+        "title": "Titulo (opcional)",
+        "submit": "Crear y abrir",
+        "submitting": "Creando..."
+      },
+      "types": {
+        "toeslagen": "Toeslagen",
+        "taxes": "Impuestos",
+        "mortgage": "Hipoteca",
+        "credit": "Credito",
+        "insurance": "Seguros"
+      },
+      "error": "No se pudo crear el caso."
+    },
+    "detail": {
+      "title": "Detalle del caso",
+      "subtitle": "Resumen y timeline del caso",
+      "back": "Volver",
+      "loadingTitle": "Cargando caso",
+      "loadingBody": "Cargando detalles del caso...",
+      "errorTitle": "Error del caso",
+      "error": "No se pudo cargar el caso.",
+      "notFoundTitle": "Caso no encontrado",
+      "notFoundBody": "Este caso puede haber sido eliminado.",
+      "statusLabel": "Estado",
+      "stepLabel": "Paso actual",
+      "tasks": {
+        "title": "Tareas",
+        "emptyTitle": "Sin tareas",
+        "emptyBody": "Las tareas apareceran cuando se creen.",
+        "updatedAt": "Actualizado"
+      },
+      "documents": {
+        "title": "Documentos",
+        "emptyTitle": "Sin documentos",
+        "emptyBody": "Los documentos vinculados apareceran aqui.",
+        "table": {
+          "file": "Archivo",
+          "type": "Tipo",
+          "status": "Estado",
+          "updatedAt": "Actualizado"
+        }
+      }
+    }
   }
 }
+
+
+

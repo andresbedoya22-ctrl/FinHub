@@ -1,67 +1,60 @@
-export type CaseType =
-  | `toeslag_${string}`
-  | `tax_${string}`
-  | `finances_${string}`
-  | string;
+import type { CaseStepKey } from "./casesTypes";
 
-export type StepDef = { key: string; label: string };
+export type StepDef = { key: CaseStepKey; label: string };
 
-// Source of truth: keys usados en routing + DB constraint.
-// Nota: "submission" existe en DB pero aún no está en UI; lo mantenemos permitido.
-export const ALL_STEP_KEYS = [
-  "start",
+export const ALL_STEP_KEYS: readonly CaseStepKey[] = [
+  "intake",
   "eligibility",
   "result",
   "checkout",
   "authorization",
   "documents",
   "review",
-  "intake",
-  "submission",
+  "submitted",
   "done",
-] as const;
+];
 
-export type StepKey = (typeof ALL_STEP_KEYS)[number];
-
-export function isValidStepKey(stepKey: string): stepKey is StepKey {
+export function isValidStepKey(stepKey: string): stepKey is CaseStepKey {
   return (ALL_STEP_KEYS as readonly string[]).includes(stepKey);
 }
 
-export function normalizeStepKey(raw: string): StepKey {
+export function normalizeStepKey(raw: string): CaseStepKey {
   const s = String(raw || "").trim().toLowerCase();
-  return isValidStepKey(s) ? s : "start";
+  return isValidStepKey(s) ? s : "intake";
 }
 
-export function stepsForCaseType(type: CaseType): StepDef[] {
-  const t = String(type || "");
+const LOCKED_STEP_KEYS: ReadonlySet<CaseStepKey> = new Set([
+  "authorization",
+  "documents",
+  "review",
+  "submitted",
+  "done",
+]);
 
-  if (t.startsWith("toeslag_")) {
-    return [
-      { key: "eligibility", label: "Eligibility" },
-      { key: "result", label: "Result" },
-      { key: "checkout", label: "Checkout" },
-      { key: "authorization", label: "Authorization" },
-      { key: "documents", label: "Documents" },
-      { key: "review", label: "Review" },
-    ];
-  }
+export function isLockedStepKey(stepKey: string): boolean {
+  const normalized = normalizeStepKey(stepKey);
+  return LOCKED_STEP_KEYS.has(normalized);
+}
 
-  if (t.startsWith("tax_") || t.startsWith("finances_")) {
-    return [
-      { key: "intake", label: "Intake" },
-      { key: "documents", label: "Documents" },
-      { key: "review", label: "Review" },
-    ];
-  }
-
-  return [{ key: "start", label: "Start" }];
+export function stepsForCaseType(): StepDef[] {
+  return [
+    { key: "intake", label: "Intake" },
+    { key: "eligibility", label: "Eligibility" },
+    { key: "result", label: "Result" },
+    { key: "checkout", label: "Checkout" },
+    { key: "authorization", label: "Authorization" },
+    { key: "documents", label: "Documents" },
+    { key: "review", label: "Review" },
+    { key: "submitted", label: "Submitted" },
+    { key: "done", label: "Done" },
+  ];
 }
 
 export function getCurrentAndNextStep(
   steps: StepDef[],
   currentKey: string
 ): { current: StepDef; next: StepDef } {
-  const fallback: StepDef = steps[0] ?? { key: "start", label: "Start" };
+  const fallback: StepDef = steps[0] ?? { key: "intake", label: "Intake" };
 
   const idxRaw = steps.findIndex((x) => x.key === currentKey);
   const idx = idxRaw >= 0 ? idxRaw : 0;

@@ -986,12 +986,22 @@
         "title": "Missing application",
         "description": "Start from the eligibility result first."
       },
+      "missingCase": {
+        "title": "Missing case",
+        "description": "We could not link this application to a case yet."
+      },
+      "paid": {
+        "title": "Payment confirmed",
+        "description": "Your payment was confirmed. You can continue with authorization.",
+        "cta": "Paid"
+      },
       "title": "Checkout",
       "subtitle": "FinHub will manage your subsidy end-to-end.",
       "description": "After payment, we will create your case and request your documents.",
       "priceLabel": "Service fee",
       "sla": "Estimated turnaround 3-6 weeks",
       "cta": "Continue to payment",
+      "next": "Continue to authorization",
       "back": "Back to result",
       "processing": "Redirecting...",
       "errorTitle": "Checkout error",
@@ -1000,7 +1010,7 @@
     },
     "errors": {
       "tableMissing": "We are finishing the setup for subsidy applications. Apply the migrations or contact support.",
-      "permissionDenied": "You do not have permission to continue this action.",
+      "permissionDenied": "Access denied (403). We could not continue this action. If this keeps happening, contact support.",
       "authRequired": "Please sign in to continue.",
       "invalidSlug": "This subsidy is not available.",
       "invalidApplication": "We could not find that application.",
@@ -1027,11 +1037,13 @@
       "separator": "-",
       "cta": {
         "view": "View application",
+        "case": "Open case",
         "details": "View subsidy"
       },
       "detail": {
         "eyebrow": "Application",
         "subtitle": "Checklist, timeline, and updates.",
+        "openCase": "Open case",
         "back": "Back to applications",
         "timeline": "Timeline",
         "documents": "Documents checklist",
@@ -1070,6 +1082,139 @@
       "requestDocsCta": "Request documents",
       "addNote": "Add note"
     },
+    "case": {
+      "steps": {
+        "eligibility": {
+          "eyebrow": "Eligibility step",
+          "cta": "Continue to result"
+        },
+        "result": {
+          "eyebrow": "Result step",
+          "cta": "Continue to checkout"
+        },
+        "authorization": {
+          "eyebrow": "Authorization",
+          "title": "Authorization (Mode A)",
+          "description": "Confirm authorization and upload the signed mandate letter.",
+          "statusLabel": "Authorization status",
+          "status": {
+            "not_started": "Not started",
+            "pending_user": "Waiting for your confirmation",
+            "submitted": "Submitted",
+            "verified": "Verified",
+            "rejected": "Rejected"
+          },
+          "modeA": {
+            "title": "Mode A (no DigiD)",
+            "description": "We will submit on your behalf with a signed authorization letter. We never ask for DigiD credentials.",
+            "confirm": "Confirm authorization"
+          },
+          "upload": {
+            "title": "Upload authorization letter",
+            "description": "Upload the signed machtigingsregistratie letter.",
+            "cta": "Upload document"
+          },
+          "uploading": "Uploading...",
+          "uploaded": "Authorization document uploaded.",
+          "next": "Continue to documents",
+          "error": "Authorization update failed.",
+          "errorTitle": "Authorization error"
+        },
+        "documents": {
+          "eyebrow": "Documents",
+          "title": "Documents checklist",
+          "description": "Upload the required documents for this subsidy.",
+          "error": "We could not load documents.",
+          "errorTitle": "Documents error",
+          "loading": "Loading documents",
+          "loadingDescription": "Fetching your checklist.",
+          "empty": "No documents",
+          "emptyDescription": "We could not find a document checklist for this application.",
+          "upload": "Upload",
+          "uploading": "Uploading...",
+          "next": "Continue to review"
+        },
+        "review": {
+          "eyebrow": "Review",
+          "title": "Review status",
+          "description": "We are reviewing your submission and documents.",
+          "error": "We could not load review data.",
+          "errorTitle": "Review error",
+          "loading": "Loading review",
+          "loadingDescription": "Fetching the latest review status.",
+          "summaryTitle": "Summary",
+          "summary": {
+            "status": "Application status",
+            "payment": "Payment",
+            "paymentPaid": "Paid",
+            "paymentPending": "Pending",
+            "authorization": "Authorization",
+            "documents": "Documents",
+            "documentsComplete": "Complete",
+            "documentsMissing": "Missing"
+          },
+          "adminNotes": "Admin notes",
+          "notesEmpty": "No notes yet",
+          "notesEmptyDescription": "We will share updates here."
+        },
+        "done": {
+          "eyebrow": "Done",
+          "title": "Case closed",
+          "description": "This subsidy request has been completed.",
+          "completedTitle": "Completed",
+          "completedDescription": "Your subsidy case is closed. We will notify you of the final outcome.",
+          "pendingTitle": "Pending closure",
+          "pendingDescription": "An admin still needs to close this case."
+        }
+      }
+    },
+    "adminSubsidyCases": {
+      "eyebrow": "Admin",
+      "title": "Subsidy cases",
+      "subtitle": "Assign, monitor SLA, and move cases through authorization and review.",
+      "errorTitle": "Admin error",
+      "loading": "Loading subsidy cases",
+      "loadingDescription": "Fetching cases and assignments.",
+      "empty": {
+        "title": "No cases found",
+        "description": "There are no subsidy cases matching this filter."
+      },
+      "searchPlaceholder": "Search by case, application, user id, or email",
+      "filters": {
+        "statusAll": "All statuses",
+        "authAll": "All authorization statuses",
+        "slugAll": "All subsidies",
+        "assignedPlaceholder": "Assigned admin user id",
+        "slaAll": "All SLA",
+        "slaOverdue": "Overdue",
+        "slaNext": "Next 7 days"
+      },
+      "labels": {
+        "applicationId": "Application",
+        "caseId": "Case",
+        "userId": "User",
+        "unlinked": "Not linked",
+        "status": "Status",
+        "authorization": "Authorization",
+        "sla": "SLA due"
+      },
+      "notePlaceholder": "Add internal note",
+      "timelineTitle": "Timeline",
+      "actions": {
+        "assign": "Assign to me",
+        "unassign": "Unassign",
+        "moveReview": "Move to review",
+        "moveDone": "Move to done",
+        "addNote": "Add note",
+        "saving": "Saving..."
+      },
+      "links": {
+        "case": "Open case",
+        "application": "Open application",
+        "payment": "Payment",
+        "documents": "Open documents"
+      }
+    },
     "documents": {
       "huurcontract": "Rental contract",
       "rent_service_costs": "Rent + service costs",
@@ -1100,5 +1245,75 @@
       "done": "Closed",
       "cancelled": "Cancelled"
     }
+  },
+  "cases": {
+    "list": {
+      "title": "Cases",
+      "subtitle": "Case Engine v1: list and navigate cases.",
+      "create": "Create case",
+      "loadingTitle": "Loading",
+      "loadingBody": "Loading your cases...",
+      "errorTitle": "Failed to load cases",
+      "retry": "Retry",
+      "emptyTitle": "No cases yet",
+      "emptyBody": "Create your first case to get started.",
+      "refresh": "Refresh",
+      "updatedAt": "Updated",
+      "open": "Open",
+      "stepLabel": "Step"
+    },
+    "new": {
+      "title": "Create case",
+      "subtitle": "Create a case for the case engine.",
+      "form": {
+        "type": "Type",
+        "productSlug": "Product slug (optional)",
+        "productSlugPlaceholder": "e.g. huurtoeslag",
+        "title": "Title (optional)",
+        "submit": "Create and open",
+        "submitting": "Creating..."
+      },
+      "types": {
+        "toeslagen": "Toeslagen",
+        "taxes": "Taxes",
+        "mortgage": "Mortgage",
+        "credit": "Credit",
+        "insurance": "Insurance"
+      },
+      "error": "Failed to create case."
+    },
+    "detail": {
+      "title": "Case detail",
+      "subtitle": "Case overview and timeline",
+      "back": "Back",
+      "loadingTitle": "Loading case",
+      "loadingBody": "Fetching case details...",
+      "errorTitle": "Case error",
+      "error": "Could not load case.",
+      "notFoundTitle": "Case not found",
+      "notFoundBody": "This case may have been removed.",
+      "statusLabel": "Status",
+      "stepLabel": "Current step",
+      "tasks": {
+        "title": "Tasks",
+        "emptyTitle": "No tasks",
+        "emptyBody": "Tasks will appear here once created.",
+        "updatedAt": "Updated"
+      },
+      "documents": {
+        "title": "Documents",
+        "emptyTitle": "No documents",
+        "emptyBody": "Linked documents will appear here.",
+        "table": {
+          "file": "File",
+          "type": "Type",
+          "status": "Status",
+          "updatedAt": "Updated"
+        }
+      }
+    }
   }
 }
+
+
+

@@ -986,12 +986,22 @@
         "title": "Lipsește cererea",
         "description": "Începe din rezultatul de eligibilitate."
       },
+      "missingCase": {
+        "title": "Lipsește cazul",
+        "description": "Nu am putut încă asocia această cerere cu un caz."
+      },
+      "paid": {
+        "title": "Plată confirmată",
+        "description": "Plata a fost confirmată. Poți continua cu autorizarea.",
+        "cta": "Plătit"
+      },
       "title": "Plată",
       "subtitle": "FinHub va gestiona subvenția cap-coadă.",
       "description": "După plată vom crea cazul și vom solicita documentele.",
       "priceLabel": "Taxă de serviciu",
       "sla": "Durat estimat 36 sptmni",
       "cta": "Continuă la plată",
+      "next": "Continuă la autorizare",
       "back": "Înapoi la rezultat",
       "processing": "Redirecționare...",
       "errorTitle": "Eroare la plată",
@@ -1014,11 +1024,13 @@
       "progress": "Status",
       "cta": {
         "view": "Vezi cererea",
+        "case": "Deschide cazul",
         "details": "Vezi subvenția"
       },
       "detail": {
         "eyebrow": "Cerere",
         "subtitle": "Listă, cronologie și actualizări.",
+        "openCase": "Deschide cazul",
         "back": "Înapoi la cereri",
         "timeline": "Cronologie",
         "documents": "Lista documentelor",
@@ -1058,6 +1070,139 @@
       "requestDocsCta": "Solicită documente",
       "addNote": "Adaugă notă"
     },
+    "case": {
+      "steps": {
+        "eligibility": {
+          "eyebrow": "Pas de eligibilitate",
+          "cta": "Continuă la rezultat"
+        },
+        "result": {
+          "eyebrow": "Pas de rezultat",
+          "cta": "Continuă la plată"
+        },
+        "authorization": {
+          "eyebrow": "Autorizare",
+          "title": "Autorizare (Mod A)",
+          "description": "Confirmă autorizarea și încarcă scrisoarea semnată.",
+          "statusLabel": "Status autorizare",
+          "status": {
+            "not_started": "Neînceput",
+            "pending_user": "În așteptarea confirmării",
+            "submitted": "Trimis",
+            "verified": "Verificat",
+            "rejected": "Respins"
+          },
+          "modeA": {
+            "title": "Mod A (fără DigiD)",
+            "description": "Depunem în numele tău cu o scrisoare de autorizare semnată. Nu cerem credențiale DigiD.",
+            "confirm": "Confirmă autorizarea"
+          },
+          "upload": {
+            "title": "Încarcă scrisoarea de autorizare",
+            "description": "Încarcă documentul semnat machtigingsregistratie.",
+            "cta": "Încarcă document"
+          },
+          "uploading": "Se încarcă...",
+          "uploaded": "Documentul de autorizare a fost încărcat.",
+          "next": "Continuă la documente",
+          "error": "Nu s-a putut actualiza autorizarea.",
+          "errorTitle": "Eroare autorizare"
+        },
+        "documents": {
+          "eyebrow": "Documente",
+          "title": "Listă de documente",
+          "description": "Încarcă documentele necesare pentru această subvenție.",
+          "error": "Nu am putut încărca documentele.",
+          "errorTitle": "Eroare documente",
+          "loading": "Se încarcă documentele",
+          "loadingDescription": "Se preia lista de verificare.",
+          "empty": "Fără documente",
+          "emptyDescription": "Nu am găsit o listă de documente pentru această cerere.",
+          "upload": "Încarcă",
+          "uploading": "Se încarcă...",
+          "next": "Continuă la revizuire"
+        },
+        "review": {
+          "eyebrow": "Revizuire",
+          "title": "Status revizuire",
+          "description": "Revizuim cererea și documentele tale.",
+          "error": "Nu am putut încărca revizuirea.",
+          "errorTitle": "Eroare revizuire",
+          "loading": "Se încarcă revizuirea",
+          "loadingDescription": "Se preia statusul curent.",
+          "summaryTitle": "Rezumat",
+          "summary": {
+            "status": "Status cerere",
+            "payment": "Plată",
+            "paymentPaid": "Plătit",
+            "paymentPending": "În așteptare",
+            "authorization": "Autorizare",
+            "documents": "Documente",
+            "documentsComplete": "Complet",
+            "documentsMissing": "Lipsă"
+          },
+          "adminNotes": "Note admin",
+          "notesEmpty": "Fără note",
+          "notesEmptyDescription": "Vom publica actualizări aici."
+        },
+        "done": {
+          "eyebrow": "Finalizat",
+          "title": "Caz închis",
+          "description": "Această cerere de subvenție este finalizată.",
+          "completedTitle": "Finalizat",
+          "completedDescription": "Cazul tău este închis. Te vom anunța despre rezultatul final.",
+          "pendingTitle": "În așteptarea închiderii",
+          "pendingDescription": "Un admin trebuie să închidă acest caz."
+        }
+      }
+    },
+    "adminSubsidyCases": {
+      "eyebrow": "Admin",
+      "title": "Cazuri de subvenții",
+      "subtitle": "Atribuie, urmărește SLA și mută cazurile prin autorizare și revizuire.",
+      "errorTitle": "Eroare admin",
+      "loading": "Se încarcă cazurile",
+      "loadingDescription": "Se preiau cazurile și atribuirea.",
+      "empty": {
+        "title": "Fără cazuri",
+        "description": "Nu există cazuri care corespund filtrului."
+      },
+      "searchPlaceholder": "Caută după caz, cerere, id utilizator sau email",
+      "filters": {
+        "statusAll": "Toate statusurile",
+        "authAll": "Toate statusurile de autorizare",
+        "slugAll": "Toate subvențiile",
+        "assignedPlaceholder": "ID admin atribuit",
+        "slaAll": "Toate SLA",
+        "slaOverdue": "Depășit",
+        "slaNext": "Următoarele 7 zile"
+      },
+      "labels": {
+        "applicationId": "Cerere",
+        "caseId": "Caz",
+        "userId": "Utilizator",
+        "unlinked": "Neasociat",
+        "status": "Status",
+        "authorization": "Autorizare",
+        "sla": "SLA"
+      },
+      "notePlaceholder": "Adaugă notă internă",
+      "timelineTitle": "Cronologie",
+      "actions": {
+        "assign": "Atribuie mie",
+        "unassign": "Deasignează",
+        "moveReview": "Mută la revizuire",
+        "moveDone": "Mută la finalizare",
+        "addNote": "Adaugă notă",
+        "saving": "Se salvează..."
+      },
+      "links": {
+        "case": "Deschide cazul",
+        "application": "Deschide cererea",
+        "payment": "Plată",
+        "documents": "Deschide documentele"
+      }
+    },
     "documents": {
       "huurcontract": "Contract de închiriere",
       "rent_service_costs": "Chirie + costuri servicii",
@@ -1090,7 +1235,7 @@
     },
     "errors": {
       "tableMissing": "Finalizăm configurarea cererilor de subvenții. Aplică migrațiile sau contactează suportul.",
-      "permissionDenied": "Nu ai permisiunea de a continua această acțiune.",
+      "permissionDenied": "Acces refuzat (403). Nu putem continua această acțiune. Dacă problema persistă, contactează suportul.",
       "authRequired": "Autentifică-te pentru a continua.",
       "invalidSlug": "Această subvenție nu este disponibilă.",
       "invalidApplication": "Nu am găsit acea cerere.",
@@ -1100,5 +1245,75 @@
       "network": "Eroare de rețea. Verifică conexiunea și încearcă din nou.",
       "unknown": "Ceva nu a mers bine. Încearcă din nou."
     }
+  },
+  "cases": {
+    "list": {
+      "title": "Dosare",
+      "subtitle": "Case Engine v1: lista si navigare dosare.",
+      "create": "Creeaza dosar",
+      "loadingTitle": "Se incarca",
+      "loadingBody": "Se incarca dosarele...",
+      "errorTitle": "Eroare la incarcare",
+      "retry": "Reincearca",
+      "emptyTitle": "Fara dosare",
+      "emptyBody": "Creeaza primul dosar pentru a incepe.",
+      "refresh": "Reimprospateaza",
+      "updatedAt": "Actualizat",
+      "open": "Deschide",
+      "stepLabel": "Pas"
+    },
+    "new": {
+      "title": "Creeaza dosar",
+      "subtitle": "Creeaza un dosar pentru motor.",
+      "form": {
+        "type": "Tip",
+        "productSlug": "Slug produs (optional)",
+        "productSlugPlaceholder": "ex. huurtoeslag",
+        "title": "Titlu (optional)",
+        "submit": "Creeaza si deschide",
+        "submitting": "Se creeaza..."
+      },
+      "types": {
+        "toeslagen": "Subventii",
+        "taxes": "Impozite",
+        "mortgage": "Ipoteca",
+        "credit": "Credit",
+        "insurance": "Asigurari"
+      },
+      "error": "Nu am putut crea dosarul."
+    },
+    "detail": {
+      "title": "Detalii dosar",
+      "subtitle": "Rezumat si cronologie",
+      "back": "Inapoi",
+      "loadingTitle": "Se incarca dosarul",
+      "loadingBody": "Se incarca detaliile...",
+      "errorTitle": "Eroare dosar",
+      "error": "Nu am putut incarca dosarul.",
+      "notFoundTitle": "Dosar inexistent",
+      "notFoundBody": "Acest dosar poate fi sters.",
+      "statusLabel": "Status",
+      "stepLabel": "Pas curent",
+      "tasks": {
+        "title": "Taskuri",
+        "emptyTitle": "Fara taskuri",
+        "emptyBody": "Taskurile vor aparea dupa creare.",
+        "updatedAt": "Actualizat"
+      },
+      "documents": {
+        "title": "Documente",
+        "emptyTitle": "Fara documente",
+        "emptyBody": "Documentele asociate vor aparea aici.",
+        "table": {
+          "file": "Fisier",
+          "type": "Tip",
+          "status": "Status",
+          "updatedAt": "Actualizat"
+        }
+      }
+    }
   }
 }
+
+
+

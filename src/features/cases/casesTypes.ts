@@ -1,31 +1,72 @@
-export type CaseType = | "toeslag_huur" | "toeslag_zorg" | "toeslag_kinderopvang" | "tax_ib" | "tax_voorlopige_aanslag" | "finances_intake" | "document_review";
+export type CaseType = "toeslagen" | "taxes" | "mortgage" | "credit" | "insurance";
 
-export type CaseStatus = | "created" | "in_progress" | "waiting_user" | "submitted" | "under_review" | "completed" | "cancelled";
+export type CaseStatus =
+  | "created"
+  | "in_progress"
+  | "waiting_user"
+  | "submitted"
+  | "under_review"
+  | "completed"
+  | "cancelled";
 
-export type StepKey = | "eligibility" | "result" | "checkout" | "authorization" | "documents" | "review" | "intake" | "submission" | "done";
-
-export type CaseStep = {
-  key: StepKey;
-  label: string;
-};
+export type CaseStepKey =
+  | "intake"
+  | "eligibility"
+  | "result"
+  | "checkout"
+  | "authorization"
+  | "documents"
+  | "review"
+  | "submitted"
+  | "done";
 
 export type CaseEntity = {
   id: string;
   type: CaseType;
+  productSlug?: string | null;
   title: string;
   status: CaseStatus;
-  stepKey: StepKey;
-  steps: CaseStep[];
+  stepKey: CaseStepKey;
   createdAt: string; // ISO
   updatedAt: string; // ISO
 };
 
-export type CaseDraft = {
-  // Draft libre por stepKey. Cada step guarda su payload sin backend.
-  [stepKey: string]: unknown;
+export type CaseTaskStatus = "open" | "in_progress" | "done";
+
+export type CaseTask = {
+  id: string;
+  caseId: string;
+  title: string;
+  status: CaseTaskStatus;
+  dueAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type CaseDocumentStatus = "pending" | "uploaded" | "reviewed" | "rejected";
+
+export type CaseDocumentEntry = {
+  id: string;
+  caseId: string;
+  documentId: string;
+  status: CaseDocumentStatus;
+  createdAt: string;
+  updatedAt: string;
+  document?: {
+    id: string;
+    fileName: string;
+    type: string;
+    status: string;
+    createdAt: string;
+    updatedAt: string;
+  } | null;
+};
+
+export type CaseDetail = CaseEntity & {
+  tasks: CaseTask[];
+  documents: CaseDocumentEntry[];
 };
 
 export type CasesState = {
   cases: CaseEntity[];
-  draftsByCaseId: Record<string, CaseDraft>;
 };

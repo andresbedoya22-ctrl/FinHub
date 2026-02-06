@@ -93,7 +93,9 @@ export type ProductEventAttr =
   | "doc_type"
   | "size_bucket"
   | "plan"
-  | "intent";
+  | "intent"
+  | "email"
+  | "token";
 
 type Attrs = Partial<Record<ProductEventAttr, string | number | boolean | null>>;
 

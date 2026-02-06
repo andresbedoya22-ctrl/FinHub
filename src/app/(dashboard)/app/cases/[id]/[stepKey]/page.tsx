@@ -1,5 +1,5 @@
 import { Screen } from "@/ui/components/Screen";
-import { StepClient } from "./ui/StepClient";
+import { StepClient } from "@/features/cases/ui/StepClient";
 
 export default async function CaseStepPage({
   params,

@@ -21,13 +21,13 @@ function safeStringify(value: unknown) {
     return "";
   }
 }
+
 function isTextPayload(v: unknown): v is TextPayload {
   if (!v || typeof v !== "object") return false;
   return "text" in v && typeof (v as Record<string, unknown>).text === "string";
 }
 
 function extractTextFromPayload(payload: unknown): string {
-  // Convención v1: guardamos { text: string }
   if (isTextPayload(payload)) return payload.text;
 
   if (typeof payload === "string") return payload;
@@ -41,7 +41,6 @@ export function StepClient({ caseId, stepKey }: { caseId: string; stepKey: strin
 
   const normalizedStep = useMemo(() => normalizeStepKey(stepKey), [stepKey]);
 
-  // Nota lint: evitamos setState síncrono dentro del effect.
   const [text, setText] = useState("");
   const [savedAt, setSavedAt] = useState<Date | null>(null);
   const [isLoadingDraft, setIsLoadingDraft] = useState(true);
@@ -72,7 +71,6 @@ export function StepClient({ caseId, stepKey }: { caseId: string; stepKey: strin
   }, [caseId, normalizedStep]);
 
   useEffect(() => {
-    // autosave (debounce) a DB
     if (isLoadingDraft) return;
 
     const t = setTimeout(() => {
@@ -81,7 +79,7 @@ export function StepClient({ caseId, stepKey }: { caseId: string; stepKey: strin
           await upsertStepData(caseId, normalizedStep, { text });
           setSavedAt(new Date());
         } catch {
-          // no rompemos UX por fallo de red
+          // Keep UX stable if autosave fails.
         }
       })();
     }, 450);
@@ -94,19 +92,19 @@ export function StepClient({ caseId, stepKey }: { caseId: string; stepKey: strin
       <Screen className="space-y-6">
         <Header
           title="Step"
-          subtitle="Caso no encontrado"
+          subtitle="Case not found"
           right={
             <Link
               href="/app/cases"
               className="rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm hover:bg-fh-surface-2"
             >
-              Volver
+              Back
             </Link>
           }
         />
         <Card>
-          <InfoBox title="No encontrado" variant="warning">
-            Este case no existe (o fue eliminado).
+          <InfoBox title="Not found" variant="warning">
+            This case does not exist (or was removed).
           </InfoBox>
         </Card>
       </Screen>
@@ -116,36 +114,36 @@ export function StepClient({ caseId, stepKey }: { caseId: string; stepKey: strin
   return (
     <Screen className="space-y-6">
       <Header
-        title={`${c.title} · ${normalizedStep}`}
+        title={`${c.title} - ${normalizedStep}`}
         subtitle={
           isLoadingDraft
-            ? "Cargando draft..."
+            ? "Loading draft..."
             : draftError
               ? `Error: ${draftError}`
               : savedAt
-                ? "Autosave: Guardado"
-                : "Autosave: pendiente"
+                ? "Autosave: saved"
+                : "Autosave: pending"
         }
         right={
           <Link
             href={`/app/cases/${c.id}`}
             className="rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm hover:bg-fh-surface-2"
           >
-            Volver al caso
+            Back to case
           </Link>
         }
       />
 
       <Card className="space-y-3">
         <InfoBox title="Draft (DB)" variant="info">
-          Este contenido se guarda en Supabase (case_step_data) para simular autosave del wizard.
+          This content is stored in Supabase (case_step_data) to simulate autosave.
         </InfoBox>
 
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
           className="min-h-[260px] w-full rounded-xl border border-fh-border bg-fh-surface p-3 text-sm outline-none focus:ring-2 focus:ring-fh-border"
-          placeholder="Escribe notas/datos del step. (Placeholder v1)"
+          placeholder="Write notes for this step."
           disabled={isLoadingDraft}
         />
 
@@ -160,7 +158,7 @@ export function StepClient({ caseId, stepKey }: { caseId: string; stepKey: strin
               })();
             }}
           >
-            Guardar ahora
+            Save now
           </button>
 
           <button
@@ -169,7 +167,7 @@ export function StepClient({ caseId, stepKey }: { caseId: string; stepKey: strin
               void setStepKey(caseId, normalizedStep);
             }}
           >
-            Siguiente →
+            Next {"->"}
           </button>
         </div>
       </Card>
