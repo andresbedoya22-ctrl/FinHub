@@ -1,4 +1,4 @@
-﻿# Diff vs Canon (F00-F15)
+# Diff vs Canon (F00-F15)
 
 Sources:
 - docs/repo-snapshots/canon-refresh-20260118-132825 (routes-pages.txt, routes-api.txt, migrations-list.txt, tree-src.txt, integrations-grep.txt)
@@ -24,7 +24,7 @@ Renamed/moved or scope drift
 - Canon F12 checklist includes Authorization Modo A; repo has OCR/machtigingsregistratie infra but no explicit authorization flow tied to subsidies (NO EVIDENCE of dedicated flow).
 
 A1 (Case Engine v1) status
-- Status: DONE (commit b6c5504 / PR #60).
+- Status: DONE (code, commit b6c5504 / PR #60). DB apply: DONE once runbook executed (docs/runbooks/A1_apply_migration_supabase.md).
 - Adds: cases + case_tasks + case_documents tables, RLS policies, /api/cases* routes, /app/cases* UI, and RLS tests.
 - Not included: A2 doc pipeline hardening, OCR pipeline validation, async jobs/queues.
 
