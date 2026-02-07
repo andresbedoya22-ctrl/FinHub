@@ -131,13 +131,13 @@ Objective: Provide a shared Case Engine for toeslagen/taxes/mortgage/credit/insu
 
 Implementation evidence
 - DB + RLS: 20260123090000_case_engine_v1.sql (cases, case_tasks, case_documents + policies).
-- Runbook: docs/runbooks/A1_apply_migration_supabase.md.
+- Runbook + validation query: docs/runbooks/A1_apply_migration_supabase.md.
 - API routes: /api/cases, /api/cases/[id], /api/cases/[id]/tasks, /api/cases/[id]/documents.
 - UI routes: /app/cases, /app/cases/new, /app/cases/[id], /app/cases/[id]/[stepKey].
 - Tests: src/__tests__/cases.api.test.ts (RLS baseline; skips without Supabase env).
 - PR/commit: b6c5504 (PR #60).
 
-DoD status: DONE (code). DONE (DB) once runbook executed.
+DoD status: DONE (code + DB applied; validated via runbook query).
 Gaps and follow-ups
 - NO EVIDENCE: A2 document pipeline hardening (validation/OCR + sync-ready).
 - NO EVIDENCE: async jobs/queues for background processing.

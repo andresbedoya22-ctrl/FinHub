@@ -267,3 +267,21 @@ select to_regclass('public.case_tasks') as case_tasks_exists;
 select to_regclass('public.case_documents') as case_documents_exists;
 select schemaname, tablename, policyname from pg_policies where tablename in ('case_tasks','case_documents');
 ```
+
+## A1 DB Applied proof
+
+Exact validation query:
+
+```sql
+select
+  to_regclass('public.case_tasks') as case_tasks_exists,
+  to_regclass('public.case_documents') as case_documents_exists,
+  (select count(*) from pg_policies where tablename = 'case_tasks') as case_tasks_policies,
+  (select count(*) from pg_policies where tablename = 'case_documents') as case_documents_policies;
+```
+
+Expected output shape:
+- case_tasks_exists: public.case_tasks
+- case_documents_exists: public.case_documents
+- case_tasks_policies: 6
+- case_documents_policies: 6
