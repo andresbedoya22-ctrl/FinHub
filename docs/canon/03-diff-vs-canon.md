@@ -28,6 +28,11 @@ A1 (Case Engine v1) status
 - Adds: cases + case_tasks + case_documents tables, RLS policies, /api/cases* routes, /app/cases* UI, and RLS tests.
 - Not included: A2 doc pipeline hardening, OCR pipeline validation, async jobs/queues.
 
+A2 (Document Pipeline v2) status
+- Status: DONE (code + docs; DB via migration; validation query in docs/runbooks/A2_document_pipeline_v2.md).
+- Adds: server-mediated upload (/api/documents/upload + /api/documents/upload-to-signed), validation endpoint, case document pipeline updates, UI uploader integration, and tests.
+- Not included: async job orchestration for background OCR or sync-ready automation.
+
 Risk register (evidence-based)
 - Payments: Stripe webhook and checkout routes exist; correctness depends on webhook signature handling and idempotency (src/app/api/stripe/webhook/route.ts; 20251226133000_payments_stripe_unique_indexes.sql).
 - OCR: Azure OCR provider uses external API and env keys not listed in .env.local inventory (src/features/documents/ocr/providers/azureDocumentIntelligenceOcrTextProvider.ts; env-keys-env.local.txt lacks AZURE_*).
@@ -45,3 +50,5 @@ Recommendations to update Canon text
 
 Out of scope (post-F15)
 - Canon includes phases beyond F15 (e.g., F16 mortgages). This audit stops at F15 per request (docs/canon/CANON_OPERATIVO.md).
+
+

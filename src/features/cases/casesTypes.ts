@@ -43,13 +43,18 @@ export type CaseTask = {
   updatedAt: string;
 };
 
-export type CaseDocumentStatus = "pending" | "uploaded" | "reviewed" | "rejected";
+export type CaseDocumentStatus = "uploaded" | "validating" | "rejected" | "validated" | "synced";
 
 export type CaseDocumentEntry = {
   id: string;
   caseId: string;
   documentId: string;
   status: CaseDocumentStatus;
+  validationReason?: string | null;
+  validationMeta?: Record<string, unknown> | null;
+  validatedAt?: string | null;
+  rejectedAt?: string | null;
+  syncedAt?: string | null;
   createdAt: string;
   updatedAt: string;
   document?: {

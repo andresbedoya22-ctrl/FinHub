@@ -1308,12 +1308,57 @@
           "file": "Archivo",
           "type": "Tipo",
           "status": "Estado",
-          "updatedAt": "Actualizado"
+      "reason": "Motivo",
+      "updatedAt": "Actualizado"
         }
       }
     }
+  },
+  "documentsPipeline": {
+    "title": "Subir documento",
+    "hint": "Sube, valida y adjunta documentos a este caso.",
+    "file": {
+      "label": "Archivo"
+    },
+    "type": {
+      "label": "Tipo de documento"
+    },
+    "types": {
+      "id": "Documento de identidad",
+      "income": "Comprobante de ingresos",
+      "bank": "Extracto bancario",
+      "rental": "Contrato de alquiler",
+      "tax": "Documento fiscal",
+      "other": "Otro",
+      "machtigingsregistratie": "Carta de autorizacion"
+    },
+    "actions": {
+      "upload": "Subir",
+      "processing": "Procesando..."
+    },
+    "status": {
+      "idle": "Listo",
+      "uploading": "Subiendo...",
+      "validating": "Validando...",
+      "validated": "Validado",
+      "rejected": "Rechazado",
+      "error": "Error"
+    },
+    "rejected": {
+      "title": "Validacion fallida"
+    },
+    "reasons": {
+      "unsupported_mime": "Tipo de archivo no compatible.",
+      "file_too_large": "Archivo demasiado grande.",
+      "ocr_low_confidence": "Baja legibilidad. Prueba con un escaneo mas claro.",
+      "unknown": "Validacion fallida."
+    },
+    "meta": {
+      "label": "Metadatos de validacion"
+    },
+    "errors": {
+      "title": "Error al subir",
+      "unknown": "Algo salio mal."
+    }
   }
 }
-
-
-

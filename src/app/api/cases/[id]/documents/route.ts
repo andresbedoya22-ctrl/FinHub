@@ -17,10 +17,10 @@ export async function POST(
 
   try {
     const input = parseCreateCaseDocumentInput(raw);
-    const entry = await createCaseDocument(supabase, id, input);
+    const entry = await createCaseDocument(supabase, id, { documentId: input.documentId, status: "uploaded" });
     return NextResponse.json(entry);
   } catch (e: unknown) {
-    const msg = e instanceof Error ? e.message : "Failed to link document";
+    const msg = e instanceof Error ? e.message : "Failed to attach document";
     return NextResponse.json({ error: msg }, { status: 400 });
   }
 }

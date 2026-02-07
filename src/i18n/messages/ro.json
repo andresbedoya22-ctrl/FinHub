@@ -1308,12 +1308,57 @@
           "file": "Fisier",
           "type": "Tip",
           "status": "Status",
-          "updatedAt": "Actualizat"
+      "reason": "Motiv",
+      "updatedAt": "Actualizat"
         }
       }
     }
+  },
+  "documentsPipeline": {
+    "title": "Incarca document",
+    "hint": "Incarca, valideaza si ataseaza documente acestui caz.",
+    "file": {
+      "label": "Fisier"
+    },
+    "type": {
+      "label": "Tip document"
+    },
+    "types": {
+      "id": "Act de identitate",
+      "income": "Dovada venitului",
+      "bank": "Extras bancar",
+      "rental": "Contract de inchiriere",
+      "tax": "Document fiscal",
+      "other": "Altul",
+      "machtigingsregistratie": "Scrisoare de autorizare"
+    },
+    "actions": {
+      "upload": "Incarca",
+      "processing": "Se proceseaza..."
+    },
+    "status": {
+      "idle": "Gata",
+      "uploading": "Se incarca...",
+      "validating": "Se valideaza...",
+      "validated": "Validat",
+      "rejected": "Respins",
+      "error": "Eroare"
+    },
+    "rejected": {
+      "title": "Validarea a esuat"
+    },
+    "reasons": {
+      "unsupported_mime": "Tip de fisier neacceptat.",
+      "file_too_large": "Fisier prea mare.",
+      "ocr_low_confidence": "Lizibilitate scazuta. Incearca un scan mai clar.",
+      "unknown": "Validarea a esuat."
+    },
+    "meta": {
+      "label": "Metadate validare"
+    },
+    "errors": {
+      "title": "Eroare la incarcare",
+      "unknown": "A aparut o eroare."
+    }
   }
 }
-
-
-
