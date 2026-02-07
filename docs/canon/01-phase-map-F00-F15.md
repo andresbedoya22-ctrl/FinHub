@@ -1,4 +1,4 @@
-﻿# Phase Map F00-F15
+# Phase Map F00-F15
 
 Sources:
 - docs/repo-snapshots/canon-refresh-20260118-132825 (routes-pages.txt, routes-api.txt, migrations-list.txt, env-keys-env.local.txt, modules-dirs.txt, tests.txt, tree-src.txt, tree-docs.txt, tree-supabase.txt, integrations-grep.txt)
@@ -125,6 +125,22 @@ Gaps and follow-ups
 - NO EVIDENCE: Case Engine reuse for subsidies (no /app/cases integration for subsidies flow).
 - NO EVIDENCE: explicit authorization Modo A flow beyond document checklist text and OCR infra.
 - NO EVIDENCE: admin SLA tooling beyond admin page presence.
+
+## A1 - Case Engine v1 (backbone)
+Objective: Provide a shared Case Engine for toeslagen/taxes/mortgage/credit/insurance with RLS, API, and minimal UI.
+
+Implementation evidence
+- DB + RLS: 20260123090000_case_engine_v1.sql (cases, case_tasks, case_documents + policies).
+- Runbook + validation query: docs/runbooks/A1_apply_migration_supabase.md.
+- API routes: /api/cases, /api/cases/[id], /api/cases/[id]/tasks, /api/cases/[id]/documents.
+- UI routes: /app/cases, /app/cases/new, /app/cases/[id], /app/cases/[id]/[stepKey].
+- Tests: src/__tests__/cases.api.test.ts (RLS baseline; skips without Supabase env).
+- PR/commit: b6c5504 (PR #60).
+
+DoD status: DONE (code + DB applied; validated via runbook query).
+Gaps and follow-ups
+- NO EVIDENCE: A2 document pipeline hardening (validation/OCR + sync-ready).
+- NO EVIDENCE: async jobs/queues for background processing.
 
 ## F13 - Taxes Pro
 Objective (from Canon): taxes wizard, internal sections, tax pack generator, admin notes + workflow.

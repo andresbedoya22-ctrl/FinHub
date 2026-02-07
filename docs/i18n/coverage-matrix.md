@@ -7,7 +7,7 @@
 
 ## P1
 - Finanzas Home
-- Cases core (steps comunes)
+- Cases core (A1 Case Engine v1: /app/cases, /app/cases/new, /app/cases/[id])
 - Document Vault
 - Perfil
 
