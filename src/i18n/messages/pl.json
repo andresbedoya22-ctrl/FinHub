@@ -1311,12 +1311,57 @@
           "file": "Plik",
           "type": "Typ",
           "status": "Status",
-          "updatedAt": "Zaktualizowano"
+      "reason": "Powod",
+      "updatedAt": "Zaktualizowano"
         }
       }
     }
+  },
+  "documentsPipeline": {
+    "title": "Przeslij dokument",
+    "hint": "Przeslij, zweryfikuj i dolacz dokumenty do tej sprawy.",
+    "file": {
+      "label": "Plik"
+    },
+    "type": {
+      "label": "Typ dokumentu"
+    },
+    "types": {
+      "id": "Dokument tozsamosci",
+      "income": "Potwierdzenie dochodu",
+      "bank": "Wyciag bankowy",
+      "rental": "Umowa najmu",
+      "tax": "Dokument podatkowy",
+      "other": "Inne",
+      "machtigingsregistratie": "List upowaznienia"
+    },
+    "actions": {
+      "upload": "Przeslij",
+      "processing": "Przetwarzanie..."
+    },
+    "status": {
+      "idle": "Gotowe",
+      "uploading": "Przesylanie...",
+      "validating": "Weryfikacja...",
+      "validated": "Zweryfikowano",
+      "rejected": "Odrzucono",
+      "error": "Blad"
+    },
+    "rejected": {
+      "title": "Walidacja nie powiodla sie"
+    },
+    "reasons": {
+      "unsupported_mime": "Nieobslugiwany typ pliku.",
+      "file_too_large": "Plik jest za duzy.",
+      "ocr_low_confidence": "Niska czytelnosc. Sprobuj lepszego skanu.",
+      "unknown": "Walidacja nie powiodla sie."
+    },
+    "meta": {
+      "label": "Metadane walidacji"
+    },
+    "errors": {
+      "title": "Blad przesylania",
+      "unknown": "Cos poszlo nie tak."
+    }
   }
 }
-
-
-

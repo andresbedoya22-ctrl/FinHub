@@ -1308,12 +1308,57 @@
           "file": "File",
           "type": "Type",
           "status": "Status",
-          "updatedAt": "Updated"
+      "reason": "Reason",
+      "updatedAt": "Updated"
         }
       }
     }
+  },
+  "documentsPipeline": {
+    "title": "Upload document",
+    "hint": "Upload, validate, and attach documents to this case.",
+    "file": {
+      "label": "File"
+    },
+    "type": {
+      "label": "Document type"
+    },
+    "types": {
+      "id": "ID",
+      "income": "Income proof",
+      "bank": "Bank statement",
+      "rental": "Rental contract",
+      "tax": "Tax document",
+      "other": "Other",
+      "machtigingsregistratie": "Authorization letter"
+    },
+    "actions": {
+      "upload": "Upload",
+      "processing": "Processing..."
+    },
+    "status": {
+      "idle": "Ready",
+      "uploading": "Uploading...",
+      "validating": "Validating...",
+      "validated": "Validated",
+      "rejected": "Rejected",
+      "error": "Error"
+    },
+    "rejected": {
+      "title": "Validation failed"
+    },
+    "reasons": {
+      "unsupported_mime": "Unsupported file type.",
+      "file_too_large": "File too large.",
+      "ocr_low_confidence": "Low readability. Try a clearer scan.",
+      "unknown": "Validation failed."
+    },
+    "meta": {
+      "label": "Validation meta"
+    },
+    "errors": {
+      "title": "Upload error",
+      "unknown": "Something went wrong."
+    }
   }
 }
-
-
-

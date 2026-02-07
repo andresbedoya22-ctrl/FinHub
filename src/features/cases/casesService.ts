@@ -20,7 +20,13 @@ const CASE_TYPES: ReadonlySet<CaseType> = new Set([
 ]);
 
 const TASK_STATUSES: ReadonlySet<CaseTaskStatus> = new Set(["open", "in_progress", "done"]);
-const DOC_STATUSES: ReadonlySet<CaseDocumentStatus> = new Set(["pending", "uploaded", "reviewed", "rejected"]);
+const DOC_STATUSES: ReadonlySet<CaseDocumentStatus> = new Set([
+  "uploaded",
+  "validating",
+  "rejected",
+  "validated",
+  "synced",
+]);
 
 export type CreateCaseInput = {
   type: CaseType;
@@ -37,6 +43,12 @@ export type CreateTaskInput = {
 export type CreateCaseDocumentInput = {
   documentId: string;
   status?: CaseDocumentStatus;
+};
+
+export type UpdateCaseDocumentInput = {
+  status?: CaseDocumentStatus;
+  validationReason?: string | null;
+  validationMeta?: Record<string, unknown> | null;
 };
 
 type CaseRow = {
@@ -74,6 +86,11 @@ type CaseDocumentRow = {
   case_id: string;
   document_id: string;
   status: string;
+  validation_reason: string | null;
+  validation_meta: Record<string, unknown> | null;
+  validated_at: string | null;
+  rejected_at: string | null;
+  synced_at: string | null;
   created_at: string;
   updated_at: string;
   document?: DocumentRow | DocumentRow[] | null;
@@ -117,6 +134,11 @@ function toCaseDocument(row: CaseDocumentRow): CaseDocumentEntry {
     caseId: row.case_id,
     documentId: row.document_id,
     status: row.status as CaseDocumentStatus,
+    validationReason: row.validation_reason ?? null,
+    validationMeta: row.validation_meta ?? null,
+    validatedAt: row.validated_at ?? null,
+    rejectedAt: row.rejected_at ?? null,
+    syncedAt: row.synced_at ?? null,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
     document: doc
@@ -222,7 +244,9 @@ export async function getCaseDetail(supabase: SupabaseClient, id: string): Promi
 
   const { data: docsRaw, error: docsErr } = await supabase
     .from("case_documents")
-    .select("id,case_id,document_id,status,created_at,updated_at,document:documents(id,file_name,type,status,created_at,updated_at)")
+    .select(
+      "id,case_id,document_id,status,validation_reason,validation_meta,validated_at,rejected_at,synced_at,created_at,updated_at,document:documents(id,file_name,type,status,created_at,updated_at)"
+    )
     .eq("case_id", id)
     .order("created_at", { ascending: true });
 
@@ -265,11 +289,73 @@ export async function createCaseDocument(
     .insert({
       case_id: caseId,
       document_id: input.documentId,
-      status: input.status ?? "pending",
+      status: input.status ?? "uploaded",
     })
-    .select("id,case_id,document_id,status,created_at,updated_at,document:documents(id,file_name,type,status,created_at,updated_at)")
+    .select(
+      "id,case_id,document_id,status,validation_reason,validation_meta,validated_at,rejected_at,synced_at,created_at,updated_at,document:documents(id,file_name,type,status,created_at,updated_at)"
+    )
     .single();
 
   if (error || !data) throw new Error(error?.message ?? "Insert failed");
+  return toCaseDocument(data as CaseDocumentRow);
+}
+
+export async function updateCaseDocument(
+  supabase: SupabaseClient,
+  caseId: string,
+  caseDocumentId: string,
+  input: UpdateCaseDocumentInput
+): Promise<CaseDocumentEntry> {
+  const { data: existing, error: existingErr } = await supabase
+    .from("case_documents")
+    .select("id,case_id,status,validated_at,rejected_at,synced_at")
+    .eq("id", caseDocumentId)
+    .eq("case_id", caseId)
+    .maybeSingle();
+
+  if (existingErr) throw new Error(existingErr.message);
+  if (!existing) throw new Error("Case document not found");
+
+  const nextStatus = input.status ?? (existing.status as CaseDocumentStatus);
+  if (!DOC_STATUSES.has(nextStatus)) throw new Error("Invalid status");
+
+  if (input.status === "synced" && existing.status !== "validated") {
+    throw new Error("Cannot sync before validation");
+  }
+
+  const now = new Date().toISOString();
+  const update: Record<string, unknown> = {
+    updated_at: now,
+  };
+
+  if (input.status) update.status = input.status;
+  if (input.validationReason !== undefined) update.validation_reason = input.validationReason;
+  if (input.validationMeta !== undefined) update.validation_meta = input.validationMeta;
+
+  if (input.status === "validated") {
+    update.validated_at = now;
+    update.rejected_at = null;
+  }
+
+  if (input.status === "rejected") {
+    update.rejected_at = now;
+    update.validated_at = null;
+  }
+
+  if (input.status === "synced") {
+    update.synced_at = now;
+  }
+
+  const { data, error } = await supabase
+    .from("case_documents")
+    .update(update)
+    .eq("id", caseDocumentId)
+    .eq("case_id", caseId)
+    .select(
+      "id,case_id,document_id,status,validation_reason,validation_meta,validated_at,rejected_at,synced_at,created_at,updated_at,document:documents(id,file_name,type,status,created_at,updated_at)"
+    )
+    .single();
+
+  if (error || !data) throw new Error(error?.message ?? "Update failed");
   return toCaseDocument(data as CaseDocumentRow);
 }

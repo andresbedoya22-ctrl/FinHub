@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 
 import type { CaseDetail } from "@/features/cases/casesTypes";
 import { getCaseDetail } from "@/features/cases/casesApi";
+import { DocumentUploader } from "@/features/documents/ui/DocumentUploader";
 import { Card } from "@/ui/components/Card";
 import { Header } from "@/ui/components/Header";
 import { InfoBox } from "@/ui/components/InfoBox";
@@ -21,29 +22,36 @@ function pill(text: string) {
 
 export function CaseDetailClient({ caseId }: { caseId: string }) {
   const t = useTranslations("cases");
+  const tDoc = useTranslations("documentsPipeline");
   const [detail, setDetail] = useState<CaseDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const aliveRef = useRef(true);
+
+  const errorFallback = useMemo(() => t("detail.error"), [t]);
+
+  const loadDetail = useCallback(async () => {
+    setLoading(true);
+    try {
+      const data = await getCaseDetail(caseId);
+      if (!aliveRef.current) return;
+      setDetail(data);
+      setError(null);
+    } catch (e: unknown) {
+      if (!aliveRef.current) return;
+      setError(e instanceof Error ? e.message : errorFallback);
+    } finally {
+      if (aliveRef.current) setLoading(false);
+    }
+  }, [caseId, errorFallback]);
 
   useEffect(() => {
-    let alive = true;
-    (async () => {
-      try {
-        const data = await getCaseDetail(caseId);
-        if (!alive) return;
-        setDetail(data);
-        setError(null);
-      } catch (e: unknown) {
-        if (!alive) return;
-        setError(e instanceof Error ? e.message : t("detail.error"));
-      } finally {
-        if (alive) setLoading(false);
-      }
-    })();
+    aliveRef.current = true;
+    void loadDetail();
     return () => {
-      alive = false;
+      aliveRef.current = false;
     };
-  }, [caseId, t]);
+  }, [loadDetail]);
 
   const tasks = detail?.tasks ?? [];
   const documents = detail?.documents ?? [];
@@ -55,6 +63,15 @@ export function CaseDetailClient({ caseId }: { caseId: string }) {
       { label: t("detail.stepLabel"), value: detail.stepKey },
     ];
   }, [detail, t]);
+
+  const reasonLabels = useMemo(() => {
+    return {
+      unsupported_mime: tDoc("reasons.unsupported_mime"),
+      file_too_large: tDoc("reasons.file_too_large"),
+      ocr_low_confidence: tDoc("reasons.ocr_low_confidence"),
+      unknown: tDoc("reasons.unknown"),
+    } as Record<string, string>;
+  }, [tDoc]);
 
   return (
     <Screen className="space-y-6">
@@ -138,37 +155,49 @@ export function CaseDetailClient({ caseId }: { caseId: string }) {
             )}
           </Card>
 
-          <Card className="space-y-3">
-            <div className="text-sm font-semibold">{t("detail.documents.title")}</div>
-            {documents.length === 0 ? (
-              <InfoBox title={t("detail.documents.emptyTitle")} variant="warning">
-                {t("detail.documents.emptyBody")}
-              </InfoBox>
-            ) : (
-              <div className="overflow-auto">
-                <table className="min-w-full text-sm">
-                  <thead className="text-left opacity-80">
-                    <tr>
-                      <th className="py-2 pr-4">{t("detail.documents.table.file")}</th>
-                      <th className="py-2 pr-4">{t("detail.documents.table.type")}</th>
-                      <th className="py-2 pr-4">{t("detail.documents.table.status")}</th>
-                      <th className="py-2 pr-0">{t("detail.documents.table.updatedAt")}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {documents.map((doc) => (
-                      <tr key={doc.id} className="border-t border-fh-border">
-                        <td className="py-2 pr-4">{doc.document?.fileName ?? doc.documentId}</td>
-                        <td className="py-2 pr-4">{doc.document?.type ?? "-"}</td>
-                        <td className="py-2 pr-4">{doc.status}</td>
-                        <td className="py-2 pr-0">{new Date(doc.updatedAt).toLocaleString()}</td>
+          <div className="space-y-3">
+            <DocumentUploader caseId={caseId} onCompleted={loadDetail} />
+
+            <Card className="space-y-3">
+              <div className="text-sm font-semibold">{t("detail.documents.title")}</div>
+              {documents.length === 0 ? (
+                <InfoBox title={t("detail.documents.emptyTitle")} variant="warning">
+                  {t("detail.documents.emptyBody")}
+                </InfoBox>
+              ) : (
+                <div className="overflow-auto">
+                  <table className="min-w-full text-sm">
+                    <thead className="text-left opacity-80">
+                      <tr>
+                        <th className="py-2 pr-4">{t("detail.documents.table.file")}</th>
+                        <th className="py-2 pr-4">{t("detail.documents.table.type")}</th>
+                        <th className="py-2 pr-4">{t("detail.documents.table.status")}</th>
+                        <th className="py-2 pr-4">{t("detail.documents.table.reason")}</th>
+                        <th className="py-2 pr-0">{t("detail.documents.table.updatedAt")}</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </Card>
+                    </thead>
+                    <tbody>
+                      {documents.map((doc) => {
+                        const reason = doc.validationReason
+                          ? reasonLabels[doc.validationReason] ?? doc.validationReason
+                          : "-";
+
+                        return (
+                          <tr key={doc.id} className="border-t border-fh-border">
+                            <td className="py-2 pr-4">{doc.document?.fileName ?? doc.documentId}</td>
+                            <td className="py-2 pr-4">{doc.document?.type ?? "-"}</td>
+                            <td className="py-2 pr-4">{doc.status}</td>
+                            <td className="py-2 pr-4">{reason}</td>
+                            <td className="py-2 pr-0">{new Date(doc.updatedAt).toLocaleString()}</td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </Card>
+          </div>
         </div>
       ) : null}
     </Screen>
