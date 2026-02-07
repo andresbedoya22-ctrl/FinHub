@@ -29,7 +29,7 @@ A1 (Case Engine v1) status
 - Not included: A2 doc pipeline hardening, OCR pipeline validation, async jobs/queues.
 
 A2 (Document Pipeline v2) status
-- Status: DONE (code + docs; DB via migration; validation query in docs/runbooks/A2_document_pipeline_v2.md).
+- Status: DONE (code + docs + DB applied proof; validation queries in docs/runbooks/A2_document_pipeline_v2.md).
 - Adds: server-mediated upload (/api/documents/upload + /api/documents/upload-to-signed), validation endpoint, case document pipeline updates, UI uploader integration, and tests.
 - Not included: async job orchestration for background OCR or sync-ready automation.
 
@@ -50,5 +50,6 @@ Recommendations to update Canon text
 
 Out of scope (post-F15)
 - Canon includes phases beyond F15 (e.g., F16 mortgages). This audit stops at F15 per request (docs/canon/CANON_OPERATIVO.md).
+
 
 
