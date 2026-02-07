@@ -150,9 +150,9 @@ Implementation evidence
 - UI: src/features/documents/ui/DocumentUploader.tsx integrated into case detail.
 - Services: src/features/documents/documentPipelineService.ts, src/features/documents/documentPipelineClient.ts.
 - Tests: src/__tests__/caseDocuments.pipeline.test.ts (skips without Supabase env).
-- Runbook: docs/runbooks/A2_document_pipeline_v2.md.
+- Runbook + validation queries: docs/runbooks/A2_document_pipeline_v2.md.
 
-DoD status: DONE (code + docs; DB via migration).
+DoD status: DONE (code + docs + DB applied proof; validated via runbook queries).
 Gaps and follow-ups
 - NO EVIDENCE: async jobs/queues for background OCR or sync-ready automation.
 
@@ -188,6 +188,7 @@ Gaps and follow-ups
 
 Out of scope (post-F15)
 - Canon contains F16 (mortgages) and beyond in .tmp/canon-operativo.txt; this audit stops at F15 per request. Evidence: .tmp/canon-operativo.txt lines around F16 (extracted from docs/canon/CANON_OPERATIVO.md).
+
 
 
 
