@@ -139,8 +139,22 @@ Implementation evidence
 
 DoD status: DONE (code + DB applied; validated via runbook query).
 Gaps and follow-ups
-- NO EVIDENCE: A2 document pipeline hardening (validation/OCR + sync-ready).
 - NO EVIDENCE: async jobs/queues for background processing.
+
+## A2 - Document Pipeline v2 (hardening)
+Objective: Server-mediated uploads, validation, and case document pipeline (no direct client storage uploads).
+
+Implementation evidence
+- DB migration: 20260206121000_case_documents_pipeline_v2.sql.
+- API routes: /api/documents/upload, /api/documents/upload-to-signed, /api/documents/validate, /api/cases/[id]/documents, /api/cases/[id]/documents/[caseDocumentId].
+- UI: src/features/documents/ui/DocumentUploader.tsx integrated into case detail.
+- Services: src/features/documents/documentPipelineService.ts, src/features/documents/documentPipelineClient.ts.
+- Tests: src/__tests__/caseDocuments.pipeline.test.ts (skips without Supabase env).
+- Runbook: docs/runbooks/A2_document_pipeline_v2.md.
+
+DoD status: DONE (code + docs; DB via migration).
+Gaps and follow-ups
+- NO EVIDENCE: async jobs/queues for background OCR or sync-ready automation.
 
 ## F13 - Taxes Pro
 Objective (from Canon): taxes wizard, internal sections, tax pack generator, admin notes + workflow.
@@ -174,3 +188,9 @@ Gaps and follow-ups
 
 Out of scope (post-F15)
 - Canon contains F16 (mortgages) and beyond in .tmp/canon-operativo.txt; this audit stops at F15 per request. Evidence: .tmp/canon-operativo.txt lines around F16 (extracted from docs/canon/CANON_OPERATIVO.md).
+
+
+
+
+
+

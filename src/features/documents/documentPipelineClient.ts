@@ -8,10 +8,18 @@ export type UploadDocumentResult = {
   token: string;
 };
 
+export type DocumentValidationMeta = {
+  mime: string | null;
+  file_size: number | null;
+  doc_type: string;
+  provider: string | null;
+  ocr_confidence: number | null;
+};
+
 export type DocumentValidationResult = {
   status: "validated" | "rejected";
   reason: string | null;
-  meta: Record<string, unknown>;
+  meta: DocumentValidationMeta;
 };
 
 export async function uploadDocument(file: File, type: DocumentType): Promise<UploadDocumentResult> {

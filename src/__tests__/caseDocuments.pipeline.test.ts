@@ -1,7 +1,11 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-import { createCaseDocument, updateCaseDocument } from "../features/cases/casesService";
-import { validateDocument } from "../features/documents/documentPipelineService";
+import { createCaseDocument, getCaseDetail, updateCaseDocument } from "../features/cases/casesService";
+import {
+  createDocumentForUpload,
+  uploadToSignedUrl,
+  validateDocument,
+} from "../features/documents/documentPipelineService";
 
 const requiredEnv = [
   "NEXT_PUBLIC_SUPABASE_URL",
@@ -18,7 +22,7 @@ const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 if (!hasEnv) {
   describe("case documents pipeline", () => {
-    it.skip(`requires Supabase env vars: ${missingEnv.join(", ")}`, () => {});
+    it.skip(`requires Supabase env vars: ${missingEnv.join(", ")}. See docs/runbooks/A2_document_pipeline_v2.md`, () => {});
   });
 } else {
   describe("case documents pipeline", () => {
@@ -72,7 +76,7 @@ if (!hasEnv) {
       }
     });
 
-    it("validates a document successfully", async () => {
+    it("uploads, validates, attaches, and reads case detail", async () => {
       process.env.FINHUB_OCR_PROVIDER = "mock";
       process.env.FINHUB_OCR_MIN_CONFIDENCE = "0.4";
 
@@ -93,37 +97,37 @@ if (!hasEnv) {
       expect(caseRow?.id).toBeTruthy();
       if (caseRow?.id) createdCaseIds.push(caseRow.id);
 
-      const storagePath = `${user.id}/pipeline_${Date.now()}.pdf`;
-      storagePaths.push(storagePath);
+      const upload = await createDocumentForUpload(userClient, user.id, {
+        fileName: "pipeline.pdf",
+        type: "other",
+      });
 
-      const upload = await userClient.storage
-        .from("vault")
-        .upload(storagePath, new Uint8Array([1, 2, 3, 4]), { contentType: "application/pdf", upsert: true });
-      expect(upload.error).toBeNull();
+      expect(upload.doc.id).toBeTruthy();
+      if (upload.doc.id) createdDocumentIds.push(upload.doc.id);
+      if (upload.doc.storagePath) storagePaths.push(upload.doc.storagePath);
 
-      const { data: docRow, error: docErr } = await userClient
-        .from("documents")
-        .insert({
-          user_id: user.id,
-          file_name: "pipeline.pdf",
-          type: "other",
-          status: "uploaded",
-          storage_path: storagePath,
-        })
-        .select("id")
-        .single();
-
-      expect(docErr).toBeNull();
-      expect(docRow?.id).toBeTruthy();
-      if (docRow?.id) createdDocumentIds.push(docRow.id);
+      const file = new File([new Uint8Array([1, 2, 3, 4])], "pipeline.pdf", { type: "application/pdf" });
+      await uploadToSignedUrl(userClient, {
+        bucket: upload.bucket,
+        path: upload.path,
+        token: upload.token,
+        file,
+      });
 
       const caseDoc = await createCaseDocument(userClient, caseRow?.id ?? "", {
-        documentId: docRow?.id ?? "",
+        documentId: upload.doc.id,
         status: "uploaded",
       });
 
-      const validation = await validateDocument(userClient, user.id, docRow?.id ?? "");
+      await updateCaseDocument(userClient, caseRow?.id ?? "", caseDoc.id, { status: "validating" });
+
+      const validation = await validateDocument(userClient, user.id, upload.doc.id);
       expect(validation.status).toBe("validated");
+      expect(validation.meta.mime).toBe("application/pdf");
+      expect(validation.meta.doc_type).toBe("other");
+      expect(validation.meta.provider).toBe("mock");
+      expect(typeof validation.meta.file_size).toBe("number");
+      expect(typeof validation.meta.ocr_confidence).toBe("number");
 
       const updated = await updateCaseDocument(userClient, caseRow?.id ?? "", caseDoc.id, {
         status: validation.status,
@@ -133,6 +137,11 @@ if (!hasEnv) {
 
       expect(updated.status).toBe("validated");
       expect(updated.validatedAt).toBeTruthy();
+
+      const detail = await getCaseDetail(userClient, caseRow?.id ?? "");
+      expect(detail).toBeTruthy();
+      expect(detail?.documents.length).toBe(1);
+      expect(detail?.documents[0]?.status).toBe("validated");
     });
 
     it("rejects a document with low OCR confidence", async () => {
@@ -156,38 +165,35 @@ if (!hasEnv) {
       expect(caseRow?.id).toBeTruthy();
       if (caseRow?.id) createdCaseIds.push(caseRow.id);
 
-      const storagePath = `${user.id}/pipeline_reject_${Date.now()}.pdf`;
-      storagePaths.push(storagePath);
+      const upload = await createDocumentForUpload(userClient, user.id, {
+        fileName: "pipeline_reject.pdf",
+        type: "other",
+      });
 
-      const upload = await userClient.storage
-        .from("vault")
-        .upload(storagePath, new Uint8Array([5, 6, 7, 8]), { contentType: "application/pdf", upsert: true });
-      expect(upload.error).toBeNull();
+      expect(upload.doc.id).toBeTruthy();
+      if (upload.doc.id) createdDocumentIds.push(upload.doc.id);
+      if (upload.doc.storagePath) storagePaths.push(upload.doc.storagePath);
 
-      const { data: docRow, error: docErr } = await userClient
-        .from("documents")
-        .insert({
-          user_id: user.id,
-          file_name: "pipeline_reject.pdf",
-          type: "other",
-          status: "uploaded",
-          storage_path: storagePath,
-        })
-        .select("id")
-        .single();
-
-      expect(docErr).toBeNull();
-      expect(docRow?.id).toBeTruthy();
-      if (docRow?.id) createdDocumentIds.push(docRow.id);
+      const file = new File([new Uint8Array([5, 6, 7, 8])], "pipeline_reject.pdf", { type: "application/pdf" });
+      await uploadToSignedUrl(userClient, {
+        bucket: upload.bucket,
+        path: upload.path,
+        token: upload.token,
+        file,
+      });
 
       const caseDoc = await createCaseDocument(userClient, caseRow?.id ?? "", {
-        documentId: docRow?.id ?? "",
+        documentId: upload.doc.id,
         status: "uploaded",
       });
 
-      const validation = await validateDocument(userClient, user.id, docRow?.id ?? "");
+      await updateCaseDocument(userClient, caseRow?.id ?? "", caseDoc.id, { status: "validating" });
+
+      const validation = await validateDocument(userClient, user.id, upload.doc.id);
       expect(validation.status).toBe("rejected");
       expect(validation.reason).toBe("ocr_low_confidence");
+      expect(validation.meta.provider).toBe("mock");
+      expect(typeof validation.meta.ocr_confidence).toBe("number");
 
       const updated = await updateCaseDocument(userClient, caseRow?.id ?? "", caseDoc.id, {
         status: validation.status,

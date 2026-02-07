@@ -26,10 +26,18 @@ export type UploadToSignedInput = {
   file: File;
 };
 
+export type DocumentValidationMeta = {
+  mime: string | null;
+  file_size: number | null;
+  doc_type: string;
+  provider: string | null;
+  ocr_confidence: number | null;
+};
+
 export type DocumentValidationResult = {
   status: "validated" | "rejected";
   reason: string | null;
-  meta: Record<string, unknown>;
+  meta: DocumentValidationMeta;
 };
 
 type DocumentRow = {
@@ -90,6 +98,22 @@ function toEntity(r: DocumentRow): DocumentEntity {
     storagePath: r.storage_path ? normalizeStoragePath(r.storage_path) : undefined,
     createdAt: r.created_at,
     updatedAt: r.updated_at,
+  };
+}
+
+function buildMeta(input: {
+  mime: string | null;
+  fileSize: number | null;
+  docType: string;
+  provider: string | null;
+  confidence: number | null;
+}): DocumentValidationMeta {
+  return {
+    mime: input.mime ?? null,
+    file_size: input.fileSize ?? null,
+    doc_type: input.docType,
+    provider: input.provider ?? null,
+    ocr_confidence: input.confidence ?? null,
   };
 }
 
@@ -180,17 +204,24 @@ export async function validateDocument(
     throw new Error(fetched.error?.message ?? "Failed to read file from Storage");
   }
 
+  const docType = data.type ?? "unknown";
   const maxBytes = getMaxFileBytes();
   const blobSize = typeof fetched.data.size === "number" ? fetched.data.size : null;
+  const contentType = (fetched.data as unknown as { type?: string }).type ?? null;
+  const inferred = inferMimeFromName(data.file_name ?? "");
+  const mime = contentType ?? inferred;
+
   if (Number.isFinite(maxBytes) && blobSize !== null && blobSize > maxBytes) {
     return {
       status: "rejected",
       reason: "file_too_large",
-      meta: {
-        mime: (fetched.data as unknown as { type?: string }).type ?? null,
-        file_size: blobSize,
-        doc_type: data.type ?? "unknown",
-      },
+      meta: buildMeta({
+        mime,
+        fileSize: blobSize,
+        docType,
+        provider: null,
+        confidence: null,
+      }),
     };
   }
 
@@ -202,44 +233,61 @@ export async function validateDocument(
     return {
       status: "rejected",
       reason: "file_too_large",
-      meta: {
-        mime: (fetched.data as unknown as { type?: string }).type ?? null,
-        file_size: fileSize,
-        doc_type: data.type ?? "unknown",
-      },
+      meta: buildMeta({
+        mime,
+        fileSize,
+        docType,
+        provider: null,
+        confidence: null,
+      }),
     };
   }
-
-  const contentType = (fetched.data as unknown as { type?: string }).type ?? null;
-  const mime = contentType ?? inferMimeFromName(data.file_name ?? "");
 
   if (!mime || !ALLOWED_MIME.has(mime)) {
     return {
       status: "rejected",
       reason: "unsupported_mime",
-      meta: {
+      meta: buildMeta({
         mime,
-        file_size: fileSize,
-        doc_type: data.type ?? "unknown",
-      },
+        fileSize,
+        docType,
+        provider: null,
+        confidence: null,
+      }),
     };
   }
 
   const provider = getOcrTextProvider();
-  const ocr = await provider.extractText({
-    bytes,
-    contentType: mime,
-    fileName: data.file_name ?? null,
-  });
+  let confidence = 0;
 
-  const confidence = typeof ocr.confidence === "number" ? ocr.confidence : 0;
-  const meta = {
+  try {
+    const ocr = await provider.extractText({
+      bytes,
+      contentType: mime,
+      fileName: data.file_name ?? null,
+    });
+    confidence = typeof ocr.confidence === "number" ? ocr.confidence : 0;
+  } catch {
+    return {
+      status: "rejected",
+      reason: "unknown",
+      meta: buildMeta({
+        mime,
+        fileSize,
+        docType,
+        provider: provider.name,
+        confidence: null,
+      }),
+    };
+  }
+
+  const meta = buildMeta({
     mime,
-    file_size: fileSize,
-    doc_type: data.type ?? "unknown",
-    ocr_confidence: confidence,
+    fileSize,
+    docType,
     provider: provider.name,
-  };
+    confidence,
+  });
 
   const minConfidence = getMinOcrConfidence();
   if (Number.isFinite(minConfidence) && confidence < minConfidence) {
