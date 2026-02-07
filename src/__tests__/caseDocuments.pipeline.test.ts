@@ -213,8 +213,11 @@ async function createTestUser(admin: SupabaseClient, email: string) {
   if (created.error || !created.data.user) throw created.error ?? new Error("User creation failed");
 
   const user = created.data.user;
-  const profile = await admin.from("profiles").insert({ id: user.id, preferred_language: "EN" });
+  const profile = await admin
+    .from("profiles")
+    .upsert({ id: user.id, preferred_language: "EN" }, { onConflict: "id" });
   if (profile.error) throw profile.error;
 
   return { id: user.id, email, password };
 }
+
