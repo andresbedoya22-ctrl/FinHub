@@ -1026,16 +1026,16 @@
       "createdAt": "Utworzono",
       "progress": "Status",
       "separator": "-",
-        "cta": {
-          "view": "Zobacz wniosek",
-          "case": "Otwórz sprawę",
-          "details": "Zobacz dopłatę"
-        },
-        "detail": {
-          "eyebrow": "Wniosek",
-          "subtitle": "Lista, oś czasu i aktualizacje.",
-          "openCase": "Otwórz sprawę",
-          "back": "Wróć do wniosków",
+      "cta": {
+        "view": "Zobacz wniosek",
+        "case": "Otwórz sprawę",
+        "details": "Zobacz dopłatę"
+      },
+      "detail": {
+        "eyebrow": "Wniosek",
+        "subtitle": "Lista, oś czasu i aktualizacje.",
+        "openCase": "Otwórz sprawę",
+        "back": "Wróć do wniosków",
         "timeline": "Oś czasu",
         "documents": "Lista dokumentów",
         "upload": "Prześlij",
@@ -1263,7 +1263,8 @@
       "refresh": "Odswiez",
       "updatedAt": "Zaktualizowano",
       "open": "Otworz",
-      "stepLabel": "Krok"
+      "stepLabel": "Krok",
+      "authorizationLabel": "Autoryzacja"
     },
     "new": {
       "title": "Utworz sprawe",
@@ -1311,9 +1312,33 @@
           "file": "Plik",
           "type": "Typ",
           "status": "Status",
-      "reason": "Powod",
-      "updatedAt": "Zaktualizowano"
+          "reason": "Powod",
+          "updatedAt": "Zaktualizowano"
         }
+      },
+      "authorizationStatusLabel": "Autoryzacja",
+      "consent": {
+        "title": "Autoryzacja usługi",
+        "description": "Udziel autoryzacji, aby operatorzy Domek mogli przygotować i wysłać Twoją sprawę bez pytania o dane DigiD.",
+        "terms": "Warunki",
+        "privacy": "Prywatność",
+        "alreadyGivenTitle": "Autoryzacja już udzielona",
+        "alreadyGivenBody": "Ta sprawa ma już ważną zgodę na autoryzację usługi.",
+        "checkbox": "Upoważniam Domek/FinHub do działania w moim imieniu w tej sprawie.",
+        "confirm": "Potwierdź autoryzację",
+        "saving": "Zapisywanie autoryzacji...",
+        "errorTitle": "Błąd autoryzacji",
+        "error": "Nie udało się zapisać autoryzacji.",
+        "historyTitle": "Historia autoryzacji",
+        "historyType": "Typ",
+        "historyAcceptedAt": "Zaakceptowano",
+        "historyVersion": "Wersja"
+      },
+      "reviewAction": {
+        "send": "Przenieś do gotowe do weryfikacji",
+        "sending": "Przenoszenie...",
+        "blocked": "Musisz udzielić autoryzacji usługi przed przekazaniem do weryfikacji.",
+        "error": "Nie udało się przenieść sprawy do gotowe do weryfikacji."
       }
     }
   },

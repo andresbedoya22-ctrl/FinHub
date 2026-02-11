@@ -4,10 +4,13 @@ export type CaseStatus =
   | "created"
   | "in_progress"
   | "waiting_user"
+  | "ready_for_review"
   | "submitted"
   | "under_review"
   | "completed"
   | "cancelled";
+
+export type CaseAuthorizationStatus = "not_started" | "pending" | "received" | "verified";
 
 export type CaseStepKey =
   | "intake"
@@ -27,6 +30,7 @@ export type CaseEntity = {
   title: string;
   status: CaseStatus;
   stepKey: CaseStepKey;
+  authorizationStatus: CaseAuthorizationStatus;
   createdAt: string; // ISO
   updatedAt: string; // ISO
 };
@@ -67,9 +71,25 @@ export type CaseDocumentEntry = {
   } | null;
 };
 
+export type CaseConsentType = "service_authorization" | "data_processing" | "terms_acceptance";
+
+export type CaseConsentEntry = {
+  id: string;
+  caseId: string;
+  consentType: CaseConsentType;
+  granted: boolean;
+  acceptedAt: string | null;
+  locale: string | null;
+  version: number;
+  source: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type CaseDetail = CaseEntity & {
   tasks: CaseTask[];
   documents: CaseDocumentEntry[];
+  consents: CaseConsentEntry[];
 };
 
 export type CasesState = {

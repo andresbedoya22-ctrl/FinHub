@@ -2,9 +2,8 @@
 
 import React, { useEffect } from "react";
 import { create } from "zustand";
-import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
 import type { CaseEntity, CaseStatus, CaseStepKey, CaseType } from "./casesTypes";
-import { createCase as apiCreateCase, listCases } from "./casesApi";
+import { createCase as apiCreateCase, listCases, updateCase as apiUpdateCase } from "./casesApi";
 import { defaultTitleForCaseType } from "./casesConfig";
 
 type CasesState = {
@@ -79,32 +78,12 @@ export const useCases = create<CasesStore>((set, get) => ({
   },
 
   setStatus: async (id: string, status: CaseStatus) => {
-    const supabase = createSupabaseBrowserClient();
-    const { data: userData, error: userErr } = await supabase.auth.getUser();
-    if (userErr) throw new Error(userErr.message);
-    if (!userData.user) throw new Error("No authenticated user");
-
-    const { error } = await supabase
-      .from("cases")
-      .update({ status, updated_at: new Date().toISOString() })
-      .eq("id", id);
-
-    if (error) throw new Error(error.message);
+    await apiUpdateCase(id, { status });
     await get().loadCases();
   },
 
   setStepKey: async (id: string, stepKey: CaseStepKey) => {
-    const supabase = createSupabaseBrowserClient();
-    const { data: userData, error: userErr } = await supabase.auth.getUser();
-    if (userErr) throw new Error(userErr.message);
-    if (!userData.user) throw new Error("No authenticated user");
-
-    const { error } = await supabase
-      .from("cases")
-      .update({ step_key: stepKey, updated_at: new Date().toISOString() })
-      .eq("id", id);
-
-    if (error) throw new Error(error.message);
+    await apiUpdateCase(id, { stepKey });
     await get().loadCases();
   },
 }));

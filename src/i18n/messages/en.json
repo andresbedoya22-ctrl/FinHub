@@ -1260,7 +1260,8 @@
       "refresh": "Refresh",
       "updatedAt": "Updated",
       "open": "Open",
-      "stepLabel": "Step"
+      "stepLabel": "Step",
+      "authorizationLabel": "Authorization"
     },
     "new": {
       "title": "Create case",
@@ -1308,9 +1309,33 @@
           "file": "File",
           "type": "Type",
           "status": "Status",
-      "reason": "Reason",
-      "updatedAt": "Updated"
+          "reason": "Reason",
+          "updatedAt": "Updated"
         }
+      },
+      "authorizationStatusLabel": "Authorization",
+      "consent": {
+        "title": "Service authorization",
+        "description": "Grant authorization so Domek operators can prepare and submit your case without requesting DigiD credentials.",
+        "terms": "Terms",
+        "privacy": "Privacy",
+        "alreadyGivenTitle": "Authorization already granted",
+        "alreadyGivenBody": "This case already has a valid service authorization consent.",
+        "checkbox": "I authorize Domek/FinHub to act on my behalf for this case.",
+        "confirm": "Confirm authorization",
+        "saving": "Saving authorization...",
+        "errorTitle": "Authorization error",
+        "error": "Could not register authorization.",
+        "historyTitle": "Authorization history",
+        "historyType": "Type",
+        "historyAcceptedAt": "Accepted at",
+        "historyVersion": "Version"
+      },
+      "reviewAction": {
+        "send": "Move to ready for review",
+        "sending": "Moving...",
+        "blocked": "You must grant service authorization before moving to review.",
+        "error": "Could not move case to ready for review."
       }
     }
   },
