@@ -1,10 +1,15 @@
-﻿type EnvKey =
+type EnvKey =
   | "NEXT_PUBLIC_SUPABASE_URL"
   | "NEXT_PUBLIC_SUPABASE_ANON_KEY"
   | "SUPABASE_SERVICE_ROLE_KEY"
   | "STRIPE_SECRET_KEY"
   | "STRIPE_WEBHOOK_SECRET"
-  | "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY";
+  | "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY"
+  | "ELEMENTS_BASE_URL"
+  | "ELEMENTS_TOKEN_URL"
+  | "ELEMENTS_CLIENT_ID"
+  | "ELEMENTS_CLIENT_SECRET"
+  | "ELEMENTS_SCOPE";
 
 function missingKeys(keys: EnvKey[]) {
   return keys.filter((k) => !process.env[k] || String(process.env[k]).trim() === "");
@@ -55,6 +60,24 @@ export function assertStripeWebhookEnv() {
 }
 
 /**
+ * Elements integration runtime validation.
+ */
+export function assertElementsConnectorEnv() {
+  const required: EnvKey[] = [
+    "ELEMENTS_BASE_URL",
+    "ELEMENTS_TOKEN_URL",
+    "ELEMENTS_CLIENT_ID",
+    "ELEMENTS_CLIENT_SECRET",
+  ];
+  const missing = missingKeys(required);
+  if (missing.length) {
+    throw new Error(
+      `Missing required Elements env vars: ${missing.join(", ")}. Check .env.local / deployment config.`
+    );
+  }
+}
+
+/**
  * Centralized accessors (use with the appropriate assert above).
  */
 export const env = {
@@ -64,4 +87,9 @@ export const env = {
   STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY!,
   STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET!,
   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
+  ELEMENTS_BASE_URL: process.env.ELEMENTS_BASE_URL!,
+  ELEMENTS_TOKEN_URL: process.env.ELEMENTS_TOKEN_URL!,
+  ELEMENTS_CLIENT_ID: process.env.ELEMENTS_CLIENT_ID!,
+  ELEMENTS_CLIENT_SECRET: process.env.ELEMENTS_CLIENT_SECRET!,
+  ELEMENTS_SCOPE: process.env.ELEMENTS_SCOPE!,
 };

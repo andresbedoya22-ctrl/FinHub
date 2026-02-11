@@ -2,10 +2,10 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import type { CaseDetail } from "@/features/cases/casesTypes";
-import { getCaseDetail } from "@/features/cases/casesApi";
+import { createCaseConsent, getCaseDetail, updateCase } from "@/features/cases/casesApi";
 import { DocumentUploader } from "@/features/documents/ui/DocumentUploader";
 import { Card } from "@/ui/components/Card";
 import { Header } from "@/ui/components/Header";
@@ -13,19 +13,21 @@ import { InfoBox } from "@/ui/components/InfoBox";
 import { Screen } from "@/ui/components/Screen";
 
 function pill(text: string) {
-  return (
-    <span className="rounded-xl border border-fh-border bg-fh-surface px-2 py-1 text-xs">
-      {text}
-    </span>
-  );
+  return <span className="rounded-xl border border-fh-border bg-fh-surface px-2 py-1 text-xs">{text}</span>;
 }
 
 export function CaseDetailClient({ caseId }: { caseId: string }) {
   const t = useTranslations("cases");
   const tDoc = useTranslations("documentsPipeline");
+  const locale = useLocale();
+
   const [detail, setDetail] = useState<CaseDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isSubmittingConsent, setIsSubmittingConsent] = useState(false);
+  const [consentChecked, setConsentChecked] = useState(false);
+  const [consentError, setConsentError] = useState<string | null>(null);
+  const [isSendingToReview, setIsSendingToReview] = useState(false);
   const aliveRef = useRef(true);
 
   const errorFallback = useMemo(() => t("detail.error"), [t]);
@@ -53,14 +55,26 @@ export function CaseDetailClient({ caseId }: { caseId: string }) {
     };
   }, [loadDetail]);
 
-  const tasks = detail?.tasks ?? [];
-  const documents = detail?.documents ?? [];
+  const tasks = useMemo(() => detail?.tasks ?? [], [detail]);
+  const documents = useMemo(() => detail?.documents ?? [], [detail]);
+  const consents = useMemo(() => detail?.consents ?? [], [detail]);
+
+  const hasServiceConsent = useMemo(
+    () => consents.some((c) => c.granted && c.consentType === "service_authorization"),
+    [consents]
+  );
+
+  const canMoveToReadyForReview = useMemo(
+    () => Boolean(detail && detail.status !== "ready_for_review" && detail.status !== "submitted" && hasServiceConsent),
+    [detail, hasServiceConsent]
+  );
 
   const timeline = useMemo(() => {
     if (!detail) return [];
     return [
       { label: t("detail.statusLabel"), value: detail.status },
       { label: t("detail.stepLabel"), value: detail.stepKey },
+      { label: t("detail.authorizationStatusLabel"), value: detail.authorizationStatus },
     ];
   }, [detail, t]);
 
@@ -72,6 +86,46 @@ export function CaseDetailClient({ caseId }: { caseId: string }) {
       unknown: tDoc("reasons.unknown"),
     } as Record<string, string>;
   }, [tDoc]);
+
+  async function onGrantConsent() {
+    if (!consentChecked || !detail || isSubmittingConsent) return;
+    setIsSubmittingConsent(true);
+    setConsentError(null);
+
+    try {
+      await createCaseConsent(caseId, {
+        consentType: "service_authorization",
+        granted: true,
+        locale,
+        version: 1,
+        source: "case_detail_ui",
+      });
+      setConsentChecked(false);
+      await loadDetail();
+    } catch (e: unknown) {
+      setConsentError(e instanceof Error ? e.message : t("detail.consent.error"));
+    } finally {
+      setIsSubmittingConsent(false);
+    }
+  }
+
+  async function onMoveToReview() {
+    if (!detail || !canMoveToReadyForReview || isSendingToReview) return;
+    setIsSendingToReview(true);
+    setConsentError(null);
+
+    try {
+      await updateCase(caseId, {
+        status: "ready_for_review",
+        stepKey: "review",
+      });
+      await loadDetail();
+    } catch (e: unknown) {
+      setConsentError(e instanceof Error ? e.message : t("detail.reviewAction.error"));
+    } finally {
+      setIsSendingToReview(false);
+    }
+  }
 
   return (
     <Screen className="space-y-6">
@@ -120,6 +174,7 @@ export function CaseDetailClient({ caseId }: { caseId: string }) {
               {detail.productSlug ? pill(detail.productSlug) : null}
               {pill(detail.status)}
               {pill(detail.stepKey)}
+              {pill(`${t("detail.authorizationStatusLabel")}: ${detail.authorizationStatus}`)}
             </div>
 
             <div className="grid gap-2 md:grid-cols-2">
@@ -129,6 +184,83 @@ export function CaseDetailClient({ caseId }: { caseId: string }) {
                 </div>
               ))}
             </div>
+          </Card>
+
+          <Card className="space-y-3">
+            <div className="text-sm font-semibold">{t("detail.consent.title")}</div>
+            <div className="text-sm text-fh-muted">{t("detail.consent.description")}</div>
+            <div className="text-xs text-fh-muted">
+              <Link className="underline" href="/terms">
+                {t("detail.consent.terms")}
+              </Link>{" "}
+              ·{" "}
+              <Link className="underline" href="/privacy">
+                {t("detail.consent.privacy")}
+              </Link>
+            </div>
+
+            {hasServiceConsent ? (
+              <InfoBox title={t("detail.consent.alreadyGivenTitle")} variant="info">
+                {t("detail.consent.alreadyGivenBody")}
+              </InfoBox>
+            ) : (
+              <>
+                <label className="flex items-start gap-2 rounded-xl border border-fh-border bg-fh-surface p-3 text-sm">
+                  <input
+                    type="checkbox"
+                    className="mt-0.5"
+                    checked={consentChecked}
+                    onChange={(e) => setConsentChecked(e.target.checked)}
+                  />
+                  <span>{t("detail.consent.checkbox")}</span>
+                </label>
+                <button
+                  onClick={() => void onGrantConsent()}
+                  disabled={!consentChecked || isSubmittingConsent}
+                  className="rounded-xl bg-fh-accent px-4 py-2 text-sm font-medium text-white hover:opacity-95 disabled:opacity-60"
+                >
+                  {isSubmittingConsent ? t("detail.consent.saving") : t("detail.consent.confirm")}
+                </button>
+              </>
+            )}
+
+            <div>
+              <button
+                onClick={() => void onMoveToReview()}
+                disabled={!canMoveToReadyForReview || isSendingToReview}
+                className="rounded-xl border border-fh-border bg-fh-surface px-4 py-2 text-sm hover:bg-fh-surface-2 disabled:opacity-60"
+              >
+                {isSendingToReview ? t("detail.reviewAction.sending") : t("detail.reviewAction.send")}
+              </button>
+              {!hasServiceConsent ? (
+                <div className="mt-2 text-xs text-fh-muted">{t("detail.reviewAction.blocked")}</div>
+              ) : null}
+            </div>
+
+            {consentError ? (
+              <InfoBox title={t("detail.consent.errorTitle")} variant="danger">
+                {consentError}
+              </InfoBox>
+            ) : null}
+
+            {consents.length > 0 ? (
+              <div className="space-y-2">
+                <div className="text-sm font-semibold">{t("detail.consent.historyTitle")}</div>
+                {consents.map((consent) => (
+                  <div key={consent.id} className="rounded-xl border border-fh-border bg-fh-surface-2 p-3 text-xs">
+                    <div>
+                      {t("detail.consent.historyType")}: {consent.consentType}
+                    </div>
+                    <div>
+                      {t("detail.consent.historyAcceptedAt")}: {consent.acceptedAt ?? "-"}
+                    </div>
+                    <div>
+                      {t("detail.consent.historyVersion")}: v{consent.version}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : null}
           </Card>
 
           <Card className="space-y-3">

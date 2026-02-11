@@ -1260,7 +1260,8 @@
       "refresh": "Reimprospateaza",
       "updatedAt": "Actualizat",
       "open": "Deschide",
-      "stepLabel": "Pas"
+      "stepLabel": "Pas",
+      "authorizationLabel": "Autorizare"
     },
     "new": {
       "title": "Creeaza dosar",
@@ -1308,9 +1309,33 @@
           "file": "Fisier",
           "type": "Tip",
           "status": "Status",
-      "reason": "Motiv",
-      "updatedAt": "Actualizat"
+          "reason": "Motiv",
+          "updatedAt": "Actualizat"
         }
+      },
+      "authorizationStatusLabel": "Autorizare",
+      "consent": {
+        "title": "Autorizare serviciu",
+        "description": "Oferă autorizare pentru ca operatorii Domek să pregătească și să trimită dosarul tău fără a cere credențiale DigiD.",
+        "terms": "Termeni",
+        "privacy": "Confidențialitate",
+        "alreadyGivenTitle": "Autorizare deja acordată",
+        "alreadyGivenBody": "Acest dosar are deja un consimțământ valid de autorizare a serviciului.",
+        "checkbox": "Autorizez Domek/FinHub să acționeze în numele meu pentru acest dosar.",
+        "confirm": "Confirmă autorizarea",
+        "saving": "Se salvează autorizarea...",
+        "errorTitle": "Eroare autorizare",
+        "error": "Nu s-a putut înregistra autorizarea.",
+        "historyTitle": "Istoric autorizări",
+        "historyType": "Tip",
+        "historyAcceptedAt": "Acceptat la",
+        "historyVersion": "Versiune"
+      },
+      "reviewAction": {
+        "send": "Mută la pregătit pentru revizuire",
+        "sending": "Se mută...",
+        "blocked": "Trebuie să acorzi autorizarea serviciului înainte de a trimite la revizuire.",
+        "error": "Nu s-a putut muta dosarul la pregătit pentru revizuire."
       }
     }
   },

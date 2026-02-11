@@ -94,6 +94,7 @@ export function CasesListClient() {
                   {c.productSlug ? pill(c.productSlug) : null}
                   {pill(c.status)}
                   {pill(`${t("list.stepLabel")}: ${c.stepKey}`)}
+                  {pill(`${t("list.authorizationLabel")}: ${c.authorizationStatus}`)}
                 </div>
                 <div className="text-xs text-fh-muted">
                   {t("list.updatedAt")}: {new Date(c.updatedAt).toLocaleString()}
