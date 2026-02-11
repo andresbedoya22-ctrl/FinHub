@@ -1260,7 +1260,8 @@
       "refresh": "Refrescar",
       "updatedAt": "Actualizado",
       "open": "Abrir",
-      "stepLabel": "Paso"
+      "stepLabel": "Paso",
+      "authorizationLabel": "Autorización"
     },
     "new": {
       "title": "Crear caso",
@@ -1308,9 +1309,33 @@
           "file": "Archivo",
           "type": "Tipo",
           "status": "Estado",
-      "reason": "Motivo",
-      "updatedAt": "Actualizado"
+          "reason": "Motivo",
+          "updatedAt": "Actualizado"
         }
+      },
+      "authorizationStatusLabel": "Autorización",
+      "consent": {
+        "title": "Autorización de servicio",
+        "description": "Otorga autorización para que operadores de Domek preparen y envíen tu caso sin solicitar credenciales DigiD.",
+        "terms": "Términos",
+        "privacy": "Privacidad",
+        "alreadyGivenTitle": "Autorización ya otorgada",
+        "alreadyGivenBody": "Este caso ya tiene un consentimiento válido de autorización de servicio.",
+        "checkbox": "Autorizo a Domek/FinHub a actuar en mi nombre para este caso.",
+        "confirm": "Confirmar autorización",
+        "saving": "Guardando autorización...",
+        "errorTitle": "Error de autorización",
+        "error": "No se pudo registrar la autorización.",
+        "historyTitle": "Historial de autorizaciones",
+        "historyType": "Tipo",
+        "historyAcceptedAt": "Aceptado en",
+        "historyVersion": "Versión"
+      },
+      "reviewAction": {
+        "send": "Mover a listo para revisión",
+        "sending": "Moviendo...",
+        "blocked": "Debes otorgar autorización de servicio antes de pasar a revisión.",
+        "error": "No se pudo mover el caso a listo para revisión."
       }
     }
   },
