@@ -1416,7 +1416,10 @@
     },
     "actions": {
       "check": "Verifică eligibilitatea",
-      "loginCta": "Sari peste login momentan (demo)"
+      "loginCta": "Sari peste login momentan (demo)",
+      "login": "Autentifica-te",
+      "startEligible": "Porneste contractarea pentru subventiile eligibile",
+      "starting": "Se porneste..."
     },
     "result": {
       "title": "Subvenții potențiale și pasul următor",
@@ -1439,6 +1442,94 @@
       "childcare_invoice": "Factură îngrijire copil",
       "work_or_study_proof": "Dovadă muncă sau studii",
       "household_composition": "Extras componență gospodărie"
+    },
+    "errors": {
+      "title": "Eroare de contractare",
+      "noSelection": "Selecteaza cel putin o subventie pentru a continua.",
+      "contractStart": "Nu s-a putut crea cazul pentru aceasta contractare.",
+      "checkout": "Nu s-a putut porni checkout-ul. Incearca din nou."
+    }
+  },
+  "adminCases": {
+    "title": "Admin - Cazuri",
+    "subtitle": "Coada operationala cu filtre dupa status, tip, autorizare si SLA.",
+    "summary": {
+      "total": "Total cazuri",
+      "overdue": "SLA depasit",
+      "pendingAuthorization": "Autorizare in asteptare"
+    },
+    "filters": {
+      "searchPlaceholder": "Cauta id/titlu",
+      "allStatus": "toate statusurile",
+      "allType": "toate tipurile",
+      "allAuthorization": "toate autorizarile",
+      "allSla": "toate SLA"
+    },
+    "actions": {
+      "refresh": "Reincarca",
+      "applyFilters": "Aplica filtre"
+    },
+    "loading": {
+      "title": "Se incarca",
+      "body": "Se incarca cazurile admin...",
+      "detailBody": "Se incarca detaliul cazului..."
+    },
+    "errors": {
+      "title": "Eroare",
+      "load": "Nu s-au putut incarca cazurile admin",
+      "loadDetail": "Nu s-a putut incarca detaliul cazului",
+      "updateTask": "Nu s-a putut actualiza task-ul",
+      "saveNote": "Nu s-a putut salva nota"
+    },
+    "table": {
+      "title": "Titlu",
+      "type": "Tip",
+      "status": "Status",
+      "authorization": "Autorizare",
+      "sla": "SLA",
+      "updated": "Actualizat",
+      "open": "Deschide",
+      "view": "Vezi"
+    },
+    "detail": {
+      "title": "Admin - Detaliu caz",
+      "subtitle": "Operatiuni caz",
+      "back": "Inapoi",
+      "summary": {
+        "status": "Status",
+        "step": "Pas",
+        "authorization": "Autorizare",
+        "type": "Tip",
+        "tasksDone": "Task-uri facute",
+        "validatedDocs": "Documente validate"
+      },
+      "tasks": {
+        "title": "Task-uri",
+        "emptyTitle": "Fara task-uri",
+        "emptyBody": "Acest caz nu are inca task-uri.",
+        "status": "Status",
+        "updated": "Actualizat",
+        "reopen": "Redeschide",
+        "markDone": "Marcheaza ca facut"
+      },
+      "documents": {
+        "title": "Documente validate",
+        "emptyTitle": "Fara documente validate",
+        "emptyBody": "In review-ul admin se afiseaza doar documentele validate.",
+        "file": "Fisier",
+        "type": "Tip",
+        "validatedAt": "Validat la",
+        "status": "Status"
+      },
+      "notes": {
+        "title": "Note interne",
+        "placeholder": "Scrie o nota interna...",
+        "saving": "Se salveaza...",
+        "add": "Adauga nota",
+        "emptyTitle": "Fara note",
+        "emptyBody": "Nu exista inca note interne.",
+        "by": "de"
+      }
     }
   }
 }

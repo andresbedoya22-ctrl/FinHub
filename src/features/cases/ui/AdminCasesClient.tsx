@@ -1,7 +1,8 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { Card } from "@/ui/components/Card";
 import { InfoBox } from "@/ui/components/InfoBox";
 import { Header } from "@/ui/components/Header";
@@ -14,6 +15,7 @@ const authOptions = ["", "not_started", "pending", "received", "verified"];
 const slaOptions = ["", "ok", "warning", "overdue"];
 
 export function AdminCasesClient() {
+  const t = useTranslations("adminCases");
   const [rows, setRows] = useState<AdminCaseRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -31,11 +33,11 @@ export function AdminCasesClient() {
       const data = await listAdminCases({ q, status, type, authorizationStatus, sla });
       setRows(data);
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : "Failed to load admin cases");
+      setError(e instanceof Error ? e.message : t("errors.load"));
     } finally {
       setLoading(false);
     }
-  }, [q, status, type, authorizationStatus, sla]);
+  }, [q, status, type, authorizationStatus, sla, t]);
 
   useEffect(() => {
     void load();
@@ -52,52 +54,52 @@ export function AdminCasesClient() {
   return (
     <Screen className="space-y-6">
       <Header
-        title="Admin · Cases"
-        subtitle="Operational queue with filters by status, type, authorization and SLA."
+        title={t("title")}
+        subtitle={t("subtitle")}
         right={
           <button
             onClick={() => void load()}
             className="rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm hover:bg-fh-surface-2"
           >
-            Refresh
+            {t("actions.refresh")}
           </button>
         }
       />
 
       <Card className="grid gap-3 md:grid-cols-3">
-        <div className="rounded-xl border border-fh-border p-3 text-sm">Total cases: <b>{summary.total}</b></div>
-        <div className="rounded-xl border border-fh-border p-3 text-sm">Overdue SLA: <b>{summary.overdue}</b></div>
-        <div className="rounded-xl border border-fh-border p-3 text-sm">Pending authorization: <b>{summary.pendingAuthorization}</b></div>
+        <div className="rounded-xl border border-fh-border p-3 text-sm">{t("summary.total")}: <b>{summary.total}</b></div>
+        <div className="rounded-xl border border-fh-border p-3 text-sm">{t("summary.overdue")}: <b>{summary.overdue}</b></div>
+        <div className="rounded-xl border border-fh-border p-3 text-sm">{t("summary.pendingAuthorization")}: <b>{summary.pendingAuthorization}</b></div>
       </Card>
 
       <Card className="grid gap-3 md:grid-cols-6">
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder="Search id/title"
+          placeholder={t("filters.searchPlaceholder")}
           className="rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm"
         />
         <select value={status} onChange={(e) => setStatus(e.target.value)} className="rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm">
-          {statusOptions.map((v) => <option key={v} value={v}>{v || "all status"}</option>)}
+          {statusOptions.map((v) => <option key={v} value={v}>{v || t("filters.allStatus")}</option>)}
         </select>
         <select value={type} onChange={(e) => setType(e.target.value)} className="rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm">
-          {typeOptions.map((v) => <option key={v} value={v}>{v || "all type"}</option>)}
+          {typeOptions.map((v) => <option key={v} value={v}>{v || t("filters.allType")}</option>)}
         </select>
         <select value={authorizationStatus} onChange={(e) => setAuthorizationStatus(e.target.value)} className="rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm">
-          {authOptions.map((v) => <option key={v} value={v}>{v || "all authorization"}</option>)}
+          {authOptions.map((v) => <option key={v} value={v}>{v || t("filters.allAuthorization")}</option>)}
         </select>
         <select value={sla} onChange={(e) => setSla(e.target.value)} className="rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm">
-          {slaOptions.map((v) => <option key={v} value={v}>{v || "all SLA"}</option>)}
+          {slaOptions.map((v) => <option key={v} value={v}>{v || t("filters.allSla")}</option>)}
         </select>
-        <button onClick={() => void load()} className="rounded-xl bg-fh-accent px-4 py-2 text-sm font-medium text-white">Apply filters</button>
+        <button onClick={() => void load()} className="rounded-xl bg-fh-accent px-4 py-2 text-sm font-medium text-white">{t("actions.applyFilters")}</button>
       </Card>
 
       {loading ? (
-        <Card><InfoBox title="Loading" variant="info">Loading admin cases...</InfoBox></Card>
+        <Card><InfoBox title={t("loading.title")} variant="info">{t("loading.body")}</InfoBox></Card>
       ) : null}
 
       {error ? (
-        <Card><InfoBox title="Error" variant="danger">{error}</InfoBox></Card>
+        <Card><InfoBox title={t("errors.title")} variant="danger">{error}</InfoBox></Card>
       ) : null}
 
       {!loading && !error ? (
@@ -105,13 +107,13 @@ export function AdminCasesClient() {
           <table className="min-w-full text-sm">
             <thead className="text-left opacity-80">
               <tr>
-                <th className="py-2 pr-4">Title</th>
-                <th className="py-2 pr-4">Type</th>
-                <th className="py-2 pr-4">Status</th>
-                <th className="py-2 pr-4">Authorization</th>
-                <th className="py-2 pr-4">SLA</th>
-                <th className="py-2 pr-4">Updated</th>
-                <th className="py-2 pr-0">Open</th>
+                <th className="py-2 pr-4">{t("table.title")}</th>
+                <th className="py-2 pr-4">{t("table.type")}</th>
+                <th className="py-2 pr-4">{t("table.status")}</th>
+                <th className="py-2 pr-4">{t("table.authorization")}</th>
+                <th className="py-2 pr-4">{t("table.sla")}</th>
+                <th className="py-2 pr-4">{t("table.updated")}</th>
+                <th className="py-2 pr-0">{t("table.open")}</th>
               </tr>
             </thead>
             <tbody>
@@ -123,7 +125,7 @@ export function AdminCasesClient() {
                   <td className="py-2 pr-4">{r.authorization_status}</td>
                   <td className="py-2 pr-4">{r.sla_bucket}</td>
                   <td className="py-2 pr-4">{new Date(r.updated_at).toLocaleString()}</td>
-                  <td className="py-2 pr-0"><Link className="underline" href={`/app/admin/cases/${r.id}`}>View</Link></td>
+                  <td className="py-2 pr-0"><Link className="underline" href={`/app/admin/cases/${r.id}`}>{t("table.view")}</Link></td>
                 </tr>
               ))}
             </tbody>
@@ -133,3 +135,4 @@ export function AdminCasesClient() {
     </Screen>
   );
 }
+

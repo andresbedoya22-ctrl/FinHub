@@ -1416,7 +1416,10 @@
     },
     "actions": {
       "check": "Check eligibility",
-      "loginCta": "Skip login for now (demo)"
+      "loginCta": "Skip login for now (demo)",
+      "login": "Sign in",
+      "startEligible": "Start contract for eligible subsidies",
+      "starting": "Starting..."
     },
     "result": {
       "title": "Potential subsidies and next step",
@@ -1439,6 +1442,94 @@
       "childcare_invoice": "Childcare invoice",
       "work_or_study_proof": "Work or study proof",
       "household_composition": "Household composition extract"
+    },
+    "errors": {
+      "title": "Contracting error",
+      "noSelection": "Select at least one subsidy to continue.",
+      "contractStart": "Could not create the case for this contract.",
+      "checkout": "Could not start checkout. Please try again."
+    }
+  },
+  "adminCases": {
+    "title": "Admin - Cases",
+    "subtitle": "Operational queue with filters by status, type, authorization and SLA.",
+    "summary": {
+      "total": "Total cases",
+      "overdue": "Overdue SLA",
+      "pendingAuthorization": "Pending authorization"
+    },
+    "filters": {
+      "searchPlaceholder": "Search id/title",
+      "allStatus": "all status",
+      "allType": "all type",
+      "allAuthorization": "all authorization",
+      "allSla": "all SLA"
+    },
+    "actions": {
+      "refresh": "Refresh",
+      "applyFilters": "Apply filters"
+    },
+    "loading": {
+      "title": "Loading",
+      "body": "Loading admin cases...",
+      "detailBody": "Loading case detail..."
+    },
+    "errors": {
+      "title": "Error",
+      "load": "Failed to load admin cases",
+      "loadDetail": "Failed to load case detail",
+      "updateTask": "Failed to update task",
+      "saveNote": "Failed to save note"
+    },
+    "table": {
+      "title": "Title",
+      "type": "Type",
+      "status": "Status",
+      "authorization": "Authorization",
+      "sla": "SLA",
+      "updated": "Updated",
+      "open": "Open",
+      "view": "View"
+    },
+    "detail": {
+      "title": "Admin - Case detail",
+      "subtitle": "Case operations",
+      "back": "Back",
+      "summary": {
+        "status": "Status",
+        "step": "Step",
+        "authorization": "Authorization",
+        "type": "Type",
+        "tasksDone": "Tasks done",
+        "validatedDocs": "Validated docs"
+      },
+      "tasks": {
+        "title": "Tasks",
+        "emptyTitle": "No tasks",
+        "emptyBody": "This case has no tasks yet.",
+        "status": "Status",
+        "updated": "Updated",
+        "reopen": "Reopen",
+        "markDone": "Mark done"
+      },
+      "documents": {
+        "title": "Validated documents",
+        "emptyTitle": "No validated docs",
+        "emptyBody": "Only validated docs are shown in admin review.",
+        "file": "File",
+        "type": "Type",
+        "validatedAt": "Validated at",
+        "status": "Status"
+      },
+      "notes": {
+        "title": "Internal notes",
+        "placeholder": "Write an internal note...",
+        "saving": "Saving...",
+        "add": "Add note",
+        "emptyTitle": "No notes",
+        "emptyBody": "No internal notes yet.",
+        "by": "by"
+      }
     }
   }
 }

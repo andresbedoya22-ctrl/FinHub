@@ -1419,7 +1419,10 @@
     },
     "actions": {
       "check": "Sprawdź kwalifikację",
-      "loginCta": "Pomiń logowanie na razie (demo)"
+      "loginCta": "Pomiń logowanie na razie (demo)",
+      "login": "Zaloguj sie",
+      "startEligible": "Rozpocznij kontrakt dla kwalifikujacych sie swiadczen",
+      "starting": "Uruchamianie..."
     },
     "result": {
       "title": "Potencjalne świadczenia i następny krok",
@@ -1442,6 +1445,94 @@
       "childcare_invoice": "Faktura za opiekę nad dzieckiem",
       "work_or_study_proof": "Potwierdzenie pracy lub nauki",
       "household_composition": "Wyciąg ze składu gospodarstwa"
+    },
+    "errors": {
+      "title": "Blad kontraktowania",
+      "noSelection": "Wybierz co najmniej jedno swiadczenie, aby kontynuowac.",
+      "contractStart": "Nie udalo sie utworzyc sprawy dla tego kontraktu.",
+      "checkout": "Nie udalo sie uruchomic checkoutu. Sprobuj ponownie."
+    }
+  },
+  "adminCases": {
+    "title": "Admin - Sprawy",
+    "subtitle": "Kolejka operacyjna z filtrami po statusie, typie, autoryzacji i SLA.",
+    "summary": {
+      "total": "Liczba spraw",
+      "overdue": "Przeterminowane SLA",
+      "pendingAuthorization": "Oczekuje na autoryzacje"
+    },
+    "filters": {
+      "searchPlaceholder": "Szukaj id/tytulu",
+      "allStatus": "wszystkie statusy",
+      "allType": "wszystkie typy",
+      "allAuthorization": "wszystkie autoryzacje",
+      "allSla": "wszystkie SLA"
+    },
+    "actions": {
+      "refresh": "Odswiez",
+      "applyFilters": "Zastosuj filtry"
+    },
+    "loading": {
+      "title": "Ladowanie",
+      "body": "Ladowanie spraw admin...",
+      "detailBody": "Ladowanie szczegolow sprawy..."
+    },
+    "errors": {
+      "title": "Blad",
+      "load": "Nie udalo sie zaladowac spraw admin",
+      "loadDetail": "Nie udalo sie zaladowac szczegolow sprawy",
+      "updateTask": "Nie udalo sie zaktualizowac zadania",
+      "saveNote": "Nie udalo sie zapisac notatki"
+    },
+    "table": {
+      "title": "Tytul",
+      "type": "Typ",
+      "status": "Status",
+      "authorization": "Autoryzacja",
+      "sla": "SLA",
+      "updated": "Zaktualizowano",
+      "open": "Otworz",
+      "view": "Zobacz"
+    },
+    "detail": {
+      "title": "Admin - Szczegoly sprawy",
+      "subtitle": "Operacje sprawy",
+      "back": "Wstecz",
+      "summary": {
+        "status": "Status",
+        "step": "Krok",
+        "authorization": "Autoryzacja",
+        "type": "Typ",
+        "tasksDone": "Wykonane zadania",
+        "validatedDocs": "Zweryfikowane dokumenty"
+      },
+      "tasks": {
+        "title": "Zadania",
+        "emptyTitle": "Brak zadan",
+        "emptyBody": "Ta sprawa nie ma jeszcze zadan.",
+        "status": "Status",
+        "updated": "Zaktualizowano",
+        "reopen": "Otworz ponownie",
+        "markDone": "Oznacz jako zrobione"
+      },
+      "documents": {
+        "title": "Zweryfikowane dokumenty",
+        "emptyTitle": "Brak zweryfikowanych dokumentow",
+        "emptyBody": "W widoku admin pokazujemy tylko zweryfikowane dokumenty.",
+        "file": "Plik",
+        "type": "Typ",
+        "validatedAt": "Zweryfikowano",
+        "status": "Status"
+      },
+      "notes": {
+        "title": "Notatki wewnetrzne",
+        "placeholder": "Wpisz notatke wewnetrzna...",
+        "saving": "Zapisywanie...",
+        "add": "Dodaj notatke",
+        "emptyTitle": "Brak notatek",
+        "emptyBody": "Brak notatek wewnetrznych.",
+        "by": "przez"
+      }
     }
   }
 }
