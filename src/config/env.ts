@@ -9,7 +9,8 @@ type EnvKey =
   | "ELEMENTS_TOKEN_URL"
   | "ELEMENTS_CLIENT_ID"
   | "ELEMENTS_CLIENT_SECRET"
-  | "ELEMENTS_SCOPE";
+  | "ELEMENTS_SCOPE"
+  | "ELEMENTS_WEBHOOK_SECRET";
 
 function missingKeys(keys: EnvKey[]) {
   return keys.filter((k) => !process.env[k] || String(process.env[k]).trim() === "");
@@ -92,4 +93,5 @@ export const env = {
   ELEMENTS_CLIENT_ID: process.env.ELEMENTS_CLIENT_ID!,
   ELEMENTS_CLIENT_SECRET: process.env.ELEMENTS_CLIENT_SECRET!,
   ELEMENTS_SCOPE: process.env.ELEMENTS_SCOPE!,
+  ELEMENTS_WEBHOOK_SECRET: process.env.ELEMENTS_WEBHOOK_SECRET!,
 };
