@@ -3,17 +3,35 @@ import { requireAdmin } from "@/app/api/admin/_lib/requireAdmin";
 
 export const dynamic = "force-dynamic";
 
+function isMissingAuthorizationStatusColumn(error: unknown): boolean {
+  if (!error || typeof error !== "object") return false;
+  const msg = "message" in error ? String((error as { message?: unknown }).message ?? "") : "";
+  const lower = msg.toLowerCase();
+  return lower.includes("authorization_status") && lower.includes("does not exist");
+}
+
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const auth = await requireAdmin();
   if (!auth.ok) return NextResponse.json({ ok: false, error: auth.error }, { status: auth.status });
 
   const { id } = await params;
 
-  const { data: caseRow, error: caseErr } = await auth.supabase
+  let { data: caseRow, error: caseErr } = await auth.supabase
     .from("cases")
     .select("id,type,title,status,step_key,authorization_status,created_at,updated_at")
     .eq("id", id)
     .maybeSingle();
+
+  if (caseErr && isMissingAuthorizationStatusColumn(caseErr)) {
+    const fallback = await auth.supabase
+      .from("cases")
+      .select("id,type,title,status,step_key,created_at,updated_at")
+      .eq("id", id)
+      .maybeSingle();
+
+    caseErr = fallback.error;
+    caseRow = fallback.data ? { ...fallback.data, authorization_status: "not_started" } : null;
+  }
 
   if (caseErr) return NextResponse.json({ ok: false, error: caseErr.message }, { status: 400 });
   if (!caseRow) return NextResponse.json({ ok: false, error: "Not found" }, { status: 404 });
@@ -47,7 +65,11 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
 
   return NextResponse.json({
     ok: true,
-    case: caseRow,
+    case: {
+      ...caseRow,
+      authorization_status:
+        (caseRow as { authorization_status?: string | null }).authorization_status ?? "not_started",
+    },
     tasks: tasks ?? [],
     documents: documents ?? [],
     notes: notes ?? [],

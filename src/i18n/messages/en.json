@@ -1385,5 +1385,60 @@
       "title": "Upload error",
       "unknown": "Something went wrong."
     }
+  },
+  "toeslagenIntake": {
+    "eyebrow": "Toeslagen v3",
+    "title": "Unified Toeslagen Intake",
+    "subtitle": "Fill one intake and instantly see potential eligibility for Huurtoeslag, Zorgtoeslag, KGB and KOT.",
+    "common": {
+      "yes": "Yes",
+      "no": "No"
+    },
+    "fields": {
+      "age": "Age",
+      "incomeSelf": "Annual income (you)",
+      "incomePartner": "Annual income (partner)",
+      "rent": "Monthly rent",
+      "serviceCosts": "Monthly service costs",
+      "childrenCount": "Number of children",
+      "childcareHoursPerMonth": "Childcare hours / month",
+      "childcareCostPerHour": "Childcare cost per hour",
+      "hasPartner": "Do you have a fiscal partner?",
+      "hasBasicInsurance": "Do you have Dutch basic health insurance?",
+      "worksOrStudies": "Do you work or study?",
+      "partnerWorksOrStudies": "Does your partner work or study?",
+      "childcareType": "Childcare type"
+    },
+    "childcareTypes": {
+      "dagopvang": "Daycare",
+      "bso": "After-school care",
+      "gastouder": "Childminder"
+    },
+    "actions": {
+      "check": "Check eligibility",
+      "loginCta": "Skip login for now (demo)"
+    },
+    "result": {
+      "title": "Potential subsidies and next step",
+      "eligible": "Potentially eligible",
+      "review": "Needs review",
+      "monthly": "Estimated: €{amount}/month",
+      "noEstimate": "No estimate available with current data",
+      "docsLabel": "Checklist docs",
+      "startContract": "Start contracting flow"
+    },
+    "docs": {
+      "huurcontract": "Rental contract",
+      "rent_service_costs": "Rent/service costs statement",
+      "proof_income": "Income proof",
+      "id": "ID document",
+      "health_insurance": "Health insurance proof",
+      "partner_income": "Partner income proof",
+      "children_birth": "Children birth certificates",
+      "childcare_contract": "Childcare contract",
+      "childcare_invoice": "Childcare invoice",
+      "work_or_study_proof": "Work or study proof",
+      "household_composition": "Household composition extract"
+    }
   }
 }

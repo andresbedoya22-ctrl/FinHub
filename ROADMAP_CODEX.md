@@ -65,7 +65,7 @@ Output esperado:
 - A4 Admin mínimo de operación (cola/filtros/SLA/notas): **DONE v1** (filtros, detalle por caso, tasks done/reopen, docs validados y notas internas).
 - B1 Integración Elements Connector v1: **DONE** (módulo `src/features/integrations/elements/*` con OAuth2 client credentials, retries/backoff, env runtime validation y tests).
 - B2 Sync con Elements (FinHub→Elements): **DONE v1** (tabla `external_refs`, servicio idempotente de sync case/task/document y trigger en status de revisión).
-- B3 Sync inverso (Elements→FinHub): **pendiente**.
+- B3 Sync inverso (Elements→FinHub): **DONE v1** (webhook receiver con actualización de estado de cases y emisión de `product_events`).
 - C2/C3 contratación toeslagen + machtiging robusta: **parcial**.
 - D1/D2 Taxes Pro: **pendiente**.
 - E1/E2/E3 Mortgage/Credit/Insurance verticales: **pendiente**.
@@ -79,7 +79,8 @@ Output esperado:
 - ✅ A4 v1 implementado con rutas admin operativas y migración `case_notes`.
 - ✅ B1 implementado en branch `feat/b1-elements-connector-v1` con tests unitarios de refresh/retries y sanitización de errores.
 - ✅ B2 v1 implementado en branch `feat/b2-elements-sync-v1` con `external_refs`, sync idempotente y pruebas unitarias.
-- 🔜 Próximo bloque recomendado: B3 Sync inverso v1 (webhook/polling de estados desde Elements).
+- ✅ B3 v1 implementado en branch `feat/b3-elements-reverse-sync-v1` con webhook receiver y eventos de lifecycle en DB.
+- 🔜 Próximo bloque recomendado: C1 Intake único Toeslagen + motor de elegibilidad.
 
 ## 3) Plan de trabajo detallado (orden recomendado)
 
@@ -131,6 +132,8 @@ _Estado ejecutado:_ implementado con cliente tipado, proveedor de token OAuth2 c
 **Resultado:** backoffice recibe trabajo consistente.
 
 _Estado ejecutado:_ implementado con `external_refs` para idempotencia, sync de case/tasks/docs validados y trigger de sync al mover casos a estados de revisión/envío.
+
+_B3 v1 ejecutado:_ webhook receiver (`/api/integrations/elements/webhook`) para sync inverso de estado + persistencia de `product_events`.
 
 ## Sprint 5 — C1/C2 Toeslagen v3 end-to-end (5–8 días)
 1. Wizard único `/app/toeslagen` + motor de elegibilidad dedicado.
@@ -210,4 +213,4 @@ Para cada bloque (A3, A4, B1...) usar secuencia fija:
 7. Smoke test manual del happy path.
 
 ## 6) Próximo paso recomendado (ejecución)
-Ejecutar **B3 (Sync inverso Elements→FinHub)** mediante webhook receiver o polling programado para reflejar cambios operativos del backoffice en estados de case dentro de FinHub.
+Ejecutar **C1 (Toeslagen v3 intake único + motor de elegibilidad)** para llevar el roadmap de integración a una vertical vendible end-to-end.
