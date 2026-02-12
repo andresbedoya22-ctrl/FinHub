@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 
 import type { CaseDetail } from "@/features/cases/casesTypes";
@@ -20,6 +21,7 @@ export function CaseDetailClient({ caseId }: { caseId: string }) {
   const t = useTranslations("cases");
   const tDoc = useTranslations("documentsPipeline");
   const locale = useLocale();
+  const searchParams = useSearchParams();
 
   const [detail, setDetail] = useState<CaseDetail | null>(null);
   const [loading, setLoading] = useState(true);
@@ -28,6 +30,7 @@ export function CaseDetailClient({ caseId }: { caseId: string }) {
   const [consentChecked, setConsentChecked] = useState(false);
   const [consentError, setConsentError] = useState<string | null>(null);
   const [isSendingToReview, setIsSendingToReview] = useState(false);
+  const [paymentInfo, setPaymentInfo] = useState<string | null>(null);
   const aliveRef = useRef(true);
 
   const errorFallback = useMemo(() => t("detail.error"), [t]);
@@ -54,6 +57,41 @@ export function CaseDetailClient({ caseId }: { caseId: string }) {
       aliveRef.current = false;
     };
   }, [loadDetail]);
+
+  useEffect(() => {
+    const payment = searchParams.get("payment");
+    const sessionId = searchParams.get("session_id");
+    if (payment !== "success" || !sessionId) return;
+
+    let cancelled = false;
+
+    const confirm = async () => {
+      try {
+        const res = await fetch("/api/payments/confirm-session", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ sessionId, caseId }),
+        });
+        const json = (await res.json().catch(() => null)) as { ok?: boolean; paid?: boolean; error?: string } | null;
+        if (cancelled) return;
+        if (res.ok && json?.ok && json.paid) {
+          setPaymentInfo("Payment confirmed in test mode.");
+          await loadDetail();
+        } else if (json?.error) {
+          setPaymentInfo(`Payment confirmation pending: ${json.error}`);
+        } else {
+          setPaymentInfo("Payment confirmation pending.");
+        }
+      } catch {
+        if (!cancelled) setPaymentInfo("Payment confirmation pending.");
+      }
+    };
+
+    void confirm();
+    return () => {
+      cancelled = true;
+    };
+  }, [searchParams, caseId, loadDetail]);
 
   const tasks = useMemo(() => detail?.tasks ?? [], [detail]);
   const documents = useMemo(() => detail?.documents ?? [], [detail]);
@@ -154,6 +192,14 @@ export function CaseDetailClient({ caseId }: { caseId: string }) {
         <Card>
           <InfoBox title={t("detail.errorTitle")} variant="danger">
             {error}
+          </InfoBox>
+        </Card>
+      ) : null}
+
+      {paymentInfo ? (
+        <Card>
+          <InfoBox title="Payment" variant="info">
+            {paymentInfo}
           </InfoBox>
         </Card>
       ) : null}

@@ -51,7 +51,7 @@ try {
     if (!origin) return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: "Missing Origin header" }, { status: 400 }));
 
     // URLs de retorno (v1)
-    const successUrl = `${origin}/app/cases/${encodeURIComponent(caseId)}?payment=success`;
+    const successUrl = `${origin}/app/cases/${encodeURIComponent(caseId)}?payment=success&session_id={CHECKOUT_SESSION_ID}`;
     const cancelUrl = `${origin}/app/cases/${encodeURIComponent(caseId)}?payment=cancel`;
 
     const session = await stripe.checkout.sessions.create({
@@ -118,5 +118,4 @@ try {
     return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: msg }, { status: 500 }));
   }
 }
-
 
