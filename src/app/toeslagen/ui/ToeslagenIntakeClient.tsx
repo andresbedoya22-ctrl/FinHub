@@ -1,6 +1,5 @@
 ﻿"use client";
 
-import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/ui/components/Button";
@@ -13,14 +12,25 @@ import { evaluateUnifiedToeslagenIntake, type UnifiedToeslagResult } from "@/fea
 import type { SubsidySlug } from "@/domain/subsidies/types";
 
 type IntakeFormState = {
+  livesInNetherlands: string;
+  registeredAtAddress: string;
+  hasDutchNationalityOrValidPermit: string;
   age: string;
   hasPartner: string;
   incomeSelf: string;
   incomePartner: string;
+  assetsHousehold: string;
+  highestCoResidentAssets: string;
+  rentsIndependentHome: string;
+  hasLeaseContract: string;
+  paysRentByBankTransfer: string;
   rent: string;
   serviceCosts: string;
   hasBasicInsurance: string;
   childrenCount: string;
+  receivesChildBenefit: string;
+  childLivesAtRegisteredAddress: string;
+  usesRegisteredChildcareProvider: string;
   childcareType: string;
   childcareHoursPerMonth: string;
   childcareCostPerHour: string;
@@ -47,14 +57,25 @@ export default function ToeslagenIntakeClient() {
   const [contractError, setContractError] = useState<string | null>(null);
   const [busySlug, setBusySlug] = useState<SubsidySlug | "bundle" | null>(null);
   const [form, setForm] = useState<IntakeFormState>({
+    livesInNetherlands: "yes",
+    registeredAtAddress: "yes",
+    hasDutchNationalityOrValidPermit: "yes",
     age: "30",
     hasPartner: "no",
     incomeSelf: "24000",
     incomePartner: "0",
+    assetsHousehold: "10000",
+    highestCoResidentAssets: "0",
+    rentsIndependentHome: "yes",
+    hasLeaseContract: "yes",
+    paysRentByBankTransfer: "yes",
     rent: "700",
     serviceCosts: "40",
     hasBasicInsurance: "yes",
     childrenCount: "1",
+    receivesChildBenefit: "yes",
+    childLivesAtRegisteredAddress: "yes",
+    usesRegisteredChildcareProvider: "yes",
     childcareType: "dagopvang",
     childcareHoursPerMonth: "80",
     childcareCostPerHour: "9",
@@ -78,14 +99,25 @@ export default function ToeslagenIntakeClient() {
 
   function buildIntakeSnapshot() {
     return {
+      livesInNetherlands: form.livesInNetherlands === "yes",
+      registeredAtAddress: form.registeredAtAddress === "yes",
+      hasDutchNationalityOrValidPermit: form.hasDutchNationalityOrValidPermit === "yes",
       age: parseNumber(form.age),
       hasPartner: form.hasPartner === "yes",
       incomeSelf: parseNumber(form.incomeSelf),
       incomePartner: parseNumber(form.incomePartner),
+      assetsHousehold: parseNumber(form.assetsHousehold),
+      highestCoResidentAssets: parseNumber(form.highestCoResidentAssets),
+      rentsIndependentHome: form.rentsIndependentHome === "yes",
+      hasLeaseContract: form.hasLeaseContract === "yes",
+      paysRentByBankTransfer: form.paysRentByBankTransfer === "yes",
       rent: parseNumber(form.rent),
       serviceCosts: parseNumber(form.serviceCosts),
       hasBasicInsurance: form.hasBasicInsurance === "yes",
       childrenCount: parseNumber(form.childrenCount),
+      receivesChildBenefit: form.receivesChildBenefit === "yes",
+      childLivesAtRegisteredAddress: form.childLivesAtRegisteredAddress === "yes",
+      usesRegisteredChildcareProvider: form.usesRegisteredChildcareProvider === "yes",
       childcareType: (form.childcareType as "dagopvang" | "bso" | "gastouder") ?? null,
       childcareHoursPerMonth: parseNumber(form.childcareHoursPerMonth),
       childcareCostPerHour: parseNumber(form.childcareCostPerHour),
@@ -97,6 +129,38 @@ export default function ToeslagenIntakeClient() {
   function runEvaluation() {
     setContractError(null);
     setResults(evaluateUnifiedToeslagenIntake(buildIntakeSnapshot()));
+  }
+
+  function resetForm() {
+    setContractError(null);
+    setBusySlug(null);
+    setResults([]);
+    setForm({
+      livesInNetherlands: "yes",
+      registeredAtAddress: "yes",
+      hasDutchNationalityOrValidPermit: "yes",
+      age: "30",
+      hasPartner: "no",
+      incomeSelf: "24000",
+      incomePartner: "0",
+      assetsHousehold: "10000",
+      highestCoResidentAssets: "0",
+      rentsIndependentHome: "yes",
+      hasLeaseContract: "yes",
+      paysRentByBankTransfer: "yes",
+      rent: "700",
+      serviceCosts: "40",
+      hasBasicInsurance: "yes",
+      childrenCount: "1",
+      receivesChildBenefit: "yes",
+      childLivesAtRegisteredAddress: "yes",
+      usesRegisteredChildcareProvider: "yes",
+      childcareType: "dagopvang",
+      childcareHoursPerMonth: "80",
+      childcareCostPerHour: "9",
+      worksOrStudies: "yes",
+      partnerWorksOrStudies: "yes",
+    });
   }
 
   async function startContract(selectedSlugs: SubsidySlug[], scope: SubsidySlug | "bundle") {
@@ -186,6 +250,18 @@ export default function ToeslagenIntakeClient() {
             value={form.incomePartner}
             onChange={(e) => updateField("incomePartner", e.target.value)}
           />
+          <Input
+            type="number"
+            label={t("fields.assetsHousehold")}
+            value={form.assetsHousehold}
+            onChange={(e) => updateField("assetsHousehold", e.target.value)}
+          />
+          <Input
+            type="number"
+            label={t("fields.highestCoResidentAssets")}
+            value={form.highestCoResidentAssets}
+            onChange={(e) => updateField("highestCoResidentAssets", e.target.value)}
+          />
           <Input type="number" label={t("fields.rent")} value={form.rent} onChange={(e) => updateField("rent", e.target.value)} />
           <Input
             type="number"
@@ -214,6 +290,36 @@ export default function ToeslagenIntakeClient() {
         </div>
 
         <ToggleGroup
+          label={t("fields.livesInNetherlands")}
+          value={form.livesInNetherlands}
+          onValueChange={(v) => updateField("livesInNetherlands", v)}
+          options={[
+            { value: "no", label: t("common.no") },
+            { value: "yes", label: t("common.yes") },
+          ]}
+        />
+
+        <ToggleGroup
+          label={t("fields.registeredAtAddress")}
+          value={form.registeredAtAddress}
+          onValueChange={(v) => updateField("registeredAtAddress", v)}
+          options={[
+            { value: "no", label: t("common.no") },
+            { value: "yes", label: t("common.yes") },
+          ]}
+        />
+
+        <ToggleGroup
+          label={t("fields.hasDutchNationalityOrValidPermit")}
+          value={form.hasDutchNationalityOrValidPermit}
+          onValueChange={(v) => updateField("hasDutchNationalityOrValidPermit", v)}
+          options={[
+            { value: "no", label: t("common.no") },
+            { value: "yes", label: t("common.yes") },
+          ]}
+        />
+
+        <ToggleGroup
           label={t("fields.hasPartner")}
           value={form.hasPartner}
           onValueChange={(v) => updateField("hasPartner", v)}
@@ -224,9 +330,69 @@ export default function ToeslagenIntakeClient() {
         />
 
         <ToggleGroup
+          label={t("fields.rentsIndependentHome")}
+          value={form.rentsIndependentHome}
+          onValueChange={(v) => updateField("rentsIndependentHome", v)}
+          options={[
+            { value: "no", label: t("common.no") },
+            { value: "yes", label: t("common.yes") },
+          ]}
+        />
+
+        <ToggleGroup
+          label={t("fields.hasLeaseContract")}
+          value={form.hasLeaseContract}
+          onValueChange={(v) => updateField("hasLeaseContract", v)}
+          options={[
+            { value: "no", label: t("common.no") },
+            { value: "yes", label: t("common.yes") },
+          ]}
+        />
+
+        <ToggleGroup
+          label={t("fields.paysRentByBankTransfer")}
+          value={form.paysRentByBankTransfer}
+          onValueChange={(v) => updateField("paysRentByBankTransfer", v)}
+          options={[
+            { value: "no", label: t("common.no") },
+            { value: "yes", label: t("common.yes") },
+          ]}
+        />
+
+        <ToggleGroup
           label={t("fields.hasBasicInsurance")}
           value={form.hasBasicInsurance}
           onValueChange={(v) => updateField("hasBasicInsurance", v)}
+          options={[
+            { value: "no", label: t("common.no") },
+            { value: "yes", label: t("common.yes") },
+          ]}
+        />
+
+        <ToggleGroup
+          label={t("fields.receivesChildBenefit")}
+          value={form.receivesChildBenefit}
+          onValueChange={(v) => updateField("receivesChildBenefit", v)}
+          options={[
+            { value: "no", label: t("common.no") },
+            { value: "yes", label: t("common.yes") },
+          ]}
+        />
+
+        <ToggleGroup
+          label={t("fields.childLivesAtRegisteredAddress")}
+          value={form.childLivesAtRegisteredAddress}
+          onValueChange={(v) => updateField("childLivesAtRegisteredAddress", v)}
+          options={[
+            { value: "no", label: t("common.no") },
+            { value: "yes", label: t("common.yes") },
+          ]}
+        />
+
+        <ToggleGroup
+          label={t("fields.usesRegisteredChildcareProvider")}
+          value={form.usesRegisteredChildcareProvider}
+          onValueChange={(v) => updateField("usesRegisteredChildcareProvider", v)}
           options={[
             { value: "no", label: t("common.no") },
             { value: "yes", label: t("common.yes") },
@@ -266,9 +432,7 @@ export default function ToeslagenIntakeClient() {
 
         <div className="flex flex-wrap gap-3">
           <Button onClick={runEvaluation}>{t("actions.check")}</Button>
-          <Link className="inline-flex items-center rounded-xl border border-fh-border px-3 py-2 text-sm" href={nextLoginUrl()}>
-            {t("actions.login")}
-          </Link>
+          <Button variant="secondary" onClick={resetForm}>{t("actions.reset")}</Button>
         </div>
       </Card>
 
@@ -328,4 +492,3 @@ export default function ToeslagenIntakeClient() {
     </Screen>
   );
 }
-

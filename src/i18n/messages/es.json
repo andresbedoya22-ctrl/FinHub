@@ -1407,7 +1407,18 @@
       "hasBasicInsurance": "¿Tienes seguro médico básico NL?",
       "worksOrStudies": "¿Trabajas o estudias?",
       "partnerWorksOrStudies": "¿Tu pareja trabaja o estudia?",
-      "childcareType": "Tipo de cuidado infantil"
+      "childcareType": "Tipo de cuidado infantil",
+      "livesInNetherlands": "?Vives en los Pa?ses Bajos?",
+      "registeredAtAddress": "?Est?s empadronado en tu direcci?n de vivienda?",
+      "hasDutchNationalityOrValidPermit": "?Tienes nacionalidad neerlandesa o permiso de residencia v?lido?",
+      "assetsHousehold": "Patrimonio estimado del hogar (1 de enero)",
+      "highestCoResidentAssets": "Mayor patrimonio de conviviente (1 de enero, para alquiler)",
+      "rentsIndependentHome": "?Alquilas una vivienda independiente?",
+      "hasLeaseContract": "?Tienes contrato de alquiler a tu nombre?",
+      "paysRentByBankTransfer": "?Pagas el alquiler por transferencia bancaria?",
+      "receivesChildBenefit": "?Recibes prestaci?n por hijo (kinderbijslag)?",
+      "childLivesAtRegisteredAddress": "?Tu hijo vive en tu direcci?n registrada?",
+      "usesRegisteredChildcareProvider": "?La guarder?a es de un proveedor registrado?"
     },
     "childcareTypes": {
       "dagopvang": "Guardería de día",
@@ -1419,7 +1430,8 @@
       "loginCta": "Saltar login por ahora (demo)",
       "login": "Iniciar sesion",
       "startEligible": "Iniciar contratacion de subsidios elegibles",
-      "starting": "Iniciando..."
+      "starting": "Iniciando...",
+      "reset": "Reiniciar formulario"
     },
     "result": {
       "title": "Subsidios potenciales y siguiente paso",

@@ -1410,7 +1410,18 @@
       "hasBasicInsurance": "Czy masz podstawowe ubezpieczenie zdrowotne NL?",
       "worksOrStudies": "Czy pracujesz lub studiujesz?",
       "partnerWorksOrStudies": "Czy partner pracuje lub studiuje?",
-      "childcareType": "Typ opieki nad dzieckiem"
+      "childcareType": "Typ opieki nad dzieckiem",
+      "livesInNetherlands": "Czy mieszkasz w Niderlandach?",
+      "registeredAtAddress": "Czy jestes zameldowany pod adresem zamieszkania?",
+      "hasDutchNationalityOrValidPermit": "Czy masz obywatelstwo holenderskie lub wazne pozwolenie na pobyt?",
+      "assetsHousehold": "Szacowany majatek gospodarstwa (1 stycznia)",
+      "highestCoResidentAssets": "Najwyzszy majatek wspolmieszkanca (1 stycznia, dla dodatku mieszkaniowego)",
+      "rentsIndependentHome": "Czy wynajmujesz samodzielne mieszkanie?",
+      "hasLeaseContract": "Czy masz umowe najmu na swoje nazwisko?",
+      "paysRentByBankTransfer": "Czy placisz czynsz przelewem bankowym?",
+      "receivesChildBenefit": "Czy otrzymujesz zasilek na dziecko (kinderbijslag)?",
+      "childLivesAtRegisteredAddress": "Czy dziecko mieszka pod Twoim adresem zameldowania?",
+      "usesRegisteredChildcareProvider": "Czy opieka nad dzieckiem jest u zarejestrowanego dostawcy?"
     },
     "childcareTypes": {
       "dagopvang": "Opieka dzienna",
@@ -1422,7 +1433,8 @@
       "loginCta": "Pomiń logowanie na razie (demo)",
       "login": "Zaloguj sie",
       "startEligible": "Rozpocznij kontrakt dla kwalifikujacych sie swiadczen",
-      "starting": "Uruchamianie..."
+      "starting": "Uruchamianie...",
+      "reset": "Wyczysc formularz"
     },
     "result": {
       "title": "Potencjalne świadczenia i następny krok",

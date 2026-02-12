@@ -11,14 +11,25 @@ import { DEFAULT_POLICY_2026 } from "../../domain/subsidies/policy";
 import type { SubsidySlug } from "../../domain/subsidies/types";
 
 export type UnifiedToeslagenIntakeInput = {
+  livesInNetherlands: boolean;
+  registeredAtAddress: boolean;
+  hasDutchNationalityOrValidPermit: boolean;
   age: number | null;
   hasPartner: boolean;
   incomeSelf: number | null;
   incomePartner: number | null;
+  assetsHousehold: number | null;
+  highestCoResidentAssets: number | null;
+  rentsIndependentHome: boolean;
+  hasLeaseContract: boolean;
+  paysRentByBankTransfer: boolean;
   rent: number | null;
   serviceCosts: number | null;
   hasBasicInsurance: boolean;
   childrenCount: number | null;
+  receivesChildBenefit: boolean;
+  childLivesAtRegisteredAddress: boolean;
+  usesRegisteredChildcareProvider: boolean;
   childcareType: "dagopvang" | "bso" | "gastouder" | null;
   childcareHoursPerMonth: number | null;
   childcareCostPerHour: number | null;
@@ -37,6 +48,55 @@ export type UnifiedToeslagResult = {
 
 function numberOrNull(value: number | null): number | null {
   return typeof value === "number" && Number.isFinite(value) ? value : null;
+}
+
+const MAX_ASSETS_ZORG_KGB_SINGLE_2026 = 146_011;
+const MAX_ASSETS_ZORG_KGB_PARTNER_2026 = 184_633;
+const MAX_ASSETS_HUUR_SINGLE_2026 = 38_479;
+const MAX_ASSETS_HUUR_PARTNER_2026 = 76_958;
+const MAX_ASSETS_HUUR_CO_RESIDENT_2026 = 38_479;
+
+function buildOfficialBlockingReasons(slug: SubsidySlug, input: UnifiedToeslagenIntakeInput): string[] {
+  const reasons: string[] = [];
+
+  if (!input.livesInNetherlands) reasons.push("official.common.notResidentNl");
+  if (!input.registeredAtAddress) reasons.push("official.common.notRegisteredAddress");
+  if (!input.hasDutchNationalityOrValidPermit) reasons.push("official.common.noValidResidenceRight");
+
+  const assetsHousehold = numberOrNull(input.assetsHousehold);
+  const maxAssetsGeneral = input.hasPartner ? MAX_ASSETS_ZORG_KGB_PARTNER_2026 : MAX_ASSETS_ZORG_KGB_SINGLE_2026;
+
+  if ((slug === "zorgtoeslag" || slug === "kgb") && typeof assetsHousehold === "number" && assetsHousehold > maxAssetsGeneral) {
+    reasons.push("official.common.assetsTooHigh");
+  }
+
+  if (slug === "huurtoeslag") {
+    if (!input.rentsIndependentHome) reasons.push("official.huur.notIndependentHome");
+    if (!input.hasLeaseContract) reasons.push("official.huur.noLeaseContract");
+    if (!input.paysRentByBankTransfer) reasons.push("official.huur.noBankTransferRentProof");
+
+    const maxAssetsHuur = input.hasPartner ? MAX_ASSETS_HUUR_PARTNER_2026 : MAX_ASSETS_HUUR_SINGLE_2026;
+    if (typeof assetsHousehold === "number" && assetsHousehold > maxAssetsHuur) {
+      reasons.push("official.huur.assetsTooHigh");
+    }
+
+    const coResidentAssets = numberOrNull(input.highestCoResidentAssets);
+    if (typeof coResidentAssets === "number" && coResidentAssets > MAX_ASSETS_HUUR_CO_RESIDENT_2026) {
+      reasons.push("official.huur.coResidentAssetsTooHigh");
+    }
+  }
+
+  if (slug === "kgb") {
+    if (!input.receivesChildBenefit) reasons.push("official.kgb.noChildBenefit");
+  }
+
+  if (slug === "kot") {
+    if (!input.usesRegisteredChildcareProvider) reasons.push("official.kot.unregisteredChildcareProvider");
+    if (!input.childLivesAtRegisteredAddress) reasons.push("official.kot.childNotAtRegisteredAddress");
+    if (input.hasPartner && !input.partnerWorksOrStudies) reasons.push("official.kot.partnerNotWorkingOrStudying");
+  }
+
+  return reasons;
 }
 
 export function evaluateUnifiedToeslagenIntake(input: UnifiedToeslagenIntakeInput): UnifiedToeslagResult[] {
@@ -175,6 +235,7 @@ export function evaluateUnifiedToeslagenIntake(input: UnifiedToeslagenIntakeInpu
 
   return evaluations.map(({ slug, eligibilityPayload, calculatorPayload }) => {
     const eligibility = evaluateSubsidyEligibility(slug, eligibilityPayload, DEFAULT_POLICY_2026);
+    const officialBlockingReasons = buildOfficialBlockingReasons(slug, input);
 
     const benefit =
       slug === "huurtoeslag"
@@ -187,10 +248,10 @@ export function evaluateUnifiedToeslagenIntake(input: UnifiedToeslagenIntakeInpu
 
     return {
       slug,
-      eligible: eligibility.eligible,
+      eligible: eligibility.eligible && officialBlockingReasons.length === 0,
       amountPerMonth: typeof benefit.monthlyCents === "number" ? benefit.monthlyCents / 100 : null,
       amountPerYear: typeof benefit.yearlyCents === "number" ? benefit.yearlyCents / 100 : null,
-      blockingReasons: eligibility.blockingReasons,
+      blockingReasons: Array.from(new Set([...eligibility.blockingReasons, ...officialBlockingReasons])),
       requiredDocs: SUBSIDY_DOCS_BY_SLUG[slug],
     };
   });

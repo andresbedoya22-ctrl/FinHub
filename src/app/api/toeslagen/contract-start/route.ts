@@ -33,7 +33,9 @@ export async function POST(req: Request) {
     const { error: snapshotError } = await supabase.from("case_step_data").upsert(
       {
         case_id: caseEntity.id,
-        step_key: "intake",
+        // "intake" is currently locked by DB trigger until payment; keep pre-checkout
+        // snapshot on an unlocked step.
+        step_key: "eligibility",
         data: {
           selectedSlugs: input.selectedSlugs,
           intakeSnapshot: input.intakeSnapshot ?? null,
@@ -56,4 +58,3 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: message }, { status: 400 });
   }
 }
-

@@ -1407,7 +1407,18 @@
       "hasBasicInsurance": "Do you have Dutch basic health insurance?",
       "worksOrStudies": "Do you work or study?",
       "partnerWorksOrStudies": "Does your partner work or study?",
-      "childcareType": "Childcare type"
+      "childcareType": "Childcare type",
+      "livesInNetherlands": "Do you live in the Netherlands?",
+      "registeredAtAddress": "Are you registered at your home address?",
+      "hasDutchNationalityOrValidPermit": "Do you have Dutch nationality or a valid residence permit?",
+      "assetsHousehold": "Estimated household assets (Jan 1)",
+      "highestCoResidentAssets": "Highest co-resident assets (Jan 1, for rent support)",
+      "rentsIndependentHome": "Do you rent an independent home?",
+      "hasLeaseContract": "Do you have a rental contract in your name?",
+      "paysRentByBankTransfer": "Do you pay rent by bank transfer?",
+      "receivesChildBenefit": "Do you receive child benefit (kinderbijslag)?",
+      "childLivesAtRegisteredAddress": "Does your child live at your registered address?",
+      "usesRegisteredChildcareProvider": "Is childcare provided by a registered provider?"
     },
     "childcareTypes": {
       "dagopvang": "Daycare",
@@ -1419,7 +1430,8 @@
       "loginCta": "Skip login for now (demo)",
       "login": "Sign in",
       "startEligible": "Start contract for eligible subsidies",
-      "starting": "Starting..."
+      "starting": "Starting...",
+      "reset": "Reset form"
     },
     "result": {
       "title": "Potential subsidies and next step",

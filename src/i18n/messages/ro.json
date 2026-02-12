@@ -1407,7 +1407,18 @@
       "hasBasicInsurance": "Ai asigurare de sănătate de bază NL?",
       "worksOrStudies": "Lucrezi sau studiezi?",
       "partnerWorksOrStudies": "Partenerul lucrează sau studiază?",
-      "childcareType": "Tip îngrijire copil"
+      "childcareType": "Tip îngrijire copil",
+      "livesInNetherlands": "Locuiesti in Olanda?",
+      "registeredAtAddress": "Esti inregistrat la adresa de domiciliu?",
+      "hasDutchNationalityOrValidPermit": "Ai cetatenie olandeza sau permis de sedere valid?",
+      "assetsHousehold": "Active estimate ale gospodariei (1 ianuarie)",
+      "highestCoResidentAssets": "Cel mai mare nivel de active al co-locatarului (1 ianuarie, pentru chirie)",
+      "rentsIndependentHome": "Inchiriezi o locuinta independenta?",
+      "hasLeaseContract": "Ai contract de inchiriere pe numele tau?",
+      "paysRentByBankTransfer": "Platesti chiria prin transfer bancar?",
+      "receivesChildBenefit": "Primesti alocatie pentru copil (kinderbijslag)?",
+      "childLivesAtRegisteredAddress": "Copilul locuieste la adresa ta inregistrata?",
+      "usesRegisteredChildcareProvider": "Ingrijirea copilului este la un furnizor inregistrat?"
     },
     "childcareTypes": {
       "dagopvang": "Creșă de zi",
@@ -1419,7 +1430,8 @@
       "loginCta": "Sari peste login momentan (demo)",
       "login": "Autentifica-te",
       "startEligible": "Porneste contractarea pentru subventiile eligibile",
-      "starting": "Se porneste..."
+      "starting": "Se porneste...",
+      "reset": "Reseteaza formularul"
     },
     "result": {
       "title": "Subvenții potențiale și pasul următor",

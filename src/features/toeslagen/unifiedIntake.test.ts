@@ -2,14 +2,25 @@ import { describe, expect, it } from "vitest";
 import { evaluateUnifiedToeslagenIntake } from "./unifiedIntake";
 
 const baseInput = {
+  livesInNetherlands: true,
+  registeredAtAddress: true,
+  hasDutchNationalityOrValidPermit: true,
   age: 30,
   hasPartner: false,
   incomeSelf: 24000,
   incomePartner: 0,
+  assetsHousehold: 10000,
+  highestCoResidentAssets: 0,
+  rentsIndependentHome: true,
+  hasLeaseContract: true,
+  paysRentByBankTransfer: true,
   rent: 700,
   serviceCosts: 40,
   hasBasicInsurance: true,
   childrenCount: 2,
+  receivesChildBenefit: true,
+  childLivesAtRegisteredAddress: true,
+  usesRegisteredChildcareProvider: true,
   childcareType: "dagopvang" as const,
   childcareHoursPerMonth: 80,
   childcareCostPerHour: 9,
@@ -54,5 +65,18 @@ describe("evaluateUnifiedToeslagenIntake", () => {
     const kot = result.find((r) => r.slug === "kot");
     expect(kot?.eligible).toBe(false);
     expect(kot?.blockingReasons).toContain("engine.kot.noChildcareCosts");
+  });
+
+  it("blocks all subsidies when user is not resident in NL", () => {
+    const result = evaluateUnifiedToeslagenIntake({ ...baseInput, livesInNetherlands: false });
+    expect(result.every((r) => r.eligible === false)).toBe(true);
+    expect(result.every((r) => r.blockingReasons.includes("official.common.notResidentNl"))).toBe(true);
+  });
+
+  it("blocks huurtoeslag when assets are above official threshold", () => {
+    const result = evaluateUnifiedToeslagenIntake({ ...baseInput, assetsHousehold: 50000 });
+    const huur = result.find((r) => r.slug === "huurtoeslag");
+    expect(huur?.eligible).toBe(false);
+    expect(huur?.blockingReasons).toContain("official.huur.assetsTooHigh");
   });
 });
