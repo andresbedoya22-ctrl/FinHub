@@ -1388,5 +1388,60 @@
       "title": "Blad przesylania",
       "unknown": "Cos poszlo nie tak."
     }
+  },
+  "toeslagenIntake": {
+    "eyebrow": "Toeslagen v3",
+    "title": "Jednolity intake Toeslagen",
+    "subtitle": "Wypełnij jeden formularz i zobacz potencjalną kwalifikację do Huurtoeslag, Zorgtoeslag, KGB i KOT.",
+    "common": {
+      "yes": "Tak",
+      "no": "Nie"
+    },
+    "fields": {
+      "age": "Wiek",
+      "incomeSelf": "Roczny dochód (Ty)",
+      "incomePartner": "Roczny dochód (partner)",
+      "rent": "Miesięczny czynsz",
+      "serviceCosts": "Miesięczne koszty serwisowe",
+      "childrenCount": "Liczba dzieci",
+      "childcareHoursPerMonth": "Godziny opieki / miesiąc",
+      "childcareCostPerHour": "Koszt opieki za godzinę",
+      "hasPartner": "Czy masz partnera fiskalnego?",
+      "hasBasicInsurance": "Czy masz podstawowe ubezpieczenie zdrowotne NL?",
+      "worksOrStudies": "Czy pracujesz lub studiujesz?",
+      "partnerWorksOrStudies": "Czy partner pracuje lub studiuje?",
+      "childcareType": "Typ opieki nad dzieckiem"
+    },
+    "childcareTypes": {
+      "dagopvang": "Opieka dzienna",
+      "bso": "Opieka pozaszkolna",
+      "gastouder": "Opiekun dzienny"
+    },
+    "actions": {
+      "check": "Sprawdź kwalifikację",
+      "loginCta": "Pomiń logowanie na razie (demo)"
+    },
+    "result": {
+      "title": "Potencjalne świadczenia i następny krok",
+      "eligible": "Potencjalnie kwalifikujesz się",
+      "review": "Wymaga weryfikacji",
+      "monthly": "Szacunkowo: €{amount}/mies.",
+      "noEstimate": "Brak estymacji dla obecnych danych",
+      "docsLabel": "Checklist dokumentów",
+      "startContract": "Rozpocznij proces kontraktacji"
+    },
+    "docs": {
+      "huurcontract": "Umowa najmu",
+      "rent_service_costs": "Zestawienie czynszu/kosztów",
+      "proof_income": "Potwierdzenie dochodu",
+      "id": "Dokument tożsamości",
+      "health_insurance": "Potwierdzenie ubezpieczenia zdrowotnego",
+      "partner_income": "Potwierdzenie dochodu partnera",
+      "children_birth": "Akty urodzenia dzieci",
+      "childcare_contract": "Umowa opieki nad dzieckiem",
+      "childcare_invoice": "Faktura za opiekę nad dzieckiem",
+      "work_or_study_proof": "Potwierdzenie pracy lub nauki",
+      "household_composition": "Wyciąg ze składu gospodarstwa"
+    }
   }
 }

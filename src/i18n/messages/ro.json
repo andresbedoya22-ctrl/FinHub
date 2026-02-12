@@ -1385,5 +1385,60 @@
       "title": "Eroare la incarcare",
       "unknown": "A aparut o eroare."
     }
+  },
+  "toeslagenIntake": {
+    "eyebrow": "Toeslagen v3",
+    "title": "Intake unificat Toeslagen",
+    "subtitle": "Completezi un singur intake și vezi eligibilitatea potențială pentru Huurtoeslag, Zorgtoeslag, KGB și KOT.",
+    "common": {
+      "yes": "Da",
+      "no": "Nu"
+    },
+    "fields": {
+      "age": "Vârsta",
+      "incomeSelf": "Venit anual (tu)",
+      "incomePartner": "Venit anual (partener)",
+      "rent": "Chirie lunară",
+      "serviceCosts": "Costuri servicii lunare",
+      "childrenCount": "Număr copii",
+      "childcareHoursPerMonth": "Ore îngrijire / lună",
+      "childcareCostPerHour": "Cost îngrijire pe oră",
+      "hasPartner": "Ai partener fiscal?",
+      "hasBasicInsurance": "Ai asigurare de sănătate de bază NL?",
+      "worksOrStudies": "Lucrezi sau studiezi?",
+      "partnerWorksOrStudies": "Partenerul lucrează sau studiază?",
+      "childcareType": "Tip îngrijire copil"
+    },
+    "childcareTypes": {
+      "dagopvang": "Creșă de zi",
+      "bso": "After-school care",
+      "gastouder": "Îngrijitor"
+    },
+    "actions": {
+      "check": "Verifică eligibilitatea",
+      "loginCta": "Sari peste login momentan (demo)"
+    },
+    "result": {
+      "title": "Subvenții potențiale și pasul următor",
+      "eligible": "Potențial eligibil",
+      "review": "Necesită revizuire",
+      "monthly": "Estimare: €{amount}/lună",
+      "noEstimate": "Nu există estimare cu datele curente",
+      "docsLabel": "Checklist documente",
+      "startContract": "Începe contractarea"
+    },
+    "docs": {
+      "huurcontract": "Contract de închiriere",
+      "rent_service_costs": "Situație chirie/costuri servicii",
+      "proof_income": "Dovadă venit",
+      "id": "Act de identitate",
+      "health_insurance": "Dovadă asigurare sănătate",
+      "partner_income": "Dovadă venit partener",
+      "children_birth": "Certificate de naștere copii",
+      "childcare_contract": "Contract îngrijire copil",
+      "childcare_invoice": "Factură îngrijire copil",
+      "work_or_study_proof": "Dovadă muncă sau studii",
+      "household_composition": "Extras componență gospodărie"
+    }
   }
 }

@@ -1385,5 +1385,60 @@
       "title": "Error al subir",
       "unknown": "Algo salio mal."
     }
+  },
+  "toeslagenIntake": {
+    "eyebrow": "Toeslagen v3",
+    "title": "Intake único de Toeslagen",
+    "subtitle": "Completa un solo intake y revisa elegibilidad potencial para Huurtoeslag, Zorgtoeslag, KGB y KOT.",
+    "common": {
+      "yes": "Sí",
+      "no": "No"
+    },
+    "fields": {
+      "age": "Edad",
+      "incomeSelf": "Ingreso anual (tú)",
+      "incomePartner": "Ingreso anual (pareja)",
+      "rent": "Alquiler mensual",
+      "serviceCosts": "Costes de servicio mensuales",
+      "childrenCount": "Número de hijos",
+      "childcareHoursPerMonth": "Horas de guardería / mes",
+      "childcareCostPerHour": "Coste por hora de guardería",
+      "hasPartner": "¿Tienes pareja fiscal?",
+      "hasBasicInsurance": "¿Tienes seguro médico básico NL?",
+      "worksOrStudies": "¿Trabajas o estudias?",
+      "partnerWorksOrStudies": "¿Tu pareja trabaja o estudia?",
+      "childcareType": "Tipo de cuidado infantil"
+    },
+    "childcareTypes": {
+      "dagopvang": "Guardería de día",
+      "bso": "After-school care",
+      "gastouder": "Cuidador/a"
+    },
+    "actions": {
+      "check": "Comprobar elegibilidad",
+      "loginCta": "Saltar login por ahora (demo)"
+    },
+    "result": {
+      "title": "Subsidios potenciales y siguiente paso",
+      "eligible": "Potencialmente elegible",
+      "review": "Requiere revisión",
+      "monthly": "Estimado: €{amount}/mes",
+      "noEstimate": "No hay estimación con los datos actuales",
+      "docsLabel": "Checklist de documentos",
+      "startContract": "Iniciar contratación"
+    },
+    "docs": {
+      "huurcontract": "Contrato de alquiler",
+      "rent_service_costs": "Resumen de alquiler/costes de servicio",
+      "proof_income": "Comprobante de ingresos",
+      "id": "Documento de identidad",
+      "health_insurance": "Prueba de seguro médico",
+      "partner_income": "Comprobante ingresos pareja",
+      "children_birth": "Certificados de nacimiento",
+      "childcare_contract": "Contrato de guardería",
+      "childcare_invoice": "Factura de guardería",
+      "work_or_study_proof": "Prueba de trabajo o estudios",
+      "household_composition": "Extracto composición del hogar"
+    }
   }
 }
