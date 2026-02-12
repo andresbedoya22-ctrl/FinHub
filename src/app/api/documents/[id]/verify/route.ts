@@ -3,6 +3,7 @@ import { createSupabaseServerClient } from "@/lib/supabaseServerClient";
 import { requireOcrKind } from "../_shared/ocrGuard";
 import { validateForVerifyMachtigingsregistratieFieldsV1 } from "@/features/documents/machtigingsregistratieSchema";
 import { trackProductRoute } from "@/features/observability/productTelemetry";
+import { assertValidActiveringscode, markAuthorizationVerifiedFromDocument } from "@/features/authorization";
 
 const __FINHUB_TELEMETRY_ROUTE = "/api/documents/:id/verify";
 const __FINHUB_TELEMETRY_PAIR = { success: "product.doc.verify.success", fail: "product.doc.verify.fail" } as const;
@@ -57,6 +58,7 @@ export async function POST(_req: NextRequest, context: { params: Promise<{ id: s
     if (!validated.ok) return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: validated.error }, { status: 400 }));
 
     const extractionId = ex.id as string;
+    assertValidActiveringscode(validated.value.activeringscode ?? "");
 
     const { error: updExErr } = await supabase
       .from("document_extractions")
@@ -83,10 +85,16 @@ export async function POST(_req: NextRequest, context: { params: Promise<{ id: s
       created_at: now,
     });
 
-    return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: true, extractionId }));
+    const updatedCaseIds = await markAuthorizationVerifiedFromDocument(supabase, documentId);
+
+    return trackProductRoute(
+      __FINHUB_TELEMETRY_PAIR,
+      { route: __FINHUB_TELEMETRY_ROUTE },
+      __t0,
+      NextResponse.json({ ok: true, extractionId, updatedCaseIds })
+    );
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : "Error desconocido";
     return trackProductRoute(__FINHUB_TELEMETRY_PAIR, { route: __FINHUB_TELEMETRY_ROUTE }, __t0, NextResponse.json({ ok: false, error: msg }, { status: 500 }));
   }
 }
-

@@ -15,6 +15,7 @@ import type {
 } from "./casesTypes";
 import { defaultTitleForCaseType, initialStepKeyForType } from "./casesConfig";
 import { ensureStatusTransitionAuthorization } from "./authorization";
+import { markAuthorizationReceivedFromConsent } from "../authorization";
 
 const CASE_TYPES: ReadonlySet<CaseType> = new Set(["toeslagen", "taxes", "mortgage", "credit", "insurance"]);
 const CASE_STATUSES: ReadonlySet<CaseStatus> = new Set([
@@ -562,7 +563,7 @@ export async function updateCase(
 
   const nextStatus = input.status ?? (existing.status as CaseStatus);
   const hasConsent = await hasServiceAuthorizationConsent(supabase, caseId);
-  ensureStatusTransitionAuthorization(nextStatus, hasConsent);
+  ensureStatusTransitionAuthorization(nextStatus, hasConsent, existing.type as CaseType);
 
   const now = new Date().toISOString();
   const update: Record<string, unknown> = { updated_at: now };
@@ -610,11 +611,7 @@ export async function createCaseConsent(
   if (error || !data) throw new Error(error?.message ?? "Consent insert failed");
 
   if (input.consentType === "service_authorization" && input.granted) {
-    const upd = await supabase
-      .from("cases")
-      .update({ authorization_status: "received", updated_at: new Date().toISOString() })
-      .eq("id", caseId);
-    if (upd.error) throw new Error(upd.error.message);
+    await markAuthorizationReceivedFromConsent(supabase, caseId);
   }
 
   return toConsent(data as ConsentRow);
