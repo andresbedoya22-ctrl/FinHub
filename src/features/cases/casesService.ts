@@ -96,7 +96,7 @@ type CaseRow = {
   title: string;
   status: string;
   step_key: string;
-  authorization_status: string;
+  authorization_status?: string | null;
   created_at: string;
   updated_at: string;
 };
@@ -156,7 +156,9 @@ function toCaseEntity(row: CaseRow): CaseEntity {
     title: row.title,
     status: row.status as CaseStatus,
     stepKey: row.step_key as CaseEntity["stepKey"],
-    authorizationStatus: row.authorization_status as CaseAuthorizationStatus,
+    authorizationStatus: AUTHORIZATION_STATUSES.has((row.authorization_status ?? "") as CaseAuthorizationStatus)
+      ? ((row.authorization_status ?? "not_started") as CaseAuthorizationStatus)
+      : "not_started",
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };
@@ -205,6 +207,63 @@ function toCaseDocument(row: CaseDocumentRow): CaseDocumentEntry {
         }
       : null,
   };
+}
+
+
+function isMissingAuthorizationStatusColumn(error: unknown): boolean {
+  if (!error || typeof error !== "object") return false;
+  const msg = "message" in error ? String((error as { message?: unknown }).message ?? "") : "";
+  const lower = msg.toLowerCase();
+  return lower.includes("authorization_status") && lower.includes("does not exist");
+}
+
+function withDefaultAuthorizationStatus(rows: Array<Record<string, unknown>>): CaseRow[] {
+  return rows.map((row) => ({
+    ...row,
+    authorization_status: (row.authorization_status as string | null | undefined) ?? "not_started",
+  })) as CaseRow[];
+}
+
+async function selectCasesCompat(
+  supabase: SupabaseClient,
+  opts?: { id?: string; orderAsc?: boolean; single?: boolean }
+): Promise<CaseRow[] | CaseRow | null> {
+  let query = supabase
+    .from("cases")
+    .select("id,type,product_slug,title,status,step_key,authorization_status,created_at,updated_at");
+
+  if (opts?.id) query = query.eq("id", opts.id);
+  if (opts?.orderAsc !== undefined) query = query.order("created_at", { ascending: opts.orderAsc });
+
+  if (opts?.single) {
+    const { data, error } = await query.maybeSingle();
+    if (error && isMissingAuthorizationStatusColumn(error)) {
+      let fallback = supabase
+        .from("cases")
+        .select("id,type,product_slug,title,status,step_key,created_at,updated_at");
+      if (opts?.id) fallback = fallback.eq("id", opts.id);
+      const f = await fallback.maybeSingle();
+      if (f.error) throw new Error(f.error.message);
+      if (!f.data) return null;
+      return withDefaultAuthorizationStatus([f.data as Record<string, unknown>])[0] ?? null;
+    }
+    if (error) throw new Error(error.message);
+    return (data as CaseRow | null) ?? null;
+  }
+
+  const { data, error } = await query;
+  if (error && isMissingAuthorizationStatusColumn(error)) {
+    let fallback = supabase
+      .from("cases")
+      .select("id,type,product_slug,title,status,step_key,created_at,updated_at");
+    if (opts?.id) fallback = fallback.eq("id", opts.id);
+    if (opts?.orderAsc !== undefined) fallback = fallback.order("created_at", { ascending: opts.orderAsc });
+    const f = await fallback;
+    if (f.error) throw new Error(f.error.message);
+    return withDefaultAuthorizationStatus((f.data ?? []) as Array<Record<string, unknown>>);
+  }
+  if (error) throw new Error(error.message);
+  return (data ?? []) as CaseRow[];
 }
 
 function toConsent(row: ConsentRow): CaseConsentEntry {
@@ -322,33 +381,26 @@ export async function createCase(
       title,
       status: "created",
       step_key: stepKey,
-      authorization_status: "not_started",
     })
-    .select("id,type,product_slug,title,status,step_key,authorization_status,created_at,updated_at")
+    .select("id")
     .single();
 
   if (error || !data) throw new Error(error?.message ?? "Insert failed");
-  return toCaseEntity(data as CaseRow);
+
+  const created = (await selectCasesCompat(supabase, { id: String((data as { id?: unknown }).id ?? ""), single: true })) as
+    | CaseRow
+    | null;
+  if (!created) throw new Error("Case not found after insert");
+  return toCaseEntity(created);
 }
 
 export async function listCases(supabase: SupabaseClient): Promise<CaseEntity[]> {
-  const { data, error } = await supabase
-    .from("cases")
-    .select("id,type,product_slug,title,status,step_key,authorization_status,created_at,updated_at")
-    .order("created_at", { ascending: false });
-
-  if (error) throw new Error(error.message);
-  return (data ?? []).map((row) => toCaseEntity(row as CaseRow));
+  const rows = (await selectCasesCompat(supabase, { orderAsc: false })) as CaseRow[];
+  return rows.map((row) => toCaseEntity(row));
 }
 
 export async function getCaseDetail(supabase: SupabaseClient, id: string): Promise<CaseDetail | null> {
-  const { data: caseRow, error } = await supabase
-    .from("cases")
-    .select("id,type,product_slug,title,status,step_key,authorization_status,created_at,updated_at")
-    .eq("id", id)
-    .maybeSingle();
-
-  if (error) throw new Error(error.message);
+  const caseRow = (await selectCasesCompat(supabase, { id, single: true })) as CaseRow | null;
   if (!caseRow) return null;
 
   const { data: tasksRaw, error: tasksErr } = await supabase
@@ -505,13 +557,7 @@ export async function updateCase(
   caseId: string,
   input: UpdateCaseInput
 ): Promise<CaseEntity> {
-  const { data: existing, error: existingErr } = await supabase
-    .from("cases")
-    .select("id,status,step_key,authorization_status")
-    .eq("id", caseId)
-    .maybeSingle();
-
-  if (existingErr) throw new Error(existingErr.message);
+  const existing = (await selectCasesCompat(supabase, { id: caseId, single: true })) as CaseRow | null;
   if (!existing) throw new Error("Case not found");
 
   const nextStatus = input.status ?? (existing.status as CaseStatus);
@@ -525,15 +571,16 @@ export async function updateCase(
   if (input.stepKey) update.step_key = input.stepKey;
   if (input.authorizationStatus) update.authorization_status = input.authorizationStatus;
 
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from("cases")
     .update(update)
-    .eq("id", caseId)
-    .select("id,type,product_slug,title,status,step_key,authorization_status,created_at,updated_at")
-    .single();
+    .eq("id", caseId);
 
-  if (error || !data) throw new Error(error?.message ?? "Update failed");
-  return toCaseEntity(data as CaseRow);
+  if (error) throw new Error(error.message);
+
+  const refreshed = (await selectCasesCompat(supabase, { id: caseId, single: true })) as CaseRow | null;
+  if (!refreshed) throw new Error("Case not found after update");
+  return toCaseEntity(refreshed);
 }
 
 export async function createCaseConsent(
