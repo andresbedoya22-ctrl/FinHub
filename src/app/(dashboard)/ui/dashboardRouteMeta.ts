@@ -119,6 +119,35 @@ function byPathname(pathname: string, shellT: TranslateFn, subsT: TranslateFn): 
     ]);
   }
 
+  // Taxes + Leadgen verticales
+  if (pathname === "/app/taxes") {
+    return mk("Taxes Pro", [
+      { href: "/app/finances", label: shellT("route.finances") },
+      { href: "/app/taxes", label: "Taxes Pro" },
+    ]);
+  }
+
+  if (pathname === "/app/mortgage") {
+    return mk("Mortgage", [
+      { href: "/app/finances", label: shellT("route.finances") },
+      { href: "/app/mortgage", label: "Mortgage" },
+    ]);
+  }
+
+  if (pathname === "/app/credit") {
+    return mk("Credit", [
+      { href: "/app/finances", label: shellT("route.finances") },
+      { href: "/app/credit", label: "Credit" },
+    ]);
+  }
+
+  if (pathname === "/app/insurance") {
+    return mk("Insurance", [
+      { href: "/app/finances", label: shellT("route.finances") },
+      { href: "/app/insurance", label: "Insurance" },
+    ]);
+  }
+
   // Documentos
   if (pathname === "/app/documents") {
     return mk(shellT("route.documents"), [
@@ -185,6 +214,5 @@ export function getDashboardRouteMeta(pathname: string, shellT: TranslateFn, sub
 export function getRouteMeta(pathname: string, shellT: TranslateFn, subsT: TranslateFn): RouteMeta {
   return byPathname(pathname, shellT, subsT);
 }
-
 
 

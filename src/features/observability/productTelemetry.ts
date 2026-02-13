@@ -70,7 +70,11 @@ export type ProductEventName =
   | "product.marketing.cta.click"
   | "product.marketing.lead.submit.success"
   | "product.marketing.lead.submit.fail"
-  | "product.marketing.lead.submit.attempt";
+  | "product.marketing.lead.submit.attempt"
+  | "product.taxes.intake.submit"
+  | "product.leadgen.intake.start"
+  | "product.leadgen.intake.submit"
+  | "product.leadgen.intake.abandon";
 
 export type ProductEventAttr =
   | "surface"
