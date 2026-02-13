@@ -19,13 +19,14 @@ export default function AdminPage() {
     <div className="space-y-4">
       <div>
         <div className="text-lg font-semibold">Admin</div>
-        <div className="text-sm opacity-80">Revisión rápida de usuarios, casos y documentos.</div>
+        <div className="text-sm opacity-80">Revision rapida de usuarios, casos, documentos y lifecycle.</div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3">
-        <Tile href="/app/admin/users" title="Users" desc="Listado de perfiles (últimos 200)." />
-        <Tile href="/app/admin/cases" title="Cases" desc="Listado de casos (últimos 200 por updated_at)." />
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <Tile href="/app/admin/users" title="Users" desc="Listado de perfiles (ultimos 200)." />
+        <Tile href="/app/admin/cases" title="Cases" desc="Listado de casos (ultimos 200 por updated_at)." />
         <Tile href="/app/admin/documents" title="Documents" desc="Revisar documentos subidos y su estado." />
+        <Tile href="/app/admin/lifecycle" title="Lifecycle" desc="Campanas, throttling y metricas basicas." />
       </div>
     </div>
   );

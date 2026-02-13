@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { supabaseRouteClient } from "@/lib/supabase/routeClient";
 import { createSupabaseAdminClient } from "@/lib/supabaseAdminClient";
 import { createCase, getCaseDetail, updateCase } from "@/features/cases/casesService";
+import { emitLifecycleEvent } from "@/features/lifecycle/lifecycleService";
 import {
   ensureChecklistTasks,
   findLatestActiveCaseByVertical,
@@ -88,6 +89,28 @@ export async function POST(req: Request) {
       caseId,
       eventName: "taxes.intake.submit",
       data: { fiscalYear: input.fiscalYear },
+    });
+
+    void emitLifecycleEvent({
+      userId: auth.user.id,
+      caseId,
+      campaignKey: "case_update",
+      eventName: "taxes.case_updated",
+      payload: { status: "in_progress", stepKey: "eligibility" },
+    });
+    void emitLifecycleEvent({
+      userId: auth.user.id,
+      caseId,
+      campaignKey: "docs_missing",
+      eventName: "taxes.docs_missing",
+      payload: { checklistSize: taxesChecklistTasks(input).length },
+    });
+    void emitLifecycleEvent({
+      userId: auth.user.id,
+      caseId,
+      campaignKey: "authorization_pending",
+      eventName: "taxes.authorization_pending",
+      payload: { authorizationStatus: "pending" },
     });
 
     const detail = await getCaseDetail(supabase, caseId);
