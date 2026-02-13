@@ -3,7 +3,7 @@
 import React, { useMemo, useRef, useState } from "react";
 import { normalizeLang, pickLangForText, type AppLang } from "@/features/i18n/lang";
 
-type Msg = { role: "user" | "assistant"; text: string; mode?: "faq" | "llm" | "error" };
+type Msg = { role: "user" | "assistant"; text: string; mode?: "faq" | "llm" | "error"; tier?: "lite" | "premium" };
 
 type ApiOk = { ok: true; mode: "faq" | "llm"; lang: AppLang; answer: string };
 function isRecord(x: unknown): x is Record<string, unknown> {
@@ -91,7 +91,9 @@ export default function FinnyWidget() {
         } else {
           const answer = (readString(jsonUnknown, "answer") ?? t.retry).toString().trim();
           const mode = (readString(jsonUnknown, "mode") ?? "llm") as ApiOk["mode"];
-          setMessages((m) => [...m, { role: "assistant", text: answer, mode }]);
+          const tierRaw = readString(jsonUnknown, "tier");
+          const tier = tierRaw === "premium" || tierRaw === "lite" ? tierRaw : undefined;
+          setMessages((m) => [...m, { role: "assistant", text: answer, mode, tier }]);
         }
       }
     } catch (e: unknown) {
@@ -140,7 +142,12 @@ export default function FinnyWidget() {
                   {m.text}
                   {m.role === "assistant" && m.mode ? (
                     <div className="mt-1 text-[11px] opacity-70">
-                      {m.mode === "faq" ? (textLang === "es" ? "Respuesta automática" : "Auto reply") : m.mode === "llm" ? (textLang === "es" ? "IA" : "AI") : (textLang === "es" ? "Error" : "Error")}
+                      {m.mode === "faq"
+                        ? (textLang === "es" ? "Respuesta automática" : "Auto reply")
+                        : m.mode === "llm"
+                          ? (textLang === "es" ? "IA" : "AI")
+                          : (textLang === "es" ? "Error" : "Error")}
+                      {m.tier ? ` · ${m.tier.toUpperCase()}` : ""}
                     </div>
                   ) : null}
                 </div>
@@ -183,5 +190,3 @@ export default function FinnyWidget() {
     </div>
   );
 }
-
-
