@@ -7,6 +7,7 @@ import {
   parseTaxesIntakeInput,
   taxesChecklistTasks,
 } from "./server";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
 describe("vertical server helpers", () => {
   it("validates leadgen verticals", () => {
@@ -67,5 +68,29 @@ describe("vertical server helpers", () => {
     expect(leadgenChecklistTasks("mortgage").length).toBeGreaterThanOrEqual(4);
     expect(leadgenChecklistTasks("credit").length).toBeGreaterThanOrEqual(4);
     expect(leadgenChecklistTasks("insurance").length).toBeGreaterThanOrEqual(4);
+  });
+
+  it("does not throw when product_events is missing from schema cache", async () => {
+    const admin = {
+      from() {
+        return {
+          insert: async () => ({
+            error: {
+              code: "PGRST205",
+              message: "Could not find the table 'public.product_events' in the schema cache",
+            },
+          }),
+        };
+      },
+    } as unknown as SupabaseClient;
+
+    const { insertProductEventSafe } = await import("./server");
+    await expect(
+      insertProductEventSafe(admin, {
+        userId: "u-1",
+        caseId: "c-1",
+        eventName: "taxes.intake.submit",
+      })
+    ).resolves.toBeUndefined();
   });
 });

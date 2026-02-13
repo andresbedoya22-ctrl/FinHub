@@ -44,6 +44,7 @@ export function TaxesIntakeClient() {
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [authBusy, setAuthBusy] = useState(false);
+  const [handoffBusy, setHandoffBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
@@ -138,6 +139,34 @@ export function TaxesIntakeClient() {
       setError(e instanceof Error ? e.message : "No se pudo registrar la autorización.");
     } finally {
       setAuthBusy(false);
+    }
+  }
+
+  async function handoffToOperations() {
+    if (!caseDetail?.id || handoffBusy) return;
+    setHandoffBusy(true);
+    setError(null);
+    setSuccess(null);
+    try {
+      const res = await fetch(`/api/cases/${encodeURIComponent(caseDetail.id)}`, {
+        method: "PATCH",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          status: "ready_for_review",
+          stepKey: "eligibility",
+        }),
+      });
+      const json = (await res.json().catch(() => null)) as { error?: string } | null;
+      if (!res.ok) {
+        setError(json?.error ?? "No se pudo enviar el caso a operación.");
+        return;
+      }
+      await load();
+      setSuccess("Caso enviado a operación correctamente.");
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : "No se pudo enviar el caso a operación.");
+    } finally {
+      setHandoffBusy(false);
     }
   }
 
@@ -249,6 +278,21 @@ export function TaxesIntakeClient() {
             ))}
           </div>
         )}
+      </Card>
+
+      <Card className="space-y-3">
+        <div className="text-sm font-semibold">Paso final</div>
+        <InfoBox title="Handoff a operación" variant={hasServiceConsent ? "info" : "warning"}>
+          {hasServiceConsent
+            ? "Con autorización lista, puedes enviar el caso a revisión operativa."
+            : "Primero autoriza el servicio para permitir el envío a operación."}
+        </InfoBox>
+        <Button
+          disabled={!caseDetail || !hasServiceConsent || handoffBusy}
+          onClick={() => void handoffToOperations()}
+        >
+          {handoffBusy ? "Enviando a operación..." : "Enviar caso a operación"}
+        </Button>
       </Card>
     </Screen>
   );

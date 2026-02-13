@@ -207,7 +207,14 @@ export async function ensureChecklistTasks(
 function isMissingRelation(error: unknown, relation: string): boolean {
   if (!error || typeof error !== "object") return false;
   const message = "message" in error ? String((error as { message?: unknown }).message ?? "") : "";
-  return message.toLowerCase().includes(`relation "${relation}" does not exist`);
+  const code = "code" in error ? String((error as { code?: unknown }).code ?? "") : "";
+  const lower = message.toLowerCase();
+  if (lower.includes(`relation "${relation}" does not exist`)) return true;
+  // PostgREST cache mismatch error example:
+  // "Could not find the table 'public.product_events' in the schema cache"
+  if (lower.includes(`table 'public.${relation}'`) && lower.includes("schema cache")) return true;
+  if (code.toUpperCase().startsWith("PGRST") && lower.includes(relation) && lower.includes("schema cache")) return true;
+  return false;
 }
 
 export async function insertProductEventSafe(
