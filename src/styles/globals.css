@@ -1,26 +1,40 @@
-﻿@import "tailwindcss";
+@import "tailwindcss";
 @config "../../tailwind.config.mjs";
 
-/* FinHub tokens (Fase 2) */
 :root {
-  /* Dark-first UI */
+  color-scheme: light;
+
+  --fh-bg: #f3f6f8;
+  --fh-surface: #ffffff;
+  --fh-surface-2: #e8edf1;
+  --fh-text: #0f1c24;
+  --fh-muted: #5a6a78;
+  --fh-border: rgba(15, 28, 36, 0.14);
+
+  --fh-primary: #16a34a;
+  --fh-primary-fg: #f0fff5;
+
+  --fh-danger: #dc2626;
+  --fh-danger-fg: #fff5f5;
+  --fh-focus: #22c55e;
+}
+
+.dark {
   color-scheme: dark;
 
-  /* Core palette */
-  --fh-bg: #0d1b2a;          /* azul oscuro */
-  --fh-surface: #122338;     /* superficie 1 */
-  --fh-surface-2: #162a43;   /* superficie 2 */
-  --fh-text: #eaf0ff;        /* texto principal */
-  --fh-muted: #a9b6d3;       /* texto secundario */
-  --fh-border: rgba(234, 240, 255, 0.12);
+  --fh-bg: #08141d;
+  --fh-surface: #0f212d;
+  --fh-surface-2: #183142;
+  --fh-text: #e7f0f5;
+  --fh-muted: #9fb1bf;
+  --fh-border: rgba(231, 240, 245, 0.13);
 
-  --fh-primary: #4caf50;     /* verde acción */
-  --fh-primary-fg: #06120a;
+  --fh-primary: #22c55e;
+  --fh-primary-fg: #04100a;
 
   --fh-danger: #ef4444;
-  --fh-danger-fg: #190404;
-
-  --fh-focus: #93c5fd; /* foco accesible */
+  --fh-danger-fg: #1a0505;
+  --fh-focus: #86efac;
 }
 
 html,
@@ -30,13 +44,14 @@ body {
 
 body {
   margin: 0;
-  background: var(--fh-bg);
+  background:
+    radial-gradient(circle at 100% 0%, rgba(34, 197, 94, 0.12), transparent 45%),
+    radial-gradient(circle at 0% 100%, rgba(34, 197, 94, 0.08), transparent 50%),
+    var(--fh-bg);
   color: var(--fh-text);
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica,
-    Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  font-family: "Segoe UI", "Inter", system-ui, -apple-system, sans-serif;
 }
 
-/* Contenedor estándar */
 .fh-container {
   width: 100%;
   max-width: 1120px;

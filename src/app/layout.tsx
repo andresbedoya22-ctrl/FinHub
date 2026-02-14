@@ -1,5 +1,5 @@
 ﻿import type { Metadata } from "next";
-import { headers } from "next/headers";
+import { cookies, headers } from "next/headers";
 import "@/styles/globals.css";
 import { getI18nRequestContext } from "@/i18n/request";
 import { I18nProvider } from "@/i18n/I18nProvider";
@@ -12,6 +12,9 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { locale, messages, timeZone } = await getI18nRequestContext();
+  const cookieStore = await cookies();
+  const themeCookie = cookieStore.get("theme")?.value;
+  const theme = themeCookie === "light" ? "light" : "dark";
 
   if (process.env.NODE_ENV === "development") {
     const h = await headers();
@@ -25,7 +28,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   }
 
   return (
-    <html lang={locale}>
+    <html lang={locale} className={theme === "dark" ? "dark" : ""} data-theme={theme}>
       <body>
         <I18nProvider locale={locale} messages={messages} timeZone={timeZone}>
           {children}
