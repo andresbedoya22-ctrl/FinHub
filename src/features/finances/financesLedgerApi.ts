@@ -53,7 +53,8 @@ export type CreateTransactionInput = {
   occurredOn: string; // YYYY-MM-DD
   merchantName: string;
   categoryId?: string | null;
-  amountCents: number;
+  amountCents: number; // absolute amount in cents
+  direction?: "income" | "expense";
   note?: string | null;
 };
 

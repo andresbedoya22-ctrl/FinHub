@@ -12,6 +12,7 @@ import { Card } from "@/ui/components/Card";
 import { InfoBox } from "@/ui/components/InfoBox";
 import { Screen } from "@/ui/components/Screen";
 import { cn } from "@/ui/cn";
+import { inferDirectionFromAmount } from "@/features/finances/transactionsAmount";
 
 type TxStatus = "pending" | "approved" | "hidden";
 
@@ -326,6 +327,7 @@ export default function TransactionsListClient({ initialMonth }: { initialMonth:
                     const catLabel = row.categoryId
                       ? categoryLabelById.get(row.categoryId) ?? row.categoryId
                       : t("category.uncategorized");
+                    const direction = inferDirectionFromAmount(row.amountCents);
                     const saving = rowSavingId === row.id;
 
                     return (
@@ -339,7 +341,10 @@ export default function TransactionsListClient({ initialMonth }: { initialMonth:
                           <Badge variant="neutral">{catLabel}</Badge>
                         </td>
                         <td className={cn("px-3 py-3 text-right font-mono", row.amountCents < 0 ? "" : "text-emerald-500 dark:text-emerald-300")}>
-                          {formatEurFromCents(locale, row.amountCents)}
+                          <div>{formatEurFromCents(locale, row.amountCents)}</div>
+                          <div className="mt-1">
+                            <Badge variant="neutral">{t(`type.${direction}`)}</Badge>
+                          </div>
                         </td>
                         <td className="px-3 py-3">
                           <div className="flex flex-wrap items-center gap-2">

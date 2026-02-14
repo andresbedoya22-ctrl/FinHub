@@ -1,12 +1,14 @@
 import { NextResponse } from "next/server";
 
 import { supabaseRouteClient } from "@/lib/supabase/routeClient";
+import { toSignedAmountCents } from "@/features/finances/transactionsAmount";
 
 type CreateTxBody = {
   occurredOn: string; // YYYY-MM-DD
   merchantName: string;
   categoryId?: string | null;
-  amountCents: number;
+  amountCents: number; // absolute amount cents
+  direction?: "income" | "expense";
   note?: string | null;
 };
 
@@ -16,6 +18,7 @@ function isCreateTxBody(x: unknown): x is CreateTxBody {
   if (typeof o.occurredOn !== "string") return false;
   if (typeof o.merchantName !== "string") return false;
   if (typeof o.amountCents !== "number") return false;
+  if (o.direction !== undefined && o.direction !== "income" && o.direction !== "expense") return false;
   return true;
 }
 
@@ -50,6 +53,8 @@ export async function POST(req: Request) {
 
   const uid = auth.user.id;
 
+  const signedAmount = toSignedAmountCents(raw.amountCents, raw.direction ?? "expense");
+
   const { data, error } = await supabase
     .from("finance_transactions")
     .insert({
@@ -58,7 +63,7 @@ export async function POST(req: Request) {
       merchant_name: merchantName,
       merchant_norm: normMerchant(merchantName),
       category_id: raw.categoryId ?? null,
-      amount_cents: raw.amountCents,
+      amount_cents: signedAmount,
       currency: "EUR",
       status: "pending",
       source: "manual",

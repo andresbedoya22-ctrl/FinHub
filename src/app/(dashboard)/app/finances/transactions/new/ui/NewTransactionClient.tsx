@@ -12,11 +12,13 @@ import { Card } from "@/ui/components/Card";
 import { InfoBox } from "@/ui/components/InfoBox";
 import { Screen } from "@/ui/components/Screen";
 import { cn } from "@/ui/cn";
+import type { TransactionDirection } from "@/features/finances/transactionsAmount";
 
 type FormState = {
   occurredOn: string; // YYYY-MM-DD
   merchantName: string;
-  amountEur: string; // user input
+  amountEur: string; // user input absolute
+  direction: TransactionDirection;
   categoryId: string; // "" => null
   note: string;
 };
@@ -68,6 +70,7 @@ export default function NewTransactionClient() {
     occurredOn: isoToday(),
     merchantName: "",
     amountEur: "",
+    direction: "expense",
     categoryId: "",
     note: "",
   }));
@@ -89,18 +92,18 @@ export default function NewTransactionClient() {
     return [...base, ...mapped];
   }, [categories, t]);
 
-  const amountCents = useMemo(() => eurToCents(form.amountEur), [form.amountEur]);
+  const amountCentsAbs = useMemo(() => Math.abs(eurToCents(form.amountEur)), [form.amountEur]);
 
   const canSubmit = useMemo(() => {
     if (!isIsoDate(form.occurredOn)) return false;
     if (!form.merchantName.trim()) return false;
-    if (!Number.isFinite(amountCents) || amountCents === 0) return false;
+    if (!Number.isFinite(amountCentsAbs) || amountCentsAbs === 0) return false;
     return true;
-  }, [form.occurredOn, form.merchantName, amountCents]);
+  }, [form.occurredOn, form.merchantName, amountCentsAbs]);
 
   const dateError = !isIsoDate(form.occurredOn) ? t("form.date.error") : null;
   const merchantError = !form.merchantName.trim() ? t("form.merchant.error") : null;
-  const amountError = !Number.isFinite(amountCents) || amountCents === 0 ? t("form.amount.error") : null;
+  const amountError = !Number.isFinite(amountCentsAbs) || amountCentsAbs === 0 ? t("form.amount.error") : null;
 
   const onSubmit = async () => {
     setAttempted(true);
@@ -114,7 +117,8 @@ export default function NewTransactionClient() {
         occurredOn: form.occurredOn,
         merchantName: form.merchantName.trim(),
         categoryId: form.categoryId ? form.categoryId : null,
-        amountCents,
+        amountCents: amountCentsAbs,
+        direction: form.direction,
         note: form.note.trim() ? form.note.trim() : null,
       };
 
@@ -199,6 +203,19 @@ export default function NewTransactionClient() {
             <div className={cn("mt-2 text-xs text-fh-muted", attempted && merchantError ? "text-rose-300" : "")}>
               {attempted && merchantError ? merchantError : t("form.merchant.helper")}
             </div>
+          </div>
+
+          <div>
+            <label className="text-xs font-medium text-fh-muted">{t("form.direction.label")}</label>
+            <select
+              className="mt-2 w-full rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm"
+              value={form.direction}
+              onChange={(e) => setForm((p) => ({ ...p, direction: e.target.value as TransactionDirection }))}
+            >
+              <option value="expense">{t("form.direction.expense")}</option>
+              <option value="income">{t("form.direction.income")}</option>
+            </select>
+            <div className="mt-2 text-xs text-fh-muted">{t("form.direction.helper")}</div>
           </div>
 
           <div>
