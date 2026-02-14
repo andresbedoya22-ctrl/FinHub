@@ -1,4 +1,4 @@
-# Runbook Dev / Release (finhub-web)
+﻿# Runbook Dev / Release (finhub-web)
 
 ## 1) Rutas reales de LeadGen
 - Mortgage: `/app/mortgage`
@@ -12,7 +12,7 @@ Atajos habilitados:
 
 ## 2) Flujo local limpio
 1. `git status`
-2. `rm -rf .next` (en PowerShell: `Remove-Item -Recurse -Force .next`)
+2. `Remove-Item -Recurse -Force .next` (o `rm -rf .next`)
 3. `pnpm install`
 4. `pnpm dev`
 5. Validar UI en:
@@ -27,9 +27,11 @@ Atajos habilitados:
 4. `pnpm build`
 
 ## 4) Limitaciones en entornos sandbox (Codex)
-- Puede no haber acceso saliente a GitHub (`github.com:443`), por lo que `git push` puede fallar aunque el repo esté correcto.
-- En ese caso, el push se realiza desde tu PC/local con acceso normal a red.
+- Puede no haber acceso saliente a GitHub (`github.com:443`), por lo que `git push` puede fallar aunque el repo este correcto.
+- En algunos sandboxes Windows puede fallar `next dev`, `next build` o `vitest` con `spawn EPERM` por bloqueo de procesos hijo.
+- Esos errores no implican bug funcional del repo; valida gates finales desde tu PC local.
+- Flujo recomendado en Codex: implementar + lint/typecheck + commit local.
 
-## 5) Publicación desde tu PC
+## 5) Publicacion desde tu PC
 1. `git status`
 2. `git push origin main`
