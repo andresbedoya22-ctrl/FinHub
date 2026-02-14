@@ -163,6 +163,11 @@
       "dashboard": "Tablou de bord",
       "finances": "Finanțe",
       "subsidies": "Subvenții",
+      "subsidyApplications": "Cereri de subvenții",
+      "subsidyDetail": "Detalii subvenție",
+      "subsidyWizard": "Asistent subvenție",
+      "subsidyResult": "Rezultat subvenție",
+      "subsidyCheckout": "Plată subvenție",
       "transactions": "Tranzacții",
       "newTransaction": "Tranzacșie nou",
       "transactionDetail": "Detalii tranzacție",
@@ -173,11 +178,6 @@
       "admin": "Admin",
       "detail": "Detaliu",
       "new": "Nou",
-      "subsidyApplications": "Cereri de subvenții",
-      "subsidyCheckout": "Plată subvenție",
-      "subsidyDetail": "Detalii subvenție",
-      "subsidyResult": "Rezultat subvenție",
-      "subsidyWizard": "Asistent subvenție",
       "taxes": "Taxes Pro",
       "mortgage": "Ipoteca",
       "credit": "Credit",
@@ -473,6 +473,10 @@
         "close": "Inchide",
         "note": "Nota",
         "openFull": "Deschide detaliu complet"
+      },
+      "type": {
+        "income": "Venit",
+        "expense": "Cheltuiala"
       }
     },
     "newTransaction": {
@@ -520,6 +524,12 @@
           "label": "Not",
           "placeholder": "Opțional...",
           "helper": "Adaug context pentru revizuiri."
+        },
+        "direction": {
+          "label": "Tip",
+          "income": "Venit",
+          "expense": "Cheltuiala",
+          "helper": "Introdu suma pozitiva. Tipul controleaza semnul in ledger."
         }
       }
     }
@@ -1084,6 +1094,18 @@
       "error": "Nu am putut porni plata.",
       "methods": "Metode de plată: iDEAL, card"
     },
+    "errors": {
+      "tableMissing": "Finalizăm configurarea cererilor de subvenții. Aplică migrațiile sau contactează suportul.",
+      "permissionDenied": "Acces refuzat (403). Nu putem continua această acțiune. Dacă problema persistă, contactează suportul.",
+      "authRequired": "Autentifică-te pentru a continua.",
+      "invalidSlug": "Această subvenție nu este disponibilă.",
+      "invalidApplication": "Nu am găsit acea cerere.",
+      "missingApplicationId": "Nu am găsit identificatorul cererii tale.",
+      "paymentUnavailable": "Plile sunt temporar indisponibile. ncearc mai trziu.",
+      "checkoutFailed": "Nu am putut porni plata. Încearcă din nou.",
+      "network": "Eroare de rețea. Verifică conexiunea și încearcă din nou.",
+      "unknown": "Ceva nu a mers bine. Încearcă din nou."
+    },
     "applications": {
       "eyebrow": "Subvenții",
       "title": "Cererile mele",
@@ -1098,6 +1120,7 @@
       },
       "createdAt": "Creat",
       "progress": "Status",
+      "separator": "-",
       "cta": {
         "view": "Vezi cererea",
         "case": "Deschide cazul",
@@ -1124,8 +1147,7 @@
         "error": "Nu am putut încărca cererea.",
         "errorTitle": "Eroare",
         "uploadError": "Nu am putut încărca documentul."
-      },
-      "separator": "-"
+      }
     },
     "admin": {
       "eyebrow": "Admin",
@@ -1308,18 +1330,6 @@
       "decision": "Decizie primită",
       "done": "Închis",
       "cancelled": "Anulat"
-    },
-    "errors": {
-      "tableMissing": "Finalizăm configurarea cererilor de subvenții. Aplică migrațiile sau contactează suportul.",
-      "permissionDenied": "Acces refuzat (403). Nu putem continua această acțiune. Dacă problema persistă, contactează suportul.",
-      "authRequired": "Autentifică-te pentru a continua.",
-      "invalidSlug": "Această subvenție nu este disponibilă.",
-      "invalidApplication": "Nu am găsit acea cerere.",
-      "missingApplicationId": "Nu am găsit identificatorul cererii tale.",
-      "paymentUnavailable": "Plile sunt temporar indisponibile. ncearc mai trziu.",
-      "checkoutFailed": "Nu am putut porni plata. Încearcă din nou.",
-      "network": "Eroare de rețea. Verifică conexiunea și încearcă din nou.",
-      "unknown": "Ceva nu a mers bine. Încearcă din nou."
     }
   },
   "cases": {
@@ -1536,6 +1546,15 @@
       "noSelection": "Selecteaza cel putin o subventie pentru a continua.",
       "contractStart": "Nu s-a putut crea cazul pentru aceasta contractare.",
       "checkout": "Nu s-a putut porni checkout-ul. Incearca din nou."
+    },
+    "flow": {
+      "title": "Cum functioneaza fluxul",
+      "eligibility": "Eligibilitate",
+      "result": "Rezultat",
+      "checkout": "Checkout",
+      "authorization": "Autorizare",
+      "documents": "Documente",
+      "final": "Final"
     }
   },
   "adminCases": {
@@ -1905,6 +1924,125 @@
         "changeProduct": "Schimba produs",
         "nextStepCta": "Continua fluxul"
       }
+    }
+  },
+  "taxes": {
+    "title": "Taxes Pro",
+    "subtitle": "Wizard impozit pe venit pentru persoane fizice (fara ZZP).",
+    "progress": "Progres",
+    "stepOf": "Pasul {current} din {total}",
+    "actions": {
+      "start": "Incepe",
+      "back": "Inapoi",
+      "continue": "Continua",
+      "finish": "Finalizeaza",
+      "saving": "Se salveaza...",
+      "processing": "Se proceseaza...",
+      "refresh": "Reincarca",
+      "loading": "Se incarca..."
+    },
+    "errors": {
+      "title": "Eroare",
+      "load": "Nu s-a putut incarca Taxes Pro.",
+      "save": "Nu s-a putut salva formularul fiscal.",
+      "checkout": "Nu s-a putut porni checkout.",
+      "authorization": "Nu s-a putut actualiza autorizarea."
+    },
+    "messages": {
+      "title": "Actualizare",
+      "intakeSaved": "Formular salvat si checklist creat.",
+      "authorizationSaved": "Pasul de autorizare a fost actualizat."
+    },
+    "common": {
+      "yes": "Da",
+      "no": "Nu"
+    },
+    "intro": {
+      "title": "Inainte sa incepem",
+      "body": "Te ghidam pas cu pas: intake, documente si autorizare.",
+      "need1": "Act de identitate si date de contact",
+      "need2": "Jaaropgave venit anual",
+      "need3": "Jaaropgave ipoteca daca esti proprietar"
+    },
+    "profile": {
+      "title": "Profil si consimtamant",
+      "firstName": "Prenume",
+      "lastName": "Nume",
+      "email": "Email",
+      "phone": "Telefon",
+      "consent": "Accept termeni, politica de confidentialitate si autorizarea de contact pentru acest caz fiscal."
+    },
+    "fiscal": {
+      "title": "An fiscal si familie",
+      "year": "An fiscal",
+      "hasPartner": "Ai partener fiscal?",
+      "hasChildren": "Ai copii?"
+    },
+    "housing": {
+      "title": "Locuinta si ipoteca",
+      "owner": "Proprietar",
+      "tenant": "Chirias",
+      "mortgageInterestPaid": "Dobanda ipoteca platita (anual)",
+      "mortgageHint": "Daca nu stii, continua si incarca Jaaropgave hypotheek la documente."
+    },
+    "income": {
+      "title": "Venit din munca",
+      "upload": "Incarca document",
+      "manual": "Introdu manual",
+      "annualIncome": "Venit anual din munca",
+      "uploadInfoTitle": "Mod incarcare documente",
+      "uploadInfoBody": "Poti incarca jaaropgave iar echipa extrage valorile."
+    },
+    "other": {
+      "title": "Alte venituri (optional)",
+      "hasBox3": "Include economii/investitii (Box 3)",
+      "box3Amount": "Suma estimata Box 3",
+      "todoTitle": "TODO - in asteptarea domeniului oficial",
+      "todoBody": "Calculul detaliat Box 3 nu este inca automatizat."
+    },
+    "deductions": {
+      "title": "Deduceri",
+      "review": "Revizuire deduceri comune suportate de procesul curent",
+      "notes": "Note pentru echipa fiscala"
+    },
+    "result": {
+      "title": "Rezultat si pasul urmator",
+      "estimateTitle": "Status estimare",
+      "estimateBody": "Estimarea automata rambursare/plata nu este complet implementata. Echipa FinHub va revizui documentele inainte de estimarea finala.",
+      "missingData": "Lipsa date ipoteca: {needsMortgage}",
+      "cta": "Vreau ca FinHub sa depuna declaratia"
+    },
+    "checkout": {
+      "title": "Checkout",
+      "body": "Plateste pentru a continua cu gestionare completa si tracking.",
+      "pay": "Mergi la plata",
+      "skipToAuthorization": "Continua la autorizare"
+    },
+    "authorization": {
+      "title": "Autorizare (machtigingsregistratie)",
+      "officialTitle": "Proces oficial (Belastingdienst / Logius)",
+      "officialBody": "Intermediarul initiaza inregistrarea, primesti scrisoare cu formular si/sau cod de activare, apoi o trimiti inapoi intermediarului pentru activare.",
+      "step1": "Intermediarul initiaza cererea",
+      "step2": "Primesti si returnezi scrisoarea/codul",
+      "step3": "Dupa confirmare, autorizarea poate deveni activa pentru anul fiscal ales",
+      "activationCode": "Cod activare (optional)",
+      "activationHint": "Introdu doar codul din scrisoarea oficiala.",
+      "markWaiting": "Marcheaza: in asteptarea scrisorii",
+      "markLetterReceived": "Marcheaza: scrisoare primita",
+      "markCodeCaptured": "Marcheaza: cod capturat",
+      "markActive": "Marcheaza: activ (confirmat de utilizator)",
+      "currentStatus": "Status autorizare curent: {status}"
+    },
+    "documents": {
+      "title": "Documente",
+      "body": "Incarca documentele necesare. Statusul apare in caz.",
+      "noCase": "Salveaza intake-ul pentru a crea un caz."
+    },
+    "final": {
+      "title": "Urmarire caz",
+      "pipelineTitle": "Pipeline curent",
+      "pipelineBody": "Draft -> Awaiting documents -> Ready for review -> Authorization pending -> Ready to submit -> Submitted -> Closed",
+      "openCase": "Deschide caz"
     }
   }
 }

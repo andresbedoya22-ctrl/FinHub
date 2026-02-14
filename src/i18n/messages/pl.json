@@ -163,6 +163,11 @@
       "dashboard": "Pulpit",
       "finances": "Finanse",
       "subsidies": "Dopłaty",
+      "subsidyApplications": "Wnioski o dopłaty",
+      "subsidyDetail": "Szczegóły dopłaty",
+      "subsidyWizard": "Kreator dopłaty",
+      "subsidyResult": "Wynik dopłaty",
+      "subsidyCheckout": "Płatność dopłaty",
       "transactions": "Transakcje",
       "newTransaction": "Nowa transakcja",
       "transactionDetail": "Szczegóy transakcji",
@@ -173,11 +178,6 @@
       "admin": "Admin",
       "detail": "Szczegóy",
       "new": "Nowa",
-      "subsidyApplications": "Wnioski o dopłaty",
-      "subsidyCheckout": "Płatność dopłaty",
-      "subsidyDetail": "Szczegóły dopłaty",
-      "subsidyResult": "Wynik dopłaty",
-      "subsidyWizard": "Kreator dopłaty",
       "taxes": "Taxes Pro",
       "mortgage": "Hipoteka",
       "credit": "Kredyt",
@@ -219,7 +219,6 @@
       "nav": {
         "title": "Nawigacja",
         "finances": "Finanse",
-        "subsidies": "Dopłaty",
         "cases": "Sprawy",
         "documents": "Dokumenty",
         "profile": "Profil",
@@ -315,7 +314,6 @@
     "transactions": {
       "breadcrumbs": {
         "finances": "Finanse",
-        "subsidies": "Dopłaty",
         "transactions": "Transakcje"
       },
       "title": "Transakcje",
@@ -475,12 +473,15 @@
         "close": "Zamknij",
         "note": "Notatka",
         "openFull": "Otw?rz pe?ny widok"
+      },
+      "type": {
+        "income": "Przychod",
+        "expense": "Wydatek"
       }
     },
     "newTransaction": {
       "breadcrumbs": {
         "finances": "Finanse",
-        "subsidies": "Dopłaty",
         "transactions": "Transakcje",
         "new": "Nowa"
       },
@@ -523,6 +524,12 @@
           "label": "Notatka",
           "placeholder": "Opcjonalnie...",
           "helper": "Dodaj kontekst na przyszo:!."
+        },
+        "direction": {
+          "label": "Typ",
+          "income": "Przychod",
+          "expense": "Wydatek",
+          "helper": "Wpisz kwote dodatnia. Typ ustala znak w ledgerze."
         }
       }
     }
@@ -1087,6 +1094,18 @@
       "error": "Nie udało się rozpocząć płatności.",
       "methods": "Metody płatności: iDEAL, karta"
     },
+    "errors": {
+      "tableMissing": "Kończymy konfigurację wniosków o dopłaty. Zastosuj migracje lub skontaktuj się z pomocą.",
+      "permissionDenied": "Odmowa dostępu (403). Nie możemy kontynuować tej akcji. Jeśli problem się powtarza, skontaktuj się z pomocą.",
+      "authRequired": "Zaloguj się, aby kontynuować.",
+      "invalidSlug": "Ten dodatek nie jest dostępny.",
+      "invalidApplication": "Nie znaleźliśmy tego wniosku.",
+      "missingApplicationId": "Nie znaleźliśmy identyfikatora Twojego wniosku.",
+      "paymentUnavailable": "Płatności są chwilowo niedostępne. Spróbuj ponownie później.",
+      "checkoutFailed": "Nie udało się rozpocząć płatności. Spróbuj ponownie.",
+      "network": "Błąd sieci. Sprawdź połączenie i spróbuj ponownie.",
+      "unknown": "Coś poszło nie tak. Spróbuj ponownie."
+    },
     "applications": {
       "eyebrow": "Dopłaty",
       "title": "Moje wnioski",
@@ -1311,18 +1330,6 @@
       "decision": "Decyzja otrzymana",
       "done": "Zamknięto",
       "cancelled": "Anulowano"
-    },
-    "errors": {
-      "tableMissing": "Kończymy konfigurację wniosków o dopłaty. Zastosuj migracje lub skontaktuj się z pomocą.",
-      "permissionDenied": "Odmowa dostępu (403). Nie możemy kontynuować tej akcji. Jeśli problem się powtarza, skontaktuj się z pomocą.",
-      "authRequired": "Zaloguj się, aby kontynuować.",
-      "invalidSlug": "Ten dodatek nie jest dostępny.",
-      "invalidApplication": "Nie znaleźliśmy tego wniosku.",
-      "missingApplicationId": "Nie znaleźliśmy identyfikatora Twojego wniosku.",
-      "paymentUnavailable": "Płatności są chwilowo niedostępne. Spróbuj ponownie później.",
-      "checkoutFailed": "Nie udało się rozpocząć płatności. Spróbuj ponownie.",
-      "network": "Błąd sieci. Sprawdź połączenie i spróbuj ponownie.",
-      "unknown": "Coś poszło nie tak. Spróbuj ponownie."
     }
   },
   "cases": {
@@ -1539,6 +1546,15 @@
       "noSelection": "Wybierz co najmniej jedno swiadczenie, aby kontynuowac.",
       "contractStart": "Nie udalo sie utworzyc sprawy dla tego kontraktu.",
       "checkout": "Nie udalo sie uruchomic checkoutu. Sprobuj ponownie."
+    },
+    "flow": {
+      "title": "Jak dziala ten proces",
+      "eligibility": "Uprawnienia",
+      "result": "Wynik",
+      "checkout": "Checkout",
+      "authorization": "Autoryzacja",
+      "documents": "Dokumenty",
+      "final": "Final"
     }
   },
   "adminCases": {
@@ -1908,6 +1924,125 @@
         "changeProduct": "Zmien produkt",
         "nextStepCta": "Kontynuuj proces"
       }
+    }
+  },
+  "taxes": {
+    "title": "Taxes Pro",
+    "subtitle": "Kreator podatku dochodowego dla osob prywatnych (bez ZZP).",
+    "progress": "Postep",
+    "stepOf": "Krok {current} z {total}",
+    "actions": {
+      "start": "Start",
+      "back": "Wstecz",
+      "continue": "Dalej",
+      "finish": "Zakoncz",
+      "saving": "Zapisywanie...",
+      "processing": "Przetwarzanie...",
+      "refresh": "Odswiez",
+      "loading": "Ladowanie..."
+    },
+    "errors": {
+      "title": "Blad",
+      "load": "Nie udalo sie zaladowac Taxes Pro.",
+      "save": "Nie udalo sie zapisac formularza podatkowego.",
+      "checkout": "Nie udalo sie uruchomic checkout.",
+      "authorization": "Nie udalo sie zaktualizowac autoryzacji."
+    },
+    "messages": {
+      "title": "Aktualizacja",
+      "intakeSaved": "Formularz zapisany i utworzono checklist?.",
+      "authorizationSaved": "Krok autoryzacji zaktualizowany."
+    },
+    "common": {
+      "yes": "Tak",
+      "no": "Nie"
+    },
+    "intro": {
+      "title": "Przed startem",
+      "body": "Prowadzimy krok po kroku: intake, dokumenty i autoryzacja.",
+      "need1": "Dokument tozsamosci i dane kontaktowe",
+      "need2": "Jaaropgave dochodow",
+      "need3": "Jaaropgave hipoteki dla wlasciciela"
+    },
+    "profile": {
+      "title": "Profil i zgoda",
+      "firstName": "Imie",
+      "lastName": "Nazwisko",
+      "email": "Email",
+      "phone": "Telefon",
+      "consent": "Akceptuje regulamin, prywatnosc i kontakt w sprawie podatkow."
+    },
+    "fiscal": {
+      "title": "Rok podatkowy i rodzina",
+      "year": "Rok podatkowy",
+      "hasPartner": "Czy masz partnera fiskalnego?",
+      "hasChildren": "Czy masz dzieci?"
+    },
+    "housing": {
+      "title": "Mieszkanie i hipoteka",
+      "owner": "Wlasciciel",
+      "tenant": "Najemca",
+      "mortgageInterestPaid": "Zaplacone odsetki hipoteczne (rok)",
+      "mortgageHint": "Jesli nie wiesz, przejdz dalej i dodaj Jaaropgave hypotheek."
+    },
+    "income": {
+      "title": "Dochody z pracy",
+      "upload": "Przeslij dokument",
+      "manual": "Wpisz recznie",
+      "annualIncome": "Roczny dochod z pracy",
+      "uploadInfoTitle": "Tryb dokumentow",
+      "uploadInfoBody": "Mozesz przeslac jaaropgave, a zespol odczyta dane."
+    },
+    "other": {
+      "title": "Inne dochody (opcjonalnie)",
+      "hasBox3": "Uwzglednij oszczednosci/inwestycje (Box 3)",
+      "box3Amount": "Szacowana kwota Box 3",
+      "todoTitle": "TODO - oczekuje zakresu oficjalnego",
+      "todoBody": "Szczegolowe wyliczenie Box 3 nie jest jeszcze zautomatyzowane."
+    },
+    "deductions": {
+      "title": "Odliczenia",
+      "review": "Sprawdz odliczenia obslugiwane przez obecny proces",
+      "notes": "Notatki dla zespolu podatkowego"
+    },
+    "result": {
+      "title": "Wynik i kolejny krok",
+      "estimateTitle": "Status estymacji",
+      "estimateBody": "Automatyczna estymacja zwrotu/doplaty nie jest jeszcze pelna. Zespol sprawdzi dokumenty przed finalna estymacja.",
+      "missingData": "Brak danych hipotecznych: {needsMortgage}",
+      "cta": "Chce, aby FinHub zlozyl deklaracje"
+    },
+    "checkout": {
+      "title": "Checkout",
+      "body": "Oplac, aby kontynuowac pelna obsluge i tracking sprawy.",
+      "pay": "Przejdz do platnosci",
+      "skipToAuthorization": "Przejdz do autoryzacji"
+    },
+    "authorization": {
+      "title": "Autoryzacja (machtigingsregistratie)",
+      "officialTitle": "Proces oficjalny (Belastingdienst / Logius)",
+      "officialBody": "Intermediariusz rozpoczyna rejestracje, otrzymujesz list z formularzem i/lub kodem aktywacyjnym, zwracasz go intermediariuszowi do aktywacji.",
+      "step1": "Intermediariusz rozpoczyna wniosek",
+      "step2": "Otrzymujesz i odsy?asz list/kod",
+      "step3": "Po potwierdzeniu autoryzacja moze byc aktywna dla roku podatkowego",
+      "activationCode": "Kod aktywacyjny (opcjonalnie)",
+      "activationHint": "Podaj tylko kod z oficjalnego listu.",
+      "markWaiting": "Oznacz: czekam na list",
+      "markLetterReceived": "Oznacz: list otrzymany",
+      "markCodeCaptured": "Oznacz: kod zapisany",
+      "markActive": "Oznacz: aktywne (potwierdzone przez uzytkownika)",
+      "currentStatus": "Aktualny status autoryzacji: {status}"
+    },
+    "documents": {
+      "title": "Dokumenty",
+      "body": "Przeslij wymagane dokumenty. Status widoczny w sprawie.",
+      "noCase": "Najpierw zapisz formularz, aby utworzyc spraw?."
+    },
+    "final": {
+      "title": "Sledzenie sprawy",
+      "pipelineTitle": "Aktualny pipeline",
+      "pipelineBody": "Draft -> Awaiting documents -> Ready for review -> Authorization pending -> Ready to submit -> Submitted -> Closed",
+      "openCase": "Otworz spraw?"
     }
   }
 }

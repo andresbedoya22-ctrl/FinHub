@@ -473,6 +473,10 @@
         "close": "Close",
         "note": "Note",
         "openFull": "Open full detail"
+      },
+      "type": {
+        "income": "Income",
+        "expense": "Expense"
       }
     },
     "newTransaction": {
@@ -520,6 +524,12 @@
           "label": "Note",
           "placeholder": "Optional...",
           "helper": "Add context for future reviews."
+        },
+        "direction": {
+          "label": "Type",
+          "income": "Income",
+          "expense": "Expense",
+          "helper": "Enter positive amount. Type controls sign in ledger."
         }
       }
     }
@@ -1536,6 +1546,15 @@
       "noSelection": "Select at least one subsidy to continue.",
       "contractStart": "Could not create the case for this contract.",
       "checkout": "Could not start checkout. Please try again."
+    },
+    "flow": {
+      "title": "How this flow works",
+      "eligibility": "Eligibility",
+      "result": "Result",
+      "checkout": "Checkout",
+      "authorization": "Authorization",
+      "documents": "Documents",
+      "final": "Final"
     }
   },
   "adminCases": {
@@ -1905,6 +1924,125 @@
         "changeProduct": "Change product",
         "nextStepCta": "Continue flow"
       }
+    }
+  },
+  "taxes": {
+    "title": "Taxes Pro",
+    "subtitle": "Personal income tax wizard for individuals (no ZZP flow).",
+    "progress": "Progress",
+    "stepOf": "Step {current} of {total}",
+    "actions": {
+      "start": "Start",
+      "back": "Back",
+      "continue": "Continue",
+      "finish": "Finish",
+      "saving": "Saving...",
+      "processing": "Processing...",
+      "refresh": "Reload",
+      "loading": "Loading..."
+    },
+    "errors": {
+      "title": "Error",
+      "load": "Could not load Taxes Pro case.",
+      "save": "Could not save taxes intake.",
+      "checkout": "Could not start checkout.",
+      "authorization": "Could not update authorization status."
+    },
+    "messages": {
+      "title": "Update",
+      "intakeSaved": "Intake saved and case checklist created.",
+      "authorizationSaved": "Authorization step updated."
+    },
+    "common": {
+      "yes": "Yes",
+      "no": "No"
+    },
+    "intro": {
+      "title": "Before we start",
+      "body": "We guide you through a step-by-step intake, document checklist, and authorization flow.",
+      "need1": "ID and contact details",
+      "need2": "Annual income statement (jaaropgave)",
+      "need3": "Mortgage annual statement if you own a home"
+    },
+    "profile": {
+      "title": "Profile and consent",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "phone": "Phone",
+      "consent": "I accept terms, privacy and contact authorization for this taxes case."
+    },
+    "fiscal": {
+      "title": "Tax year and household",
+      "year": "Tax year",
+      "hasPartner": "Do you have a fiscal partner?",
+      "hasChildren": "Do you have children?"
+    },
+    "housing": {
+      "title": "Housing and mortgage",
+      "owner": "Owner",
+      "tenant": "Tenant",
+      "mortgageInterestPaid": "Mortgage interest paid (year)",
+      "mortgageHint": "If unknown, continue and upload Jaaropgave hypotheek in documents."
+    },
+    "income": {
+      "title": "Employment income",
+      "upload": "Upload document",
+      "manual": "Enter manually",
+      "annualIncome": "Annual employment income",
+      "uploadInfoTitle": "Document upload mode",
+      "uploadInfoBody": "You can upload the jaaropgave and our team will extract values during review."
+    },
+    "other": {
+      "title": "Other income (optional)",
+      "hasBox3": "Include savings/investments (Box 3)",
+      "box3Amount": "Estimated Box 3 amount",
+      "todoTitle": "TODO - pending official scope",
+      "todoBody": "Box 3 detailed calculation is not automated yet. We only collect this for review."
+    },
+    "deductions": {
+      "title": "Deductions",
+      "review": "Review common deductions supported by current process",
+      "notes": "Notes for tax team"
+    },
+    "result": {
+      "title": "Result and next step",
+      "estimateTitle": "Preliminary estimate status",
+      "estimateBody": "Automatic refund/payable estimation is not fully implemented yet. FinHub team will review uploaded documents before final estimate.",
+      "missingData": "Missing mortgage statement: {needsMortgage}",
+      "cta": "I want FinHub to handle my declaration"
+    },
+    "checkout": {
+      "title": "Checkout",
+      "body": "Pay to continue with full case handling and tracking.",
+      "pay": "Go to payment",
+      "skipToAuthorization": "Continue to authorization step"
+    },
+    "authorization": {
+      "title": "Authorization (machtigingsregistratie)",
+      "officialTitle": "Official process (Belastingdienst / Logius)",
+      "officialBody": "Your intermediary requests registration, you receive a registration letter with form and/or activation code, and you return it to the intermediary for activation.",
+      "step1": "Intermediary starts registration request",
+      "step2": "You receive and return registration letter / code",
+      "step3": "After confirmation, authorization can be active for the selected tax year",
+      "activationCode": "Activation code (optional)",
+      "activationHint": "Only add code from official registration letter.",
+      "markWaiting": "Mark waiting for letter",
+      "markLetterReceived": "Mark letter received",
+      "markCodeCaptured": "Mark activation code captured",
+      "markActive": "Mark active (user confirmed)",
+      "currentStatus": "Current authorization status: {status}"
+    },
+    "documents": {
+      "title": "Documents",
+      "body": "Upload required documents. Status updates are reflected in your case.",
+      "noCase": "Save intake first to create a case."
+    },
+    "final": {
+      "title": "Case tracking",
+      "pipelineTitle": "Current pipeline",
+      "pipelineBody": "Draft -> Awaiting documents -> Ready for review -> Authorization pending -> Ready to submit -> Submitted -> Closed",
+      "openCase": "Open case"
     }
   }
 }

@@ -473,6 +473,10 @@
         "close": "Cerrar",
         "note": "Nota",
         "openFull": "Abrir detalle completo"
+      },
+      "type": {
+        "income": "Ingreso",
+        "expense": "Gasto"
       }
     },
     "newTransaction": {
@@ -520,6 +524,12 @@
           "label": "Nota",
           "placeholder": "Opcional...",
           "helper": "Agrega contexto para futuras revisiones."
+        },
+        "direction": {
+          "label": "Tipo",
+          "income": "Ingreso",
+          "expense": "Gasto",
+          "helper": "Ingresa monto positivo. El tipo define el signo en el ledger."
         }
       }
     }
@@ -1536,6 +1546,15 @@
       "noSelection": "Selecciona al menos un subsidio para continuar.",
       "contractStart": "No se pudo crear el caso para esta contratacion.",
       "checkout": "No se pudo iniciar el checkout. Intentalo de nuevo."
+    },
+    "flow": {
+      "title": "Como funciona este flujo",
+      "eligibility": "Elegibilidad",
+      "result": "Resultado",
+      "checkout": "Checkout",
+      "authorization": "Autorizacion",
+      "documents": "Documentos",
+      "final": "Final"
     }
   },
   "adminCases": {
@@ -1905,6 +1924,125 @@
         "changeProduct": "Cambiar producto",
         "nextStepCta": "Continuar flujo"
       }
+    }
+  },
+  "taxes": {
+    "title": "Taxes Pro",
+    "subtitle": "Wizard de impuestos para particulares (sin flujo ZZP).",
+    "progress": "Progreso",
+    "stepOf": "Paso {current} de {total}",
+    "actions": {
+      "start": "Empezar",
+      "back": "Atras",
+      "continue": "Continuar",
+      "finish": "Finalizar",
+      "saving": "Guardando...",
+      "processing": "Procesando...",
+      "refresh": "Recargar",
+      "loading": "Cargando..."
+    },
+    "errors": {
+      "title": "Error",
+      "load": "No se pudo cargar Taxes Pro.",
+      "save": "No se pudo guardar el intake de impuestos.",
+      "checkout": "No se pudo iniciar el checkout.",
+      "authorization": "No se pudo actualizar la autorizacion."
+    },
+    "messages": {
+      "title": "Actualizacion",
+      "intakeSaved": "Intake guardado y checklist creado.",
+      "authorizationSaved": "Paso de autorizacion actualizado."
+    },
+    "common": {
+      "yes": "Si",
+      "no": "No"
+    },
+    "intro": {
+      "title": "Antes de empezar",
+      "body": "Te guiamos paso a paso por intake, checklist documental y autorizacion.",
+      "need1": "Documento de identidad y contacto",
+      "need2": "Jaaropgave de ingresos",
+      "need3": "Jaaropgave de hipoteca si eres propietario"
+    },
+    "profile": {
+      "title": "Perfil y consentimiento",
+      "firstName": "Nombre",
+      "lastName": "Apellido",
+      "email": "Email",
+      "phone": "Telefono",
+      "consent": "Acepto terminos, privacidad y autorizacion de contacto para este caso fiscal."
+    },
+    "fiscal": {
+      "title": "Ano fiscal y hogar",
+      "year": "Ano fiscal",
+      "hasPartner": "Tienes pareja fiscal?",
+      "hasChildren": "Tienes hijos?"
+    },
+    "housing": {
+      "title": "Vivienda e hipoteca",
+      "owner": "Propietario",
+      "tenant": "Inquilino",
+      "mortgageInterestPaid": "Intereses hipotecarios pagados (anual)",
+      "mortgageHint": "Si no lo sabes, continua y sube Jaaropgave hypotheek en documentos."
+    },
+    "income": {
+      "title": "Ingresos laborales",
+      "upload": "Subir documento",
+      "manual": "Ingresar manual",
+      "annualIncome": "Ingreso anual laboral",
+      "uploadInfoTitle": "Modo carga de documentos",
+      "uploadInfoBody": "Puedes subir el jaaropgave y el equipo extrae los importes en revision."
+    },
+    "other": {
+      "title": "Otros ingresos (opcional)",
+      "hasBox3": "Incluir ahorros/inversiones (Box 3)",
+      "box3Amount": "Monto estimado Box 3",
+      "todoTitle": "TODO - alcance oficial pendiente",
+      "todoBody": "El calculo detallado de Box 3 aun no esta automatizado. Solo se recopila para revision."
+    },
+    "deductions": {
+      "title": "Deducciones",
+      "review": "Revisar deducciones comunes soportadas por el proceso actual",
+      "notes": "Notas para el equipo fiscal"
+    },
+    "result": {
+      "title": "Resultado y siguiente paso",
+      "estimateTitle": "Estado de estimacion",
+      "estimateBody": "La estimacion automatica de devolucion/pago aun no esta completamente implementada. El equipo revisara los documentos antes de la estimacion final.",
+      "missingData": "Falta estado hipotecario: {needsMortgage}",
+      "cta": "Quiero que FinHub haga mi declaracion"
+    },
+    "checkout": {
+      "title": "Checkout",
+      "body": "Realiza el pago para continuar con gestion y seguimiento completo del caso.",
+      "pay": "Ir al pago",
+      "skipToAuthorization": "Continuar a autorizacion"
+    },
+    "authorization": {
+      "title": "Autorizacion (machtigingsregistratie)",
+      "officialTitle": "Proceso oficial (Belastingdienst / Logius)",
+      "officialBody": "El intermediario solicita el registro, recibes una carta con formulario y/o codigo de activacion, y la devuelves al intermediario para activar.",
+      "step1": "El intermediario inicia la solicitud",
+      "step2": "Recibes y devuelves carta/codigo",
+      "step3": "Tras confirmacion, la autorizacion puede quedar activa para el ano fiscal seleccionado",
+      "activationCode": "Codigo de activacion (opcional)",
+      "activationHint": "Ingresa solo el codigo de la carta oficial.",
+      "markWaiting": "Marcar esperando carta",
+      "markLetterReceived": "Marcar carta recibida",
+      "markCodeCaptured": "Marcar codigo capturado",
+      "markActive": "Marcar activo (confirmado por usuario)",
+      "currentStatus": "Estado actual de autorizacion: {status}"
+    },
+    "documents": {
+      "title": "Documentos",
+      "body": "Sube los documentos requeridos. El estado se refleja en tu caso.",
+      "noCase": "Guarda el intake para crear un caso."
+    },
+    "final": {
+      "title": "Seguimiento de caso",
+      "pipelineTitle": "Pipeline actual",
+      "pipelineBody": "Draft -> Awaiting documents -> Ready for review -> Authorization pending -> Ready to submit -> Submitted -> Closed",
+      "openCase": "Abrir caso"
     }
   }
 }
