@@ -187,18 +187,18 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
         ],
       },
       {
-        title: shellT("section.operations"),
-        items: [
-          { href: "/app/documents", label: shellT("nav.documents"), icon: "doc" },
-          { href: "/app/cases", label: shellT("nav.cases"), icon: "case" },
-        ],
-      },
-      {
         title: "LeadGen",
         items: [
           { href: "/app/mortgage", label: "Mortgage", icon: "case" },
           { href: "/app/credit", label: "Credit", icon: "case" },
           { href: "/app/insurance", label: "Insurance", icon: "case" },
+        ],
+      },
+      {
+        title: shellT("section.operations"),
+        items: [
+          { href: "/app/documents", label: shellT("nav.documents"), icon: "doc" },
+          { href: "/app/cases", label: shellT("nav.cases"), icon: "case" },
         ],
       },
       {
@@ -381,7 +381,7 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
         {/* Sidebar */}
         <aside
           className={cx(
-            "sticky top-0 h-dvh border-r border-white/10 bg-white/5 backdrop-blur transition-[width] duration-200",
+            "sticky top-0 h-dvh overflow-hidden border-r border-white/10 bg-white/5 backdrop-blur transition-[width] duration-200 flex flex-col",
             collapsed ? "w-[72px]" : "w-[276px]",
           )}
         >
@@ -401,7 +401,7 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
             </button>
           </div>
 
-          <nav className="p-3 space-y-4">
+          <nav className="flex-1 overflow-y-auto p-3 space-y-4 pb-6">
             {navSections.map((sec) => (
               <div key={sec.title}>
                 {!collapsed && <div className="px-2 text-[11px] uppercase tracking-wider text-white/50">{sec.title}</div>}
@@ -590,7 +590,6 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
     </div>
   );
 }
-
 
 
 
