@@ -1,5 +1,5 @@
-import { LeadVerticalIntakeClient } from "@/features/leadgen/ui/LeadVerticalIntakeClient";
+import { InsuranceCatalogClient } from "@/features/leadgen/ui/InsuranceCatalogClient";
 
 export default function InsurancePage() {
-  return <LeadVerticalIntakeClient vertical="insurance" />;
+  return <InsuranceCatalogClient />;
 }

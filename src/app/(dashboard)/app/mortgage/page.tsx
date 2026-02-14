@@ -1,5 +1,5 @@
-import { LeadVerticalIntakeClient } from "@/features/leadgen/ui/LeadVerticalIntakeClient";
+import { MortgageCalculatorClient } from "@/features/leadgen/ui/MortgageCalculatorClient";
 
 export default function MortgagePage() {
-  return <LeadVerticalIntakeClient vertical="mortgage" />;
+  return <MortgageCalculatorClient />;
 }

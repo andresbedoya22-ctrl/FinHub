@@ -46,13 +46,6 @@ const STATUS_BAR: Record<BudgetStatus, string> = {
   risk: "bg-rose-400/80",
 };
 
-function currentMonth(): string {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, "0");
-  return `${year}-${month}`;
-}
-
 function isValidMonth(input: string | null): input is string {
   return Boolean(input && /^\d{4}-\d{2}$/.test(input));
 }
@@ -235,13 +228,13 @@ function SkeletonLine({ className }: { className?: string }) {
   return <div className={cn("h-3 rounded bg-white/10 animate-pulse", className)} />;
 }
 
-export default function FinancesOverviewClient() {
+export default function FinancesOverviewClient({ initialMonth }: { initialMonth: string }) {
   const t = useTranslations("finances.dashboard");
   const locale = useLocale();
   const searchParams = useSearchParams();
 
   const monthParam = searchParams.get("month");
-  const month = useMemo(() => (isValidMonth(monthParam) ? monthParam : currentMonth()), [monthParam]);
+  const month = useMemo(() => (isValidMonth(monthParam) ? monthParam : initialMonth), [monthParam, initialMonth]);
   const monthLabel = useMemo(() => toMonthLabel(locale, month), [locale, month]);
 
   const [state, setState] = useState<LoadState>("loading");
