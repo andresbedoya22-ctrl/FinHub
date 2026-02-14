@@ -1,5 +1,5 @@
 ﻿import {getRequestConfig} from "next-intl/server";
-import {cookies, headers} from "next/headers";
+import {cookies} from "next/headers";
 
 export const SUPPORTED_LOCALES = ["en", "es", "pl", "ro"] as const;
 export type Locale = (typeof SUPPORTED_LOCALES)[number];
@@ -7,18 +7,6 @@ export type Locale = (typeof SUPPORTED_LOCALES)[number];
 function normalizeLocale(v?: string | null): Locale | null {
   const raw = (v ?? "").toLowerCase().trim();
   return (SUPPORTED_LOCALES as readonly string[]).includes(raw) ? (raw as Locale) : null;
-}
-
-function resolveLocaleFromAcceptLanguage(al?: string | null): Locale | null {
-  if (!al) return null;
-  const parts = al.split(",").map((p) => p.trim());
-  for (const p of parts) {
-    const tag = p.split(";")[0]?.trim();       // "es-ES"
-    const base = tag?.split("-")[0]?.trim();   // "es"
-    const hit = normalizeLocale(base) ?? normalizeLocale(tag);
-    if (hit) return hit;
-  }
-  return null;
 }
 
 async function loadMessages(locale: Locale) {
@@ -35,18 +23,16 @@ async function loadMessages(locale: Locale) {
 }
 
 export async function getI18nRequestContext() {
-  // En Next 16 / Turbopack, cookies()/headers() pueden ser async en algunos workers.
+  // En Next 16 / Turbopack, cookies() puede ser async en algunos workers.
   const c = await cookies();
-  const h = await headers();
 
-    const fromCookie =
+  const fromCookie =
     normalizeLocale(c.get("fh_locale")?.value) ??
     normalizeLocale(c.get("locale")?.value) ??
     normalizeLocale(c.get("NEXT_LOCALE")?.value);
 
-  const fromHeader = resolveLocaleFromAcceptLanguage(h.get("accept-language"));
-
-  const locale: Locale = fromCookie ?? fromHeader ?? "en";
+  // Evita divergencias SSR/CSR: cookie como fuente de verdad para locale.
+  const locale: Locale = fromCookie ?? "en";
   const messages = await loadMessages(locale);
 
   return {
