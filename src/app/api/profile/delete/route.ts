@@ -1,5 +1,9 @@
-﻿import { NextResponse } from "next/server";
+import { randomUUID } from "crypto";
+import { NextResponse } from "next/server";
+
+import { createSupabaseAdminClient } from "@/lib/supabaseAdminClient";
 import { createSupabaseServerClient } from "@/lib/supabaseServerClient";
+import { resolveUserTenantId } from "@/features/tenant/tenantService";
 
 type SupabaseLike = {
   auth: {
@@ -42,6 +46,7 @@ export async function POST(req: Request) {
     }
 
     const supabase = (await createSupabaseServerClient()) as unknown as SupabaseLike;
+    const admin = createSupabaseAdminClient();
     const { data, error } = await supabase.auth.getUser();
 
     if (error || !data.user) {
@@ -49,18 +54,53 @@ export async function POST(req: Request) {
     }
 
     const userId = data.user.id;
+    const tenantId = await resolveUserTenantId(supabase as never, userId).catch(() => null);
+    const correlationId = randomUUID();
+
+    let requestId: string | null = null;
+    if (tenantId) {
+      const reqInsert = await admin
+        .from("gdpr_requests")
+        .insert({
+          tenant_id: tenantId,
+          user_id: userId,
+          request_type: "delete",
+          status: "processing",
+          correlation_id: correlationId,
+        })
+        .select("id")
+        .maybeSingle();
+      if (!reqInsert.error && reqInsert.data?.id) requestId = String(reqInsert.data.id);
+    }
 
     const soft = await safeUpdateById(supabase, "profiles", userId, { deleted_at: new Date().toISOString() });
-
     const delDocs = await safeDeleteByUserId(supabase, "documents", userId);
     const delCases = await safeDeleteByUserId(supabase, "cases", userId);
     const delExtr = await safeDeleteByUserId(supabase, "document_extractions", userId);
+
+    if (requestId) {
+      await admin
+        .from("gdpr_requests")
+        .update({
+          status: "completed",
+          completed_at: new Date().toISOString(),
+          result_meta: {
+            profiles_soft_delete: soft.ok,
+            documents_delete: delDocs.ok,
+            cases_delete: delCases.ok,
+            extractions_delete: delExtr.ok,
+          },
+        })
+        .eq("id", requestId);
+    }
 
     await supabase.auth.signOut();
 
     return NextResponse.json({
       ok: true,
-      note: "Beta DSAR delete (best-effort). Some operations may fail depending on schema/columns.",
+      requestId,
+      correlationId,
+      note: "GDPR delete (best-effort). Some operations may fail depending on schema/columns.",
       results: {
         profiles_soft_delete: soft,
         documents_delete: delDocs,

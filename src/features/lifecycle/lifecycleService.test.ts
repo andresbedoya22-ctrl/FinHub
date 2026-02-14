@@ -20,6 +20,16 @@ function makeMockAdmin(s: Scenario) {
         };
       }
 
+      if (table === "tenant_members") {
+        return {
+          select() { return this; },
+          eq() { return this; },
+          order() { return this; },
+          limit() { return this; },
+          async maybeSingle() { return { error: null, data: null }; },
+        };
+      }
+
       if (table === "lifecycle_events") {
         return {
           insert() {

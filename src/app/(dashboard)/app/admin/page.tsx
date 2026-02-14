@@ -27,6 +27,9 @@ export default function AdminPage() {
         <Tile href="/app/admin/cases" title="Cases" desc="Listado de casos (ultimos 200 por updated_at)." />
         <Tile href="/app/admin/documents" title="Documents" desc="Revisar documentos subidos y su estado." />
         <Tile href="/app/admin/lifecycle" title="Lifecycle" desc="Campanas, throttling y metricas basicas." />
+        <Tile href="/app/admin/tenants" title="Tenants" desc="Miembros, roles y estado multi-tenant." />
+        <Tile href="/app/admin/gdpr" title="GDPR Ops" desc="Retention y cumplimiento operativo." />
+        <Tile href="/app/admin/observability" title="Business Observability" desc="KPIs por tenant (30 dias)." />
       </div>
     </div>
   );

@@ -189,6 +189,18 @@ Gaps and follow-ups
 Out of scope (post-F15)
 - Canon contains F16 (mortgages) and beyond in .tmp/canon-operativo.txt; this audit stops at F15 per request. Evidence: .tmp/canon-operativo.txt lines around F16 (extracted from docs/canon/CANON_OPERATIVO.md).
 
+## 2026-02-14 delta (post-audit snapshot)
+
+H1/H2/H3 - Sell-ready:
+- Status: DONE v1 (new evidence in code/migrations).
+- Evidence:
+  - `supabase/migrations/20260214123000_h1_h2_h3_sell_ready_v1.sql`
+  - Admin APIs: tenants, observability, GDPR retention run
+  - Profile GDPR routes updated with request audit ids
+  - Admin UI pages: `/app/admin/tenants`, `/app/admin/observability`, `/app/admin/gdpr`
+- Remaining gaps:
+  - Tenant SSO/SAML and branded theming per tenant.
+  - Automated scheduled retention jobs (currently manual admin trigger).
 
 
 
