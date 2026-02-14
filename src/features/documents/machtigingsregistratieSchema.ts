@@ -1,19 +1,21 @@
-﻿export const MACHTIGINGSREGISTRATIE_SCHEMA_VERSION = 1 as const;
+﻿import { normalizeActiveringscode } from "../authorization";
+
+export const MACHTIGINGSREGISTRATIE_SCHEMA_VERSION = 1 as const;
 
 export type MachtigingsregistratieFieldsV1 = {
-  // REQUIRED para verify
+  // REQUIRED for verify
   activeringscode?: string;
 
-  // Recomendados (pueden venir en carta / flujo de intrekking)
+  // Recommended (may come from letter / revoke flow)
   briefkenmerk?: string;
   intrekkingscode?: string;
 
-  // Datos de referencia (opcionales, dependen del documento)
+  // Reference data (optional)
   naam?: string;
   geboortedatum?: string; // YYYY-MM-DD
-  bsn?: string; // 9 dígitos
+  bsn?: string; // 9 digits
 
-  // Permite extensiones sin romper el contrato
+  // Allow extensions without breaking contract
   extra?: Record<string, unknown>;
 };
 
@@ -38,9 +40,9 @@ function asTrimmedString(v: unknown): string | undefined {
 }
 
 function normalizeCode(v: unknown): string | undefined {
-  const s = asTrimmedString(v);
-  if (!s) return undefined;
-  return s.replace(/[\s-]+/g, "").toUpperCase();
+  if (typeof v !== "string") return undefined;
+  const normalized = normalizeActiveringscode(v);
+  return normalized || undefined;
 }
 
 function normalizeDate(v: unknown): string | undefined {
@@ -81,12 +83,12 @@ export function validateForSaveMachtigingsregistratieFieldsV1(
 ):
   | { ok: true; value: MachtigingsregistratieFieldsV1 }
   | { ok: false; error: string } {
-  if (!isPlainObject(input)) return { ok: false, error: "fields debe ser un objeto JSON (no array/null)." };
+  if (!isPlainObject(input)) return { ok: false, error: "fields must be a JSON object (not array/null)." };
 
   const obj = input as Record<string, unknown>;
 
   for (const k of Object.keys(obj)) {
-    if (!ALLOWED_KEYS.has(k)) return { ok: false, error: `Campo no permitido: "${k}". Usa fields.extra para extensiones.` };
+    if (!ALLOWED_KEYS.has(k)) return { ok: false, error: `Field not allowed: "${k}". Use fields.extra for extensions.` };
   }
 
   const out: MachtigingsregistratieFieldsV1 = {};
@@ -100,7 +102,7 @@ export function validateForSaveMachtigingsregistratieFieldsV1(
 
   if (typeof obj["extra"] !== "undefined") {
     const extra = obj["extra"];
-    if (!isPlainObject(extra)) return { ok: false, error: "fields.extra debe ser un objeto." };
+    if (!isPlainObject(extra)) return { ok: false, error: "fields.extra must be an object." };
     out.extra = extra;
   }
 
@@ -117,7 +119,7 @@ export function validateForVerifyMachtigingsregistratieFieldsV1(
 
   const v = saved.value;
   const act = (v.activeringscode ?? "").toString().trim();
-  if (!act || act.length < 6) return { ok: false, error: "Falta activeringscode (mín. 6 caracteres tras normalizar)." };
+  if (!act || act.length < 6) return { ok: false, error: "Missing activeringscode (min. 6 chars after normalize)." };
 
   return { ok: true, value: v };
 }

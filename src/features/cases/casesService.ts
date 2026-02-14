@@ -15,6 +15,7 @@ import type {
 } from "./casesTypes";
 import { defaultTitleForCaseType, initialStepKeyForType } from "./casesConfig";
 import { ensureStatusTransitionAuthorization } from "./authorization";
+import { markAuthorizationReceivedFromConsent } from "../authorization";
 
 const CASE_TYPES: ReadonlySet<CaseType> = new Set(["toeslagen", "taxes", "mortgage", "credit", "insurance"]);
 const CASE_STATUSES: ReadonlySet<CaseStatus> = new Set([
@@ -215,6 +216,19 @@ function isMissingAuthorizationStatusColumn(error: unknown): boolean {
   const msg = "message" in error ? String((error as { message?: unknown }).message ?? "") : "";
   const lower = msg.toLowerCase();
   return lower.includes("authorization_status") && lower.includes("does not exist");
+}
+
+function isMissingConsentsCaseColumns(error: unknown): boolean {
+  if (!error || typeof error !== "object") return false;
+  const msg = "message" in error ? String((error as { message?: unknown }).message ?? "") : "";
+  const lower = msg.toLowerCase();
+  return lower.includes("consents.case_id does not exist")
+    || lower.includes("column consents.case_id does not exist")
+    || lower.includes("column \"case_id\" does not exist")
+    || lower.includes("column \"consent_type\" does not exist")
+    || lower.includes("column \"accepted_at\" does not exist")
+    || lower.includes("column \"locale\" does not exist")
+    || lower.includes("column \"version\" does not exist");
 }
 
 function withDefaultAuthorizationStatus(rows: Array<Record<string, unknown>>): CaseRow[] {
@@ -421,14 +435,23 @@ export async function getCaseDetail(supabase: SupabaseClient, id: string): Promi
 
   if (docsErr) throw new Error(docsErr.message);
 
-  const { data: consentsRaw, error: consentsErr } = await supabase
+  let consentsRaw: unknown[] = [];
+  const consentsQuery = await supabase
     .from("consents")
     .select("id,case_id,consent_type,granted,accepted_at,locale,version,source,created_at,updated_at")
     .eq("case_id", id)
     .eq("granted", true)
     .order("created_at", { ascending: false });
 
-  if (consentsErr) throw new Error(consentsErr.message);
+  if (consentsQuery.error) {
+    if (!isMissingConsentsCaseColumns(consentsQuery.error)) {
+      throw new Error(consentsQuery.error.message);
+    }
+    // Legacy schema without case-level consent columns.
+    consentsRaw = [];
+  } else {
+    consentsRaw = consentsQuery.data ?? [];
+  }
 
   return {
     ...toCaseEntity(caseRow as CaseRow),
@@ -548,7 +571,13 @@ async function hasServiceAuthorizationConsent(supabase: SupabaseClient, caseId: 
     .eq("granted", true)
     .limit(1);
 
-  if (error) throw new Error(error.message);
+  if (error) {
+    if (!isMissingConsentsCaseColumns(error)) throw new Error(error.message);
+    const caseRow = (await selectCasesCompat(supabase, { id: caseId, single: true })) as CaseRow | null;
+    if (!caseRow) return false;
+    const status = String(caseRow.authorization_status ?? "not_started");
+    return status === "received" || status === "verified";
+  }
   return (data ?? []).length > 0;
 }
 
@@ -562,7 +591,7 @@ export async function updateCase(
 
   const nextStatus = input.status ?? (existing.status as CaseStatus);
   const hasConsent = await hasServiceAuthorizationConsent(supabase, caseId);
-  ensureStatusTransitionAuthorization(nextStatus, hasConsent);
+  ensureStatusTransitionAuthorization(nextStatus, hasConsent, existing.type as CaseType);
 
   const now = new Date().toISOString();
   const update: Record<string, unknown> = { updated_at: now };
@@ -590,8 +619,7 @@ export async function createCaseConsent(
   input: CreateCaseConsentInput
 ): Promise<CaseConsentEntry> {
   const acceptedAt = input.granted ? new Date().toISOString() : null;
-
-  const { data, error } = await supabase
+  const primaryInsert = await supabase
     .from("consents")
     .insert({
       user_id: userId,
@@ -607,14 +635,40 @@ export async function createCaseConsent(
     .select("id,case_id,consent_type,granted,accepted_at,locale,version,source,created_at,updated_at")
     .single();
 
+  let data = primaryInsert.data;
+  let error = primaryInsert.error;
+
+  if ((error || !data) && error && isMissingConsentsCaseColumns(error)) {
+    const legacyInsert = await supabase
+      .from("consents")
+      .insert({
+        user_id: userId,
+        type: "in_app_offers",
+        granted: input.granted,
+        source: input.source ?? "case_ui",
+      })
+      .select("id,granted,source,created_at,updated_at")
+      .single();
+
+    if (legacyInsert.error || !legacyInsert.data) {
+      throw new Error(legacyInsert.error?.message ?? "Consent insert failed");
+    }
+
+    data = {
+      ...(legacyInsert.data as Record<string, unknown>),
+      case_id: caseId,
+      consent_type: input.consentType,
+      accepted_at: acceptedAt,
+      locale: input.locale ?? null,
+      version: input.version ?? 1,
+    } as unknown as ConsentRow;
+    error = null;
+  }
+
   if (error || !data) throw new Error(error?.message ?? "Consent insert failed");
 
   if (input.consentType === "service_authorization" && input.granted) {
-    const upd = await supabase
-      .from("cases")
-      .update({ authorization_status: "received", updated_at: new Date().toISOString() })
-      .eq("id", caseId);
-    if (upd.error) throw new Error(upd.error.message);
+    await markAuthorizationReceivedFromConsent(supabase, caseId);
   }
 
   return toConsent(data as ConsentRow);

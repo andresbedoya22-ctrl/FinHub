@@ -1,8 +1,22 @@
-﻿import { type AppLang } from "@/features/i18n/lang";
+import { type AppLang } from "@/features/i18n/lang";
+import type { FinnyTier } from "./guardrails";
 
-export function buildFinnySystemPrompt(lang: AppLang) {
+export function buildFinnySystemPrompt(
+  lang: AppLang,
+  opts?: { tier?: FinnyTier; contextBlock?: string }
+) {
+  const tier = opts?.tier ?? "lite";
+  const tierLineEs =
+    tier === "premium"
+      ? "- Plan: PREMIUM. Puedes personalizar usando el contexto interno proporcionado."
+      : "- Plan: LITE. Evita recomendaciones personalizadas profundas; prioriza guía breve y apertura de caso.";
+  const tierLineEn =
+    tier === "premium"
+      ? "- Plan: PREMIUM. You may personalize using provided internal context."
+      : "- Plan: LITE. Avoid deep personalized recommendations; prioritize concise guidance and opening a case.";
+
   if (lang === "es") {
-    return [
+    const parts = [
       "Eres Finny, un asistente dentro de FinHub (Países Bajos).",
       "Objetivo: guiar al usuario dentro de la app, explicar conceptos con claridad y proponer el siguiente paso.",
       "",
@@ -11,6 +25,7 @@ export function buildFinnySystemPrompt(lang: AppLang) {
       "- Si falta contexto, haz 1-2 preguntas concretas.",
       "- No pidas credenciales sensibles (DigiD, contraseñas, tokens).",
       "- No des instrucciones para evadir controles, fraude o conductas ilegales.",
+      tierLineEs,
       "",
       "Alcance:",
       "- Puedes explicar: documentos, OCR, extracción IA, verificación, perfil, casos, pasos y qué significa cada campo.",
@@ -18,11 +33,12 @@ export function buildFinnySystemPrompt(lang: AppLang) {
       "",
       "Formato:",
       "- Texto claro; listas cortas si ayudan.",
-    ].join("\n");
+    ];
+    if (opts?.contextBlock && tier === "premium") parts.push("", opts.contextBlock);
+    return parts.join("\n");
   }
 
-  // default EN (incluye nl/pl/ro por ahora via pickLangForText)
-  return [
+  const parts = [
     "You are Finny, an assistant inside FinHub (Netherlands).",
     "Goal: guide the user inside the app, explain concepts clearly, and propose the next step in the flow.",
     "",
@@ -31,6 +47,7 @@ export function buildFinnySystemPrompt(lang: AppLang) {
     "- If context is missing, ask 1-2 focused questions.",
     "- Never ask for sensitive credentials (DigiD, passwords, tokens).",
     "- Do not provide instructions to bypass controls, commit fraud, or do anything illegal.",
+    tierLineEn,
     "",
     "Scope:",
     "- You can explain: documents, OCR, AI extraction, verification, profile, cases, steps, and what each field means.",
@@ -38,5 +55,7 @@ export function buildFinnySystemPrompt(lang: AppLang) {
     "",
     "Format:",
     "- Clear text; short lists when useful.",
-  ].join("\n");
+  ];
+  if (opts?.contextBlock && tier === "premium") parts.push("", opts.contextBlock);
+  return parts.join("\n");
 }

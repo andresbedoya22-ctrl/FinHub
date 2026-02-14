@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
+
 import { createSupabaseServerClient } from "@/lib/supabaseServerClient";
 import { trackProductRoute } from "@/features/observability/productTelemetry";
 import { checkRateLimit } from "@/request-guards";
 import { mapSupabaseAuthError } from "@/features/auth/authErrors";
+import { emitLifecycleEvent } from "@/features/lifecycle/lifecycleService";
 
 const __FINHUB_TELEMETRY_ROUTE = "/api/auth/register";
 const __FINHUB_TELEMETRY_PAIR = {
@@ -13,7 +15,6 @@ const __FINHUB_TELEMETRY_PAIR = {
 export async function POST(req: Request) {
   const __t0 = Date.now();
 
-  // Rate limit: 6 / 10 min por IP
   const rl = checkRateLimit(req, {
     keyPrefix: "auth:register",
     limit: 6,
@@ -58,8 +59,15 @@ export async function POST(req: Request) {
       );
     }
 
-    // Si tu proyecto requiere confirmación por email, puede no haber sesión todavía.
     const needsVerify = !data.session;
+    if (data.user?.id) {
+      void emitLifecycleEvent({
+        userId: data.user.id,
+        campaignKey: "welcome",
+        eventName: "auth.registered",
+        payload: { needsVerify },
+      });
+    }
 
     return trackProductRoute(
       __FINHUB_TELEMETRY_PAIR,

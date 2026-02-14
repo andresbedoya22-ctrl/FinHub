@@ -1407,7 +1407,18 @@
       "hasBasicInsurance": "¿Tienes seguro médico básico NL?",
       "worksOrStudies": "¿Trabajas o estudias?",
       "partnerWorksOrStudies": "¿Tu pareja trabaja o estudia?",
-      "childcareType": "Tipo de cuidado infantil"
+      "childcareType": "Tipo de cuidado infantil",
+      "livesInNetherlands": "?Vives en los Pa?ses Bajos?",
+      "registeredAtAddress": "?Est?s empadronado en tu direcci?n de vivienda?",
+      "hasDutchNationalityOrValidPermit": "?Tienes nacionalidad neerlandesa o permiso de residencia v?lido?",
+      "assetsHousehold": "Patrimonio estimado del hogar (1 de enero)",
+      "highestCoResidentAssets": "Mayor patrimonio de conviviente (1 de enero, para alquiler)",
+      "rentsIndependentHome": "?Alquilas una vivienda independiente?",
+      "hasLeaseContract": "?Tienes contrato de alquiler a tu nombre?",
+      "paysRentByBankTransfer": "?Pagas el alquiler por transferencia bancaria?",
+      "receivesChildBenefit": "?Recibes prestaci?n por hijo (kinderbijslag)?",
+      "childLivesAtRegisteredAddress": "?Tu hijo vive en tu direcci?n registrada?",
+      "usesRegisteredChildcareProvider": "?La guarder?a es de un proveedor registrado?"
     },
     "childcareTypes": {
       "dagopvang": "Guardería de día",
@@ -1416,7 +1427,11 @@
     },
     "actions": {
       "check": "Comprobar elegibilidad",
-      "loginCta": "Saltar login por ahora (demo)"
+      "loginCta": "Saltar login por ahora (demo)",
+      "login": "Iniciar sesion",
+      "startEligible": "Iniciar contratacion de subsidios elegibles",
+      "starting": "Iniciando...",
+      "reset": "Reiniciar formulario"
     },
     "result": {
       "title": "Subsidios potenciales y siguiente paso",
@@ -1439,6 +1454,94 @@
       "childcare_invoice": "Factura de guardería",
       "work_or_study_proof": "Prueba de trabajo o estudios",
       "household_composition": "Extracto composición del hogar"
+    },
+    "errors": {
+      "title": "Error de contratacion",
+      "noSelection": "Selecciona al menos un subsidio para continuar.",
+      "contractStart": "No se pudo crear el caso para esta contratacion.",
+      "checkout": "No se pudo iniciar el checkout. Intentalo de nuevo."
+    }
+  },
+  "adminCases": {
+    "title": "Admin - Casos",
+    "subtitle": "Cola operativa con filtros por estado, tipo, autorizacion y SLA.",
+    "summary": {
+      "total": "Total casos",
+      "overdue": "SLA vencido",
+      "pendingAuthorization": "Autorizacion pendiente"
+    },
+    "filters": {
+      "searchPlaceholder": "Buscar id/titulo",
+      "allStatus": "todos los estados",
+      "allType": "todos los tipos",
+      "allAuthorization": "todas las autorizaciones",
+      "allSla": "todo SLA"
+    },
+    "actions": {
+      "refresh": "Actualizar",
+      "applyFilters": "Aplicar filtros"
+    },
+    "loading": {
+      "title": "Cargando",
+      "body": "Cargando casos admin...",
+      "detailBody": "Cargando detalle del caso..."
+    },
+    "errors": {
+      "title": "Error",
+      "load": "No se pudieron cargar los casos admin",
+      "loadDetail": "No se pudo cargar el detalle del caso",
+      "updateTask": "No se pudo actualizar la tarea",
+      "saveNote": "No se pudo guardar la nota"
+    },
+    "table": {
+      "title": "Titulo",
+      "type": "Tipo",
+      "status": "Estado",
+      "authorization": "Autorizacion",
+      "sla": "SLA",
+      "updated": "Actualizado",
+      "open": "Abrir",
+      "view": "Ver"
+    },
+    "detail": {
+      "title": "Admin - Detalle de caso",
+      "subtitle": "Operacion del caso",
+      "back": "Volver",
+      "summary": {
+        "status": "Estado",
+        "step": "Paso",
+        "authorization": "Autorizacion",
+        "type": "Tipo",
+        "tasksDone": "Tareas hechas",
+        "validatedDocs": "Docs validados"
+      },
+      "tasks": {
+        "title": "Tareas",
+        "emptyTitle": "Sin tareas",
+        "emptyBody": "Este caso todavia no tiene tareas.",
+        "status": "Estado",
+        "updated": "Actualizado",
+        "reopen": "Reabrir",
+        "markDone": "Marcar hecha"
+      },
+      "documents": {
+        "title": "Documentos validados",
+        "emptyTitle": "Sin documentos validados",
+        "emptyBody": "En revision admin solo se muestran documentos validados.",
+        "file": "Archivo",
+        "type": "Tipo",
+        "validatedAt": "Validado en",
+        "status": "Estado"
+      },
+      "notes": {
+        "title": "Notas internas",
+        "placeholder": "Escribe una nota interna...",
+        "saving": "Guardando...",
+        "add": "Agregar nota",
+        "emptyTitle": "Sin notas",
+        "emptyBody": "Aun no hay notas internas.",
+        "by": "por"
+      }
     }
   }
 }

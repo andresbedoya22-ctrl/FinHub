@@ -181,13 +181,24 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
       },
       {
         title: shellT("section.subsidies"),
-        items: [{ href: "/app/subsidies", label: shellT("nav.subsidies"), icon: "benefit" }],
+        items: [
+          { href: "/app/subsidies", label: shellT("nav.subsidies"), icon: "benefit" },
+          { href: "/app/taxes", label: "Taxes Pro", icon: "money" },
+        ],
       },
       {
         title: shellT("section.operations"),
         items: [
           { href: "/app/documents", label: shellT("nav.documents"), icon: "doc" },
           { href: "/app/cases", label: shellT("nav.cases"), icon: "case" },
+        ],
+      },
+      {
+        title: "LeadGen",
+        items: [
+          { href: "/app/mortgage", label: "Mortgage", icon: "case" },
+          { href: "/app/credit", label: "Credit", icon: "case" },
+          { href: "/app/insurance", label: "Insurance", icon: "case" },
         ],
       },
       {
@@ -226,6 +237,10 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
       { id: "nav-finances", kind: "nav", href: "/app/finances", label: shellT("cmdk.goToFinances"), hint: "/app/finances" },
       { id: "nav-tx", kind: "nav", href: "/app/finances/transactions", label: shellT("cmdk.goToTransactions"), hint: "/app/finances/transactions" },
       { id: "nav-subsidies", kind: "nav", href: "/app/subsidies", label: shellT("cmdk.goToSubsidies"), hint: "/app/subsidies" },
+      { id: "nav-taxes", kind: "nav", href: "/app/taxes", label: "Go to Taxes Pro", hint: "/app/taxes" },
+      { id: "nav-mortgage", kind: "nav", href: "/app/mortgage", label: "Go to Mortgage", hint: "/app/mortgage" },
+      { id: "nav-credit", kind: "nav", href: "/app/credit", label: "Go to Credit", hint: "/app/credit" },
+      { id: "nav-insurance", kind: "nav", href: "/app/insurance", label: "Go to Insurance", hint: "/app/insurance" },
       { id: "nav-docs", kind: "nav", href: "/app/documents", label: shellT("cmdk.goToDocuments"), hint: "/app/documents" },
       { id: "nav-cases", kind: "nav", href: "/app/cases", label: shellT("cmdk.goToCases"), hint: "/app/cases" },
       { id: "nav-profile", kind: "nav", href: "/app/profile", label: shellT("cmdk.goToProfile"), hint: "/app/profile" },
@@ -575,7 +590,6 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
     </div>
   );
 }
-
 
 
 

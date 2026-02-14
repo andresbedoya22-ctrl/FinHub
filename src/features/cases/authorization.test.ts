@@ -3,20 +3,25 @@ import { ensureStatusTransitionAuthorization, requiresServiceAuthorization } fro
 import { parseCreateCaseConsentInput, parseUpdateCaseInput } from "./casesService";
 
 describe("cases authorization guards", () => {
-  it("requires consent for ready_for_review and submitted", () => {
-    expect(requiresServiceAuthorization("ready_for_review")).toBe(true);
-    expect(requiresServiceAuthorization("submitted")).toBe(true);
-    expect(requiresServiceAuthorization("created")).toBe(false);
+  it("requires consent for review statuses in toeslagen/taxes", () => {
+    expect(requiresServiceAuthorization("ready_for_review", "toeslagen")).toBe(true);
+    expect(requiresServiceAuthorization("submitted", "taxes")).toBe(true);
+    expect(requiresServiceAuthorization("ready_for_review", "mortgage")).toBe(false);
+    expect(requiresServiceAuthorization("created", "toeslagen")).toBe(false);
   });
 
   it("throws when moving to review without consent", () => {
-    expect(() => ensureStatusTransitionAuthorization("ready_for_review", false)).toThrow(
+    expect(() => ensureStatusTransitionAuthorization("ready_for_review", false, "toeslagen")).toThrow(
       /consent required/i
     );
   });
 
   it("allows review transition with consent", () => {
-    expect(() => ensureStatusTransitionAuthorization("ready_for_review", true)).not.toThrow();
+    expect(() => ensureStatusTransitionAuthorization("ready_for_review", true, "taxes")).not.toThrow();
+  });
+
+  it("does not block non-authorization case types", () => {
+    expect(() => ensureStatusTransitionAuthorization("ready_for_review", false, "credit")).not.toThrow();
   });
 
   it("parses update case payload", () => {
