@@ -25,6 +25,7 @@ import { trackProductEvent } from "@/features/observability/productTelemetry";
 
 type WizardStep = "buyers" | "buyers_data" | "lead_gate" | "result" | "done";
 type TimelineValue = "0_3" | "3_6" | "6_12" | "12_plus";
+export const MORTGAGE_BUYER_OPTIONS = [1, 2, 3, 4] as const;
 
 type MortgageLeadContact = {
   firstName: string;
@@ -57,6 +58,16 @@ function isValidEmail(email: string): boolean {
 
 function isValidPhone(phone: string): boolean {
   return /^[+()\-\s\d]{7,}$/.test(phone.trim());
+}
+
+export function validateMortgageLeadGateContact(input: MortgageLeadContact): Partial<Record<keyof MortgageLeadContact, string>> {
+  const nextErrors: Partial<Record<keyof MortgageLeadContact, string>> = {};
+  if (input.firstName.trim().length < 2) nextErrors.firstName = "firstName";
+  if (input.lastName.trim().length < 2) nextErrors.lastName = "lastName";
+  if (!isValidEmail(input.email)) nextErrors.email = "email";
+  if (!isValidPhone(input.phone)) nextErrors.phone = "phone";
+  if (!input.consent) nextErrors.consent = "consent";
+  return nextErrors;
 }
 
 export function MortgageCalculatorClient() {
@@ -147,12 +158,11 @@ export function MortgageCalculatorClient() {
   function validateGateContact(): boolean {
     if (identity.loggedIn) return true;
 
+    const baseErrors = validateMortgageLeadGateContact(contact);
     const nextErrors: Partial<Record<keyof MortgageLeadContact, string>> = {};
-    if (contact.firstName.trim().length < 2) nextErrors.firstName = validationT("firstName");
-    if (contact.lastName.trim().length < 2) nextErrors.lastName = validationT("lastName");
-    if (!isValidEmail(contact.email)) nextErrors.email = validationT("email");
-    if (!isValidPhone(contact.phone)) nextErrors.phone = validationT("phone");
-    if (!contact.consent) nextErrors.consent = validationT("consent");
+    for (const [k, code] of Object.entries(baseErrors)) {
+      nextErrors[k as keyof MortgageLeadContact] = validationT(code as "firstName" | "lastName" | "email" | "phone" | "consent");
+    }
 
     setContactErrors(nextErrors);
     return Object.keys(nextErrors).length === 0;
@@ -247,7 +257,7 @@ export function MortgageCalculatorClient() {
         <Card className="space-y-4">
           <div className="text-sm font-semibold">{t("buyers.question")}</div>
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-            {[1, 2, 3, 4].map((count) => (
+            {MORTGAGE_BUYER_OPTIONS.map((count) => (
               <button
                 key={count}
                 type="button"
