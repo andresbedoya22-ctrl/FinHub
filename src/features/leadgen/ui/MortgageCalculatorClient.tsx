@@ -26,6 +26,7 @@ import { trackProductEvent } from "@/features/observability/productTelemetry";
 type WizardStep = "buyers" | "buyers_data" | "lead_gate" | "result" | "done";
 type TimelineValue = "0_3" | "3_6" | "6_12" | "12_plus";
 export const MORTGAGE_BUYER_OPTIONS = [1, 2, 3, 4] as const;
+export const INITIAL_MORTGAGE_STEP: WizardStep = "buyers";
 
 type MortgageLeadContact = {
   firstName: string;
@@ -70,6 +71,10 @@ export function validateMortgageLeadGateContact(input: MortgageLeadContact): Par
   return nextErrors;
 }
 
+export function canProceedFromMortgageStep1(input: { buyersCountTouched: boolean; buyersCount: number }): boolean {
+  return input.buyersCountTouched && Number.isInteger(input.buyersCount) && input.buyersCount >= 1 && input.buyersCount <= 4;
+}
+
 export function MortgageCalculatorClient() {
   const t = useTranslations("leadgen.mortgage");
   const common = useTranslations("leadgen.common");
@@ -77,8 +82,9 @@ export function MortgageCalculatorClient() {
   const locale = useLocale();
   const identity = useLeadIdentity();
 
-  const [step, setStep] = useState<WizardStep>("buyers");
+  const [step, setStep] = useState<WizardStep>(INITIAL_MORTGAGE_STEP);
   const [buyersCount, setBuyersCount] = useState(1);
+  const [buyersCountTouched, setBuyersCountTouched] = useState(false);
   const [activeBuyerIdx, setActiveBuyerIdx] = useState(0);
   const [buyers, setBuyers] = useState<MortgageBuyerInput[]>([buildEmptyBuyer()]);
   const [hasOwnFunds, setHasOwnFunds] = useState(true);
@@ -262,6 +268,7 @@ export function MortgageCalculatorClient() {
                 key={count}
                 type="button"
                 onClick={() => {
+                  setBuyersCountTouched(true);
                   setBuyersCount(count);
                   ensureBuyerRows(count);
                 }}
@@ -275,6 +282,7 @@ export function MortgageCalculatorClient() {
           <div className="flex items-center justify-end">
             <Button
               onClick={() => {
+                if (!canProceedFromMortgageStep1({ buyersCountTouched, buyersCount })) return;
                 setActiveBuyerIdx(0);
                 setStep("buyers_data");
               }}
