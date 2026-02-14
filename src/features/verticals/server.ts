@@ -6,11 +6,20 @@ export type LeadgenVertical = "mortgage" | "credit" | "insurance";
 export type Vertical = "taxes" | LeadgenVertical;
 
 export type TaxesIntakeInput = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  consent: boolean;
   fiscalYear: number;
   hasPartner: boolean;
-  hasFreelanceIncome: boolean;
-  hasOwnHome: boolean;
-  hasForeignIncome: boolean;
+  hasChildren: boolean;
+  homeOwnership: "owner" | "tenant";
+  mortgageInterestPaid: number | null;
+  employmentIncomeSource: "upload" | "manual";
+  annualEmploymentIncome: number | null;
+  hasBox3: boolean;
+  box3Amount: number | null;
   wantsTaxCreditsReview: boolean;
   notes: string | null;
 };
@@ -49,19 +58,52 @@ export function parseTaxesIntakeInput(input: unknown): TaxesIntakeInput {
     throw new Error("Invalid fiscalYear");
   }
 
+  const firstName = typeof raw.firstName === "string" ? raw.firstName.trim().slice(0, 80) : "";
+  const lastName = typeof raw.lastName === "string" ? raw.lastName.trim().slice(0, 80) : "";
+  const email = typeof raw.email === "string" ? raw.email.trim().toLowerCase().slice(0, 120) : "";
+  const phone = typeof raw.phone === "string" ? raw.phone.trim().slice(0, 40) : "";
+  if (firstName.length < 2) throw new Error("Invalid firstName");
+  if (lastName.length < 2) throw new Error("Invalid lastName");
+  if (!email.includes("@")) throw new Error("Invalid email");
+  if (phone.length < 7) throw new Error("Invalid phone");
+
   const hasPartner = raw.hasPartner === true;
-  const hasFreelanceIncome = raw.hasFreelanceIncome === true;
-  const hasOwnHome = raw.hasOwnHome === true;
-  const hasForeignIncome = raw.hasForeignIncome === true;
+  const hasChildren = raw.hasChildren === true;
+  const homeOwnership = raw.homeOwnership === "owner" ? "owner" : "tenant";
+  const employmentIncomeSource = raw.employmentIncomeSource === "manual" ? "manual" : "upload";
+  const annualEmploymentIncome =
+    typeof raw.annualEmploymentIncome === "number" && Number.isFinite(raw.annualEmploymentIncome)
+      ? Math.max(0, Math.round(raw.annualEmploymentIncome))
+      : null;
+  const mortgageInterestPaid =
+    typeof raw.mortgageInterestPaid === "number" && Number.isFinite(raw.mortgageInterestPaid)
+      ? Math.max(0, Math.round(raw.mortgageInterestPaid))
+      : null;
+  const hasBox3 = raw.hasBox3 === true;
+  const box3Amount =
+    typeof raw.box3Amount === "number" && Number.isFinite(raw.box3Amount)
+      ? Math.max(0, Math.round(raw.box3Amount))
+      : null;
   const wantsTaxCreditsReview = raw.wantsTaxCreditsReview === true;
+  const consent = raw.consent === true;
+  if (!consent) throw new Error("consent required");
   const notes = typeof raw.notes === "string" && raw.notes.trim() ? raw.notes.trim().slice(0, 2000) : null;
 
   return {
+    firstName,
+    lastName,
+    email,
+    phone,
+    consent,
     fiscalYear,
     hasPartner,
-    hasFreelanceIncome,
-    hasOwnHome,
-    hasForeignIncome,
+    hasChildren,
+    homeOwnership,
+    mortgageInterestPaid,
+    employmentIncomeSource,
+    annualEmploymentIncome,
+    hasBox3,
+    box3Amount,
     wantsTaxCreditsReview,
     notes,
   };
@@ -114,11 +156,11 @@ export function taxesChecklistTasks(input: TaxesIntakeInput): string[] {
     "Upload ID document",
     "Upload annual income statements (jaaropgave)",
     "Upload bank account proof (IBAN owner)",
+    "Upload/confirm power of attorney registration letter (machtigingsregistratie)",
   ];
   if (input.hasPartner) base.push("Upload partner annual income statement");
-  if (input.hasFreelanceIncome) base.push("Upload ZZP income summary and deductible costs");
-  if (input.hasOwnHome) base.push("Upload mortgage annual statement");
-  if (input.hasForeignIncome) base.push("Upload foreign income evidence");
+  if (input.homeOwnership === "owner") base.push("Upload mortgage annual statement (jaaropgave hypotheek)");
+  if (input.hasBox3) base.push("Upload bank and investment statements for Box 3");
   return base;
 }
 

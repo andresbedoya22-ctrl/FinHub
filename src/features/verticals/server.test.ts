@@ -19,33 +19,51 @@ describe("vertical server helpers", () => {
 
   it("parses taxes intake input", () => {
     const parsed = parseTaxesIntakeInput({
+      firstName: "Ana",
+      lastName: "Perez",
+      email: "ana@example.com",
+      phone: "+34600111222",
+      consent: true,
       fiscalYear: 2025,
       hasPartner: true,
-      hasFreelanceIncome: false,
-      hasOwnHome: true,
-      hasForeignIncome: false,
+      hasChildren: false,
+      homeOwnership: "owner",
+      mortgageInterestPaid: 3200,
+      employmentIncomeSource: "manual",
+      annualEmploymentIncome: 42000,
+      hasBox3: true,
+      box3Amount: 12000,
       wantsTaxCreditsReview: true,
       notes: "ok",
     });
 
     expect(parsed.fiscalYear).toBe(2025);
     expect(parsed.hasPartner).toBe(true);
-    expect(parsed.hasOwnHome).toBe(true);
+    expect(parsed.homeOwnership).toBe("owner");
   });
 
   it("builds taxes checklist with conditional docs", () => {
     const tasks = taxesChecklistTasks({
+      firstName: "Ana",
+      lastName: "Perez",
+      email: "ana@example.com",
+      phone: "+34600111222",
+      consent: true,
       fiscalYear: 2025,
       hasPartner: true,
-      hasFreelanceIncome: true,
-      hasOwnHome: false,
-      hasForeignIncome: true,
+      hasChildren: false,
+      homeOwnership: "owner",
+      mortgageInterestPaid: null,
+      employmentIncomeSource: "upload",
+      annualEmploymentIncome: null,
+      hasBox3: true,
+      box3Amount: null,
       wantsTaxCreditsReview: true,
       notes: null,
     });
     expect(tasks.some((t) => t.includes("partner"))).toBe(true);
-    expect(tasks.some((t) => t.includes("ZZP"))).toBe(true);
-    expect(tasks.some((t) => t.includes("foreign income"))).toBe(true);
+    expect(tasks.some((t) => t.includes("machtigingsregistratie"))).toBe(true);
+    expect(tasks.some((t) => t.includes("Box 3"))).toBe(true);
   });
 
   it("parses leadgen intake submit input", () => {
