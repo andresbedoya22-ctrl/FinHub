@@ -148,6 +148,14 @@ function byPathname(pathname: string, shellT: TranslateFn, subsT: TranslateFn): 
     ]);
   }
 
+  if (pathname.startsWith("/app/insurance/")) {
+    return mk(shellT("route.insurance"), [
+      { href: "/app/finances", label: shellT("route.finances") },
+      { href: "/app/insurance", label: shellT("route.insurance") },
+      { href: pathname, label: shellT("route.detail") },
+    ]);
+  }
+
   // Documentos
   if (pathname === "/app/documents") {
     return mk(shellT("route.documents"), [
@@ -214,4 +222,3 @@ export function getDashboardRouteMeta(pathname: string, shellT: TranslateFn, sub
 export function getRouteMeta(pathname: string, shellT: TranslateFn, subsT: TranslateFn): RouteMeta {
   return byPathname(pathname, shellT, subsT);
 }
-
