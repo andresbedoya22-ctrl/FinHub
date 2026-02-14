@@ -24,7 +24,7 @@ export function LanguageSwitcher() {
   return (
     <select
       aria-label="Language"
-      defaultValue={lang}
+      value={lang}
       onChange={async (e) => {
         const next = normalizeLang(e.target.value);
 
@@ -54,4 +54,3 @@ export function LanguageSwitcher() {
     </select>
   );
 }
-

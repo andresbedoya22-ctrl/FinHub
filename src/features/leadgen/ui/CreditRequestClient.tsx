@@ -145,6 +145,11 @@ export function CreditRequestClient() {
         title="Creditos Pro"
         subtitle="Calcula en segundos, solicita online, sube documentos y firma digital sin papeleo."
       />
+      {process.env.NODE_ENV === "development" ? (
+        <div className="inline-flex rounded-full border border-fh-primary/40 bg-fh-primary/10 px-3 py-1 text-xs font-semibold text-fh-primary">
+          Credit Flow v1
+        </div>
+      ) : null}
 
       {step === "calc" ? (
         <Card className="space-y-5">
@@ -359,4 +364,3 @@ export function CreditRequestClient() {
     </Screen>
   );
 }
-

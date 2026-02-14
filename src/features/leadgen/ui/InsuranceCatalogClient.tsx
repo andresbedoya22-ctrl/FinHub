@@ -217,6 +217,11 @@ export function InsuranceCatalogClient() {
         title="Seguros Pro"
         subtitle="Catalogo estructurado por secciones, con calculadora rapida y conversion a lead."
       />
+      {process.env.NODE_ENV === "development" ? (
+        <div className="inline-flex rounded-full border border-fh-primary/40 bg-fh-primary/10 px-3 py-1 text-xs font-semibold text-fh-primary">
+          Insurance Catalog v1
+        </div>
+      ) : null}
 
       <Card className="space-y-3">
         <div className="text-sm font-semibold">Particulares</div>
@@ -419,4 +424,3 @@ export function InsuranceCatalogClient() {
     </Screen>
   );
 }
-

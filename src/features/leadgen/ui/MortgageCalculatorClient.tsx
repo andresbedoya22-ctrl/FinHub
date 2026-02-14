@@ -178,6 +178,11 @@ export function MortgageCalculatorClient() {
         title="Hipoteca Pro"
         subtitle="Calculadora paso a paso inspirada en Domek: clara, rapida y orientada a conversion."
       />
+      {process.env.NODE_ENV === "development" ? (
+        <div className="inline-flex rounded-full border border-fh-primary/40 bg-fh-primary/10 px-3 py-1 text-xs font-semibold text-fh-primary">
+          Mortgage Wizard v1
+        </div>
+      ) : null}
 
       <Card className="space-y-2">
         <div className="text-xs uppercase tracking-wide text-fh-muted">Progreso</div>
@@ -425,4 +430,3 @@ export function MortgageCalculatorClient() {
     </Screen>
   );
 }
-
