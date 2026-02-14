@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
@@ -8,6 +8,7 @@ import { Button } from "@/ui/components/Button";
 import { Card } from "@/ui/components/Card";
 import { Header } from "@/ui/components/Header";
 import { InfoBox } from "@/ui/components/InfoBox";
+import { Input } from "@/ui/components/Input";
 import { Screen } from "@/ui/components/Screen";
 import {
   estimateMortgageCapacity,
@@ -18,14 +19,20 @@ import {
   createMarketingLead,
   startLeadgenCase,
   submitLeadgenCase,
-  type LeadContact,
 } from "./leadgenIntakeClient";
 import { useLeadIdentity } from "./useLeadIdentity";
 import { trackProductEvent } from "@/features/observability/productTelemetry";
 
-type WizardStep = "buyers" | "buyers_data" | "result" | "contact" | "done";
-
+type WizardStep = "buyers" | "buyers_data" | "lead_gate" | "result" | "done";
 type TimelineValue = "0_3" | "3_6" | "6_12" | "12_plus";
+
+type MortgageLeadContact = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  consent: boolean;
+};
 
 function euro(value: number): string {
   return new Intl.NumberFormat("nl-NL", {
@@ -44,6 +51,14 @@ function buildEmptyBuyer(): MortgageBuyerInput {
   };
 }
 
+function isValidEmail(email: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+}
+
+function isValidPhone(phone: string): boolean {
+  return /^[+()\-\s\d]{7,}$/.test(phone.trim());
+}
+
 export function MortgageCalculatorClient() {
   const t = useTranslations("leadgen.mortgage");
   const common = useTranslations("leadgen.common");
@@ -58,12 +73,14 @@ export function MortgageCalculatorClient() {
   const [hasOwnFunds, setHasOwnFunds] = useState(true);
   const [timelineMonths, setTimelineMonths] = useState<TimelineValue>("3_6");
 
-  const [contact, setContact] = useState<LeadContact>({
-    fullName: "",
+  const [contact, setContact] = useState<MortgageLeadContact>({
+    firstName: "",
+    lastName: "",
     email: "",
     phone: "",
     consent: false,
   });
+  const [contactErrors, setContactErrors] = useState<Partial<Record<keyof MortgageLeadContact, string>>>({});
 
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -72,16 +89,18 @@ export function MortgageCalculatorClient() {
 
   const estimate = useMemo(() => estimateMortgageCapacity(buyers.slice(0, buyersCount), hasOwnFunds), [buyers, buyersCount, hasOwnFunds]);
 
+  const requiresLeadGate = !identity.loggedIn;
+
   const wizardProgress = useMemo(() => {
-    const total = buyersCount + 3;
+    const total = buyersCount + (requiresLeadGate ? 4 : 3);
     const current =
       step === "buyers" ? 1 :
-      step === "buyers_data" ? 1 + activeBuyerIdx + 1 :
-      step === "result" ? buyersCount + 2 :
-      step === "contact" ? buyersCount + 3 :
+      step === "buyers_data" ? 2 + activeBuyerIdx :
+      step === "lead_gate" ? 2 + buyersCount :
+      step === "result" ? 3 + buyersCount :
       total;
     return { current, total };
-  }, [activeBuyerIdx, buyersCount, step]);
+  }, [activeBuyerIdx, buyersCount, requiresLeadGate, step]);
 
   const activeBuyer = buyers[activeBuyerIdx] ?? buildEmptyBuyer();
 
@@ -108,12 +127,13 @@ export function MortgageCalculatorClient() {
   }
 
   function nextFromBuyerData() {
-    if (!canContinueBuyerData(activeBuyerIdx)) return;
+    if (!canContinueBuyerData(activeBuyerIdx) || identity.loading) return;
     if (activeBuyerIdx + 1 < buyersCount) {
       setActiveBuyerIdx((v) => v + 1);
       return;
     }
-    setStep("result");
+
+    setStep(requiresLeadGate ? "lead_gate" : "result");
   }
 
   function backFromBuyerData() {
@@ -124,12 +144,23 @@ export function MortgageCalculatorClient() {
     setStep("buyers");
   }
 
-  function validateContact(): string | null {
-    if (identity.loggedIn) return null;
-    if (contact.fullName.trim().length < 2) return validationT("fullName");
-    if (!contact.email.includes("@") || contact.email.trim().length < 6) return validationT("email");
-    if (!contact.consent) return validationT("consent");
-    return null;
+  function validateGateContact(): boolean {
+    if (identity.loggedIn) return true;
+
+    const nextErrors: Partial<Record<keyof MortgageLeadContact, string>> = {};
+    if (contact.firstName.trim().length < 2) nextErrors.firstName = validationT("firstName");
+    if (contact.lastName.trim().length < 2) nextErrors.lastName = validationT("lastName");
+    if (!isValidEmail(contact.email)) nextErrors.email = validationT("email");
+    if (!isValidPhone(contact.phone)) nextErrors.phone = validationT("phone");
+    if (!contact.consent) nextErrors.consent = validationT("consent");
+
+    setContactErrors(nextErrors);
+    return Object.keys(nextErrors).length === 0;
+  }
+
+  function goToResultFromGate() {
+    if (!validateGateContact()) return;
+    setStep("result");
   }
 
   async function persistLeadAndCase() {
@@ -142,21 +173,22 @@ export function MortgageCalculatorClient() {
       const selectedBuyers = buyers.slice(0, buyersCount);
       const employmentStatus = selectedBuyers.some((b) => b.selfEmployed) ? "self_employed" : "employed";
 
-      const contactValidation = validateContact();
-      if (contactValidation) throw new Error(contactValidation);
+      if (!identity.loggedIn && !validateGateContact()) {
+        throw new Error(common("submitError"));
+      }
 
       if (identity.loggedIn) {
         const cid = caseId ?? (await startLeadgenCase("mortgage"));
         const payload = {
           fullName: identity.fullName || "Authenticated user",
           email: identity.email,
-          phone: contact.phone?.trim() || null,
+          phone: null,
           employmentStatus,
           yearlyIncomeBand: mapIncomeBand(annualIncome),
           timelineMonths,
           hasPartner: buyersCount > 1,
           notes: JSON.stringify({
-            calculator: "mortgage_multi_step_v4",
+            calculator: "mortgage_multi_step_v5",
             buyersCount,
             buyers: selectedBuyers,
             hasOwnFunds,
@@ -169,9 +201,9 @@ export function MortgageCalculatorClient() {
       } else {
         const leadId = await createMarketingLead({
           contact: {
-            fullName: contact.fullName.trim(),
+            fullName: `${contact.firstName.trim()} ${contact.lastName.trim()}`.trim(),
             email: contact.email.trim().toLowerCase(),
-            phone: contact.phone?.trim() || "",
+            phone: contact.phone.trim(),
             consent: contact.consent,
           },
           interestedIn: ["mortgage"],
@@ -224,6 +256,7 @@ export function MortgageCalculatorClient() {
                   ensureBuyerRows(count);
                 }}
                 className={`rounded-xl border px-3 py-3 text-sm font-semibold ${buyersCount === count ? "border-fh-primary bg-fh-primary/10" : "border-fh-border bg-fh-surface"}`}
+                aria-pressed={buyersCount === count}
               >
                 {count}
               </button>
@@ -247,40 +280,38 @@ export function MortgageCalculatorClient() {
           <div className="text-sm font-semibold">{t("buyers.dataTitle", { index: activeBuyerIdx + 1 })}</div>
 
           <div className="grid gap-3 md:grid-cols-2">
-            <div className="space-y-2 md:col-span-2">
-              <label className="text-xs uppercase text-fh-muted">{t("buyers.grossIncome")}</label>
-              <div className="flex gap-2">
-                <input
-                  type="number"
-                  min={0}
-                  value={activeBuyer.grossIncome}
-                  onChange={(e) => updateBuyer(activeBuyerIdx, { grossIncome: Number(e.target.value) || 0 })}
-                  className="w-full rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm"
-                />
-                <div className="inline-flex rounded-xl border border-fh-border bg-fh-surface p-1">
-                  {(["monthly", "annual"] as const).map((period) => (
-                    <button
-                      key={period}
-                      type="button"
-                      onClick={() => updateBuyer(activeBuyerIdx, { incomePeriod: period })}
-                      className={`rounded-lg px-3 py-1 text-xs ${activeBuyer.incomePeriod === period ? "bg-fh-primary text-fh-primaryFg" : "text-fh-muted"}`}
-                    >
-                      {period === "monthly" ? t("buyers.monthly") : t("buyers.annual")}
-                    </button>
-                  ))}
-                </div>
+            <Input
+              type="number"
+              min={0}
+              value={activeBuyer.grossIncome}
+              onChange={(e) => updateBuyer(activeBuyerIdx, { grossIncome: Number(e.target.value) || 0 })}
+              label={t("buyers.grossIncome")}
+              containerClassName="space-y-1 md:col-span-2"
+            />
+
+            <div className="space-y-2">
+              <label className="text-xs uppercase text-fh-muted">{t("buyers.incomePeriod")}</label>
+              <div className="inline-flex rounded-xl border border-fh-border bg-fh-surface p-1">
+                {(["monthly", "annual"] as const).map((period) => (
+                  <button
+                    key={period}
+                    type="button"
+                    onClick={() => updateBuyer(activeBuyerIdx, { incomePeriod: period })}
+                    className={`rounded-lg px-3 py-1 text-xs ${activeBuyer.incomePeriod === period ? "bg-fh-primary text-fh-primaryFg" : "text-fh-muted"}`}
+                    aria-pressed={activeBuyer.incomePeriod === period}
+                  >
+                    {period === "monthly" ? t("buyers.monthly") : t("buyers.annual")}
+                  </button>
+                ))}
               </div>
             </div>
 
-            <div className="space-y-2">
-              <label className="text-xs uppercase text-fh-muted">{t("buyers.birthDate")}</label>
-              <input
-                type="date"
-                value={activeBuyer.birthDate}
-                onChange={(e) => updateBuyer(activeBuyerIdx, { birthDate: e.target.value })}
-                className="w-full rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm"
-              />
-            </div>
+            <Input
+              type="date"
+              value={activeBuyer.birthDate}
+              onChange={(e) => updateBuyer(activeBuyerIdx, { birthDate: e.target.value })}
+              label={t("buyers.birthDate")}
+            />
 
             <div className="space-y-2">
               <label className="text-xs uppercase text-fh-muted">{t("buyers.hasCompany")}</label>
@@ -291,6 +322,7 @@ export function MortgageCalculatorClient() {
                     type="button"
                     onClick={() => updateBuyer(activeBuyerIdx, { selfEmployed: flag })}
                     className={`rounded-lg px-3 py-1 text-xs ${activeBuyer.selfEmployed === flag ? "bg-fh-primary text-fh-primaryFg" : "text-fh-muted"}`}
+                    aria-pressed={activeBuyer.selfEmployed === flag}
                   >
                     {flag ? common("yes") : common("no")}
                   </button>
@@ -308,9 +340,72 @@ export function MortgageCalculatorClient() {
             </label>
           </div>
 
+          {identity.loading ? <InfoBox title={common("session")} variant="info">{common("checkingSession")}</InfoBox> : null}
+
           <div className="flex items-center justify-between">
             <Button variant="ghost" onClick={backFromBuyerData}>{common("back")}</Button>
-            <Button onClick={nextFromBuyerData} disabled={!canContinueBuyerData(activeBuyerIdx)}>{common("next")}</Button>
+            <Button onClick={nextFromBuyerData} disabled={!canContinueBuyerData(activeBuyerIdx) || identity.loading}>{common("next")}</Button>
+          </div>
+        </Card>
+      ) : null}
+
+      {step === "lead_gate" ? (
+        <Card className="space-y-4">
+          <div>
+            <div className="text-sm font-semibold">{t("leadGate.title")}</div>
+            <div className="mt-1 text-sm text-fh-muted">{t("leadGate.subtitle")}</div>
+          </div>
+
+          <div className="grid gap-3 md:grid-cols-2">
+            <Input
+              value={contact.firstName}
+              onChange={(e) => setContact((prev) => ({ ...prev, firstName: e.target.value }))}
+              label={common("firstName")}
+              error={contactErrors.firstName}
+              autoComplete="given-name"
+            />
+            <Input
+              value={contact.lastName}
+              onChange={(e) => setContact((prev) => ({ ...prev, lastName: e.target.value }))}
+              label={common("lastName")}
+              error={contactErrors.lastName}
+              autoComplete="family-name"
+            />
+            <Input
+              type="email"
+              value={contact.email}
+              onChange={(e) => setContact((prev) => ({ ...prev, email: e.target.value }))}
+              label={common("email")}
+              error={contactErrors.email}
+              autoComplete="email"
+            />
+            <Input
+              type="tel"
+              value={contact.phone}
+              onChange={(e) => setContact((prev) => ({ ...prev, phone: e.target.value }))}
+              label={common("phone")}
+              error={contactErrors.phone}
+              autoComplete="tel"
+            />
+          </div>
+
+          <label className="flex items-center gap-2 rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm">
+            <input
+              type="checkbox"
+              checked={contact.consent}
+              onChange={(e) => setContact((prev) => ({ ...prev, consent: e.target.checked }))}
+            />
+            {common("consent")}
+          </label>
+          {contactErrors.consent ? <div className="text-xs text-fh-danger">{contactErrors.consent}</div> : null}
+
+          <div className="text-xs text-fh-muted">
+            {common("privacyHint")} <Link href="/privacy" className="underline">{common("privacyLink")}</Link>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <Button variant="ghost" onClick={() => setStep("buyers_data")}>{common("back")}</Button>
+            <Button onClick={goToResultFromGate}>{t("leadGate.cta")}</Button>
           </div>
         </Card>
       ) : null}
@@ -354,66 +449,12 @@ export function MortgageCalculatorClient() {
             </select>
           </div>
 
-          <div className="flex items-center justify-between">
-            <Button variant="ghost" onClick={() => setStep("buyers_data")}>{common("back")}</Button>
-            <Button onClick={() => setStep("contact")}>{t("result.cta")}</Button>
-          </div>
-        </Card>
-      ) : null}
-
-      {step === "contact" ? (
-        <Card className="space-y-4">
-          <div className="text-sm font-semibold">{t("contact.title")}</div>
-
-          {identity.loading ? <InfoBox title={common("session")} variant="info">{common("checkingSession")}</InfoBox> : null}
-
-          {!identity.loading && identity.loggedIn ? (
-            <InfoBox title={common("authenticated")} variant="info">
-              {common("reuseIdentity", { email: identity.email })}
-            </InfoBox>
-          ) : null}
-
-          {!identity.loading && !identity.loggedIn ? (
-            <div className="grid gap-3 md:grid-cols-2">
-              <input
-                placeholder={common("fullName")}
-                value={contact.fullName}
-                onChange={(e) => setContact((prev) => ({ ...prev, fullName: e.target.value }))}
-                className="rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm"
-              />
-              <input
-                placeholder={common("email")}
-                value={contact.email}
-                onChange={(e) => setContact((prev) => ({ ...prev, email: e.target.value }))}
-                className="rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm"
-              />
-              <input
-                placeholder={common("phone")}
-                value={contact.phone ?? ""}
-                onChange={(e) => setContact((prev) => ({ ...prev, phone: e.target.value }))}
-                className="rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm md:col-span-2"
-              />
-              <label className="md:col-span-2 flex items-center gap-2 rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm">
-                <input
-                  type="checkbox"
-                  checked={contact.consent}
-                  onChange={(e) => setContact((prev) => ({ ...prev, consent: e.target.checked }))}
-                />
-                {common("consent")}
-              </label>
-            </div>
-          ) : null}
-
-          <div className="text-xs text-fh-muted">
-            {common("privacyHint")} <Link href="/privacy" className="underline">{common("privacyLink")}</Link>
-          </div>
-
           {error ? <InfoBox title={common("error")} variant="danger">{error}</InfoBox> : null}
 
           <div className="flex items-center justify-between">
-            <Button variant="ghost" onClick={() => setStep("result")}>{common("back")}</Button>
+            <Button variant="ghost" onClick={() => setStep(requiresLeadGate ? "lead_gate" : "buyers_data")}>{common("back")}</Button>
             <Button onClick={() => void persistLeadAndCase()} disabled={busy || identity.loading}>
-              {busy ? common("saving") : t("contact.submit")}
+              {busy ? common("saving") : t("result.cta")}
             </Button>
           </div>
         </Card>

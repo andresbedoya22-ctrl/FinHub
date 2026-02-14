@@ -1646,14 +1646,19 @@
       "submitError": "Nu am putut finaliza solicitarea.",
       "nextStep": "Pasul urmator",
       "loginToContinue": "Autentifica-te pentru documente si urmarirea cazului.",
-      "reset": "Reseteaza"
+      "reset": "Reseteaza",
+      "firstName": "Prenume",
+      "lastName": "Nume"
     },
     "validation": {
       "fullName": "Introdu numele complet.",
       "email": "Introdu o adresa de email valida.",
       "consent": "Trebuie sa accepti consimtamantul.",
       "signature": "Completeaza semnatura digitala.",
-      "birthDate": "Introdu data nasterii."
+      "birthDate": "Introdu data nasterii.",
+      "firstName": "Introdu prenumele.",
+      "lastName": "Introdu numele.",
+      "phone": "Introdu un numar de telefon valid."
     },
     "mortgage": {
       "title": "Ipoteca Pro",
@@ -1667,7 +1672,8 @@
         "annual": "Annual",
         "birthDate": "Date of birth",
         "hasCompany": "Self-employed?",
-        "hasOwnFunds": "I have own funds for purchase costs"
+        "hasOwnFunds": "I have own funds for purchase costs",
+        "incomePeriod": "Perioada venitului"
       },
       "result": {
         "title": "Estimated result",
@@ -1695,6 +1701,11 @@
         "body": "Your mortgage lead has been created and routed to operations.",
         "openCase": "Open case {id}",
         "leadCreated": "CRM lead created: {id}..."
+      },
+      "leadGate": {
+        "title": "Inainte de rezultat avem nevoie de datele tale",
+        "subtitle": "Completeaza contactul si continua catre estimarea ipotecii.",
+        "cta": "Arata capacitatea maxima"
       }
     },
     "credit": {
@@ -1738,6 +1749,32 @@
         "body": "Your credit request was registered successfully.",
         "openCase": "Open case {id}",
         "leadCreated": "CRM lead created: {id}..."
+      },
+      "gate": {
+        "title": "Inainte de rezultat avem nevoie de mai multe informatii",
+        "subtitle": "Folosim datele pentru evaluarea creditului.",
+        "helper": "Datele sunt folosite doar pentru aceasta cerere.",
+        "cta": "Continua"
+      },
+      "income": {
+        "title": "Detalii venit",
+        "partnerQuestion": "Aplici impreuna cu partenerul?",
+        "userIncome": "Venit lunar solicitant",
+        "partnerIncome": "Venit lunar partener",
+        "userIncomeHint": "Suma neta lunara folosita la evaluare.",
+        "partnerIncomeHint": "Necesar doar pentru aplicare comuna.",
+        "rateNote": "Dobanda ramane fixa la {rate}%."
+      },
+      "result": {
+        "title": "Rezultat credit",
+        "canApply": "Poti aplica pentru suma ceruta",
+        "cannotApply": "Suma ceruta depaseste estimarea curenta",
+        "summary": "Bazat pe venit si simulare cu dobanda fixa 5%.",
+        "maxEstimated": "Suma maxima estimata",
+        "requestedInstallment": "Rata lunara estimata",
+        "maxInstallment": "Rata maxima suportata",
+        "rateFixed": "Calculul foloseste rata anuala fixa de {rate}%.",
+        "submit": "Salveaza si continua"
       }
     },
     "insurance": {
@@ -1838,6 +1875,35 @@
         "body": "Quote and lead data were saved for operations follow-up.",
         "openCase": "Open case {id}",
         "leadCreated": "CRM lead created: {id}..."
+      },
+      "types": {
+        "vehicle": {
+          "title": "Asigurare vehicul",
+          "subtitle": "Masina, scuter si mobilitate."
+        },
+        "home": {
+          "title": "Asigurare locuinta",
+          "subtitle": "Locuinta, bunuri si acoperiri juridice."
+        },
+        "life": {
+          "title": "Asigurare de viata",
+          "subtitle": "Protectie familie cu costuri predictibile."
+        },
+        "business": {
+          "title": "Asigurare business",
+          "subtitle": "Raspundere si operatiuni pentru companii."
+        }
+      },
+      "typeFlow": {
+        "title": "Flux asigurare: {type}",
+        "subtitle": "Alege produsul si continua pas cu pas.",
+        "selectProduct": "Alege un produs",
+        "backToTypes": "Inapoi la tipuri",
+        "continue": "Continua",
+        "nextStepTitle": "Pasul urmator",
+        "nextStepBody": "Ai selectat {product}. Urmatorul ecran va cere detalii de risc.",
+        "changeProduct": "Schimba produs",
+        "nextStepCta": "Continua fluxul"
       }
     }
   }

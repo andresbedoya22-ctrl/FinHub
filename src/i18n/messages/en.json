@@ -1646,14 +1646,19 @@
       "submitError": "We could not complete your request.",
       "nextStep": "Next step",
       "loginToContinue": "Sign in to continue with case tracking and documents.",
-      "reset": "Reset"
+      "reset": "Reset",
+      "firstName": "First name",
+      "lastName": "Last name"
     },
     "validation": {
       "fullName": "Please enter your full name.",
       "email": "Please enter a valid email address.",
       "consent": "You must accept consent before continuing.",
       "signature": "Please complete the digital signature.",
-      "birthDate": "Please provide a birth date."
+      "birthDate": "Please provide a birth date.",
+      "firstName": "Please enter your first name.",
+      "lastName": "Please enter your last name.",
+      "phone": "Please enter a valid phone number."
     },
     "mortgage": {
       "title": "Mortgage Pro",
@@ -1667,7 +1672,8 @@
         "annual": "Annual",
         "birthDate": "Date of birth",
         "hasCompany": "Self-employed?",
-        "hasOwnFunds": "I have own funds for purchase costs"
+        "hasOwnFunds": "I have own funds for purchase costs",
+        "incomePeriod": "Income period"
       },
       "result": {
         "title": "Estimated result",
@@ -1695,6 +1701,11 @@
         "body": "Your mortgage lead has been created and routed to operations.",
         "openCase": "Open case {id}",
         "leadCreated": "CRM lead created: {id}..."
+      },
+      "leadGate": {
+        "title": "Before showing your result we need your details",
+        "subtitle": "Add your contact details and continue to your mortgage estimate.",
+        "cta": "Show my maximum capacity"
       }
     },
     "credit": {
@@ -1738,6 +1749,32 @@
         "body": "Your credit request was registered successfully.",
         "openCase": "Open case {id}",
         "leadCreated": "CRM lead created: {id}..."
+      },
+      "gate": {
+        "title": "Before showing your result we need more information",
+        "subtitle": "We use this to prepare your credit assessment.",
+        "helper": "We keep your data secure and only use it for this request.",
+        "cta": "Continue"
+      },
+      "income": {
+        "title": "Income details",
+        "partnerQuestion": "Applying with partner?",
+        "userIncome": "Your monthly income",
+        "partnerIncome": "Partner monthly income",
+        "userIncomeHint": "Net monthly amount used for affordability.",
+        "partnerIncomeHint": "Required only for joint applications.",
+        "rateNote": "Interest rate remains fixed at {rate}%."
+      },
+      "result": {
+        "title": "Credit result",
+        "canApply": "You can apply for this amount",
+        "cannotApply": "Requested amount is above your current estimate",
+        "summary": "Based on your income and a fixed 5% interest simulation.",
+        "maxEstimated": "Estimated maximum amount",
+        "requestedInstallment": "Estimated monthly installment",
+        "maxInstallment": "Maximum affordable installment",
+        "rateFixed": "Calculation uses a fixed annual rate of {rate}%.",
+        "submit": "Save and continue"
       }
     },
     "insurance": {
@@ -1838,6 +1875,35 @@
         "body": "Quote and lead data were saved for operations follow-up.",
         "openCase": "Open case {id}",
         "leadCreated": "CRM lead created: {id}..."
+      },
+      "types": {
+        "vehicle": {
+          "title": "Vehicle insurance",
+          "subtitle": "Cars, scooters, and mobility coverage."
+        },
+        "home": {
+          "title": "Home insurance",
+          "subtitle": "Home, contents, and legal add-ons."
+        },
+        "life": {
+          "title": "Life insurance",
+          "subtitle": "Family protection with predictable costs."
+        },
+        "business": {
+          "title": "Business insurance",
+          "subtitle": "Liability and operations coverage for companies."
+        }
+      },
+      "typeFlow": {
+        "title": "Insurance flow: {type}",
+        "subtitle": "Choose product options and continue step by step.",
+        "selectProduct": "Select a product",
+        "backToTypes": "Back to types",
+        "continue": "Continue",
+        "nextStepTitle": "Next step",
+        "nextStepBody": "You selected {product}. Next screen will collect risk details and finalize recommendation.",
+        "changeProduct": "Change product",
+        "nextStepCta": "Continue flow"
       }
     }
   }

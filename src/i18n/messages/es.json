@@ -1646,14 +1646,19 @@
       "submitError": "No pudimos completar tu solicitud.",
       "nextStep": "Siguiente paso",
       "loginToContinue": "Inicia sesion para continuar con seguimiento y documentos.",
-      "reset": "Reiniciar"
+      "reset": "Reiniciar",
+      "firstName": "Nombre",
+      "lastName": "Apellido"
     },
     "validation": {
       "fullName": "Introduce tu nombre completo.",
       "email": "Introduce un correo valido.",
       "consent": "Debes aceptar el consentimiento para continuar.",
       "signature": "Completa la firma digital.",
-      "birthDate": "Indica una fecha de nacimiento."
+      "birthDate": "Indica una fecha de nacimiento.",
+      "firstName": "Ingresa tu nombre.",
+      "lastName": "Ingresa tu apellido.",
+      "phone": "Ingresa un telefono valido."
     },
     "mortgage": {
       "title": "Hipoteca Pro",
@@ -1667,7 +1672,8 @@
         "annual": "Anual",
         "birthDate": "Fecha de nacimiento",
         "hasCompany": "Es autonomo?",
-        "hasOwnFunds": "Tengo fondos propios para gastos de compra"
+        "hasOwnFunds": "Tengo fondos propios para gastos de compra",
+        "incomePeriod": "Periodo de ingresos"
       },
       "result": {
         "title": "Resultado estimado",
@@ -1695,6 +1701,11 @@
         "body": "Tu lead hipotecario se creo y fue enviado a operaciones.",
         "openCase": "Abrir caso {id}",
         "leadCreated": "Lead CRM creado: {id}..."
+      },
+      "leadGate": {
+        "title": "Antes de mostrar tu resultado necesitamos tus datos",
+        "subtitle": "Completa tu contacto y continua para ver tu capacidad hipotecaria.",
+        "cta": "Mostrar capacidad maxima"
       }
     },
     "credit": {
@@ -1738,6 +1749,32 @@
         "body": "Tu solicitud de credito se registro correctamente.",
         "openCase": "Abrir caso {id}",
         "leadCreated": "Lead CRM creado: {id}..."
+      },
+      "gate": {
+        "title": "Antes de mostrar el resultado necesitamos mas informacion",
+        "subtitle": "Usaremos estos datos para preparar tu evaluacion de credito.",
+        "helper": "Tus datos se usan solo para esta solicitud.",
+        "cta": "Continuar"
+      },
+      "income": {
+        "title": "Datos de ingresos",
+        "partnerQuestion": "Solicitas con pareja?",
+        "userIncome": "Ingreso mensual del solicitante",
+        "partnerIncome": "Ingreso mensual de la pareja",
+        "userIncomeHint": "Monto neto mensual usado para evaluacion.",
+        "partnerIncomeHint": "Solo si la solicitud es conjunta.",
+        "rateNote": "La tasa se mantiene fija en {rate}%."
+      },
+      "result": {
+        "title": "Resultado de credito",
+        "canApply": "Puedes solicitar ese monto",
+        "cannotApply": "El monto solicitado supera tu estimacion actual",
+        "summary": "Basado en ingresos y simulacion con interes fijo de 5%.",
+        "maxEstimated": "Maximo estimado",
+        "requestedInstallment": "Cuota mensual estimada",
+        "maxInstallment": "Cuota maxima asequible",
+        "rateFixed": "El calculo usa tasa anual fija de {rate}%.",
+        "submit": "Guardar y continuar"
       }
     },
     "insurance": {
@@ -1838,6 +1875,35 @@
         "body": "Cotizacion y datos del lead guardados para seguimiento operativo.",
         "openCase": "Abrir caso {id}",
         "leadCreated": "Lead CRM creado: {id}..."
+      },
+      "types": {
+        "vehicle": {
+          "title": "Seguro de vehiculo",
+          "subtitle": "Autos, motos y cobertura de movilidad."
+        },
+        "home": {
+          "title": "Seguro de hogar",
+          "subtitle": "Hogar, contenido y coberturas legales."
+        },
+        "life": {
+          "title": "Seguro de vida",
+          "subtitle": "Proteccion familiar con costos previsibles."
+        },
+        "business": {
+          "title": "Seguro para empresa",
+          "subtitle": "Responsabilidad y operaciones para negocios."
+        }
+      },
+      "typeFlow": {
+        "title": "Flujo de seguro: {type}",
+        "subtitle": "Elige opciones y continua paso a paso.",
+        "selectProduct": "Selecciona un producto",
+        "backToTypes": "Volver a tipos",
+        "continue": "Continuar",
+        "nextStepTitle": "Siguiente paso",
+        "nextStepBody": "Seleccionaste {product}. En la siguiente pantalla pediremos datos de riesgo.",
+        "changeProduct": "Cambiar producto",
+        "nextStepCta": "Continuar flujo"
       }
     }
   }

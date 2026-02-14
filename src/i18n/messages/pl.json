@@ -1649,14 +1649,19 @@
       "submitError": "Nie udalo sie zakonczyc wniosku.",
       "nextStep": "Nastepny krok",
       "loginToContinue": "Zaloguj sie aby kontynuowac obsluge sprawy i dokumenty.",
-      "reset": "Resetuj"
+      "reset": "Resetuj",
+      "firstName": "Imie",
+      "lastName": "Nazwisko"
     },
     "validation": {
       "fullName": "Podaj imie i nazwisko.",
       "email": "Podaj poprawny adres email.",
       "consent": "Musisz zaakceptowac zgode.",
       "signature": "Uzupelnij podpis cyfrowy.",
-      "birthDate": "Podaj date urodzenia."
+      "birthDate": "Podaj date urodzenia.",
+      "firstName": "Wpisz imie.",
+      "lastName": "Wpisz nazwisko.",
+      "phone": "Wpisz poprawny numer telefonu."
     },
     "mortgage": {
       "title": "Hipoteka Pro",
@@ -1670,7 +1675,8 @@
         "annual": "Annual",
         "birthDate": "Date of birth",
         "hasCompany": "Self-employed?",
-        "hasOwnFunds": "I have own funds for purchase costs"
+        "hasOwnFunds": "I have own funds for purchase costs",
+        "incomePeriod": "Okres dochodu"
       },
       "result": {
         "title": "Estimated result",
@@ -1698,6 +1704,11 @@
         "body": "Your mortgage lead has been created and routed to operations.",
         "openCase": "Open case {id}",
         "leadCreated": "CRM lead created: {id}..."
+      },
+      "leadGate": {
+        "title": "Zanim pokazemy wynik, potrzebujemy Twoich danych",
+        "subtitle": "Uzupelnij kontakt i przejdz do wyniku zdolnosci hipotecznej.",
+        "cta": "Pokaz maksymalna zdolnosc"
       }
     },
     "credit": {
@@ -1741,6 +1752,32 @@
         "body": "Your credit request was registered successfully.",
         "openCase": "Open case {id}",
         "leadCreated": "CRM lead created: {id}..."
+      },
+      "gate": {
+        "title": "Zanim pokazemy wynik, potrzebujemy wiecej informacji",
+        "subtitle": "Dane wykorzystamy do oceny kredytowej.",
+        "helper": "Dane sa wykorzystywane tylko dla tego wniosku.",
+        "cta": "Dalej"
+      },
+      "income": {
+        "title": "Dane o dochodach",
+        "partnerQuestion": "Wniosek z partnerem?",
+        "userIncome": "Miesieczny dochod wnioskodawcy",
+        "partnerIncome": "Miesieczny dochod partnera",
+        "userIncomeHint": "Kwota netto miesiecznie do oceny zdolnosci.",
+        "partnerIncomeHint": "Wymagane tylko przy wspolnym wniosku.",
+        "rateNote": "Oprocentowanie pozostaje stale: {rate}%."
+      },
+      "result": {
+        "title": "Wynik kredytowy",
+        "canApply": "Mozesz zlozyc wniosek o te kwote",
+        "cannotApply": "Wnioskowana kwota przekracza obecna estymacje",
+        "summary": "Na podstawie dochodu i stalego oprocentowania 5%.",
+        "maxEstimated": "Szacowana maksymalna kwota",
+        "requestedInstallment": "Szacowana rata miesieczna",
+        "maxInstallment": "Maksymalna dostepna rata",
+        "rateFixed": "Kalkulacja uzywa stalej rocznej stopy {rate}%.",
+        "submit": "Zapisz i kontynuuj"
       }
     },
     "insurance": {
@@ -1841,6 +1878,35 @@
         "body": "Quote and lead data were saved for operations follow-up.",
         "openCase": "Open case {id}",
         "leadCreated": "CRM lead created: {id}..."
+      },
+      "types": {
+        "vehicle": {
+          "title": "Ubezpieczenie pojazdu",
+          "subtitle": "Samochody, skutery i mobilnosc."
+        },
+        "home": {
+          "title": "Ubezpieczenie domu",
+          "subtitle": "Dom, mienie i dodatki prawne."
+        },
+        "life": {
+          "title": "Ubezpieczenie na zycie",
+          "subtitle": "Ochrona rodziny przy przewidywalnych kosztach."
+        },
+        "business": {
+          "title": "Ubezpieczenie firmy",
+          "subtitle": "OC i ochrona operacyjna firmy."
+        }
+      },
+      "typeFlow": {
+        "title": "Sciezka ubezpieczenia: {type}",
+        "subtitle": "Wybierz produkt i przejdz dalej krok po kroku.",
+        "selectProduct": "Wybierz produkt",
+        "backToTypes": "Powrot do typow",
+        "continue": "Kontynuuj",
+        "nextStepTitle": "Nastepny krok",
+        "nextStepBody": "Wybrano {product}. Nastepny ekran zbierze dane ryzyka.",
+        "changeProduct": "Zmien produkt",
+        "nextStepCta": "Kontynuuj proces"
       }
     }
   }
