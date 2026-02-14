@@ -1,5 +1,5 @@
-import { LeadVerticalIntakeClient } from "@/features/leadgen/ui/LeadVerticalIntakeClient";
+import { CreditRequestClient } from "@/features/leadgen/ui/CreditRequestClient";
 
 export default function CreditPage() {
-  return <LeadVerticalIntakeClient vertical="credit" />;
+  return <CreditRequestClient />;
 }
