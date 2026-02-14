@@ -98,3 +98,13 @@ Appendix: Evidence Pack
 - docs/canon/02-module-catalog.md
 - docs/canon/03-diff-vs-canon.md
 - docs/repo-snapshots/canon-refresh-20260118-132825
+
+Post-snapshot note (2026-02-14)
+- Fase 7 (H1/H2/H3) has now been implemented in v1:
+  - multi-tenant base,
+  - GDPR operational requests/retention,
+  - business observability by tenant.
+- See:
+  - `supabase/migrations/20260214123000_h1_h2_h3_sell_ready_v1.sql`
+  - `docs/runbooks/sell-ready-v1-smoke.md`
+  - `docs/reports/2026-02-14-roadmap-audit.md`

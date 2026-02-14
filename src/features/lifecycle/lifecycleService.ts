@@ -1,4 +1,5 @@
 import { createSupabaseAdminClient } from "@/lib/supabaseAdminClient";
+import { resolveUserTenantId } from "../tenant/tenantService";
 
 export type LifecycleCampaignKey = "welcome" | "docs_missing" | "authorization_pending" | "case_update";
 
@@ -39,6 +40,7 @@ function nowIso() {
 export async function emitLifecycleEvent(input: EmitLifecycleInput): Promise<EmitResult> {
   const admin = createSupabaseAdminClient();
   const now = nowIso();
+  const tenantId = await resolveUserTenantId(admin, input.userId).catch(() => null);
 
   const campaignRes = await admin
     .from("lifecycle_campaigns")
@@ -57,6 +59,7 @@ export async function emitLifecycleEvent(input: EmitLifecycleInput): Promise<Emi
   const eventInsert = await admin
     .from("lifecycle_events")
     .insert({
+      tenant_id: tenantId,
       user_id: input.userId,
       case_id: input.caseId ?? null,
       campaign_key: input.campaignKey,
@@ -79,6 +82,7 @@ export async function emitLifecycleEvent(input: EmitLifecycleInput): Promise<Emi
   if (!campaign.enabled) {
     await admin.from("lifecycle_events").update({ status: "skipped_disabled", updated_at: now }).eq("id", eventId);
     await admin.from("lifecycle_deliveries").insert({
+      tenant_id: tenantId,
       event_id: eventId,
       user_id: input.userId,
       case_id: input.caseId ?? null,
@@ -113,6 +117,7 @@ export async function emitLifecycleEvent(input: EmitLifecycleInput): Promise<Emi
     if (last.data?.id) {
       await admin.from("lifecycle_events").update({ status: "skipped_throttled", updated_at: now }).eq("id", eventId);
       await admin.from("lifecycle_deliveries").insert({
+        tenant_id: tenantId,
         event_id: eventId,
         user_id: input.userId,
         case_id: input.caseId ?? null,
@@ -128,6 +133,7 @@ export async function emitLifecycleEvent(input: EmitLifecycleInput): Promise<Emi
   }
 
   const delivery = await admin.from("lifecycle_deliveries").insert({
+    tenant_id: tenantId,
     event_id: eventId,
     user_id: input.userId,
     case_id: input.caseId ?? null,

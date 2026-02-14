@@ -16,6 +16,7 @@ import type {
 import { defaultTitleForCaseType, initialStepKeyForType } from "./casesConfig";
 import { ensureStatusTransitionAuthorization } from "./authorization";
 import { markAuthorizationReceivedFromConsent } from "../authorization";
+import { resolveUserTenantId } from "../tenant/tenantService";
 
 const CASE_TYPES: ReadonlySet<CaseType> = new Set(["toeslagen", "taxes", "mortgage", "credit", "insurance"]);
 const CASE_STATUSES: ReadonlySet<CaseStatus> = new Set([
@@ -385,10 +386,12 @@ export async function createCase(
 ): Promise<CaseEntity> {
   const title = input.title?.trim() ? input.title.trim() : defaultTitleForCaseType(input.type);
   const stepKey = initialStepKeyForType(input.type);
+  const tenantId = await resolveUserTenantId(supabase, userId);
 
   const { data, error } = await supabase
     .from("cases")
     .insert({
+      tenant_id: tenantId,
       user_id: userId,
       type: input.type,
       product_slug: input.productSlug ?? null,

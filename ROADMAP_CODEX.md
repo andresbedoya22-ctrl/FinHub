@@ -249,3 +249,29 @@ Entregado:
 Nota operativa:
 - Si usuario no esta autenticado, el flujo redirige a login y luego permite reintentar desde `/toeslagen`.
 
+## 8) Cierre Fase 7 (H1/H2/H3) - 2026-02-14
+
+Entregado en v1:
+- Multi-tenant base:
+  - `tenants`, `tenant_members`.
+  - `tenant_id` agregado a `cases`, `product_events`, `lifecycle_events`, `lifecycle_deliveries`.
+  - Triggers de asignacion de `tenant_id` por `user_id`/`case_id`.
+- GDPR operativo:
+  - `gdpr_requests` y `gdpr_retention_policies`.
+  - `GET /api/profile/export` y `POST /api/profile/delete` con auditoria (request/correlation ids).
+  - `POST /api/admin/gdpr/retention/run` para ejecutar retencion.
+- Observabilidad negocio:
+  - `GET /api/admin/observability/business` (KPIs por tenant, ventana 30d).
+  - Admin UI: `/app/admin/observability`, `/app/admin/tenants`, `/app/admin/gdpr`.
+
+Evidencia:
+- Migracion: `supabase/migrations/20260214123000_h1_h2_h3_sell_ready_v1.sql`.
+- Runbook: `docs/runbooks/sell-ready-v1-smoke.md`.
+
+## 9) Auditoria repo/docs (2026-02-14)
+
+- Informe completo: `docs/reports/2026-02-14-roadmap-audit.md`.
+- Hallazgo principal:
+  - El roadmap/canon historico no reflejaba el estado real de fases 0-6 ya implementadas.
+- Accion recomendada:
+  - Regenerar `docs/repo-snapshots/*` y sincronizar `docs/canon/*` con el estado actual.

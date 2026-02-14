@@ -20,6 +20,10 @@ Este directorio contiene la documentación canónica del repositorio.
 ## Fase 8 — QA / GDPR / Release hardening
 - Release readiness checklist: ./phase-8/release-readiness.md
 
+## Fase 11 — Sell-ready (multi-tenant/GDPR/observability)
+- Runbook smoke: ./runbooks/sell-ready-v1-smoke.md
+- Auditoría roadmap/canon (2026-02-14): ./reports/2026-02-14-roadmap-audit.md
+
 ## Contribución
 - Guía de contribución: ./CONTRIBUTING.md
 

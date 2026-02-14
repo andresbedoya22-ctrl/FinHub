@@ -51,5 +51,20 @@ Recommendations to update Canon text
 Out of scope (post-F15)
 - Canon includes phases beyond F15 (e.g., F16 mortgages). This audit stops at F15 per request (docs/canon/CANON_OPERATIVO.md).
 
+## Update 2026-02-14 (post-snapshot)
+
+Implemented since the historical snapshot:
+- Fase 7 (H1/H2/H3) sell-ready v1:
+  - Multi-tenant base (`tenants`, `tenant_members`, `tenant_id` propagation to cases/events).
+  - GDPR operational tables (`gdpr_requests`, `gdpr_retention_policies`) and admin retention run endpoint.
+  - Business observability endpoint and admin views per tenant.
+
+New evidence:
+- `supabase/migrations/20260214123000_h1_h2_h3_sell_ready_v1.sql`
+- `src/app/api/admin/tenants/route.ts`
+- `src/app/api/admin/observability/business/route.ts`
+- `src/app/api/admin/gdpr/retention/run/route.ts`
+- `src/app/(dashboard)/app/admin/{tenants,observability,gdpr}/page.tsx`
+- `docs/runbooks/sell-ready-v1-smoke.md`
 
 
