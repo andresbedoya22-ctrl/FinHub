@@ -35,3 +35,10 @@ Atajos habilitados:
 ## 5) Publicacion desde tu PC
 1. `git status`
 2. `git push origin main`
+
+## 6) Reglas SSR/CSR para evitar hydration mismatch
+- No usar `next/head` dentro de `src/app/*` (App Router usa `metadata`/`viewport`).
+- No usar `Date.now()`, `Math.random()` ni `navigator.*` en layouts/providers raiz.
+- El primer render cliente debe usar el mismo snapshot que SSR (locale, mes inicial, tema).
+- Si cambias idioma o tema, aplica el cambio despues de hidratar, sin mutar el arbol raiz durante hydration.
+- Si aparece mismatch solo en navegador normal y no en incognito, revisar extensiones que inyectan DOM.

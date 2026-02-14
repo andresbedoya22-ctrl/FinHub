@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
@@ -231,10 +230,7 @@ function SkeletonLine({ className }: { className?: string }) {
 export default function FinancesOverviewClient({ initialMonth }: { initialMonth: string }) {
   const t = useTranslations("finances.dashboard");
   const locale = useLocale();
-  const searchParams = useSearchParams();
-
-  const monthParam = searchParams.get("month");
-  const month = useMemo(() => (isValidMonth(monthParam) ? monthParam : initialMonth), [monthParam, initialMonth]);
+  const month = useMemo(() => (isValidMonth(initialMonth) ? initialMonth : "1970-01"), [initialMonth]);
   const monthLabel = useMemo(() => toMonthLabel(locale, month), [locale, month]);
 
   const [state, setState] = useState<LoadState>("loading");

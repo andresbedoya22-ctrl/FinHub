@@ -5,6 +5,8 @@ import { createServerClient } from "@supabase/ssr";
 
 import { AppProviders } from "./providers";
 import FinnyWidget from "@/features/assistant/finny/ui/FinnyWidget";
+import { getI18nRequestContext } from "@/i18n/request";
+import { DevHydrationProbe } from "../ui/DevHydrationProbe";
 
 async function createSupabaseServerClientReadOnly() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -29,11 +31,13 @@ async function createSupabaseServerClientReadOnly() {
 export default async function DashboardLayout({ children }: { children: ReactNode }) {
   const supabase = await createSupabaseServerClientReadOnly();
   const { data } = await supabase.auth.getUser();
+  const { locale, timeZone } = await getI18nRequestContext();
 
   if (!data.user) redirect("/login");
 
   return (
     <AppProviders>
+      <DevHydrationProbe ssrLocale={locale} ssrTimeZone={timeZone} />
       {children}
       <FinnyWidget />
     </AppProviders>
