@@ -10,6 +10,7 @@ import { getDashboardRouteMeta, type Breadcrumb } from "./dashboardRouteMeta";
 import { LanguageSwitcher } from "@/ui/components/LanguageSwitcher";
 import { ThemeToggle, type ThemeMode } from "@/ui/components/ThemeToggle";
 import { Button } from "@/ui/components/Button";
+import { Sheet } from "@/ui/components/Sheet";
 import { getMyRole, type UserRole } from "@/features/auth/roleClient";
 
 type NavItem = { href: string; label: string };
@@ -28,9 +29,9 @@ function isActive(pathname: string, href: string): boolean {
 function Breadcrumbs({ items }: { items: Breadcrumb[] }) {
   if (!items.length) return null;
   return (
-    <div className="mt-1 flex items-center gap-2 text-xs text-fh-muted min-w-0">
+    <div className="mt-1 flex min-w-0 items-center gap-2 text-xs text-fh-muted">
       {items.map((b, idx) => (
-        <div key={b.href + b.label} className="flex items-center gap-2 min-w-0">
+        <div key={b.href + b.label} className="flex min-w-0 items-center gap-2">
           {idx > 0 && <span>/</span>}
           <Link href={b.href} className="truncate hover:text-fh-text">
             {b.label}
@@ -66,7 +67,7 @@ function SidebarSection({ pathname, section, onNavigate }: { pathname: string; s
                 className={cx(
                   "block rounded-lg px-3 py-2 text-sm transition",
                   active
-                    ? "bg-fh-primary/15 text-fh-text border border-fh-primary/30"
+                    ? "border border-fh-primary/30 bg-fh-primary/15 text-fh-text"
                     : "border border-transparent text-fh-muted hover:border-fh-border hover:bg-fh-surface"
                 )}
               >
@@ -77,6 +78,16 @@ function SidebarSection({ pathname, section, onNavigate }: { pathname: string; s
         </div>
       ) : null}
     </div>
+  );
+}
+
+function SidebarNav({ pathname, sections, onNavigate }: { pathname: string; sections: NavSection[]; onNavigate?: () => void }) {
+  return (
+    <nav className="space-y-3">
+      {sections.map((section) => (
+        <SidebarSection key={section.title} pathname={pathname} section={section} onNavigate={onNavigate} />
+      ))}
+    </nav>
   );
 }
 
@@ -155,51 +166,49 @@ export default function DashboardShell({ children, initialTheme }: { children: R
   }, [role, shellT]);
 
   return (
-    <div className="min-h-dvh bg-fh-bg text-fh-text">
-      <div className="flex">
-        <aside className="hidden h-dvh w-[300px] shrink-0 overflow-y-auto border-r border-fh-border bg-fh-surface/85 p-3 lg:block">
-          <div className="mb-4 flex items-center justify-between rounded-xl border border-fh-border bg-fh-surface-2 p-3">
-            <Link href="/app" className="text-lg font-semibold tracking-tight">
-              {shellT("brand")}
-            </Link>
-            <span className="text-xs text-fh-muted">{shellT("version")}</span>
-          </div>
-          <nav className="space-y-3">
-            {sections.map((section) => (
-              <SidebarSection key={section.title} pathname={pathname} section={section} />
-            ))}
-          </nav>
-        </aside>
+    <div className="h-dvh overflow-hidden bg-fh-bg text-fh-text">
+      <aside className="fixed inset-y-0 left-0 hidden w-[300px] border-r border-fh-border bg-fh-surface/85 p-3 lg:block">
+        <div className="mb-4 flex items-center justify-between rounded-xl border border-fh-border bg-fh-surface-2 p-3">
+          <Link href="/app" className="text-lg font-semibold tracking-tight">
+            {shellT("brand")}
+          </Link>
+          <span className="text-xs text-fh-muted">{shellT("version")}</span>
+        </div>
+        <div className="h-[calc(100dvh-5.75rem)] overflow-y-auto pr-1">
+          <SidebarNav pathname={pathname} sections={sections} />
+        </div>
+      </aside>
 
-        <div className="min-w-0 flex-1">
-          <header className="sticky top-0 z-20 border-b border-fh-border bg-fh-bg/95 backdrop-blur">
-            <div className="flex h-14 items-center gap-3 px-4 lg:px-6">
-              <Button type="button" variant="secondary" className="lg:hidden" onClick={() => setMobileOpen(true)} aria-label={shellT("sidebar.open")}>{shellT("sidebar.menu")}</Button>
-              <div className="min-w-0 flex-1">
-                <div className="truncate text-sm font-semibold">{meta.title}</div>
-                <Breadcrumbs items={meta.breadcrumbs} />
-              </div>
-              <div className="flex items-center gap-2">
-                <LanguageSwitcher />
-                <ThemeToggle
-                  initialTheme={initialTheme}
-                  label={shellT("theme.toggle")}
-                  darkLabel={shellT("theme.dark")}
-                  lightLabel={shellT("theme.light")}
-                />
-                <Button
-                  type="button"
-                  variant="secondary"
-                  onClick={() => {
-                    void fetch("/api/auth/logout", { method: "POST" }).finally(() => router.push("/login"));
-                  }}
-                >
-                  {shellT("account.logout")}
-                </Button>
-              </div>
+      <div className="flex h-full min-w-0 flex-col lg:pl-[300px]">
+        <header className="z-20 shrink-0 border-b border-fh-border bg-fh-bg/95 backdrop-blur">
+          <div className="flex h-14 items-center gap-3 px-4 lg:px-6">
+            <Button type="button" variant="secondary" className="lg:hidden" onClick={() => setMobileOpen(true)} aria-label={shellT("sidebar.open")}>{shellT("sidebar.menu")}</Button>
+            <div className="min-w-0 flex-1">
+              <div className="truncate text-sm font-semibold">{meta.title}</div>
+              <Breadcrumbs items={meta.breadcrumbs} />
             </div>
-          </header>
+            <div className="flex items-center gap-2">
+              <LanguageSwitcher />
+              <ThemeToggle
+                initialTheme={initialTheme}
+                label={shellT("theme.toggle")}
+                darkLabel={shellT("theme.dark")}
+                lightLabel={shellT("theme.light")}
+              />
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={() => {
+                  void fetch("/api/auth/logout", { method: "POST" }).finally(() => router.push("/login"));
+                }}
+              >
+                {shellT("account.logout")}
+              </Button>
+            </div>
+          </div>
+        </header>
 
+        <div className="min-h-0 flex-1 overflow-y-auto">
           <main id="content" className="p-4 lg:p-6">
             {children}
           </main>
@@ -216,22 +225,9 @@ export default function DashboardShell({ children, initialTheme }: { children: R
         </div>
       </div>
 
-      {mobileOpen ? (
-        <div className="fixed inset-0 z-40 lg:hidden" role="dialog" aria-modal="true" aria-label={shellT("sidebar.mobileTitle")}>
-          <button type="button" className="absolute inset-0 bg-black/50" onClick={() => setMobileOpen(false)} aria-label={shellT("sidebar.close")} />
-          <aside className="absolute left-0 top-0 h-dvh w-[88vw] max-w-[320px] overflow-y-auto border-r border-fh-border bg-fh-surface p-3 shadow-soft">
-            <div className="mb-4 flex items-center justify-between">
-              <div className="text-base font-semibold">{shellT("brand")}</div>
-              <Button type="button" variant="ghost" onClick={() => setMobileOpen(false)} aria-label={shellT("sidebar.close")}>x</Button>
-            </div>
-            <nav className="space-y-3">
-              {sections.map((section) => (
-                <SidebarSection key={section.title} pathname={pathname} section={section} onNavigate={() => setMobileOpen(false)} />
-              ))}
-            </nav>
-          </aside>
-        </div>
-      ) : null}
+      <Sheet open={mobileOpen} onOpenChange={setMobileOpen} title={shellT("sidebar.mobileTitle")}>
+        <SidebarNav pathname={pathname} sections={sections} onNavigate={() => setMobileOpen(false)} />
+      </Sheet>
     </div>
   );
 }

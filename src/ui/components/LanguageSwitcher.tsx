@@ -1,6 +1,5 @@
-﻿"use client";
+"use client";
 
-import * as React from "react";
 import { useLocale } from "next-intl";
 
 const SUPPORTED = [
@@ -11,6 +10,12 @@ const SUPPORTED = [
 ] as const;
 
 type Lang = (typeof SUPPORTED)[number]["key"];
+
+export const LANGUAGE_SWITCHER_CLASSNAME = [
+  "h-10 rounded-xl border border-fh-border bg-fh-surface px-3 text-sm",
+  "text-fh-text shadow-sm transition",
+  "hover:bg-fh-surface-2 focus:outline-none focus:ring-2 focus:ring-fh-focus/60",
+].join(" ");
 
 function normalizeLang(raw: string): Lang {
   const lower = raw.toLowerCase();
@@ -40,14 +45,10 @@ export function LanguageSwitcher() {
 
         window.location.reload();
       }}
-      className={[
-        "h-10 rounded-xl border border-white/10 bg-white/5 px-3 text-sm",
-        "text-white/90 shadow-sm backdrop-blur-sm transition",
-        "hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/20",
-      ].join(" ")}
+      className={LANGUAGE_SWITCHER_CLASSNAME}
     >
       {SUPPORTED.map((x) => (
-        <option key={x.key} value={x.key} className="bg-[#0D1B2A] text-white">
+        <option key={x.key} value={x.key} className="bg-fh-surface text-fh-text">
           {x.label}
         </option>
       ))}
