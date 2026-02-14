@@ -99,14 +99,22 @@
   "shell": {
     "skipToContent": "Skip to content",
     "sidebar": {
-      "toggleAria": "Toggle sidebar"
+      "toggleAria": "Toggle sidebar",
+      "open": "Open sidebar",
+      "close": "Close sidebar",
+      "mobileTitle": "Navigation",
+      "menu": "Menu"
     },
     "section": {
       "finances": "Finances",
       "subsidies": "Subsidies",
       "operations": "Operations",
       "account": "Account",
-      "admin": "Admin"
+      "admin": "Admin",
+      "home": "Home",
+      "taxes": "Taxes",
+      "leadgen": "Leadgen",
+      "dev": "Dev tools"
     },
     "nav": {
       "overview": "Overview",
@@ -116,7 +124,12 @@
       "cases": "Cases",
       "profile": "Profile",
       "uikit": "UI Kit",
-      "admin": "Admin"
+      "admin": "Admin",
+      "home": "Home",
+      "taxes": "Taxes Pro",
+      "mortgage": "Mortgage",
+      "credit": "Credit",
+      "insurance": "Insurance"
     },
     "search": {
       "placeholder": "Search or run...",
@@ -164,7 +177,22 @@
       "profile": "Profile",
       "admin": "Admin",
       "detail": "Detail",
-      "new": "New"
+      "new": "New",
+      "taxes": "Taxes Pro",
+      "mortgage": "Mortgage",
+      "credit": "Credit",
+      "insurance": "Insurance"
+    },
+    "theme": {
+      "toggle": "Toggle theme",
+      "dark": "Dark",
+      "light": "Light"
+    },
+    "brand": "FinHub",
+    "version": "v1",
+    "footer": {
+      "privacy": "Privacy",
+      "terms": "Terms"
     }
   },
   "finances": {
@@ -256,6 +284,31 @@
         "errorTitle": "We could not load finances",
         "errorBody": "Please retry in a moment.",
         "retry": "Retry"
+      },
+      "hero": {
+        "eyebrow": "Personal finance",
+        "title": "Financial command center",
+        "subtitle": "Live view for {month}"
+      },
+      "range": {
+        "month": "Month",
+        "quarter": "Quarter",
+        "ytd": "YTD"
+      },
+      "quick": {
+        "addTransaction": "Add transaction",
+        "uploadReceipt": "Upload receipt",
+        "createBudget": "Create budget",
+        "setGoal": "Set goal"
+      },
+      "insights": {
+        "title": "Insights",
+        "topCategory": "Top category",
+        "anomalies": "Anomalies",
+        "upcomingPayments": "Upcoming payments",
+        "noData": "Not enough data yet",
+        "flaggedCount": "{count} items need review",
+        "upcomingCount": "{count} upcoming payments detected"
       }
     },
     "transactions": {
@@ -288,7 +341,8 @@
         "actions": "Actions",
         "open": "Open",
         "statusAria": "Update status",
-        "saving": "Saving..."
+        "saving": "Saving...",
+        "view": "View"
       },
       "status": {
         "pending": "Pending",
@@ -397,6 +451,28 @@
           "month": "Ledger month",
           "count": "Transactions"
         }
+      },
+      "filters": {
+        "search": "Search",
+        "searchPlaceholder": "Search merchant, note or category",
+        "status": "Status",
+        "category": "Category",
+        "sort": "Sort",
+        "sortDate": "Date",
+        "sortAmount": "Amount",
+        "sortMerchant": "Merchant",
+        "all": "All"
+      },
+      "pagination": {
+        "page": "Page {page} of {totalPages}",
+        "prev": "Previous",
+        "next": "Next"
+      },
+      "drawer": {
+        "title": "Transaction details",
+        "close": "Close",
+        "note": "Note",
+        "openFull": "Open full detail"
       }
     },
     "newTransaction": {

@@ -33,6 +33,8 @@ type KpiMetric = {
   trend?: "positive" | "negative";
 };
 
+type RangeKey = "month" | "quarter" | "ytd";
+
 const STATUS_VARIANTS: Record<BudgetStatus, "success" | "warning" | "danger"> = {
   ok: "success",
   warn: "warning",
@@ -238,6 +240,7 @@ export default function FinancesOverviewClient({ initialMonth }: { initialMonth:
   const [bootstrap, setBootstrap] = useState<FinancesBootstrap | null>(null);
   const [ledger, setLedger] = useState<FinancesLedgerResponse | null>(null);
   const [reloadKey, setReloadKey] = useState(0);
+  const [range, setRange] = useState<RangeKey>("month");
 
   const retry = useCallback(() => {
     setReloadKey((prev) => prev + 1);
@@ -351,6 +354,19 @@ export default function FinancesOverviewClient({ initialMonth }: { initialMonth:
 
   const inboxRows = useMemo(() => transactions.slice(0, 8), [transactions]);
   const burndownPoints = useMemo(() => buildBurndownPoints(transactions), [transactions]);
+  const insights = useMemo(() => {
+    const topExpense = categories
+      .map((category) => {
+        const spent = transactions
+          .filter((tx) => tx.categoryId === category.id && tx.amountCents < 0)
+          .reduce((sum, tx) => sum + Math.abs(tx.amountCents), 0);
+        return { label: category.label, spent };
+      })
+      .sort((a, b) => b.spent - a.spent)[0];
+    const flagged = transactions.filter((tx) => tx.status !== "approved").length;
+    const upcoming = transactions.filter((tx) => tx.amountCents < 0).slice(0, 3).length;
+    return { topExpense, flagged, upcoming };
+  }, [categories, transactions]);
 
   return (
     <div className="space-y-6">
@@ -363,6 +379,42 @@ export default function FinancesOverviewClient({ initialMonth }: { initialMonth:
           </Button>
         </Card>
       ) : null}
+
+      <Card className="space-y-4">
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <div className="text-xs uppercase tracking-wide text-fh-muted">{t("hero.eyebrow")}</div>
+            <div className="text-2xl font-semibold tracking-tight">{t("hero.title")}</div>
+            <div className="text-sm text-fh-muted">{t("hero.subtitle", { month: monthLabel })}</div>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {(["month", "quarter", "ytd"] as const).map((key) => (
+              <Button
+                key={key}
+                type="button"
+                variant={range === key ? "primary" : "secondary"}
+                onClick={() => setRange(key)}
+              >
+                {t(`range.${key}`)}
+              </Button>
+            ))}
+          </div>
+        </div>
+        <div className="grid grid-cols-2 gap-2 lg:grid-cols-4">
+          <Link className="rounded-xl border border-fh-border bg-fh-surface-2 px-3 py-2 text-sm hover:bg-fh-surface" href="/app/finances/transactions/new">
+            {t("quick.addTransaction")}
+          </Link>
+          <Link className="rounded-xl border border-fh-border bg-fh-surface-2 px-3 py-2 text-sm hover:bg-fh-surface" href="/app/documents">
+            {t("quick.uploadReceipt")}
+          </Link>
+          <Link className="rounded-xl border border-fh-border bg-fh-surface-2 px-3 py-2 text-sm hover:bg-fh-surface" href="/app/finances/transactions">
+            {t("quick.createBudget")}
+          </Link>
+          <Link className="rounded-xl border border-fh-border bg-fh-surface-2 px-3 py-2 text-sm hover:bg-fh-surface" href="/app/finances/transactions">
+            {t("quick.setGoal")}
+          </Link>
+        </div>
+      </Card>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {state === "loading"
@@ -496,6 +548,25 @@ export default function FinancesOverviewClient({ initialMonth }: { initialMonth:
               formatCurrency={(value) => formatCurrencyFromEur(locale, value)}
             />
           )}
+          <Card>
+            <div className="text-sm font-semibold">{t("insights.title")}</div>
+            <div className="mt-3 space-y-3">
+              <div className="rounded-xl border border-fh-border bg-fh-surface-2 p-3">
+                <div className="text-xs text-fh-muted">{t("insights.topCategory")}</div>
+                <div className="mt-1 text-sm font-medium">
+                  {insights.topExpense ? insights.topExpense.label : t("insights.noData")}
+                </div>
+              </div>
+              <div className="rounded-xl border border-fh-border bg-fh-surface-2 p-3">
+                <div className="text-xs text-fh-muted">{t("insights.anomalies")}</div>
+                <div className="mt-1 text-sm font-medium">{t("insights.flaggedCount", { count: insights.flagged })}</div>
+              </div>
+              <div className="rounded-xl border border-fh-border bg-fh-surface-2 p-3">
+                <div className="text-xs text-fh-muted">{t("insights.upcomingPayments")}</div>
+                <div className="mt-1 text-sm font-medium">{t("insights.upcomingCount", { count: insights.upcoming })}</div>
+              </div>
+            </div>
+          </Card>
         </div>
       </div>
 

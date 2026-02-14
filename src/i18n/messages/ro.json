@@ -99,14 +99,22 @@
   "shell": {
     "skipToContent": "Sari la conținut",
     "sidebar": {
-      "toggleAria": "Comut bara lateral"
+      "toggleAria": "Comut bara lateral",
+      "open": "Deschide bara laterala",
+      "close": "Inchide bara laterala",
+      "mobileTitle": "Navigare",
+      "menu": "Meniu"
     },
     "section": {
       "finances": "Finanțe",
       "subsidies": "Subvenții",
       "operations": "Operațiuni",
       "account": "Cont",
-      "admin": "Admin"
+      "admin": "Admin",
+      "home": "Acasa",
+      "taxes": "Taxe",
+      "leadgen": "Leadgen",
+      "dev": "Instrumente dev"
     },
     "nav": {
       "overview": "Prezentare general",
@@ -116,7 +124,12 @@
       "cases": "Dosare",
       "profile": "Profil",
       "uikit": "UI Kit",
-      "admin": "Admin"
+      "admin": "Admin",
+      "home": "Acasa",
+      "taxes": "Taxes Pro",
+      "mortgage": "Ipoteca",
+      "credit": "Credit",
+      "insurance": "Asigurari"
     },
     "search": {
       "placeholder": "Caut sau execut...",
@@ -164,7 +177,22 @@
       "subsidyCheckout": "Plată subvenție",
       "subsidyDetail": "Detalii subvenție",
       "subsidyResult": "Rezultat subvenție",
-      "subsidyWizard": "Asistent subvenție"
+      "subsidyWizard": "Asistent subvenție",
+      "taxes": "Taxes Pro",
+      "mortgage": "Ipoteca",
+      "credit": "Credit",
+      "insurance": "Asigurari"
+    },
+    "theme": {
+      "toggle": "Schimba tema",
+      "dark": "Inchis",
+      "light": "Deschis"
+    },
+    "brand": "FinHub",
+    "version": "v1",
+    "footer": {
+      "privacy": "Confidentialitate",
+      "terms": "Termeni"
     }
   },
   "finances": {
@@ -256,6 +284,31 @@
         "errorTitle": "Nu s-au putut încărca finanțele",
         "errorBody": "Încearcă din nou în câteva momente.",
         "retry": "Reîncearcă"
+      },
+      "hero": {
+        "eyebrow": "Finante personale",
+        "title": "Centru financiar",
+        "subtitle": "Vizualizare live pentru {month}"
+      },
+      "range": {
+        "month": "Luna",
+        "quarter": "Trimestru",
+        "ytd": "YTD"
+      },
+      "quick": {
+        "addTransaction": "Adauga tranzactie",
+        "uploadReceipt": "Incarca bon",
+        "createBudget": "Creeaza buget",
+        "setGoal": "Seteaza obiectiv"
+      },
+      "insights": {
+        "title": "Insight-uri",
+        "topCategory": "Categoria principala",
+        "anomalies": "Anomalii",
+        "upcomingPayments": "Plati viitoare",
+        "noData": "Date insuficiente",
+        "flaggedCount": "{count} tranzactii necesita verificare",
+        "upcomingCount": "{count} plati viitoare detectate"
       }
     },
     "transactions": {
@@ -288,7 +341,8 @@
         "actions": "Acțiuni",
         "open": "Deschide",
         "statusAria": "Actualizeaz statusul",
-        "saving": "Se salveaz..."
+        "saving": "Se salveaz...",
+        "view": "Vezi"
       },
       "status": {
         "pending": "n a\"teptare",
@@ -397,6 +451,28 @@
           "month": "Luna ledger",
           "count": "Tranzacții"
         }
+      },
+      "filters": {
+        "search": "Cauta",
+        "searchPlaceholder": "Cauta comerciant, nota sau categorie",
+        "status": "Status",
+        "category": "Categorie",
+        "sort": "Sortare",
+        "sortDate": "Data",
+        "sortAmount": "Suma",
+        "sortMerchant": "Comerciant",
+        "all": "Toate"
+      },
+      "pagination": {
+        "page": "Pagina {page} din {totalPages}",
+        "prev": "Anterior",
+        "next": "Urmator"
+      },
+      "drawer": {
+        "title": "Detalii tranzactie",
+        "close": "Inchide",
+        "note": "Nota",
+        "openFull": "Deschide detaliu complet"
       }
     },
     "newTransaction": {

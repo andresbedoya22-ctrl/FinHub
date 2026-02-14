@@ -121,30 +121,30 @@ function byPathname(pathname: string, shellT: TranslateFn, subsT: TranslateFn): 
 
   // Taxes + Leadgen verticales
   if (pathname === "/app/taxes") {
-    return mk("Taxes Pro", [
+    return mk(shellT("route.taxes"), [
       { href: "/app/finances", label: shellT("route.finances") },
-      { href: "/app/taxes", label: "Taxes Pro" },
+      { href: "/app/taxes", label: shellT("route.taxes") },
     ]);
   }
 
   if (pathname === "/app/mortgage") {
-    return mk("Mortgage", [
+    return mk(shellT("route.mortgage"), [
       { href: "/app/finances", label: shellT("route.finances") },
-      { href: "/app/mortgage", label: "Mortgage" },
+      { href: "/app/mortgage", label: shellT("route.mortgage") },
     ]);
   }
 
   if (pathname === "/app/credit") {
-    return mk("Credit", [
+    return mk(shellT("route.credit"), [
       { href: "/app/finances", label: shellT("route.finances") },
-      { href: "/app/credit", label: "Credit" },
+      { href: "/app/credit", label: shellT("route.credit") },
     ]);
   }
 
   if (pathname === "/app/insurance") {
-    return mk("Insurance", [
+    return mk(shellT("route.insurance"), [
       { href: "/app/finances", label: shellT("route.finances") },
-      { href: "/app/insurance", label: "Insurance" },
+      { href: "/app/insurance", label: shellT("route.insurance") },
     ]);
   }
 
@@ -214,5 +214,4 @@ export function getDashboardRouteMeta(pathname: string, shellT: TranslateFn, sub
 export function getRouteMeta(pathname: string, shellT: TranslateFn, subsT: TranslateFn): RouteMeta {
   return byPathname(pathname, shellT, subsT);
 }
-
 

@@ -99,14 +99,22 @@
   "shell": {
     "skipToContent": "Saltar al contenido",
     "sidebar": {
-      "toggleAria": "Alternar barra lateral"
+      "toggleAria": "Alternar barra lateral",
+      "open": "Abrir menu lateral",
+      "close": "Cerrar menu lateral",
+      "mobileTitle": "Navegacion",
+      "menu": "Menu"
     },
     "section": {
       "finances": "Finanzas",
       "subsidies": "Subsidios",
       "operations": "Operaciones",
       "account": "Cuenta",
-      "admin": "Admin"
+      "admin": "Admin",
+      "home": "Inicio",
+      "taxes": "Impuestos",
+      "leadgen": "Leadgen",
+      "dev": "Herramientas dev"
     },
     "nav": {
       "overview": "Resumen",
@@ -116,7 +124,12 @@
       "cases": "Casos",
       "profile": "Perfil",
       "uikit": "UI Kit",
-      "admin": "Admin"
+      "admin": "Admin",
+      "home": "Inicio",
+      "taxes": "Taxes Pro",
+      "mortgage": "Hipotecas",
+      "credit": "Creditos",
+      "insurance": "Seguros"
     },
     "search": {
       "placeholder": "Buscar o ejecutar...",
@@ -164,7 +177,22 @@
       "profile": "Perfil",
       "admin": "Admin",
       "detail": "Detalle",
-      "new": "Nueva"
+      "new": "Nueva",
+      "taxes": "Taxes Pro",
+      "mortgage": "Hipotecas",
+      "credit": "Creditos",
+      "insurance": "Seguros"
+    },
+    "theme": {
+      "toggle": "Cambiar tema",
+      "dark": "Oscuro",
+      "light": "Claro"
+    },
+    "brand": "FinHub",
+    "version": "v1",
+    "footer": {
+      "privacy": "Privacidad",
+      "terms": "Terminos"
     }
   },
   "finances": {
@@ -256,6 +284,31 @@
         "errorTitle": "No se pudieron cargar las finanzas",
         "errorBody": "Intenta de nuevo en un momento.",
         "retry": "Reintentar"
+      },
+      "hero": {
+        "eyebrow": "Finanzas personales",
+        "title": "Centro financiero",
+        "subtitle": "Vista en vivo para {month}"
+      },
+      "range": {
+        "month": "Mes",
+        "quarter": "Trimestre",
+        "ytd": "YTD"
+      },
+      "quick": {
+        "addTransaction": "Agregar transaccion",
+        "uploadReceipt": "Subir recibo",
+        "createBudget": "Crear presupuesto",
+        "setGoal": "Definir objetivo"
+      },
+      "insights": {
+        "title": "Insights",
+        "topCategory": "Categoria principal",
+        "anomalies": "Anomalias",
+        "upcomingPayments": "Proximos pagos",
+        "noData": "Aun no hay datos suficientes",
+        "flaggedCount": "{count} movimientos requieren revision",
+        "upcomingCount": "{count} pagos proximos detectados"
       }
     },
     "transactions": {
@@ -288,7 +341,8 @@
         "actions": "Acciones",
         "open": "Abrir",
         "statusAria": "Actualizar estado",
-        "saving": "Guardando..."
+        "saving": "Guardando...",
+        "view": "Ver"
       },
       "status": {
         "pending": "Pendiente",
@@ -397,6 +451,28 @@
           "month": "Mes del ledger",
           "count": "Transacciones"
         }
+      },
+      "filters": {
+        "search": "Buscar",
+        "searchPlaceholder": "Buscar comercio, nota o categoria",
+        "status": "Estado",
+        "category": "Categoria",
+        "sort": "Orden",
+        "sortDate": "Fecha",
+        "sortAmount": "Monto",
+        "sortMerchant": "Comercio",
+        "all": "Todos"
+      },
+      "pagination": {
+        "page": "Pagina {page} de {totalPages}",
+        "prev": "Anterior",
+        "next": "Siguiente"
+      },
+      "drawer": {
+        "title": "Detalle de transaccion",
+        "close": "Cerrar",
+        "note": "Nota",
+        "openFull": "Abrir detalle completo"
       }
     },
     "newTransaction": {

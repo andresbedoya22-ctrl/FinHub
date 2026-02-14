@@ -99,14 +99,22 @@
   "shell": {
     "skipToContent": "Przejdź do tre:ci",
     "sidebar": {
-      "toggleAria": "Prze&cz pasek boczny"
+      "toggleAria": "Prze&cz pasek boczny",
+      "open": "Otw?rz pasek boczny",
+      "close": "Zamknij pasek boczny",
+      "mobileTitle": "Nawigacja",
+      "menu": "Menu"
     },
     "section": {
       "finances": "Finanse",
       "subsidies": "Dotacje",
       "operations": "Operacje",
       "account": "Konto",
-      "admin": "Admin"
+      "admin": "Admin",
+      "home": "Start",
+      "taxes": "Podatki",
+      "leadgen": "Leadgen",
+      "dev": "Narz?dzia dev"
     },
     "nav": {
       "overview": "Przegl&d",
@@ -116,7 +124,12 @@
       "cases": "Sprawy",
       "profile": "Profil",
       "uikit": "UI Kit",
-      "admin": "Admin"
+      "admin": "Admin",
+      "home": "Start",
+      "taxes": "Taxes Pro",
+      "mortgage": "Hipoteka",
+      "credit": "Kredyt",
+      "insurance": "Ubezpieczenia"
     },
     "search": {
       "placeholder": "Szukaj lub wykonaj...",
@@ -164,7 +177,22 @@
       "subsidyCheckout": "Płatność dopłaty",
       "subsidyDetail": "Szczegóły dopłaty",
       "subsidyResult": "Wynik dopłaty",
-      "subsidyWizard": "Kreator dopłaty"
+      "subsidyWizard": "Kreator dopłaty",
+      "taxes": "Taxes Pro",
+      "mortgage": "Hipoteka",
+      "credit": "Kredyt",
+      "insurance": "Ubezpieczenia"
+    },
+    "theme": {
+      "toggle": "Prze??cz motyw",
+      "dark": "Ciemny",
+      "light": "Jasny"
+    },
+    "brand": "FinHub",
+    "version": "v1",
+    "footer": {
+      "privacy": "Prywatnosc",
+      "terms": "Regulamin"
     }
   },
   "finances": {
@@ -257,6 +285,31 @@
         "errorTitle": "Nie można załadować finansów",
         "errorBody": "Spróbuj ponownie za chwilę.",
         "retry": "Spróbuj ponownie"
+      },
+      "hero": {
+        "eyebrow": "Finanse osobiste",
+        "title": "Centrum finansowe",
+        "subtitle": "Widok na ?ywo dla {month}"
+      },
+      "range": {
+        "month": "Miesi?c",
+        "quarter": "Kwarta?",
+        "ytd": "YTD"
+      },
+      "quick": {
+        "addTransaction": "Dodaj transakcj?",
+        "uploadReceipt": "Prze?lij paragon",
+        "createBudget": "Utw?rz bud?et",
+        "setGoal": "Ustaw cel"
+      },
+      "insights": {
+        "title": "Wnioski",
+        "topCategory": "Najwi?ksza kategoria",
+        "anomalies": "Anomalie",
+        "upcomingPayments": "Nadchodz?ce p?atno?ci",
+        "noData": "Za ma?o danych",
+        "flaggedCount": "{count} pozycji wymaga sprawdzenia",
+        "upcomingCount": "Wykryto {count} nadchodz?ce p?atno?ci"
       }
     },
     "transactions": {
@@ -290,7 +343,8 @@
         "actions": "Akcje",
         "open": "Otwórz",
         "statusAria": "Zaktualizuj status",
-        "saving": "Zapisywanie..."
+        "saving": "Zapisywanie...",
+        "view": "Podgl?d"
       },
       "status": {
         "pending": "Oczekuj&ce",
@@ -399,6 +453,28 @@
           "month": "Miesi&c ledgera",
           "count": "Transakcje"
         }
+      },
+      "filters": {
+        "search": "Szukaj",
+        "searchPlaceholder": "Szukaj sprzedawcy, notatki lub kategorii",
+        "status": "Status",
+        "category": "Kategoria",
+        "sort": "Sortowanie",
+        "sortDate": "Data",
+        "sortAmount": "Kwota",
+        "sortMerchant": "Sprzedawca",
+        "all": "Wszystko"
+      },
+      "pagination": {
+        "page": "Strona {page} z {totalPages}",
+        "prev": "Poprzednia",
+        "next": "Nast?pna"
+      },
+      "drawer": {
+        "title": "Szczeg??y transakcji",
+        "close": "Zamknij",
+        "note": "Notatka",
+        "openFull": "Otw?rz pe?ny widok"
       }
     },
     "newTransaction": {
