@@ -42,3 +42,7 @@ Atajos habilitados:
 - El primer render cliente debe usar el mismo snapshot que SSR (locale, mes inicial, tema).
 - Si cambias idioma o tema, aplica el cambio despues de hidratar, sin mutar el arbol raiz durante hydration.
 - Si aparece mismatch solo en navegador normal y no en incognito, revisar extensiones que inyectan DOM.
+- Validacion rapida recomendada:
+  1. Abrir `http://localhost:3000/app/finances` en ventana normal.
+  2. Repetir en incognito.
+  3. Si solo falla en normal, desactivar extensiones de inyeccion DOM (traductores, bloqueadores, asistentes).
