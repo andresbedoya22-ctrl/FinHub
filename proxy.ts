@@ -1,34 +1,31 @@
 import { NextRequest, NextResponse } from "next/server";
 import { updateSession } from "./src/lib/supabase/middleware";
 
+function setSecurityHeaders(response: NextResponse) {
+  response.headers.set("X-Content-Type-Options", "nosniff");
+  response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+  response.headers.set(
+    "Permissions-Policy",
+    "camera=(), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=()"
+  );
+  response.headers.set("Content-Security-Policy", "frame-ancestors 'none'");
+}
+
 export async function proxy(request: NextRequest) {
-  const pathname = request.nextUrl.pathname;
-
   const response = await updateSession(request);
+  setSecurityHeaders(response);
 
-  const isProtected = pathname.startsWith("/app") || pathname.startsWith("/admin");
-  const isAuthRoute = pathname.startsWith("/login") || pathname.startsWith("/register");
-
-  if (!isProtected && !isAuthRoute) return response;
-
-  const hasAuthCookie = request.cookies.getAll().some((c) => c.name.startsWith("sb-"));
-
-  if (isProtected && !hasAuthCookie) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/login";
-    url.searchParams.set("next", pathname);
-    return NextResponse.redirect(url);
+  // Auth gating happens in the dashboard layout; middleware should not rewrite
+  // app routes to avoid route-resolution drift between dev/build.
+  if (process.env.NODE_ENV === "development") {
+    const pathname = request.nextUrl.pathname;
+    if (pathname.startsWith("/app/")) {
+      console.info("[proxy] pass-through", { pathname });
+    }
   }
-
-  if (isAuthRoute && hasAuthCookie) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/app/cases";
-    return NextResponse.redirect(url);
-  }
-
   return response;
 }
 
 export const config = {
-  matcher: ["/app/:path*", "/admin/:path*", "/login", "/register"],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml).*)"],
 };
