@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
 
 import { Button } from "@/ui/components/Button";
 import { Card } from "@/ui/components/Card";
@@ -24,6 +25,8 @@ import { trackProductEvent } from "@/features/observability/productTelemetry";
 
 type WizardStep = "buyers" | "buyers_data" | "result" | "contact" | "done";
 
+type TimelineValue = "0_3" | "3_6" | "6_12" | "12_plus";
+
 function euro(value: number): string {
   return new Intl.NumberFormat("nl-NL", {
     style: "currency",
@@ -42,6 +45,10 @@ function buildEmptyBuyer(): MortgageBuyerInput {
 }
 
 export function MortgageCalculatorClient() {
+  const t = useTranslations("leadgen.mortgage");
+  const common = useTranslations("leadgen.common");
+  const validationT = useTranslations("leadgen.validation");
+  const locale = useLocale();
   const identity = useLeadIdentity();
 
   const [step, setStep] = useState<WizardStep>("buyers");
@@ -49,7 +56,7 @@ export function MortgageCalculatorClient() {
   const [activeBuyerIdx, setActiveBuyerIdx] = useState(0);
   const [buyers, setBuyers] = useState<MortgageBuyerInput[]>([buildEmptyBuyer()]);
   const [hasOwnFunds, setHasOwnFunds] = useState(true);
-  const [timelineMonths, setTimelineMonths] = useState<"0_3" | "3_6" | "6_12" | "12_plus">("3_6");
+  const [timelineMonths, setTimelineMonths] = useState<TimelineValue>("3_6");
 
   const [contact, setContact] = useState<LeadContact>({
     fullName: "",
@@ -117,6 +124,14 @@ export function MortgageCalculatorClient() {
     setStep("buyers");
   }
 
+  function validateContact(): string | null {
+    if (identity.loggedIn) return null;
+    if (contact.fullName.trim().length < 2) return validationT("fullName");
+    if (!contact.email.includes("@") || contact.email.trim().length < 6) return validationT("email");
+    if (!contact.consent) return validationT("consent");
+    return null;
+  }
+
   async function persistLeadAndCase() {
     if (busy) return;
     setBusy(true);
@@ -126,6 +141,9 @@ export function MortgageCalculatorClient() {
       const annualIncome = estimate.annualHouseholdIncome;
       const selectedBuyers = buyers.slice(0, buyersCount);
       const employmentStatus = selectedBuyers.some((b) => b.selfEmployed) ? "self_employed" : "employed";
+
+      const contactValidation = validateContact();
+      if (contactValidation) throw new Error(contactValidation);
 
       if (identity.loggedIn) {
         const cid = caseId ?? (await startLeadgenCase("mortgage"));
@@ -138,7 +156,7 @@ export function MortgageCalculatorClient() {
           timelineMonths,
           hasPartner: buyersCount > 1,
           notes: JSON.stringify({
-            calculator: "mortgage_multi_step_v3",
+            calculator: "mortgage_multi_step_v4",
             buyersCount,
             buyers: selectedBuyers,
             hasOwnFunds,
@@ -149,16 +167,15 @@ export function MortgageCalculatorClient() {
         const saved = await submitLeadgenCase("mortgage", cid, payload);
         setCaseId(saved);
       } else {
-        const fullName = contact.fullName.trim();
-        const email = contact.email.trim().toLowerCase();
-        if (!fullName || !email || !contact.consent) {
-          throw new Error("Completa nombre, email y consentimiento RGPD para continuar.");
-        }
-
         const leadId = await createMarketingLead({
-          contact: { fullName, email, phone: contact.phone?.trim() || "", consent: contact.consent },
+          contact: {
+            fullName: contact.fullName.trim(),
+            email: contact.email.trim().toLowerCase(),
+            phone: contact.phone?.trim() || "",
+            consent: contact.consent,
+          },
           interestedIn: ["mortgage"],
-          locale: "es",
+          locale,
         });
         setMarketingLeadId(leadId);
       }
@@ -166,7 +183,7 @@ export function MortgageCalculatorClient() {
       trackProductEvent("product.leadgen.intake.submit", { route: "/app/mortgage" });
       setStep("done");
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : "No se pudo completar la solicitud hipotecaria.");
+      setError(e instanceof Error ? e.message : common("submitError"));
     } finally {
       setBusy(false);
     }
@@ -174,18 +191,15 @@ export function MortgageCalculatorClient() {
 
   return (
     <Screen className="space-y-6">
-      <Header
-        title="Hipoteca Pro"
-        subtitle="Calculadora paso a paso inspirada en Domek: clara, rapida y orientada a conversion."
-      />
+      <Header title={t("title")} subtitle={t("subtitle")} />
       {process.env.NODE_ENV === "development" ? (
         <div className="inline-flex rounded-full border border-fh-primary/40 bg-fh-primary/10 px-3 py-1 text-xs font-semibold text-fh-primary">
-          Mortgage Wizard v1
+          {t("devMarker")}
         </div>
       ) : null}
 
       <Card className="space-y-2">
-        <div className="text-xs uppercase tracking-wide text-fh-muted">Progreso</div>
+        <div className="text-xs uppercase tracking-wide text-fh-muted">{common("progress")}</div>
         <div className="h-2 w-full rounded-full bg-fh-surface-2">
           <div
             className="h-2 rounded-full bg-fh-primary transition-all"
@@ -193,13 +207,13 @@ export function MortgageCalculatorClient() {
           />
         </div>
         <div className="text-xs text-fh-muted">
-          Paso {wizardProgress.current} de {wizardProgress.total}
+          {common("stepOf", { current: wizardProgress.current, total: wizardProgress.total })}
         </div>
       </Card>
 
       {step === "buyers" ? (
         <Card className="space-y-4">
-          <div className="text-sm font-semibold">Cuantos compradores participan?</div>
+          <div className="text-sm font-semibold">{t("buyers.question")}</div>
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
             {[1, 2, 3, 4].map((count) => (
               <button
@@ -211,7 +225,7 @@ export function MortgageCalculatorClient() {
                 }}
                 className={`rounded-xl border px-3 py-3 text-sm font-semibold ${buyersCount === count ? "border-fh-primary bg-fh-primary/10" : "border-fh-border bg-fh-surface"}`}
               >
-                {count} comprador{count > 1 ? "es" : ""}
+                {count}
               </button>
             ))}
           </div>
@@ -222,7 +236,7 @@ export function MortgageCalculatorClient() {
                 setStep("buyers_data");
               }}
             >
-              Continuar
+              {common("continue")}
             </Button>
           </div>
         </Card>
@@ -230,11 +244,11 @@ export function MortgageCalculatorClient() {
 
       {step === "buyers_data" ? (
         <Card className="space-y-4">
-          <div className="text-sm font-semibold">Datos del comprador {activeBuyerIdx + 1}</div>
+          <div className="text-sm font-semibold">{t("buyers.dataTitle", { index: activeBuyerIdx + 1 })}</div>
 
           <div className="grid gap-3 md:grid-cols-2">
             <div className="space-y-2 md:col-span-2">
-              <label className="text-xs uppercase text-fh-muted">Ingresos brutos</label>
+              <label className="text-xs uppercase text-fh-muted">{t("buyers.grossIncome")}</label>
               <div className="flex gap-2">
                 <input
                   type="number"
@@ -251,7 +265,7 @@ export function MortgageCalculatorClient() {
                       onClick={() => updateBuyer(activeBuyerIdx, { incomePeriod: period })}
                       className={`rounded-lg px-3 py-1 text-xs ${activeBuyer.incomePeriod === period ? "bg-fh-primary text-fh-primaryFg" : "text-fh-muted"}`}
                     >
-                      {period === "monthly" ? "Mensual" : "Anual"}
+                      {period === "monthly" ? t("buyers.monthly") : t("buyers.annual")}
                     </button>
                   ))}
                 </div>
@@ -259,7 +273,7 @@ export function MortgageCalculatorClient() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-xs uppercase text-fh-muted">Fecha de nacimiento</label>
+              <label className="text-xs uppercase text-fh-muted">{t("buyers.birthDate")}</label>
               <input
                 type="date"
                 value={activeBuyer.birthDate}
@@ -269,7 +283,7 @@ export function MortgageCalculatorClient() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-xs uppercase text-fh-muted">Tiene empresa?</label>
+              <label className="text-xs uppercase text-fh-muted">{t("buyers.hasCompany")}</label>
               <div className="inline-flex rounded-xl border border-fh-border bg-fh-surface p-1">
                 {[false, true].map((flag) => (
                   <button
@@ -278,7 +292,7 @@ export function MortgageCalculatorClient() {
                     onClick={() => updateBuyer(activeBuyerIdx, { selfEmployed: flag })}
                     className={`rounded-lg px-3 py-1 text-xs ${activeBuyer.selfEmployed === flag ? "bg-fh-primary text-fh-primaryFg" : "text-fh-muted"}`}
                   >
-                    {flag ? "Si" : "No"}
+                    {flag ? common("yes") : common("no")}
                   </button>
                 ))}
               </div>
@@ -290,87 +304,91 @@ export function MortgageCalculatorClient() {
                 checked={hasOwnFunds}
                 onChange={(e) => setHasOwnFunds(e.target.checked)}
               />
-              Tengo fondos propios para gastos de compra
+              {t("buyers.hasOwnFunds")}
             </label>
           </div>
 
           <div className="flex items-center justify-between">
-            <Button variant="ghost" onClick={backFromBuyerData}>Atras</Button>
-            <Button onClick={nextFromBuyerData} disabled={!canContinueBuyerData(activeBuyerIdx)}>Siguiente</Button>
+            <Button variant="ghost" onClick={backFromBuyerData}>{common("back")}</Button>
+            <Button onClick={nextFromBuyerData} disabled={!canContinueBuyerData(activeBuyerIdx)}>{common("next")}</Button>
           </div>
         </Card>
       ) : null}
 
       {step === "result" ? (
         <Card className="space-y-4">
-          <div className="text-sm font-semibold">Resultado estimado</div>
+          <div className="text-sm font-semibold">{t("result.title")}</div>
           <div className="rounded-xl border border-emerald-400/20 bg-emerald-400/10 p-4">
-            <div className="text-xs uppercase text-fh-muted">Capacidad hipotecaria estimada</div>
+            <div className="text-xs uppercase text-fh-muted">{t("result.capacity")}</div>
             <div className="mt-1 text-3xl font-semibold">{euro(estimate.maxMortgage)}</div>
             <div className="mt-1 text-xs text-fh-muted">
-              Basado en {buyersCount} comprador(es), ingresos anuales {euro(estimate.annualHouseholdIncome)} y edad maxima {estimate.oldestAge}.
+              {t("result.meta", {
+                buyers: buyersCount,
+                annualIncome: euro(estimate.annualHouseholdIncome),
+                oldestAge: estimate.oldestAge,
+              })}
             </div>
           </div>
 
           <div className="grid gap-3 md:grid-cols-3">
-            <div className="rounded-xl border border-fh-border bg-fh-surface p-3 text-sm">Hasta 0.75% descuento negociado con partners.</div>
-            <div className="rounded-xl border border-fh-border bg-fh-surface p-3 text-sm">Asesoria en tu idioma durante todo el proceso.</div>
-            <div className="rounded-xl border border-fh-border bg-fh-surface p-3 text-sm">Respuesta inicial en menos de 24h laborables.</div>
+            <div className="rounded-xl border border-fh-border bg-fh-surface p-3 text-sm">{t("result.benefit1")}</div>
+            <div className="rounded-xl border border-fh-border bg-fh-surface p-3 text-sm">{t("result.benefit2")}</div>
+            <div className="rounded-xl border border-fh-border bg-fh-surface p-3 text-sm">{t("result.benefit3")}</div>
           </div>
 
           <div className="rounded-xl border border-fh-border bg-fh-surface p-3 text-sm text-fh-muted">
-            "Nos ayudaron a cerrar la hipoteca sin papeleo infinito y con claridad en cada paso." - Cliente FinHub
+            {t("result.testimonial")}
           </div>
 
           <div className="space-y-2">
-            <label className="text-xs uppercase text-fh-muted">Cuando quieres comprar?</label>
+            <label className="text-xs uppercase text-fh-muted">{t("result.timelineLabel")}</label>
             <select
               value={timelineMonths}
-              onChange={(e) => setTimelineMonths(e.target.value as "0_3" | "3_6" | "6_12" | "12_plus")}
+              onChange={(e) => setTimelineMonths(e.target.value as TimelineValue)}
               className="w-full rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm"
             >
-              <option value="0_3">0-3 meses</option>
-              <option value="3_6">3-6 meses</option>
-              <option value="6_12">6-12 meses</option>
-              <option value="12_plus">12+ meses</option>
+              <option value="0_3">{t("timeline.0_3")}</option>
+              <option value="3_6">{t("timeline.3_6")}</option>
+              <option value="6_12">{t("timeline.6_12")}</option>
+              <option value="12_plus">{t("timeline.12_plus")}</option>
             </select>
           </div>
 
           <div className="flex items-center justify-between">
-            <Button variant="ghost" onClick={() => setStep("buyers_data")}>Atras</Button>
-            <Button onClick={() => setStep("contact")}>Continuar con asesoria</Button>
+            <Button variant="ghost" onClick={() => setStep("buyers_data")}>{common("back")}</Button>
+            <Button onClick={() => setStep("contact")}>{t("result.cta")}</Button>
           </div>
         </Card>
       ) : null}
 
       {step === "contact" ? (
         <Card className="space-y-4">
-          <div className="text-sm font-semibold">Datos para crear tu lead hipotecario</div>
+          <div className="text-sm font-semibold">{t("contact.title")}</div>
 
-          {identity.loading ? <InfoBox title="Sesion" variant="info">Validando sesion...</InfoBox> : null}
+          {identity.loading ? <InfoBox title={common("session")} variant="info">{common("checkingSession")}</InfoBox> : null}
 
           {!identity.loading && identity.loggedIn ? (
-            <InfoBox title="Usuario autenticado" variant="info">
-              Usaremos automaticamente tu perfil ({identity.email}).
+            <InfoBox title={common("authenticated")} variant="info">
+              {common("reuseIdentity", { email: identity.email })}
             </InfoBox>
           ) : null}
 
           {!identity.loading && !identity.loggedIn ? (
             <div className="grid gap-3 md:grid-cols-2">
               <input
-                placeholder="Nombre y apellidos"
+                placeholder={common("fullName")}
                 value={contact.fullName}
                 onChange={(e) => setContact((prev) => ({ ...prev, fullName: e.target.value }))}
                 className="rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm"
               />
               <input
-                placeholder="Email"
+                placeholder={common("email")}
                 value={contact.email}
                 onChange={(e) => setContact((prev) => ({ ...prev, email: e.target.value }))}
                 className="rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm"
               />
               <input
-                placeholder="Telefono"
+                placeholder={common("phone")}
                 value={contact.phone ?? ""}
                 onChange={(e) => setContact((prev) => ({ ...prev, phone: e.target.value }))}
                 className="rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm md:col-span-2"
@@ -381,21 +399,21 @@ export function MortgageCalculatorClient() {
                   checked={contact.consent}
                   onChange={(e) => setContact((prev) => ({ ...prev, consent: e.target.checked }))}
                 />
-                Acepto el uso de datos segun RGPD para gestionar esta solicitud.
+                {common("consent")}
               </label>
             </div>
           ) : null}
 
           <div className="text-xs text-fh-muted">
-            Al continuar aceptas nuestra politica de privacidad. <Link href="/privacy" className="underline">Ver politica</Link>
+            {common("privacyHint")} <Link href="/privacy" className="underline">{common("privacyLink")}</Link>
           </div>
 
-          {error ? <InfoBox title="Error" variant="danger">{error}</InfoBox> : null}
+          {error ? <InfoBox title={common("error")} variant="danger">{error}</InfoBox> : null}
 
           <div className="flex items-center justify-between">
-            <Button variant="ghost" onClick={() => setStep("result")}>Atras</Button>
+            <Button variant="ghost" onClick={() => setStep("result")}>{common("back")}</Button>
             <Button onClick={() => void persistLeadAndCase()} disabled={busy || identity.loading}>
-              {busy ? "Guardando..." : "Finalizar calculo y crear lead"}
+              {busy ? common("saving") : t("contact.submit")}
             </Button>
           </div>
         </Card>
@@ -403,8 +421,8 @@ export function MortgageCalculatorClient() {
 
       {step === "done" ? (
         <Card className="space-y-3">
-          <InfoBox title="Proceso completado" variant="info">
-            Tu lead hipotecario fue creado y el equipo puede continuar contigo.
+          <InfoBox title={t("done.title")} variant="info">
+            {t("done.body")}
           </InfoBox>
 
           {caseId ? (
@@ -412,17 +430,17 @@ export function MortgageCalculatorClient() {
               href={`/app/cases/${caseId}`}
               className="inline-flex rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm hover:bg-fh-surface-2"
             >
-              Abrir caso {caseId.slice(0, 8)}
+              {t("done.openCase", { id: caseId.slice(0, 8) })}
             </Link>
           ) : null}
 
           {marketingLeadId ? (
-            <div className="text-sm text-fh-muted">Lead CRM: {marketingLeadId.slice(0, 8)}...</div>
+            <div className="text-sm text-fh-muted">{t("done.leadCreated", { id: marketingLeadId.slice(0, 8) })}</div>
           ) : null}
 
           {!identity.loggedIn ? (
-            <InfoBox title="Siguiente paso" variant="warning">
-              Para continuar con documentos y seguimiento de caso, inicia sesion.
+            <InfoBox title={common("nextStep")} variant="warning">
+              {common("loginToContinue")}
             </InfoBox>
           ) : null}
         </Card>

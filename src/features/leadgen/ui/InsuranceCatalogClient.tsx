@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
 
 import { Button } from "@/ui/components/Button";
 import { Card } from "@/ui/components/Card";
@@ -20,88 +21,23 @@ import { trackProductEvent } from "@/features/observability/productTelemetry";
 
 type ProductType = "vehicle" | "home" | "life" | "business";
 
-type InsuranceProduct = {
+type ProductRef = {
   id: string;
-  section: "particular" | "empresa";
+  section: "private" | "business";
   subsection: string;
-  title: string;
-  teaser: string;
-  highlights: string[];
-  coverages: string[];
   productType: ProductType;
+  coverages: string[];
 };
 
-const PRODUCTS: InsuranceProduct[] = [
-  {
-    id: "car",
-    section: "particular",
-    subsection: "Vehiculo",
-    title: "Seguro de coche",
-    teaser: "Ahorra hasta EUR 29/mes y cotiza en menos de 2 minutos.",
-    highlights: ["Aceptamos anos sin siniestros", "Atencion en tu idioma", "Alta online rapida"],
-    coverages: ["OC", "MiniCasco", "AutoCasco", "Asistencia en carretera"],
-    productType: "vehicle",
-  },
-  {
-    id: "moto",
-    section: "particular",
-    subsection: "Vehiculo",
-    title: "Seguro de moto y scooter",
-    teaser: "Proteccion flexible para movilidad diaria.",
-    highlights: ["Contratacion digital", "Comparativa transparente", "Descuento por historial"],
-    coverages: ["Responsabilidad civil", "Robo", "Danos propios"],
-    productType: "vehicle",
-  },
-  {
-    id: "life",
-    section: "particular",
-    subsection: "Vida",
-    title: "Seguro de vida",
-    teaser: "Protege a tu familia con una cuota mensual predecible.",
-    highlights: ["Emision agil", "Cobertura por fallecimiento", "Opcional funeral"],
-    coverages: ["Fallecimiento", "Gastos funerarios", "Asesoria familiar"],
-    productType: "life",
-  },
-  {
-    id: "home",
-    section: "particular",
-    subsection: "Hogar",
-    title: "Paquete hogar",
-    teaser: "Combina hogar, responsabilidad civil y asistencia legal.",
-    highlights: ["Plan para inquilino", "Cobertura de bienes", "Soporte de siniestros"],
-    coverages: ["Responsabilidad civil", "Accidentes", "Contenido", "Asistencia legal", "Viaje"],
-    productType: "home",
-  },
-  {
-    id: "avb",
-    section: "empresa",
-    subsection: "Responsabilidad",
-    title: "AVB empresas",
-    teaser: "Blindaje legal para actividad profesional y operativa.",
-    highlights: ["Cotizacion rapida", "Coberturas modulares", "Asistencia de reclamaciones"],
-    coverages: ["Responsabilidad civil", "Gastos legales", "Danos a terceros"],
-    productType: "business",
-  },
-  {
-    id: "zelf",
-    section: "empresa",
-    subsection: "Autonomos",
-    title: "Accidentes autonomos",
-    teaser: "Mantiene ingresos ante incapacidad temporal.",
-    highlights: ["Para ZZP", "Sin papeleo", "Activacion online"],
-    coverages: ["Accidente laboral", "Incapacidad", "Pago diario"],
-    productType: "business",
-  },
-  {
-    id: "tools",
-    section: "empresa",
-    subsection: "Operaciones",
-    title: "Herramientas en vehiculo",
-    teaser: "Proteccion para herramientas y material de montaje.",
-    highlights: ["Robo y danos", "Extensiones por actividad", "Gestion digital"],
-    coverages: ["Herramientas", "Material instalado", "Transporte"],
-    productType: "business",
-  },
+const PRODUCTS: ProductRef[] = [
+  { id: "car", section: "private", subsection: "vehicle", productType: "vehicle", coverages: ["oc", "miniCasco", "autoCasco", "roadside"] },
+  { id: "motorbike", section: "private", subsection: "vehicle", productType: "vehicle", coverages: ["liability", "theft", "damage"] },
+  { id: "life", section: "private", subsection: "life", productType: "life", coverages: ["death", "funeral", "familySupport"] },
+  { id: "home", section: "private", subsection: "home", productType: "home", coverages: ["liability", "accidents", "contents", "legal", "travel"] },
+  { id: "businessVehicle", section: "business", subsection: "vehicle", productType: "business", coverages: ["liability", "damage", "roadside"] },
+  { id: "avb", section: "business", subsection: "liability", productType: "business", coverages: ["liability", "legal", "thirdParty"] },
+  { id: "zzpAccident", section: "business", subsection: "selfEmployed", productType: "business", coverages: ["workAccident", "disability", "dailyPay"] },
+  { id: "toolsInVehicle", section: "business", subsection: "operations", productType: "business", coverages: ["tools", "materials", "transport"] },
 ];
 
 function euro(n: number): string {
@@ -113,13 +49,17 @@ function euro(n: number): string {
 }
 
 export function InsuranceCatalogClient() {
+  const t = useTranslations("leadgen.insurance");
+  const common = useTranslations("leadgen.common");
+  const validationT = useTranslations("leadgen.validation");
+  const locale = useLocale();
   const identity = useLeadIdentity();
 
-  const [selected, setSelected] = useState<InsuranceProduct>(PRODUCTS[0] as InsuranceProduct);
-  const [assetValue, setAssetValue] = useState(18000);
+  const [selected, setSelected] = useState<ProductRef>(PRODUCTS[0] as ProductRef);
+  const [assetValue, setAssetValue] = useState(18_000);
   const [birthDate, setBirthDate] = useState("");
   const [noClaimsYears, setNoClaimsYears] = useState(5);
-  const [monthlyIncome, setMonthlyIncome] = useState(3000);
+  const [monthlyIncome, setMonthlyIncome] = useState(3_000);
   const [requestAdvice, setRequestAdvice] = useState(false);
 
   const [contact, setContact] = useState<LeadContact>({
@@ -136,15 +76,23 @@ export function InsuranceCatalogClient() {
   const [marketingLeadId, setMarketingLeadId] = useState<string | null>(null);
 
   const grouped = useMemo(() => {
-    const bySection = new Map<string, Map<string, InsuranceProduct[]>>();
+    const bySection = new Map<string, Map<string, ProductRef[]>>();
     for (const item of PRODUCTS) {
       if (!bySection.has(item.section)) bySection.set(item.section, new Map());
-      const subsectionMap = bySection.get(item.section) as Map<string, InsuranceProduct[]>;
+      const subsectionMap = bySection.get(item.section) as Map<string, ProductRef[]>;
       if (!subsectionMap.has(item.subsection)) subsectionMap.set(item.subsection, []);
-      (subsectionMap.get(item.subsection) as InsuranceProduct[]).push(item);
+      (subsectionMap.get(item.subsection) as ProductRef[]).push(item);
     }
     return bySection;
   }, []);
+
+  function validateContact(): string | null {
+    if (identity.loggedIn) return null;
+    if (contact.fullName.trim().length < 2) return validationT("fullName");
+    if (!contact.email.includes("@") || contact.email.trim().length < 6) return validationT("email");
+    if (!contact.consent) return validationT("consent");
+    return null;
+  }
 
   async function onCalculateAndSaveLead() {
     if (busy) return;
@@ -152,7 +100,7 @@ export function InsuranceCatalogClient() {
     setError(null);
 
     try {
-      if (!birthDate) throw new Error("Indica fecha de nacimiento para cotizar.");
+      if (!birthDate) throw new Error(validationT("birthDate"));
 
       const nextPremium = estimateInsurancePremium({
         productType: selected.productType,
@@ -162,10 +110,12 @@ export function InsuranceCatalogClient() {
       });
       setPremium(nextPremium);
 
+      const contactValidation = validateContact();
+      if (contactValidation) throw new Error(contactValidation);
+
       const intakeNotes = {
-        calculator: "insurance_catalog_v3",
+        calculator: "insurance_catalog_v4_i18n",
         productId: selected.id,
-        productTitle: selected.title,
         productType: selected.productType,
         assetValue,
         birthDate,
@@ -190,22 +140,22 @@ export function InsuranceCatalogClient() {
         const saved = await submitLeadgenCase("insurance", cid, payload);
         setCaseId(saved);
       } else {
-        const fullName = contact.fullName.trim();
-        const email = contact.email.trim().toLowerCase();
-        if (!fullName || !email || !contact.consent) {
-          throw new Error("Completa nombre, email y consentimiento RGPD para guardar la cotizacion.");
-        }
         const leadId = await createMarketingLead({
-          contact: { fullName, email, phone: contact.phone?.trim() || "", consent: contact.consent },
+          contact: {
+            fullName: contact.fullName.trim(),
+            email: contact.email.trim().toLowerCase(),
+            phone: contact.phone?.trim() || "",
+            consent: contact.consent,
+          },
           interestedIn: ["insurance", selected.id],
-          locale: "es",
+          locale,
         });
         setMarketingLeadId(leadId);
       }
 
       trackProductEvent("product.leadgen.intake.submit", { route: "/app/insurance" });
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : "No se pudo calcular o guardar la cotizacion.");
+      setError(e instanceof Error ? e.message : common("submitError"));
     } finally {
       setBusy(false);
     }
@@ -213,21 +163,18 @@ export function InsuranceCatalogClient() {
 
   return (
     <Screen className="space-y-6">
-      <Header
-        title="Seguros Pro"
-        subtitle="Catalogo estructurado por secciones, con calculadora rapida y conversion a lead."
-      />
+      <Header title={t("title")} subtitle={t("subtitle")} />
       {process.env.NODE_ENV === "development" ? (
         <div className="inline-flex rounded-full border border-fh-primary/40 bg-fh-primary/10 px-3 py-1 text-xs font-semibold text-fh-primary">
-          Insurance Catalog v1
+          {t("devMarker")}
         </div>
       ) : null}
 
       <Card className="space-y-3">
-        <div className="text-sm font-semibold">Particulares</div>
-        {Array.from(grouped.get("particular")?.entries() ?? []).map(([subsection, items]) => (
+        <div className="text-sm font-semibold">{t("sections.private")}</div>
+        {Array.from(grouped.get("private")?.entries() ?? []).map(([subsection, items]) => (
           <div key={subsection} className="space-y-2">
-            <div className="text-xs uppercase tracking-wide text-fh-muted">{subsection}</div>
+            <div className="text-xs uppercase tracking-wide text-fh-muted">{t(`subsections.${subsection}`)}</div>
             <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
               {items.map((product) => {
                 const active = selected.id === product.id;
@@ -238,9 +185,9 @@ export function InsuranceCatalogClient() {
                     onClick={() => setSelected(product)}
                     className={`rounded-xl border p-3 text-left ${active ? "border-fh-primary bg-fh-primary/10" : "border-fh-border bg-fh-surface hover:bg-fh-surface-2"}`}
                   >
-                    <div className="text-sm font-semibold">{product.title}</div>
-                    <div className="mt-1 text-xs text-fh-muted">{product.teaser}</div>
-                    <div className="mt-2 text-xs text-fh-muted">{product.highlights.join(" • ")}</div>
+                    <div className="text-sm font-semibold">{t(`products.${product.id}.title`)}</div>
+                    <div className="mt-1 text-xs text-fh-muted">{t(`products.${product.id}.teaser`)}</div>
+                    <div className="mt-2 text-xs text-fh-muted">{t(`products.${product.id}.highlights`)}</div>
                   </button>
                 );
               })}
@@ -250,10 +197,10 @@ export function InsuranceCatalogClient() {
       </Card>
 
       <Card className="space-y-3">
-        <div className="text-sm font-semibold">Empresas</div>
-        {Array.from(grouped.get("empresa")?.entries() ?? []).map(([subsection, items]) => (
+        <div className="text-sm font-semibold">{t("sections.business")}</div>
+        {Array.from(grouped.get("business")?.entries() ?? []).map(([subsection, items]) => (
           <div key={subsection} className="space-y-2">
-            <div className="text-xs uppercase tracking-wide text-fh-muted">{subsection}</div>
+            <div className="text-xs uppercase tracking-wide text-fh-muted">{t(`subsections.${subsection}`)}</div>
             <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
               {items.map((product) => {
                 const active = selected.id === product.id;
@@ -264,9 +211,9 @@ export function InsuranceCatalogClient() {
                     onClick={() => setSelected(product)}
                     className={`rounded-xl border p-3 text-left ${active ? "border-fh-primary bg-fh-primary/10" : "border-fh-border bg-fh-surface hover:bg-fh-surface-2"}`}
                   >
-                    <div className="text-sm font-semibold">{product.title}</div>
-                    <div className="mt-1 text-xs text-fh-muted">{product.teaser}</div>
-                    <div className="mt-2 text-xs text-fh-muted">{product.highlights.join(" • ")}</div>
+                    <div className="text-sm font-semibold">{t(`products.${product.id}.title`)}</div>
+                    <div className="mt-1 text-xs text-fh-muted">{t(`products.${product.id}.teaser`)}</div>
+                    <div className="mt-2 text-xs text-fh-muted">{t(`products.${product.id}.highlights`)}</div>
                   </button>
                 );
               })}
@@ -276,14 +223,14 @@ export function InsuranceCatalogClient() {
       </Card>
 
       <Card className="space-y-4">
-        <div className="text-sm font-semibold">Calcular prima: {selected.title}</div>
+        <div className="text-sm font-semibold">{t("calculator.title", { product: t(`products.${selected.id}.title`) })}</div>
 
         <div className="rounded-xl border border-fh-border bg-fh-surface p-3">
-          <div className="text-xs uppercase text-fh-muted">Coberturas</div>
+          <div className="text-xs uppercase text-fh-muted">{t("calculator.coverages")}</div>
           <div className="mt-2 flex flex-wrap gap-2">
             {selected.coverages.map((item) => (
               <span key={item} className="rounded-full border border-fh-border bg-fh-bg px-2 py-1 text-xs">
-                {item}
+                {t(`coverages.${item}`)}
               </span>
             ))}
           </div>
@@ -291,7 +238,7 @@ export function InsuranceCatalogClient() {
 
         <div className="grid gap-3 md:grid-cols-3">
           <div>
-            <label className="text-xs uppercase text-fh-muted">Valor asegurado (EUR)</label>
+            <label className="text-xs uppercase text-fh-muted">{t("calculator.assetValue")}</label>
             <input
               type="number"
               min={1000}
@@ -301,7 +248,7 @@ export function InsuranceCatalogClient() {
             />
           </div>
           <div>
-            <label className="text-xs uppercase text-fh-muted">Fecha de nacimiento</label>
+            <label className="text-xs uppercase text-fh-muted">{t("calculator.birthDate")}</label>
             <input
               type="date"
               value={birthDate}
@@ -310,7 +257,7 @@ export function InsuranceCatalogClient() {
             />
           </div>
           <div>
-            <label className="text-xs uppercase text-fh-muted">Ingresos mensuales</label>
+            <label className="text-xs uppercase text-fh-muted">{t("calculator.monthlyIncome")}</label>
             <input
               type="number"
               min={0}
@@ -323,7 +270,7 @@ export function InsuranceCatalogClient() {
 
         {selected.productType === "vehicle" ? (
           <div>
-            <label className="text-xs uppercase text-fh-muted">Anos sin siniestros</label>
+            <label className="text-xs uppercase text-fh-muted">{t("calculator.noClaimsYears")}</label>
             <input
               type="number"
               min={0}
@@ -341,25 +288,25 @@ export function InsuranceCatalogClient() {
             checked={requestAdvice}
             onChange={(e) => setRequestAdvice(e.target.checked)}
           />
-          Quiero que me contacten para cerrar este seguro
+          {t("calculator.requestAdvice")}
         </label>
 
         {!identity.loading && !identity.loggedIn ? (
           <div className="grid gap-3 rounded-xl border border-fh-border bg-fh-surface p-3 md:grid-cols-2">
             <input
-              placeholder="Nombre y apellidos"
+              placeholder={common("fullName")}
               value={contact.fullName}
               onChange={(e) => setContact((prev) => ({ ...prev, fullName: e.target.value }))}
               className="rounded-xl border border-fh-border bg-fh-bg px-3 py-2 text-sm"
             />
             <input
-              placeholder="Email"
+              placeholder={common("email")}
               value={contact.email}
               onChange={(e) => setContact((prev) => ({ ...prev, email: e.target.value }))}
               className="rounded-xl border border-fh-border bg-fh-bg px-3 py-2 text-sm"
             />
             <input
-              placeholder="Telefono"
+              placeholder={common("phone")}
               value={contact.phone ?? ""}
               onChange={(e) => setContact((prev) => ({ ...prev, phone: e.target.value }))}
               className="rounded-xl border border-fh-border bg-fh-bg px-3 py-2 text-sm md:col-span-2"
@@ -370,43 +317,43 @@ export function InsuranceCatalogClient() {
                 checked={contact.consent}
                 onChange={(e) => setContact((prev) => ({ ...prev, consent: e.target.checked }))}
               />
-              Acepto politica de privacidad y tratamiento de datos (RGPD).
+              {common("consent")}
             </label>
           </div>
         ) : null}
 
         {!identity.loading && identity.loggedIn ? (
-          <InfoBox title="Sesion activa" variant="info">
-            Perfil detectado: {identity.email}. No pedimos datos personales de nuevo.
+          <InfoBox title={common("authenticated")} variant="info">
+            {common("reuseIdentity", { email: identity.email })}
           </InfoBox>
         ) : null}
 
         {premium !== null ? (
           <div className="rounded-xl border border-emerald-400/20 bg-emerald-400/10 p-4">
-            <div className="text-xs uppercase text-fh-muted">Prima estimada mensual</div>
+            <div className="text-xs uppercase text-fh-muted">{t("calculator.premiumLabel")}</div>
             <div className="mt-1 text-3xl font-semibold">{euro(premium)}</div>
-            <div className="text-xs text-fh-muted">Cotizacion orientativa obtenida en menos de 2 minutos.</div>
+            <div className="text-xs text-fh-muted">{t("calculator.premiumHint")}</div>
           </div>
         ) : null}
 
         <div className="text-xs text-fh-muted">
-          Al cotizar aceptas nuestra politica de privacidad. <Link href="/privacy" className="underline">Ver politica</Link>
+          {common("privacyHint")} <Link href="/privacy" className="underline">{common("privacyLink")}</Link>
         </div>
 
-        {error ? <InfoBox title="Error" variant="danger">{error}</InfoBox> : null}
+        {error ? <InfoBox title={common("error")} variant="danger">{error}</InfoBox> : null}
 
         <div className="flex items-center justify-between">
-          <Button variant="secondary" onClick={() => setPremium(null)}>Reiniciar</Button>
+          <Button variant="secondary" onClick={() => setPremium(null)}>{common("reset")}</Button>
           <Button onClick={() => void onCalculateAndSaveLead()} disabled={busy || identity.loading}>
-            {busy ? "Procesando..." : "Calcular prima"}
+            {busy ? common("processing") : t("calculator.submit")}
           </Button>
         </div>
       </Card>
 
       {(caseId || marketingLeadId) ? (
         <Card className="space-y-3">
-          <InfoBox title="Lead guardado" variant="info">
-            La cotizacion y datos de interes ya estan en CRM para seguimiento.
+          <InfoBox title={t("done.title")} variant="info">
+            {t("done.body")}
           </InfoBox>
 
           {caseId ? (
@@ -414,11 +361,11 @@ export function InsuranceCatalogClient() {
               href={`/app/cases/${caseId}`}
               className="inline-flex rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm hover:bg-fh-surface-2"
             >
-              Abrir caso {caseId.slice(0, 8)}
+              {t("done.openCase", { id: caseId.slice(0, 8) })}
             </Link>
           ) : null}
 
-          {marketingLeadId ? <div className="text-sm text-fh-muted">Lead CRM: {marketingLeadId.slice(0, 8)}...</div> : null}
+          {marketingLeadId ? <div className="text-sm text-fh-muted">{t("done.leadCreated", { id: marketingLeadId.slice(0, 8) })}</div> : null}
         </Card>
       ) : null}
     </Screen>

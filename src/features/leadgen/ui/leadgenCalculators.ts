@@ -23,6 +23,8 @@ export type CreditSimulation = {
   totalInterest: number;
 };
 
+export const DEFAULT_CREDIT_INTEREST_RATE_PCT = 5;
+
 function clamp(n: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, n));
 }
@@ -80,11 +82,15 @@ export function estimateMortgageCapacity(
 export function estimateCreditSimulation(input: {
   amount: number;
   termMonths: number;
-  annualRatePct: number;
+  annualRatePct?: number;
 }): CreditSimulation {
   const principal = Math.max(0, Number(input.amount) || 0);
   const termMonths = clamp(Math.round(Number(input.termMonths) || 0), 6, 120);
-  const annualRatePct = clamp(Number(input.annualRatePct) || 0, 0, 29.99);
+  const annualRatePct = clamp(
+    Number.isFinite(input.annualRatePct) ? Number(input.annualRatePct) : DEFAULT_CREDIT_INTEREST_RATE_PCT,
+    0,
+    29.99
+  );
 
   if (principal <= 0) {
     return {
@@ -114,6 +120,10 @@ export function estimateCreditSimulation(input: {
     totalRepayable: Math.round(totalRepayable * 100) / 100,
     totalInterest: Math.round(totalInterest * 100) / 100,
   };
+}
+
+export function getDefaultCreditInterestRatePct(): number {
+  return DEFAULT_CREDIT_INTEREST_RATE_PCT;
 }
 
 export type InsuranceRiskInput = {
@@ -146,4 +156,3 @@ export function mapIncomeBand(annualIncome: number): "lt_25k" | "25_50k" | "50_9
   if (annualIncome < 90_000) return "50_90k";
   return "90k_plus";
 }
-

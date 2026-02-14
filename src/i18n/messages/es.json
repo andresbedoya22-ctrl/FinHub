@@ -1543,5 +1543,226 @@
         "by": "por"
       }
     }
+  },
+  "leadgen": {
+    "common": {
+      "progress": "Progreso",
+      "stepOf": "Paso {current} de {total}",
+      "continue": "Continuar",
+      "next": "Siguiente",
+      "back": "Atras",
+      "yes": "Si",
+      "no": "No",
+      "session": "Sesion",
+      "checkingSession": "Verificando sesion...",
+      "authenticated": "Usuario autenticado",
+      "reuseIdentity": "Usaremos tu perfil de cuenta ({email}).",
+      "fullName": "Nombre completo",
+      "email": "Email",
+      "phone": "Telefono",
+      "consent": "Acepto la politica de privacidad y el tratamiento RGPD para esta solicitud.",
+      "privacyHint": "Al continuar aceptas nuestra politica de privacidad.",
+      "privacyLink": "Politica de privacidad",
+      "error": "Error",
+      "saving": "Guardando...",
+      "processing": "Procesando...",
+      "submitting": "Enviando...",
+      "submitError": "No pudimos completar tu solicitud.",
+      "nextStep": "Siguiente paso",
+      "loginToContinue": "Inicia sesion para continuar con seguimiento y documentos.",
+      "reset": "Reiniciar"
+    },
+    "validation": {
+      "fullName": "Introduce tu nombre completo.",
+      "email": "Introduce un correo valido.",
+      "consent": "Debes aceptar el consentimiento para continuar.",
+      "signature": "Completa la firma digital.",
+      "birthDate": "Indica una fecha de nacimiento."
+    },
+    "mortgage": {
+      "title": "Hipoteca Pro",
+      "subtitle": "Asistente hipotecario paso a paso inspirado en Domek.",
+      "devMarker": "Mortgage Wizard v1",
+      "buyers": {
+        "question": "Cuantos compradores participan?",
+        "dataTitle": "Datos del comprador {index}",
+        "grossIncome": "Ingresos brutos",
+        "monthly": "Mensual",
+        "annual": "Anual",
+        "birthDate": "Fecha de nacimiento",
+        "hasCompany": "Es autonomo?",
+        "hasOwnFunds": "Tengo fondos propios para gastos de compra"
+      },
+      "result": {
+        "title": "Resultado estimado",
+        "capacity": "Capacidad hipotecaria estimada",
+        "meta": "Basado en {buyers} comprador(es), ingreso anual {annualIncome} y edad maxima {oldestAge}.",
+        "benefit1": "Hasta 0.75% de descuento negociado con entidades colaboradoras.",
+        "benefit2": "Asesoria en tu idioma desde inicio hasta firma.",
+        "benefit3": "Respuesta inicial del asesor en menos de 24h laborables.",
+        "testimonial": "\"Nos ayudaron a cerrar la hipoteca con claridad en cada paso.\"",
+        "timelineLabel": "Cuando quieres comprar?",
+        "cta": "Continuar con asesoria"
+      },
+      "timeline": {
+        "0_3": "0-3 meses",
+        "3_6": "3-6 meses",
+        "6_12": "6-12 meses",
+        "12_plus": "12+ meses"
+      },
+      "contact": {
+        "title": "Datos de contacto para crear el lead",
+        "submit": "Finalizar y crear lead"
+      },
+      "done": {
+        "title": "Flujo completado",
+        "body": "Tu lead hipotecario se creo y fue enviado a operaciones.",
+        "openCase": "Abrir caso {id}",
+        "leadCreated": "Lead CRM creado: {id}..."
+      }
+    },
+    "credit": {
+      "title": "Creditos Pro",
+      "subtitle": "Calcula, solicita online, sube documentos y firma digital.",
+      "devMarker": "Credit Flow v1",
+      "amountQuestion": "Cuanto credito necesitas?",
+      "requestedAmount": "Monto solicitado",
+      "termMonths": "Plazo (meses)",
+      "interestRateUsed": "Interes aplicado",
+      "interestRateValue": "{rate}% tasa fija",
+      "simulationTitle": "Simulacion",
+      "monthlyInstallment": "Cuota mensual",
+      "totalRepayable": "Total a pagar",
+      "totalInterest": "Interes total",
+      "startFlow": "Calcular prestamo y continuar",
+      "applicationTitle": "Solicitud online",
+      "monthlyIncome": "Ingreso mensual",
+      "monthlyExpenses": "Gastos fijos mensuales",
+      "employmentStatus": "Situacion laboral",
+      "employment": {
+        "employed": "Empleado",
+        "selfEmployed": "Autonomo",
+        "student": "Estudiante",
+        "unemployed": "Desempleado"
+      },
+      "hasPartner": "Solicitud conjunta con pareja",
+      "signature": {
+        "title": "Firma digital",
+        "namePlaceholder": "Escribe tu nombre completo como firma",
+        "accept": "Confirmo esta firma digital"
+      },
+      "disclaimer": "Sin papeleo. Proceso 100% online con tasa fija transparente.",
+      "submit": "Enviar solicitud de credito",
+      "documents": {
+        "title": "Documentos",
+        "loginRequired": "Inicia sesion para subir identificacion, nominas y soportes en tu caso."
+      },
+      "done": {
+        "title": "Solicitud enviada",
+        "body": "Tu solicitud de credito se registro correctamente.",
+        "openCase": "Abrir caso {id}",
+        "leadCreated": "Lead CRM creado: {id}..."
+      }
+    },
+    "insurance": {
+      "title": "Seguros Pro",
+      "subtitle": "Catalogo organizado con calculadora rapida de primas y captura de leads.",
+      "devMarker": "Insurance Catalog v1",
+      "sections": {
+        "private": "Seguros para particulares",
+        "business": "Seguros para empresas"
+      },
+      "subsections": {
+        "vehicle": "Vehiculo",
+        "life": "Vida",
+        "home": "Hogar",
+        "liability": "Responsabilidad",
+        "selfEmployed": "Autonomos",
+        "operations": "Operaciones"
+      },
+      "products": {
+        "car": {
+          "title": "Car insurance",
+          "teaser": "Save up to EUR 29/month and quote in under 2 minutes.",
+          "highlights": "No-claim years accepted ? Fast onboarding ? Local-language support"
+        },
+        "motorbike": {
+          "title": "Motorbike and scooter insurance",
+          "teaser": "Flexible daily mobility protection.",
+          "highlights": "Digital contracting ? Transparent comparison ? Claims support"
+        },
+        "life": {
+          "title": "Life insurance",
+          "teaser": "Protect your family with predictable monthly costs.",
+          "highlights": "Fast underwriting ? Death cover ? Funeral optional"
+        },
+        "home": {
+          "title": "Home package",
+          "teaser": "Bundle home, liability and legal support.",
+          "highlights": "Tenant package ? Contents coverage ? Legal add-ons"
+        },
+        "businessVehicle": {
+          "title": "Business vehicle insurance",
+          "teaser": "Operational coverage for company fleet.",
+          "highlights": "Fast quote ? Modular cover ? Roadside support"
+        },
+        "avb": {
+          "title": "Business liability (AVB)",
+          "teaser": "Legal and liability protection for operations.",
+          "highlights": "Third-party damage ? Legal costs ? Business continuity"
+        },
+        "zzpAccident": {
+          "title": "Self-employed accident cover",
+          "teaser": "Income continuity for freelancers.",
+          "highlights": "Work accident ? Disability support ? Daily payout"
+        },
+        "toolsInVehicle": {
+          "title": "Tools in vehicle",
+          "teaser": "Protect tools and installation materials.",
+          "highlights": "Tool theft ? Material damage ? Transport extension"
+        }
+      },
+      "coverages": {
+        "oc": "OC",
+        "miniCasco": "MiniCasco",
+        "autoCasco": "AutoCasco",
+        "roadside": "Asistencia en carretera",
+        "liability": "Responsabilidad civil",
+        "theft": "Robo",
+        "damage": "Danos",
+        "death": "Fallecimiento",
+        "funeral": "Funeral",
+        "familySupport": "Apoyo familiar",
+        "accidents": "Accidentes",
+        "contents": "Contenido",
+        "legal": "Asistencia legal",
+        "travel": "Viaje",
+        "thirdParty": "Danos a terceros",
+        "workAccident": "Accidente laboral",
+        "disability": "Incapacidad",
+        "dailyPay": "Pago diario",
+        "tools": "Herramientas",
+        "materials": "Materiales",
+        "transport": "Transporte"
+      },
+      "calculator": {
+        "title": "Calcular prima: {product}",
+        "coverages": "Coberturas",
+        "assetValue": "Valor asegurado (EUR)",
+        "birthDate": "Fecha de nacimiento",
+        "monthlyIncome": "Ingreso mensual",
+        "noClaimsYears": "Anos sin siniestros",
+        "requestAdvice": "Quiero que un asesor me contacte para esta poliza",
+        "premiumLabel": "Prima mensual estimada",
+        "premiumHint": "Cotizacion orientativa generada en menos de 2 minutos.",
+        "submit": "Calcular prima"
+      },
+      "done": {
+        "title": "Lead guardado",
+        "body": "Cotizacion y datos del lead guardados para seguimiento operativo.",
+        "openCase": "Abrir caso {id}",
+        "leadCreated": "Lead CRM creado: {id}..."
+      }
+    }
   }
 }
