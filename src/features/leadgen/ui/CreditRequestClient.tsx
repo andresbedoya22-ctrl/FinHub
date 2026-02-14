@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
 
 import { Button } from "@/ui/components/Button";
 import { Card } from "@/ui/components/Card";
@@ -9,7 +10,11 @@ import { Header } from "@/ui/components/Header";
 import { InfoBox } from "@/ui/components/InfoBox";
 import { Screen } from "@/ui/components/Screen";
 import { DocumentUploader } from "@/features/documents/ui/DocumentUploader";
-import { estimateCreditSimulation, mapIncomeBand } from "./leadgenCalculators";
+import {
+  estimateCreditSimulation,
+  getDefaultCreditInterestRatePct,
+  mapIncomeBand,
+} from "./leadgenCalculators";
 import {
   createMarketingLead,
   startLeadgenCase,
@@ -30,15 +35,18 @@ function euro(n: number): string {
 type Step = "calc" | "apply" | "done";
 
 export function CreditRequestClient() {
+  const t = useTranslations("leadgen.credit");
+  const common = useTranslations("leadgen.common");
+  const validationT = useTranslations("leadgen.validation");
+  const locale = useLocale();
   const identity = useLeadIdentity();
 
   const [step, setStep] = useState<Step>("calc");
-  const [amount, setAmount] = useState(15000);
+  const [amount, setAmount] = useState(15_000);
   const [termMonths, setTermMonths] = useState(60);
-  const [annualRatePct, setAnnualRatePct] = useState(7.9);
 
-  const [monthlyIncome, setMonthlyIncome] = useState(3200);
-  const [monthlyExpenses, setMonthlyExpenses] = useState(1200);
+  const [monthlyIncome, setMonthlyIncome] = useState(3_200);
+  const [monthlyExpenses, setMonthlyExpenses] = useState(1_200);
   const [employmentStatus, setEmploymentStatus] = useState<"employed" | "self_employed" | "student" | "unemployed">("employed");
   const [hasPartner, setHasPartner] = useState(false);
 
@@ -57,9 +65,19 @@ export function CreditRequestClient() {
   const [caseId, setCaseId] = useState<string | null>(null);
   const [marketingLeadId, setMarketingLeadId] = useState<string | null>(null);
 
+  const interestRatePct = getDefaultCreditInterestRatePct();
+
   const simulation = useMemo(() => {
-    return estimateCreditSimulation({ amount, termMonths, annualRatePct });
-  }, [amount, termMonths, annualRatePct]);
+    return estimateCreditSimulation({ amount, termMonths, annualRatePct: interestRatePct });
+  }, [amount, termMonths, interestRatePct]);
+
+  function validateLeadContact(): string | null {
+    if (identity.loggedIn) return null;
+    if (contact.fullName.trim().length < 2) return validationT("fullName");
+    if (!contact.email.includes("@") || contact.email.trim().length < 6) return validationT("email");
+    if (!contact.consent) return validationT("consent");
+    return null;
+  }
 
   async function onStartApplication() {
     if (busy) return;
@@ -73,7 +91,7 @@ export function CreditRequestClient() {
       }
       setStep("apply");
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : "No se pudo iniciar el flujo de credito.");
+      setError(e instanceof Error ? e.message : common("submitError"));
     } finally {
       setBusy(false);
     }
@@ -86,8 +104,11 @@ export function CreditRequestClient() {
 
     try {
       if (!signatureAccepted || signatureName.trim().length < 2) {
-        throw new Error("Completa la firma digital para continuar.");
+        throw new Error(validationT("signature"));
       }
+
+      const contactValidation = validateLeadContact();
+      if (contactValidation) throw new Error(contactValidation);
 
       if (identity.loggedIn) {
         const cid = caseId ?? (await startLeadgenCase("credit"));
@@ -100,10 +121,10 @@ export function CreditRequestClient() {
           timelineMonths: termMonths <= 36 ? "0_3" : termMonths <= 72 ? "3_6" : "6_12",
           hasPartner,
           notes: JSON.stringify({
-            calculator: "credit_request_v3",
+            calculator: "credit_request_v4_fixed_rate",
             amount,
             termMonths,
-            annualRatePct,
+            annualRatePct: interestRatePct,
             simulation,
             monthlyIncome,
             monthlyExpenses,
@@ -116,16 +137,15 @@ export function CreditRequestClient() {
         const saved = await submitLeadgenCase("credit", cid, payload);
         setCaseId(saved);
       } else {
-        const fullName = contact.fullName.trim();
-        const email = contact.email.trim().toLowerCase();
-        if (!fullName || !email || !contact.consent) {
-          throw new Error("Completa nombre, email y consentimiento RGPD para crear el lead.");
-        }
-
         const leadId = await createMarketingLead({
-          contact: { fullName, email, phone: contact.phone?.trim() || "", consent: contact.consent },
+          contact: {
+            fullName: contact.fullName.trim(),
+            email: contact.email.trim().toLowerCase(),
+            phone: contact.phone?.trim() || "",
+            consent: contact.consent,
+          },
           interestedIn: ["credit"],
-          locale: "es",
+          locale,
         });
         setMarketingLeadId(leadId);
       }
@@ -133,7 +153,7 @@ export function CreditRequestClient() {
       trackProductEvent("product.leadgen.intake.submit", { route: "/app/credit" });
       setStep("done");
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : "No se pudo enviar la solicitud de credito.");
+      setError(e instanceof Error ? e.message : common("submitError"));
     } finally {
       setBusy(false);
     }
@@ -141,22 +161,19 @@ export function CreditRequestClient() {
 
   return (
     <Screen className="space-y-6">
-      <Header
-        title="Creditos Pro"
-        subtitle="Calcula en segundos, solicita online, sube documentos y firma digital sin papeleo."
-      />
+      <Header title={t("title")} subtitle={t("subtitle")} />
       {process.env.NODE_ENV === "development" ? (
         <div className="inline-flex rounded-full border border-fh-primary/40 bg-fh-primary/10 px-3 py-1 text-xs font-semibold text-fh-primary">
-          Credit Flow v1
+          {t("devMarker")}
         </div>
       ) : null}
 
       {step === "calc" ? (
         <Card className="space-y-5">
-          <div className="text-sm font-semibold">Cuanto prestamo necesitas?</div>
+          <div className="text-sm font-semibold">{t("amountQuestion")}</div>
 
           <div className="rounded-2xl border border-fh-border bg-fh-surface p-4">
-            <label className="text-xs uppercase text-fh-muted">Monto solicitado</label>
+            <label className="text-xs uppercase text-fh-muted">{t("requestedAmount")}</label>
             <input
               type="number"
               min={1000}
@@ -169,7 +186,7 @@ export function CreditRequestClient() {
 
           <div className="grid gap-3 md:grid-cols-2">
             <div>
-              <label className="text-xs uppercase text-fh-muted">Plazo (meses)</label>
+              <label className="text-xs uppercase text-fh-muted">{t("termMonths")}</label>
               <input
                 type="number"
                 min={6}
@@ -180,33 +197,27 @@ export function CreditRequestClient() {
               />
             </div>
             <div>
-              <label className="text-xs uppercase text-fh-muted">Interes anual (%)</label>
-              <input
-                type="number"
-                min={0}
-                max={29.99}
-                step={0.1}
-                value={annualRatePct}
-                onChange={(e) => setAnnualRatePct(Number(e.target.value) || 0)}
-                className="mt-1 w-full rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm"
-              />
+              <label className="text-xs uppercase text-fh-muted">{t("interestRateUsed")}</label>
+              <div className="mt-1 rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm">
+                {t("interestRateValue", { rate: interestRatePct })}
+              </div>
             </div>
           </div>
 
           <div className="rounded-xl border border-emerald-400/20 bg-emerald-400/10 p-4">
-            <div className="text-xs uppercase text-fh-muted">Simulacion</div>
+            <div className="text-xs uppercase text-fh-muted">{t("simulationTitle")}</div>
             <div className="mt-2 grid gap-2 sm:grid-cols-3 text-sm">
-              <div>Cuota mensual: <span className="font-semibold">{euro(simulation.monthlyInstallment)}</span></div>
-              <div>Total a pagar: <span className="font-semibold">{euro(simulation.totalRepayable)}</span></div>
-              <div>Interes total: <span className="font-semibold">{euro(simulation.totalInterest)}</span></div>
+              <div>{t("monthlyInstallment")}: <span className="font-semibold">{euro(simulation.monthlyInstallment)}</span></div>
+              <div>{t("totalRepayable")}: <span className="font-semibold">{euro(simulation.totalRepayable)}</span></div>
+              <div>{t("totalInterest")}: <span className="font-semibold">{euro(simulation.totalInterest)}</span></div>
             </div>
           </div>
 
-          {error ? <InfoBox title="Error" variant="danger">{error}</InfoBox> : null}
+          {error ? <InfoBox title={common("error")} variant="danger">{error}</InfoBox> : null}
 
           <div className="flex justify-end">
             <Button onClick={() => void onStartApplication()} disabled={busy || amount < 1000}>
-              {busy ? "Procesando..." : "Calcular tu prestamo y continuar"}
+              {busy ? common("processing") : t("startFlow")}
             </Button>
           </div>
         </Card>
@@ -215,10 +226,10 @@ export function CreditRequestClient() {
       {step === "apply" ? (
         <div className="space-y-4">
           <Card className="space-y-4">
-            <div className="text-sm font-semibold">Solicitud online</div>
+            <div className="text-sm font-semibold">{t("applicationTitle")}</div>
             <div className="grid gap-3 md:grid-cols-2">
               <div>
-                <label className="text-xs uppercase text-fh-muted">Ingresos mensuales</label>
+                <label className="text-xs uppercase text-fh-muted">{t("monthlyIncome")}</label>
                 <input
                   type="number"
                   min={0}
@@ -228,7 +239,7 @@ export function CreditRequestClient() {
                 />
               </div>
               <div>
-                <label className="text-xs uppercase text-fh-muted">Gastos mensuales fijos</label>
+                <label className="text-xs uppercase text-fh-muted">{t("monthlyExpenses")}</label>
                 <input
                   type="number"
                   min={0}
@@ -238,16 +249,16 @@ export function CreditRequestClient() {
                 />
               </div>
               <div>
-                <label className="text-xs uppercase text-fh-muted">Situacion laboral</label>
+                <label className="text-xs uppercase text-fh-muted">{t("employmentStatus")}</label>
                 <select
                   value={employmentStatus}
                   onChange={(e) => setEmploymentStatus(e.target.value as typeof employmentStatus)}
                   className="mt-1 w-full rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm"
                 >
-                  <option value="employed">Empleado</option>
-                  <option value="self_employed">Autonomo</option>
-                  <option value="student">Estudiante</option>
-                  <option value="unemployed">Desempleado</option>
+                  <option value="employed">{t("employment.employed")}</option>
+                  <option value="self_employed">{t("employment.selfEmployed")}</option>
+                  <option value="student">{t("employment.student")}</option>
+                  <option value="unemployed">{t("employment.unemployed")}</option>
                 </select>
               </div>
               <label className="mt-6 flex items-center gap-2 rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm">
@@ -256,26 +267,26 @@ export function CreditRequestClient() {
                   checked={hasPartner}
                   onChange={(e) => setHasPartner(e.target.checked)}
                 />
-                Solicitud con pareja
+                {t("hasPartner")}
               </label>
             </div>
 
             {!identity.loading && !identity.loggedIn ? (
               <div className="grid gap-3 rounded-xl border border-fh-border bg-fh-surface p-3 md:grid-cols-2">
                 <input
-                  placeholder="Nombre y apellidos"
+                  placeholder={common("fullName")}
                   value={contact.fullName}
                   onChange={(e) => setContact((prev) => ({ ...prev, fullName: e.target.value }))}
                   className="rounded-xl border border-fh-border bg-fh-bg px-3 py-2 text-sm"
                 />
                 <input
-                  placeholder="Email"
+                  placeholder={common("email")}
                   value={contact.email}
                   onChange={(e) => setContact((prev) => ({ ...prev, email: e.target.value }))}
                   className="rounded-xl border border-fh-border bg-fh-bg px-3 py-2 text-sm"
                 />
                 <input
-                  placeholder="Telefono"
+                  placeholder={common("phone")}
                   value={contact.phone ?? ""}
                   onChange={(e) => setContact((prev) => ({ ...prev, phone: e.target.value }))}
                   className="rounded-xl border border-fh-border bg-fh-bg px-3 py-2 text-sm md:col-span-2"
@@ -286,22 +297,22 @@ export function CreditRequestClient() {
                     checked={contact.consent}
                     onChange={(e) => setContact((prev) => ({ ...prev, consent: e.target.checked }))}
                   />
-                  Acepto politica de privacidad y tratamiento de datos (RGPD).
+                  {common("consent")}
                 </label>
               </div>
             ) : null}
 
             {!identity.loading && identity.loggedIn ? (
-              <InfoBox title="Perfil reutilizado" variant="info">
-                Sesion detectada: {identity.email}. No pedimos datos personales de nuevo.
+              <InfoBox title={common("authenticated")} variant="info">
+                {common("reuseIdentity", { email: identity.email })}
               </InfoBox>
             ) : null}
 
             <div className="rounded-xl border border-fh-border bg-fh-surface p-3">
-              <div className="text-sm font-medium">Firma digital</div>
+              <div className="text-sm font-medium">{t("signature.title")}</div>
               <div className="mt-2 grid gap-3 md:grid-cols-2">
                 <input
-                  placeholder="Escribe tu nombre como firma"
+                  placeholder={t("signature.namePlaceholder")}
                   value={signatureName}
                   onChange={(e) => setSignatureName(e.target.value)}
                   className="rounded-xl border border-fh-border bg-fh-bg px-3 py-2 text-sm"
@@ -312,21 +323,21 @@ export function CreditRequestClient() {
                     checked={signatureAccepted}
                     onChange={(e) => setSignatureAccepted(e.target.checked)}
                   />
-                  Confirmo firma digital de esta solicitud
+                  {t("signature.accept")}
                 </label>
               </div>
             </div>
 
             <div className="text-xs text-fh-muted">
-              Sin papeleo fisico. Todo se procesa online con tasa fija y transparente. <Link href="/privacy" className="underline">Politica de privacidad</Link>
+              {t("disclaimer")} <Link href="/privacy" className="underline">{common("privacyLink")}</Link>
             </div>
 
-            {error ? <InfoBox title="Error" variant="danger">{error}</InfoBox> : null}
+            {error ? <InfoBox title={common("error")} variant="danger">{error}</InfoBox> : null}
 
             <div className="flex items-center justify-between">
-              <Button variant="ghost" onClick={() => setStep("calc")}>Atras</Button>
+              <Button variant="ghost" onClick={() => setStep("calc")}>{common("back")}</Button>
               <Button onClick={() => void onSubmitApplication()} disabled={busy || identity.loading}>
-                {busy ? "Enviando..." : "Enviar solicitud de credito"}
+                {busy ? common("submitting") : t("submit")}
               </Button>
             </div>
           </Card>
@@ -334,8 +345,8 @@ export function CreditRequestClient() {
           {identity.loggedIn && caseId ? (
             <DocumentUploader caseId={caseId} />
           ) : (
-            <InfoBox title="Documentos" variant="warning">
-              Inicia sesion para subir identificacion, nominas y documentos del prestamo dentro del caso.
+            <InfoBox title={t("documents.title")} variant="warning">
+              {t("documents.loginRequired")}
             </InfoBox>
           )}
         </div>
@@ -343,8 +354,8 @@ export function CreditRequestClient() {
 
       {step === "done" ? (
         <Card className="space-y-3">
-          <InfoBox title="Solicitud registrada" variant="info">
-            Tu solicitud de credito se registro correctamente.
+          <InfoBox title={t("done.title")} variant="info">
+            {t("done.body")}
           </InfoBox>
 
           {caseId ? (
@@ -352,12 +363,12 @@ export function CreditRequestClient() {
               href={`/app/cases/${caseId}`}
               className="inline-flex rounded-xl border border-fh-border bg-fh-surface px-3 py-2 text-sm hover:bg-fh-surface-2"
             >
-              Abrir caso {caseId.slice(0, 8)}
+              {t("done.openCase", { id: caseId.slice(0, 8) })}
             </Link>
           ) : null}
 
           {marketingLeadId ? (
-            <div className="text-sm text-fh-muted">Lead CRM: {marketingLeadId.slice(0, 8)}...</div>
+            <div className="text-sm text-fh-muted">{t("done.leadCreated", { id: marketingLeadId.slice(0, 8) })}</div>
           ) : null}
         </Card>
       ) : null}

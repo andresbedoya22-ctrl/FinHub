@@ -2,6 +2,7 @@
 
 import {
   ageFromBirthDate,
+  getDefaultCreditInterestRatePct,
   estimateCreditSimulation,
   estimateInsurancePremium,
   estimateMortgageCapacity,
@@ -45,6 +46,17 @@ describe("leadgenCalculators", () => {
     expect(sim.totalRepayable).toBeGreaterThan(20_000);
   });
 
+  it("uses fixed default interest rate when rate is omitted", () => {
+    const withDefault = estimateCreditSimulation({ amount: 18_000, termMonths: 48 });
+    const explicit = estimateCreditSimulation({
+      amount: 18_000,
+      termMonths: 48,
+      annualRatePct: getDefaultCreditInterestRatePct(),
+    });
+    expect(withDefault.monthlyInstallment).toBe(explicit.monthlyInstallment);
+    expect(withDefault.annualRatePct).toBe(5);
+  });
+
   it("estimates insurance premium and rewards no-claim years", () => {
     const lower = estimateInsurancePremium({
       productType: "vehicle",
@@ -69,4 +81,3 @@ describe("leadgenCalculators", () => {
     expect(mapIncomeBand(120_000)).toBe("90k_plus");
   });
 });
-
