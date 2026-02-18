@@ -1,110 +1,107 @@
-﻿# FinHub Canon Operativo (v2.2) - Technical Reality up to F15
+# FinHub Canon Operativo (v3)
 
-Sources:
-- docs/repo-snapshots/canon-refresh-20260118-132825 (routes-pages.txt, routes-api.txt, migrations-list.txt, env-keys-env.local.txt, modules-dirs.txt, tests.txt, tree-src.txt, tree-docs.txt, tree-supabase.txt, integrations-grep.txt)
-- Direct inspection: src/app/(dashboard)/app/page.tsx, rg auth.getUser in src/app/api, supabase/migrations/* (create table and RLS scans)
+> **SOURCE OF TRUTH (documentación operativa):** este archivo.
+>
+> Si otro documento contradice este canon, prevalece este canon y el estado de `src/**` + `supabase/migrations/**`.
 
-Scope
-- This update covers F00 through F15 only. Phases beyond F15 are out of scope unless already present in Canon.
+## 1) Alcance y método
 
-0) Como usar este canon
-- The canon below is evidence-based. Each claim is grounded in snapshot files or direct code inspection.
-- If evidence is missing, it is marked as NO EVIDENCE.
+Este canon refleja el estado real del repositorio a fecha de esta actualización, validado contra:
 
-1) Supuestos (evidence-based)
-- Next.js App Router with groups (auth), (dashboard), (marketing) (routes-pages.txt).
-- Supabase for Auth/DB/Storage (env keys + integrations-grep.txt).
-- Stripe for payments + webhook (integrations-grep.txt).
-- OCR via Azure Document Intelligence provider (src/features/documents/ocr/README.md).
-- i18n runtime with message files in src/i18n/messages/{en,es,pl,ro}.json (tree-src.txt).
+- Rutas App Router en `src/app/**`.
+- Endpoints en `src/app/api/**`.
+- Módulos en `src/features/**`.
+- Migraciones y RLS en `supabase/migrations/**`.
+- Pruebas en `src/**` (`*.test.ts`, `*.spec.ts`).
 
-2) Reglas no negociables (actualizadas)
-- /app redirects to /app/finances (src/app/(dashboard)/app/page.tsx).
-- No credential capture for DigiD in codebase: NO EVIDENCE of DigiD flows or storage.
-- OCR has explicit review UI routes and OCR endpoints (routes-pages.txt, routes-api.txt).
-- EN/ES/PL/RO message files exist; email i18n is NO EVIDENCE in repo.
-- OpenAI integration is server-side in /api/assistant/chat and provider module (integrations-grep.txt); no client key exposure observed.
+Documentos de snapshot anteriores (por ejemplo `docs/repo-snapshots/**` y canon F00–F15 de enero) se mantienen como **histórico**.
 
-3) F00-F15 status
+## 2) Reglas no negociables (estado real)
 
-F00 - Descubrimiento tecnico
-- F00.0 Objective: Document repo baseline (routes, modules, integrations, CI gates, architecture docs).
-- Evidence: docs/repo-snapshots/canon-refresh-20260118-132825/*; docs/architecture/*; docs/decisions/adr-0001-canon2-scope.md.
-- Status: DONE.
+- `src/app/(dashboard)/app/page.tsx` redirige a `/app/finances`.
+- No hay captura de credenciales DigiD en código.
+- OCR existe con endpoints y UI de revisión (`/app/documents/ocr-review`, `/api/documents/[id]/ocr`, `/api/documents/[id]/extraction`, `/api/documents/[id]/verify`).
+- i18n runtime y mensajes en EN/ES/PL/RO.
+- Integración OpenAI server-side en `/api/assistant/chat`.
 
-F01 - i18n Foundation P0
-- F01.0 Objective: i18n skeleton before Landing/Auth/Finny with EN default and EN/ES/PL/RO support.
-- Evidence: src/i18n/*, src/i18n/messages/*.json; docs/i18n/i18n-decision.md; docs/i18n/coverage-matrix.md.
-- Status: DONE.
-- Notes: email i18n not found (NO EVIDENCE).
+## 3) Estado por fases F00–F15
 
-F02 - Landing Premium + Captacion
-- F02.0 Objective: multi-language landing + lead capture + consent + telemetry.
-- Evidence: /landing, /privacy, /terms routes; /api/marketing/leads; marketing_leads migrations.
-- Status: DONE for implemented scope.
-- Notes: advanced SEO features are NO EVIDENCE (deferred in Canon).
+Leyenda: **DONE**, **PARTIAL**, **PENDING**.
 
-F03 - Auth/Login Premium
-- F03.0 Objective: auth flows with validation and security hardening.
-- Evidence: /login, /register, /forgot-password, /reset-password routes; /api/auth/* routes; Supabase auth usage in route handlers.
-- Status: DONE.
+### F00 — Descubrimiento técnico
+- **Estado:** DONE.
+- Evidencia: mapas de arquitectura, snapshots, docs de canon/decisiones.
 
-F04 - Finny v2
-- F04.0 Objective: OpenAI API, playbooks, operator mode, audit.
-- Evidence: /api/assistant/chat; src/features/ai/llm/openaiLlmProvider.ts; src/features/assistant/finny/*.
-- Status: PARTIAL.
-- Gaps: playbooks per language and operator/admin mode UI (NO EVIDENCE).
+### F01 — i18n Foundation P0
+- **Estado:** DONE.
+- Evidencia: runtime i18n + mensajes EN/ES/PL/RO + endpoint `/api/i18n/locale`.
 
-F05 - Captacion post-registro (lifecycle)
-- F05.0 Objective: lifecycle emails, templates, throttling, campaigns.
-- Evidence: NO EVIDENCE in routes, modules, or env keys.
-- Status: MISSING.
+### F02 — Landing + captación
+- **Estado:** DONE.
+- Evidencia: `/landing`, `/privacy`, `/terms`, `/api/marketing/leads`, migraciones `marketing_leads_*`.
 
-F10 - Re-ensamble navegacion y Home
-- F10.0 Objective: /app -> /app/finances, nav centered on finances.
-- Evidence: src/app/(dashboard)/app/page.tsx redirect; /app/finances route; dashboard UI modules in src/app/(dashboard)/app/ui/*.
-- Status: DONE.
+### F03 — Auth/Login
+- **Estado:** DONE.
+- Evidencia: rutas `/login`, `/register`, `/forgot-password`, `/reset-password` y `/api/auth/*`.
 
-F11 - Finanzas Personales v2
-- F11.0 Objective: finance core data model + UI + transactions flows.
-- Evidence: finance_core migrations + RLS; /app/finances routes; /api/finances/* routes; src/features/finances/*; formatCurrency tests.
-- Status: PARTIAL.
-- Gaps: NO EVIDENCE for explicit OCR-to-transaction test coverage or CSV export tests.
+### F04 — Finny v2
+- **Estado:** PARTIAL.
+- Implementado: `/api/assistant/chat`, módulos de provider y guardrails.
+- Pendiente: playbooks por idioma y modo operador/admin dedicado.
 
-F12 - Subsidios/Toeslagen Premium
-- F12.0 Objective: eligibility -> result -> checkout -> docs -> review -> done, with admin and i18n.
-- Evidence: /app/subsidies* routes; /api/subsidies/checkout; src/domain/subsidies/*; src/lib/db/subsidies/*; subsidies migrations; calculators tests; Stripe checkout includes ideal + card.
-- Status: PARTIAL.
-- Gaps: NO EVIDENCE for Case Engine reuse or explicit Authorization Modo A flow for subsidies.
+### F05 — Lifecycle post-registro
+- **Estado:** PARTIAL.
+- Implementado: base de lifecycle (`src/features/lifecycle/*`, `/api/admin/lifecycle*`, migration `20260213183000_lifecycle_v1.sql`).
+- Pendiente: campañas enterprise completas (orquestación avanzada, analítica extendida, jobs dedicados).
 
-F13 - Taxes Pro
-- F13.0 Objective: taxes wizard, tax pack, admin workflow.
-- Evidence: NO EVIDENCE in repo for taxes routes or modules.
-- Status: MISSING.
+### F10 — Navegación/Home centrado en finanzas
+- **Estado:** DONE.
+- Evidencia: redirect `/app -> /app/finances`, rutas y shell de dashboard.
 
-F14 - Creditos personales
-- F14.0 Objective: credit case end-to-end.
-- Evidence: NO EVIDENCE in repo.
-- Status: MISSING.
+### F11 — Finanzas personales v2
+- **Estado:** DONE (v1 operativa).
+- Evidencia: rutas `/app/finances*`, APIs `/api/finances*`, migraciones `finance_core_*`, RLS y tests.
 
-F15 - Seguros v2
-- F15.0 Objective: insurance inventory with OCR + consented suggestions.
-- Evidence: NO EVIDENCE in repo.
-- Status: MISSING.
+### F12 — Subsidios / Toeslagen
+- **Estado:** DONE (v1 operativa).
+- Evidencia: rutas `/app/subsidies*` + `/toeslagen`, APIs `/api/subsidies/checkout` y `/api/toeslagen/contract-start`, migraciones `subsidies_v1` + storage y tests de calculadoras.
 
-Appendix: Evidence Pack
-- docs/canon/00-repo-truth.md
-- docs/canon/01-phase-map-F00-F15.md
-- docs/canon/02-module-catalog.md
-- docs/canon/03-diff-vs-canon.md
-- docs/repo-snapshots/canon-refresh-20260118-132825
+### F13 — Taxes Pro
+- **Estado:** PARTIAL.
+- Implementado: ruta `/app/taxes`, cliente `src/features/taxes/*`, API `/api/taxes/intake`, tests de intake/server vertical.
+- Pendiente: tax pack/export y workflow operativo completo de backoffice.
 
-Post-snapshot note (2026-02-14)
-- Fase 7 (H1/H2/H3) has now been implemented in v1:
-  - multi-tenant base,
-  - GDPR operational requests/retention,
-  - business observability by tenant.
-- See:
-  - `supabase/migrations/20260214123000_h1_h2_h3_sell_ready_v1.sql`
-  - `docs/runbooks/sell-ready-v1-smoke.md`
-  - `docs/reports/2026-02-14-roadmap-audit.md`
+### F14 — Créditos personales
+- **Estado:** PARTIAL.
+- Implementado: ruta `/app/credit`, intake compartido `/api/verticals/intake`, checklist/tareas por case.
+- Pendiente: operación vertical completa (pack específico + automatizaciones dedicadas).
+
+### F15 — Seguros v2
+- **Estado:** PARTIAL.
+- Implementado: ruta `/app/insurance`, intake compartido `/api/verticals/intake`, base de casos/eventos.
+- Pendiente: inventario/pipeline específico de seguros con automatización dedicada.
+
+## 4) Integraciones y módulos (resumen)
+
+- **Supabase:** auth/db/storage + clientes server/admin.
+- **Stripe:** checkout/status + webhook.
+- **OCR Azure DI:** provider y pipeline de extracción/verificación.
+- **OpenAI:** provider server-side y chat assistant.
+- **Elements:** conector + sync directo/inverso (`src/features/integrations/elements/*`, webhook).
+
+## 5) Base de datos y RLS (resumen)
+
+Áreas principales de migraciones:
+
+- Núcleo: `schema_v1`, `rls_v1`, admin roles.
+- Case engine/doc pipeline/authorization/admin: A1/A2/A3/A4.
+- Finanzas: `finance_core_v1`, `finance_core_rls_v1`.
+- Subsidies: `subsidies_v1`, storage bucket y políticas.
+- Integraciones: `external_refs`, `product_events`, reverse sync.
+- Sell-ready: `h1_h2_h3_sell_ready_v1` (tenant, GDPR, observabilidad negocio).
+
+## 6) Coherencia documental
+
+- Índice único de docs: `docs/DOCS_INDEX.md`.
+- Estado y contradicciones resueltas: `docs/STATUS.md`.
+- Los documentos históricos del canon F00–F15 se conservan para trazabilidad, pero no son la fuente vigente.

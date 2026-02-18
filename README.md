@@ -1,8 +1,15 @@
 # FinHub (web) — repo base
 
-Este repositorio corresponde a **FinHub v2.0 (web-first)** y está alineado con el documento canónico:
-- Frontend: **Next.js (App Router) + TypeScript + Tailwind**
-- En fases posteriores: shadcn/ui, Supabase, Stripe, Azure AI Document Intelligence
+Este repositorio corresponde a **FinHub v2.0 (web-first)**.
+
+Fuente de verdad documental:
+- `docs/canon/CANON_OPERATIVO.md` (canon operativo)
+- `docs/STATUS.md` (estado y contradicciones resueltas)
+- `docs/DOCS_INDEX.md` (índice de documentación)
+
+Stack actual:
+- **Next.js (App Router) + TypeScript + Tailwind**
+- Supabase (Auth/DB/Storage), Stripe, Azure OCR, OpenAI server-side
 
 ## Requisitos
 - Node.js: ver `.nvmrc`
