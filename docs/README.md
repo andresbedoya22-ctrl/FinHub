@@ -1,31 +1,22 @@
-﻿# Docs — FinHub Web
+# Docs — FinHub Web
 
-Este directorio contiene la documentación canónica del repositorio.
+Este directorio contiene la documentación operativa del repositorio.
 
-## Canon
-- Documento canónico (fuente de verdad): ./Canon.docx
+## Source of truth
 
-## Fase 4 — Modelo de datos + Contratos (OpenAPI v1)
-- Dominio (scope): ./domain/scope-v1.md
-- Modelo de dominio (entidades/enums/state machine): ./domain/model-v1.md
-- Mapping frontend (localStorage) → DB: ./domain/mapping-localstorage-to-db.md
-- OpenAPI v1: ./openapi/finhub-v1.yaml
-- Schema SQL v1: ./db/schema-v1.sql
-- RLS (estrategia): ./db/rls-v1.md
-- Checklist cierre fase 4: ./phase-4-closure.md
+- **Canon operativo vigente:** `./canon/CANON_OPERATIVO.md`
+- **Estado de actualización de docs:** `./STATUS.md`
+- **Índice de documentación:** `./DOCS_INDEX.md`
 
-## Fase 7 — OCR/IA (operación)
-- Operación v1 (OCR + review): ./phase-7/ops-v1.md
+## Documentación clave por área
 
-## Fase 8 — QA / GDPR / Release hardening
-- Release readiness checklist: ./phase-8/release-readiness.md
+- Arquitectura: `./architecture/*`
+- i18n: `./i18n/*`
+- Base de datos: `./db/*`, `../supabase/migrations/*`
+- Runbooks: `./runbooks/*`
+- ADR/decisiones: `./adr/*`, `./decisions/*`
+- Roadmap operativo: `../ROADMAP_CODEX.md`
 
-## Fase 11 — Sell-ready (multi-tenant/GDPR/observability)
-- Runbook smoke: ./runbooks/sell-ready-v1-smoke.md
-- Auditoría roadmap/canon (2026-02-14): ./reports/2026-02-14-roadmap-audit.md
+## Nota sobre históricos
 
-## Contribución
-- Guía de contribución: ./CONTRIBUTING.md
-
-## Checks rápidos
-- Mojibake ES (tildes rotas) en mensajes: `rg -n -F "?" src/i18n/messages/es.json`
+Los archivos en `./repo-snapshots/*` y documentos de auditoría fechados se conservan para trazabilidad histórica, pero no sustituyen al canon operativo vigente.
