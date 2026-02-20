@@ -21,12 +21,11 @@ export function useLeadIdentity(): LeadIdentity {
 
   useEffect(() => {
     let cancelled = false;
-
     async function run() {
       try {
         const supabase = createSupabaseBrowserClient();
-        const userRes = await supabase.auth.getUser();
-        const user = userRes.data.user;
+        const u = await supabase.auth.getUser();
+        const user = u.data.user;
         if (!cancelled && user) {
           const fullName =
             (typeof user.user_metadata?.full_name === "string" && user.user_metadata.full_name.trim()) ||
@@ -43,17 +42,10 @@ export function useLeadIdentity(): LeadIdentity {
       } catch {
         // no-op
       }
-
       if (!cancelled) {
-        setState({
-          loading: false,
-          loggedIn: false,
-          email: "",
-          fullName: "",
-        });
+        setState({ loading: false, loggedIn: false, email: "", fullName: "" });
       }
     }
-
     void run();
     return () => {
       cancelled = true;
