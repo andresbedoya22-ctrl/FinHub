@@ -1,5 +1,9 @@
-﻿import { NextResponse } from "next/server";
+import { randomUUID } from "crypto";
+import { NextResponse } from "next/server";
+
+import { createSupabaseAdminClient } from "@/lib/supabaseAdminClient";
 import { createSupabaseServerClient } from "@/lib/supabaseServerClient";
+import { resolveUserTenantId } from "@/features/tenant/tenantService";
 
 type TableDump = {
   table: string;
@@ -32,6 +36,7 @@ async function safeSelect(supabase: SupabaseLike, table: string, limit = 2000): 
 export async function GET() {
   try {
     const supabase = (await createSupabaseServerClient()) as unknown as SupabaseLike;
+    const admin = createSupabaseAdminClient();
     const { data, error } = await supabase.auth.getUser();
 
     if (error || !data.user) {
@@ -39,23 +44,55 @@ export async function GET() {
     }
 
     const user = data.user;
+    const tenantId = await resolveUserTenantId(supabase as never, user.id).catch(() => null);
+    const correlationId = randomUUID();
 
-    const tablesToTry = ["profiles", "cases", "documents", "document_extractions", "audit_logs", "audit_log"];
+    let requestId: string | null = null;
+    if (tenantId) {
+      const reqInsert = await admin
+        .from("gdpr_requests")
+        .insert({
+          tenant_id: tenantId,
+          user_id: user.id,
+          request_type: "export",
+          status: "processing",
+          correlation_id: correlationId,
+        })
+        .select("id")
+        .maybeSingle();
+      if (!reqInsert.error && reqInsert.data?.id) requestId = String(reqInsert.data.id);
+    }
+
+    const tablesToTry = ["profiles", "tenant_members", "cases", "documents", "document_extractions", "consents", "payments"];
 
     const dumps: TableDump[] = [];
     for (const t of tablesToTry) {
       dumps.push(await safeSelect(supabase, t));
     }
 
+    const exportedRows = dumps.reduce((acc, row) => acc + (row.count ?? 0), 0);
+    if (requestId) {
+      await admin
+        .from("gdpr_requests")
+        .update({
+          status: "completed",
+          completed_at: new Date().toISOString(),
+          result_meta: { tables: dumps.length, exportedRows },
+        })
+        .eq("id", requestId);
+    }
+
     return NextResponse.json({
       ok: true,
       exportedAt: new Date().toISOString(),
+      requestId,
+      correlationId,
       user: {
         id: user.id,
         email: user.email ?? null,
       },
       data: dumps,
-      note: "Beta DSAR export (best-effort). Some tables may be unavailable depending on schema.",
+      note: "GDPR export (best-effort). Some tables may be unavailable depending on schema.",
     });
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : "Error desconocido";

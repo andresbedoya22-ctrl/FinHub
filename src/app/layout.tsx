@@ -13,8 +13,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const { locale, messages, timeZone } = await getI18nRequestContext();
 
   return (
-    <html lang={locale}>
-      <body>
+    <html lang={locale} suppressHydrationWarning>
+      <body suppressHydrationWarning>
         <I18nProvider locale={locale} messages={messages} timeZone={timeZone}>
           {children}
         </I18nProvider>

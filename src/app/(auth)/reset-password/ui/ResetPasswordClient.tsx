@@ -3,11 +3,9 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
+import Link from "next/link";
 
-import { Card } from "@/ui/components/Card";
 import { InfoBox } from "@/ui/components/InfoBox";
-import { Button } from "@/ui/components/Button";
-import { Input } from "@/ui/components/Input";
 
 type ApiOk = { ok: true };
 type ApiErr = { ok: false; code?: string };
@@ -77,36 +75,57 @@ export function ResetPasswordClient() {
   const errMsg = errorText(errorCode);
 
   return (
-    <div className="mx-auto max-w-md p-6">
-      <Card className="space-y-4 p-6">
-        <div className="text-lg font-semibold">{t("reset.title")}</div>
+    <div className="flex min-h-screen items-center justify-center bg-[#0D1B2A] px-4 py-12 sm:px-6 lg:px-8">
+      <div className="w-full max-w-md space-y-8 rounded-2xl bg-white/5 p-8 shadow-2xl backdrop-blur-sm border border-white/10">
+        <div className="text-center">
+          <Link href="/" className="inline-flex text-2xl font-bold tracking-tight text-white items-center gap-2 mb-2">
+            Fin<span className="text-[#4CAF50]">Hub</span>
+          </Link>
+          <h2 className="text-3xl font-bold tracking-tight text-white mt-4">
+            {t("reset.title")}
+          </h2>
+          <p className="mt-2 text-sm text-gray-400">
+            Create a new password for your account
+          </p>
+        </div>
 
-        {info ? (
-          <InfoBox title={t("common.info")} variant="info">
-            {info}
-          </InfoBox>
-        ) : null}
+        <div className="mt-8 space-y-6">
+          {info ? (
+            <InfoBox title={t("common.info")} variant="info">
+              {info}
+            </InfoBox>
+          ) : null}
 
-        {errMsg ? (
-          <InfoBox title={t("common.error")} variant="danger">
-            {errMsg}
-          </InfoBox>
-        ) : null}
+          {errMsg ? (
+            <InfoBox title={t("common.error")} variant="danger">
+              {errMsg}
+            </InfoBox>
+          ) : null}
 
-        <form className="space-y-3" onSubmit={onSubmit}>
-          <Input
-            label={t("reset.newPassword")}
-            type="password"
-            autoComplete="new-password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <Button type="submit" disabled={busy || !code}>
-            {busy ? t("reset.busy") : t("reset.submit")}
-          </Button>
-        </form>
-      </Card>
+          <form className="space-y-6" onSubmit={onSubmit}>
+            <div className="space-y-1">
+              <label className="text-sm font-medium text-gray-300">{t("reset.newPassword")}</label>
+              <input
+                type="password"
+                autoComplete="new-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full rounded-xl border border-gray-700 bg-white/5 px-4 py-3 text-white placeholder-gray-500 focus:border-[#4CAF50] focus:outline-none focus:ring-1 focus:ring-[#4CAF50] transition-colors"
+                required
+                minLength={8}
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={busy || !code}
+              className="w-full rounded-xl bg-[#4CAF50] px-4 py-3 text-sm font-bold text-[#0D1B2A] hover:bg-[#4CAF50]/90 focus:outline-none focus:ring-2 focus:ring-[#4CAF50] focus:ring-offset-2 focus:ring-offset-[#0D1B2A] transition-all disabled:opacity-50"
+            >
+              {busy ? t("reset.busy") : t("reset.submit")}
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
   );
 }
