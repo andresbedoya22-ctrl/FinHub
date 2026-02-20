@@ -1,0 +1,10 @@
+{
+  "debug.javascript.autoAttachFilter": "disabled",
+  "debug.javascript.terminalOptions": {
+    "autoAttachChildProcesses": false
+  },
+  "terminal.integrated.env.windows": {
+    "NODE_OPTIONS": "",
+    "VSCODE_INSPECTOR_OPTIONS": ""
+  }
+}

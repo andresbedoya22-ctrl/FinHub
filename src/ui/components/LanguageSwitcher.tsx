@@ -1,6 +1,7 @@
 ﻿"use client";
 
 import * as React from "react";
+import { useLocale } from "next-intl";
 
 const SUPPORTED = [
   { key: "en", label: "EN" },
@@ -11,40 +12,28 @@ const SUPPORTED = [
 
 type Lang = (typeof SUPPORTED)[number]["key"];
 
-function readCookie(name: string): string | null {
-  if (typeof document === "undefined") return null;
-  const m = document.cookie.match(new RegExp(`(?:^|;\\s*)${name}=([^;]+)`));
-  return m?.[1] ?? null;
-}
-
-function getCurrentLang(): Lang {
-  const raw = (readCookie("locale") ?? readCookie("NEXT_LOCALE") ?? "en").toLowerCase();
-  return (SUPPORTED as readonly { key: string }[]).some((x) => x.key === raw) ? (raw as Lang) : "en";
+function normalizeLang(raw: string): Lang {
+  const lower = raw.toLowerCase();
+  return (SUPPORTED as readonly { key: string }[]).some((x) => x.key === lower) ? (lower as Lang) : "en";
 }
 
 export function LanguageSwitcher() {
-  const [lang, setLang] = React.useState<Lang>("en");
-
-  React.useEffect(() => {
-    setLang(getCurrentLang());
-  }, []);
+  const locale = useLocale();
+  const lang = normalizeLang(locale);
 
   return (
     <select
       aria-label="Language"
       value={lang}
       onChange={async (e) => {
-        const next = e.target.value as Lang;
-        setLang(next);
+        const next = normalizeLang(e.target.value);
 
-        // Setter server-side (fuente de verdad)
         await fetch("/api/i18n/locale", {
           method: "POST",
           headers: { "content-type": "application/json" },
           body: JSON.stringify({ locale: next }),
         });
 
-        // Backup client-side (por si el browser bloquea algo raro)
         const maxAge = 60 * 60 * 24 * 180;
         document.cookie = `locale=${next}; Path=/; Max-Age=${maxAge}; SameSite=Lax`;
         document.cookie = `NEXT_LOCALE=${next}; Path=/; Max-Age=${maxAge}; SameSite=Lax`;

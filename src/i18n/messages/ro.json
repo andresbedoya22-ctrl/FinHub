@@ -1543,5 +1543,226 @@
         "by": "de"
       }
     }
+  },
+  "leadgen": {
+    "common": {
+      "progress": "Progres",
+      "stepOf": "Pasul {current} din {total}",
+      "continue": "Continua",
+      "next": "Urmatorul",
+      "back": "Inapoi",
+      "yes": "Da",
+      "no": "Nu",
+      "session": "Sesiune",
+      "checkingSession": "Verificam sesiunea...",
+      "authenticated": "Utilizator autentificat",
+      "reuseIdentity": "Folosim profilul tau ({email}).",
+      "fullName": "Nume complet",
+      "email": "Email",
+      "phone": "Telefon",
+      "consent": "Accept politica de confidentialitate si prelucrarea GDPR pentru aceasta solicitare.",
+      "privacyHint": "Continuand accepti politica de confidentialitate.",
+      "privacyLink": "Politica de confidentialitate",
+      "error": "Eroare",
+      "saving": "Se salveaza...",
+      "processing": "Se proceseaza...",
+      "submitting": "Se trimite...",
+      "submitError": "Nu am putut finaliza solicitarea.",
+      "nextStep": "Pasul urmator",
+      "loginToContinue": "Autentifica-te pentru documente si urmarirea cazului.",
+      "reset": "Reseteaza"
+    },
+    "validation": {
+      "fullName": "Introdu numele complet.",
+      "email": "Introdu o adresa de email valida.",
+      "consent": "Trebuie sa accepti consimtamantul.",
+      "signature": "Completeaza semnatura digitala.",
+      "birthDate": "Introdu data nasterii."
+    },
+    "mortgage": {
+      "title": "Ipoteca Pro",
+      "subtitle": "Calculator ipotecar in pasi, inspirat din Domek.",
+      "devMarker": "Mortgage Wizard v1",
+      "buyers": {
+        "question": "How many buyers are applying?",
+        "dataTitle": "Buyer {index} details",
+        "grossIncome": "Gross income",
+        "monthly": "Monthly",
+        "annual": "Annual",
+        "birthDate": "Date of birth",
+        "hasCompany": "Self-employed?",
+        "hasOwnFunds": "I have own funds for purchase costs"
+      },
+      "result": {
+        "title": "Estimated result",
+        "capacity": "Estimated mortgage capacity",
+        "meta": "Based on {buyers} buyer(s), annual income {annualIncome} and maximum age {oldestAge}.",
+        "benefit1": "Up to 0.75% negotiated discount with partner lenders.",
+        "benefit2": "Advice in your language from start to signing.",
+        "benefit3": "First advisor feedback in less than 24 working hours.",
+        "testimonial": "\"They helped us close our mortgage with clear guidance in every step.\"",
+        "timelineLabel": "When do you want to buy?",
+        "cta": "Continue with advisory"
+      },
+      "timeline": {
+        "0_3": "0-3 months",
+        "3_6": "3-6 months",
+        "6_12": "6-12 months",
+        "12_plus": "12+ months"
+      },
+      "contact": {
+        "title": "Contact details for lead creation",
+        "submit": "Finish and create lead"
+      },
+      "done": {
+        "title": "Flow completed",
+        "body": "Your mortgage lead has been created and routed to operations.",
+        "openCase": "Open case {id}",
+        "leadCreated": "CRM lead created: {id}..."
+      }
+    },
+    "credit": {
+      "title": "Credite Pro",
+      "subtitle": "Calculezi, aplici online, incarci documente si semnezi digital.",
+      "devMarker": "Credit Flow v1",
+      "amountQuestion": "How much credit do you need?",
+      "requestedAmount": "Requested amount",
+      "termMonths": "Term (months)",
+      "interestRateUsed": "Dobanda folosita",
+      "interestRateValue": "{rate}% rata fixa",
+      "simulationTitle": "Simulation",
+      "monthlyInstallment": "Monthly installment",
+      "totalRepayable": "Total repayable",
+      "totalInterest": "Total interest",
+      "startFlow": "Calculate your loan and continue",
+      "applicationTitle": "Online application",
+      "monthlyIncome": "Monthly income",
+      "monthlyExpenses": "Monthly fixed expenses",
+      "employmentStatus": "Employment status",
+      "employment": {
+        "employed": "Employed",
+        "selfEmployed": "Self-employed",
+        "student": "Student",
+        "unemployed": "Unemployed"
+      },
+      "hasPartner": "Joint application with partner",
+      "signature": {
+        "title": "Digital signature",
+        "namePlaceholder": "Type your full name as signature",
+        "accept": "I confirm this digital signature"
+      },
+      "disclaimer": "No paperwork. End-to-end online process with transparent fixed rate.",
+      "submit": "Submit credit request",
+      "documents": {
+        "title": "Documents",
+        "loginRequired": "Sign in to upload ID, payslips and supporting documents in your case."
+      },
+      "done": {
+        "title": "Application submitted",
+        "body": "Your credit request was registered successfully.",
+        "openCase": "Open case {id}",
+        "leadCreated": "CRM lead created: {id}..."
+      }
+    },
+    "insurance": {
+      "title": "Asigurari Pro",
+      "subtitle": "Catalog structurat cu calculator rapid de prima.",
+      "devMarker": "Insurance Catalog v1",
+      "sections": {
+        "private": "Private insurance",
+        "business": "Business insurance"
+      },
+      "subsections": {
+        "vehicle": "Vehicle",
+        "life": "Life",
+        "home": "Home",
+        "liability": "Liability",
+        "selfEmployed": "Self-employed",
+        "operations": "Operations"
+      },
+      "products": {
+        "car": {
+          "title": "Car insurance",
+          "teaser": "Save up to EUR 29/month and quote in under 2 minutes.",
+          "highlights": "No-claim years accepted ? Fast onboarding ? Local-language support"
+        },
+        "motorbike": {
+          "title": "Motorbike and scooter insurance",
+          "teaser": "Flexible daily mobility protection.",
+          "highlights": "Digital contracting ? Transparent comparison ? Claims support"
+        },
+        "life": {
+          "title": "Life insurance",
+          "teaser": "Protect your family with predictable monthly costs.",
+          "highlights": "Fast underwriting ? Death cover ? Funeral optional"
+        },
+        "home": {
+          "title": "Home package",
+          "teaser": "Bundle home, liability and legal support.",
+          "highlights": "Tenant package ? Contents coverage ? Legal add-ons"
+        },
+        "businessVehicle": {
+          "title": "Business vehicle insurance",
+          "teaser": "Operational coverage for company fleet.",
+          "highlights": "Fast quote ? Modular cover ? Roadside support"
+        },
+        "avb": {
+          "title": "Business liability (AVB)",
+          "teaser": "Legal and liability protection for operations.",
+          "highlights": "Third-party damage ? Legal costs ? Business continuity"
+        },
+        "zzpAccident": {
+          "title": "Self-employed accident cover",
+          "teaser": "Income continuity for freelancers.",
+          "highlights": "Work accident ? Disability support ? Daily payout"
+        },
+        "toolsInVehicle": {
+          "title": "Tools in vehicle",
+          "teaser": "Protect tools and installation materials.",
+          "highlights": "Tool theft ? Material damage ? Transport extension"
+        }
+      },
+      "coverages": {
+        "oc": "OC",
+        "miniCasco": "MiniCasco",
+        "autoCasco": "AutoCasco",
+        "roadside": "Roadside assistance",
+        "liability": "Liability",
+        "theft": "Theft",
+        "damage": "Damage",
+        "death": "Death",
+        "funeral": "Funeral",
+        "familySupport": "Family support",
+        "accidents": "Accidents",
+        "contents": "Contents",
+        "legal": "Legal support",
+        "travel": "Travel",
+        "thirdParty": "Third-party damages",
+        "workAccident": "Work accident",
+        "disability": "Disability",
+        "dailyPay": "Daily payout",
+        "tools": "Tools",
+        "materials": "Materials",
+        "transport": "Transport"
+      },
+      "calculator": {
+        "title": "Calculate premium: {product}",
+        "coverages": "Coverage",
+        "assetValue": "Insured value (EUR)",
+        "birthDate": "Birth date",
+        "monthlyIncome": "Monthly income",
+        "noClaimsYears": "No-claim years",
+        "requestAdvice": "I want an advisor to contact me for this policy",
+        "premiumLabel": "Estimated monthly premium",
+        "premiumHint": "Indicative quote generated in under 2 minutes.",
+        "submit": "Calculate premium"
+      },
+      "done": {
+        "title": "Lead saved",
+        "body": "Quote and lead data were saved for operations follow-up.",
+        "openCase": "Open case {id}",
+        "leadCreated": "CRM lead created: {id}..."
+      }
+    }
   }
 }

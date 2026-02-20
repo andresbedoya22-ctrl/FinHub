@@ -1,11 +1,6 @@
 ﻿import Link from "next/link";
-import { Screen } from "@/ui/components/Screen";
-import { Header } from "@/ui/components/Header";
-import { InfoBox } from "@/ui/components/InfoBox";
-import { HubDiagram } from "./ui/HubDiagram";
 import LandingLeadForm from "./ui/LandingLeadForm";
-import { LandingCard } from "./ui/LandingCard";
-import { LanguageSwitcher } from "@/ui/components/LanguageSwitcher";
+import LandingNavbar from "./LandingNavbar";
 import { getI18nRequestContext } from "@/i18n/request";
 
 type Lang = "en" | "es" | "pl" | "ro";
@@ -40,7 +35,6 @@ type LeadStrings = {
 };
 
 type LandingCopy = {
-  nav: { privacy: string; terms: string; login: string; create: string };
   hero: {
     title: string;
     subtitle: string;
@@ -53,24 +47,25 @@ type LandingCopy = {
   pricing: { title: string; subtitle: string; tiers: PricingTier[] };
   faq: { title: string; subtitle: string; items: FaqItem[] };
   lead: LeadStrings;
+  trust: string[];
   legal: { byUsing: string; terms: string; and: string; privacy: string };
   footer: { note: string };
 };
 
 const COPY: Record<Lang, LandingCopy> = {
   en: {
-    nav: { privacy: "Privacy", terms: "Terms", login: "Login", create: "Create account" },
     hero: {
-      title: "One place to control your money in the Netherlands.",
+      title: "Your finances in the Netherlands, in your language.",
       subtitle:
-        "A finance hub for migrants: personal finance control + guided flows for taxes, toeslagen, loans, mortgages, and insurance.",
+        "Control your money, check toeslagen eligibility, upload documents and get guided – all in one place.",
       bullets: [
-        "Track income, bills, and goals in minutes.",
-        "Guided flows for the moments that matter.",
-        "Human review when it matters — beta-friendly.",
+        "Built for the Netherlands",
+        "We never ask for your DigiD",
+        "Human review when needed",
+        "GDPR-grade privacy",
       ],
-      ctaPrimary: "Create account",
-      ctaSecondary: "Get updates",
+      ctaPrimary: "Create free account",
+      ctaSecondary: "Check toeslagen eligibility",
     },
     hub: {
       title: "FinHub Core: Personal Finance Control",
@@ -82,27 +77,28 @@ const COPY: Record<Lang, LandingCopy> = {
     how: {
       title: "How it works",
       steps: [
-        { t: "Create an account", d: "Start with the essentials — no friction." },
-        { t: "Follow guided flows", d: "We guide you step-by-step. Upload documents only when needed." },
-        { t: "Get an outcome", d: "Clear next steps. Human review when it matters." },
+        { t: "1. Create an account", d: "Start with the essentials — no friction." },
+        { t: "2. Tell us your goals", d: "Are you an employee, self-employed, or both?" },
+        { t: "3. Follow guided flows", d: "We guide you step-by-step. Upload documents only when needed." },
+        { t: "4. Get an outcome", d: "Clear next steps. Human review when it matters." },
       ],
     },
     pricing: {
-      title: "Pricing (Beta)",
-      subtitle: "Beta is free while we validate product-market fit. Pricing will be announced later.",
+      title: "Pricing",
+      subtitle: "Start for free.",
       tiers: [
-        { t: "Subscription", p: "€0", d: "Unlimited access during beta." },
-        { t: "Pay-per-case", p: "€0", d: "Start a case and get guided support." },
+        { t: "Free", p: "€0", d: "Basic money management and beta access." },
+        { t: "Premium", p: "Coming soon", d: "Advanced features and dedicated human support." },
       ],
     },
     faq: {
       title: "FAQ",
       subtitle: "Quick answers to common questions.",
       items: [
+        { q: "Do you need my DigiD?", a: "No, we never ask for your DigiD." },
         { q: "Is FinHub only for migrants?", a: "FinHub is designed for migrants in NL, but anyone can benefit." },
         { q: "Do I need to upload documents?", a: "Only when needed. The goal is to reduce paperwork, not increase it." },
         { q: "Is there human support?", a: "Yes — human review is available when the flow requires it." },
-        { q: "What areas does FinHub cover?", a: "Personal finance, taxes, toeslagen, mortgages, personal loans, insurance, and document flows." },
       ],
     },
     lead: {
@@ -128,23 +124,24 @@ const COPY: Record<Lang, LandingCopy> = {
         insurance: "Insurance",
       },
     },
+    trust: ["Built for the Netherlands", "Never ask for DigiD", "Human review when needed", "GDPR-grade privacy"],
     legal: { byUsing: "By using FinHub you accept the", terms: "Terms", and: "and", privacy: "Privacy Policy" },
     footer: { note: "FinHub is in beta. Content may change." },
   },
 
   es: {
-    nav: { privacy: "Privacidad", terms: "Términos", login: "Login", create: "Crear cuenta" },
     hero: {
-      title: "Un solo lugar para controlar tus finanzas en Países Bajos.",
+      title: "Tus finanzas en Países Bajos, en tu idioma.",
       subtitle:
-        "Un hub financiero para migrantes: control de finanzas personales + flujos guiados para impuestos, toeslagen, créditos, hipotecas y seguros.",
+        "Controla tu dinero, revisa toeslagen, sube documentos y recibe guía — todo en un solo lugar.",
       bullets: [
-        "Controla ingresos, gastos y metas en minutos.",
-        "Flujos guiados para lo que realmente importa.",
-        "Revisión humana cuando aplica — en beta.",
+        "Pensado para Países Bajos",
+        "Nunca pedimos DigiD",
+        "Revisión humana cuando sea necesario",
+        "Privacidad tipo GDPR",
       ],
-      ctaPrimary: "Crear cuenta",
-      ctaSecondary: "Recibir novedades",
+      ctaPrimary: "Crear cuenta gratis",
+      ctaSecondary: "Ver elegibilidad de toeslagen",
     },
     hub: {
       title: "FinHub Core: Control de Finanzas Personales",
@@ -156,27 +153,28 @@ const COPY: Record<Lang, LandingCopy> = {
     how: {
       title: "Cómo funciona",
       steps: [
-        { t: "Crea una cuenta", d: "Empieza por lo esencial, sin fricción." },
-        { t: "Sigue flujos guiados", d: "Te guiamos paso a paso. Solo subes documentos si hace falta." },
-        { t: "Obtén un resultado", d: "Próximos pasos claros. Revisión humana cuando aplica." },
+        { t: "1. Crea una cuenta", d: "Empieza por lo esencial, sin fricción." },
+        { t: "2. Cuéntanos tus metas", d: "¿Eres empleado, autónomo (ZZP) o ambos?" },
+        { t: "3. Sigue flujos guiados", d: "Te guiamos paso a paso. Solo subes documentos si hace falta." },
+        { t: "4. Obtén un resultado", d: "Próximos pasos claros. Revisión humana cuando aplica." },
       ],
     },
     pricing: {
-      title: "Precios (Beta)",
-      subtitle: "La beta es gratis mientras validamos el producto. Los precios se anunciarán más adelante.",
+      title: "Precios",
+      subtitle: "Comienza gratis.",
       tiers: [
-        { t: "Suscripción", p: "€0", d: "Acceso ilimitado durante beta." },
-        { t: "Pago por caso", p: "€0", d: "Inicia un caso y recibe guía." },
+        { t: "Gratis", p: "€0", d: "Gestión básica de dinero y acceso a beta." },
+        { t: "Premium", p: "Próximamente", d: "Funciones avanzadas y soporte humano dedicado." },
       ],
     },
     faq: {
       title: "FAQ",
       subtitle: "Respuestas rápidas a preguntas comunes.",
       items: [
+        { q: "¿Necesitan mi DigiD?", a: "No, nunca pedimos tu DigiD." },
         { q: "¿FinHub es solo para migrantes?", a: "Está diseñado para migrantes en NL, pero cualquiera puede beneficiarse." },
         { q: "¿Tengo que subir documentos?", a: "Solo cuando haga falta. La idea es reducir papeleo, no aumentarlo." },
         { q: "¿Hay soporte humano?", a: "Sí — hay revisión humana cuando el flujo lo requiere." },
-        { q: "¿Qué cubre FinHub?", a: "Finanzas personales, impuestos, toeslagen, hipotecas, créditos personales, seguros y flujos de documentos." },
       ],
     },
     lead: {
@@ -202,23 +200,24 @@ const COPY: Record<Lang, LandingCopy> = {
         insurance: "Seguros",
       },
     },
+    trust: ["Pensado para Países Bajos", "Nunca pedimos DigiD", "Revisión humana cuando sea necesario", "Privacidad tipo GDPR"],
     legal: { byUsing: "Al usar FinHub aceptas los", terms: "Términos", and: "y la", privacy: "Política de Privacidad" },
     footer: { note: "FinHub está en beta. El contenido puede cambiar." },
   },
 
   pl: {
-    nav: { privacy: "Prywatność", terms: "Warunki", login: "Login", create: "Utwórz konto" },
     hero: {
-      title: "Jedno miejsce do kontroli finansów w Holandii.",
+      title: "Twoje finanse w Holandii, w Twoim języku.",
       subtitle:
-        "Hub finansowy dla migrantów: finanse osobiste + prowadzone procesy: podatki, toeslagen, pożyczki, hipoteki i ubezpieczenia.",
+        "Kontroluj pieniądze, sprawdzaj toeslagen, przesyłaj dokumenty i otrzymuj wsparcie — wszystko w jednym miejscu.",
       bullets: [
-        "Kontroluj dochody, wydatki i cele w kilka minut.",
-        "Prowadzone kroki, gdy to naprawdę ważne.",
-        "W razie potrzeby — weryfikacja przez człowieka (beta).",
+        "Zbudowane dla Holandii",
+        "Nigdy nie prosimy o DigiD",
+        "Pomoc ludzka w razie potrzeby",
+        "Prywatność klasy GDPR",
       ],
-      ctaPrimary: "Utwórz konto",
-      ctaSecondary: "Otrzymuj aktualizacje",
+      ctaPrimary: "Załóż darmowe konto",
+      ctaSecondary: "Sprawdź toeslagen",
     },
     hub: {
       title: "FinHub Core: Finanse osobiste",
@@ -230,27 +229,28 @@ const COPY: Record<Lang, LandingCopy> = {
     how: {
       title: "Jak to działa",
       steps: [
-        { t: "Utwórz konto", d: "Start od podstaw — bez tarcia." },
-        { t: "Korzystaj z prowadzenia", d: "Krok po kroku. Dokumenty tylko gdy to konieczne." },
-        { t: "Otrzymaj wynik", d: "Jasne następne kroki. W razie potrzeby — weryfikacja." },
+        { t: "1. Utwórz konto", d: "Start od podstaw — bez tarcia." },
+        { t: "2. Powiedz nam o celach", d: "Pracownik, własny biznes czy jedno i drugie?" },
+        { t: "3. Korzystaj z prowadzenia", d: "Krok po kroku. Dokumenty tylko gdy to konieczne." },
+        { t: "4. Otrzymaj wynik", d: "Jasne następne kroki. W razie potrzeby — weryfikacja." },
       ],
     },
     pricing: {
-      title: "Cennik (Beta)",
-      subtitle: "Beta jest darmowa, dopóki walidujemy produkt. Ceny później.",
+      title: "Cennik",
+      subtitle: "Zacznij za darmo.",
       tiers: [
-        { t: "Subskrypcja", p: "€0", d: "Nielimitowany dostęp w becie." },
-        { t: "Opłata za sprawę", p: "€0", d: "Rozpocznij sprawę i otrzymaj prowadzenie." },
+        { t: "Za darmo", p: "€0", d: "Podstawowe zarządzanie pieniędzmi i dostęp w becie." },
+        { t: "Premium", p: "Wkrótce", d: "Zaawansowane funkcje i dedykowane wsparcie człowieka." },
       ],
     },
     faq: {
       title: "FAQ",
       subtitle: "Szybkie odpowiedzi na typowe pytania.",
       items: [
+        { q: "Czy potrzebujecie mojego DigiD?", a: "Nie, nigdy nie prosimy o DigiD." },
         { q: "Czy FinHub jest tylko dla migrantów?", a: "Projektowany dla migrantów w NL, ale każdy może skorzystać." },
         { q: "Czy muszę przesyłać dokumenty?", a: "Tylko gdy potrzeba. Celem jest mniej papierologii." },
         { q: "Czy jest wsparcie człowieka?", a: "Tak — gdy proces tego wymaga." },
-        { q: "Co obejmuje FinHub?", a: "Finanse osobiste, podatki, toeslagen, hipoteki, pożyczki, ubezpieczenia i dokumenty." },
       ],
     },
     lead: {
@@ -276,23 +276,24 @@ const COPY: Record<Lang, LandingCopy> = {
         insurance: "Ubezpieczenia",
       },
     },
+    trust: ["Zbudowane dla Holandii", "Nigdy nie prosimy o DigiD", "Pomoc ludzka w razie potrzeby", "Prywatność klasy GDPR"],
     legal: { byUsing: "Korzystając z FinHub akceptujesz", terms: "Warunki", and: "oraz", privacy: "Politykę prywatności" },
     footer: { note: "FinHub jest w becie. Treść może się zmieniać." },
   },
 
   ro: {
-    nav: { privacy: "Confidențialitate", terms: "Termeni", login: "Login", create: "Creează cont" },
     hero: {
-      title: "Un singur loc pentru controlul finanțelor în Olanda.",
+      title: "Finanțele tale în Olanda, în limba ta.",
       subtitle:
-        "Hub financiar pentru migranți: finanțe personale + fluxuri ghidate pentru taxe, toeslagen, credite, ipoteci și asigurări.",
+        "Controlează banii, verifică toeslagen, încarcă documente și primește asistență — totul într-un singur loc.",
       bullets: [
-        "Controlezi venituri, cheltuieli și obiective în minute.",
-        "Fluxuri ghidate pentru momentele importante.",
-        "Revizuire umană când este necesar (beta).",
+        "Construit pentru Olanda",
+        "Nu cerem niciodată DigiD",
+        "Verificare umană când e nevoie",
+        "Confidențialitate la nivel GDPR",
       ],
-      ctaPrimary: "Creează cont",
-      ctaSecondary: "Primește noutăți",
+      ctaPrimary: "Creează cont gratuit",
+      ctaSecondary: "Verifică toeslagen",
     },
     hub: {
       title: "FinHub Core: Control finanțe personale",
@@ -304,27 +305,28 @@ const COPY: Record<Lang, LandingCopy> = {
     how: {
       title: "Cum funcționează",
       steps: [
-        { t: "Creează un cont", d: "Începi cu esențialul, fără fricțiune." },
-        { t: "Urmează fluxurile ghidate", d: "Pas cu pas. Documente doar când e nevoie." },
-        { t: "Primești un rezultat", d: "Pași următori clari. Revizuire umană când se aplică." },
+        { t: "1. Creează un cont", d: "Începi cu esențialul, fără fricțiune." },
+        { t: "2. Spune-ne obiectivele", d: "Ești angajat, antreprenor sau ambele?" },
+        { t: "3. Urmează fluxurile", d: "Pas cu pas. Documente doar când e nevoie." },
+        { t: "4. Primești un rezultat", d: "Pași următori clari. Revizuire umană când se aplică." },
       ],
     },
     pricing: {
-      title: "Prețuri (Beta)",
-      subtitle: "Beta este gratuită cât timp validăm produsul. Prețurile vor fi anunțate ulterior.",
+      title: "Prețuri",
+      subtitle: "Ușor de început gratuit.",
       tiers: [
-        { t: "Abonament", p: "€0", d: "Acces nelimitat în beta." },
-        { t: "Plată per caz", p: "€0", d: "Pornești un caz și primești ghidare." },
+        { t: "Gratuit", p: "€0", d: "Gestiunea bazală a banilor și acces beta." },
+        { t: "Premium", p: "În curând", d: "Servicii avansate cu asistență dedicată umană." },
       ],
     },
     faq: {
       title: "FAQ",
       subtitle: "Răspunsuri rapide la întrebări comune.",
       items: [
+        { q: "Aveți nevoie de DigiD-ul meu?", a: "Nu, nu cerem niciodată DigiD." },
         { q: "FinHub este doar pentru migranți?", a: "Este proiectat pentru migranți în NL, dar poate fi folosit de oricine." },
         { q: "Trebuie să încarc documente?", a: "Doar când este necesar. Scopul este să reducem birocrația." },
         { q: "Există suport uman?", a: "Da — când fluxul o cere." },
-        { q: "Ce acoperă FinHub?", a: "Finanțe personale, taxe, toeslagen, ipoteci, credite, asigurări și documente." },
       ],
     },
     lead: {
@@ -350,6 +352,7 @@ const COPY: Record<Lang, LandingCopy> = {
         insurance: "Asigurări",
       },
     },
+    trust: ["Construit pentru Olanda", "Nu cerem niciodată DigiD", "Verificare umană când e nevoie", "Confidențialitate la nivel GDPR"],
     legal: { byUsing: "Folosind FinHub accepți", terms: "Termenii", and: "și", privacy: "Politica de confidențialitate" },
     footer: { note: "FinHub este în beta. Conținutul se poate schimba." },
   },
@@ -361,131 +364,160 @@ export default async function LandingPage() {
   const c = COPY[lang];
 
   return (
-    <Screen className="space-y-8">
-      <Header
-        title="FinHub"
-        subtitle={c.hero.subtitle}
-        right={
-          <div className="flex items-center gap-3">
-            <Link href="/privacy" className="text-sm text-white/90 underline opacity-80 hover:opacity-100">
-              {c.nav.privacy}
-            </Link>
-            <Link href="/terms" className="text-sm text-white/90 underline opacity-80 hover:opacity-100">
-              {c.nav.terms}
-            </Link>
+    <div className="min-h-screen bg-[#0D1B2A] text-gray-100 selection:bg-[#4CAF50] selection:text-[#0D1B2A]">
+      <LandingNavbar />
 
-            <div className="flex items-center gap-3">
-              <LanguageSwitcher />
-              <Link href="/login" className="text-sm text-white/90 opacity-80 hover:opacity-100">
-                {c.nav.login}
-              </Link>
+      <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+
+        {/* HERO */}
+        <section className="py-20 md:py-32">
+          <div className="mx-auto max-w-4xl text-center">
+            <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl">
+              {c.hero.title}
+            </h1>
+            <p className="mt-6 text-xl text-gray-300">
+              {c.hero.subtitle}
+            </p>
+            <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Link
                 href="/register"
-                className="rounded-xl border border-fh-border bg-fh-primary px-3 py-2 text-sm text-fh-primaryFg hover:opacity-90"
+                className="w-full sm:w-auto rounded-xl bg-[#4CAF50] px-8 py-4 text-lg font-bold text-[#0D1B2A] hover:bg-[#4CAF50]/90 transition-all shadow-[0_0_20px_rgba(76,175,80,0.3)] hover:shadow-[0_0_30px_rgba(76,175,80,0.5)]"
               >
-                {c.nav.create}
-              </Link>
-            </div>
-          </div>
-        }
-      />
-
-      <LandingCard className="overflow-hidden">
-        <div className="grid gap-6 p-6 md:grid-cols-2 md:items-center">
-          <div className="space-y-4">
-            <h1 className="text-2xl md:text-4xl font-semibold tracking-tight">{c.hero.title}</h1>
-
-            <ul className="space-y-2 text-sm text-white/90 opacity-85">
-              {c.hero.bullets.map((b) => (
-                <li key={b} className="flex gap-2">
-                  <span className="mt-1 inline-block h-2 w-2 rounded-full bg-[#4CAF50]" />
-                  <span>{b}</span>
-                </li>
-              ))}
-            </ul>
-
-            <div className="flex flex-wrap gap-3 pt-2">
-              <Link href="/register" className="rounded-xl bg-[#0D1B2A] px-4 py-2 text-sm text-white hover:opacity-95">
                 {c.hero.ctaPrimary}
               </Link>
-              <a href="#lead" className="rounded-xl border px-4 py-2 text-sm text-white/90 hover:bg-white/5">
+              <Link
+                href="/register?flow=toeslagen"
+                className="w-full sm:w-auto rounded-xl border border-gray-600 bg-transparent px-8 py-4 text-lg font-bold text-white hover:bg-white/5 transition-all"
+              >
                 {c.hero.ctaSecondary}
-              </a>
+              </Link>
             </div>
 
-            <div className="text-xs opacity-60">{c.footer.note}</div>
-          </div>
-
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-3">
-            <HubDiagram />
-          </div>
-        </div>
-      </LandingCard>
-
-      <LandingCard className="space-y-2">
-        <div className="text-xl font-semibold">{c.hub.title}</div>
-        <div className="text-sm text-white/90 opacity-75">{c.hub.subtitle}</div>
-        <InfoBox title={c.hub.infoTitle} variant="info">
-          {c.hub.infoBody}
-        </InfoBox>
-      </LandingCard>
-
-      <LandingCard className="space-y-4">
-        <div className="text-xl font-semibold">{c.how.title}</div>
-        <div className="grid gap-3 md:grid-cols-3">
-          {c.how.steps.map((s) => (
-            <div key={s.t} className="rounded-2xl border border-white/10 bg-white/5 p-4">
-              <div className="font-semibold">{s.t}</div>
-              <div className="text-sm text-white/90 opacity-75 mt-1">{s.d}</div>
+            <div className="mt-12 flex flex-wrap justify-center gap-x-8 gap-y-4 text-sm font-medium text-gray-400">
+              {c.trust.map((badge) => (
+                <div key={badge} className="flex items-center gap-2">
+                  <span className="text-[#4CAF50]">✓</span>
+                  {badge}
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </LandingCard>
+          </div>
+        </section>
 
-      <LandingCard className="space-y-4">
-        <div className="text-xl font-semibold">{c.pricing.title}</div>
-        <div className="text-sm text-white/90 opacity-75">{c.pricing.subtitle}</div>
-        <div className="grid gap-3 md:grid-cols-2">
-          {c.pricing.tiers.map((t) => (
-            <div key={t.t} className="rounded-2xl border border-white/10 bg-white/5 p-5 flex items-center justify-between">
-              <div>
-                <div className="font-semibold">{t.t}</div>
-                <div className="text-sm text-white/90 opacity-75">{t.d}</div>
+        {/* VALUE PROPS */}
+        <section id="product" className="py-16">
+          <div className="mb-12 text-center">
+            <h2 className="text-3xl font-bold text-white">Value Props</h2>
+            <p className="mt-4 text-gray-400">Features designed for your financial success in the Netherlands.</p>
+          </div>
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {[
+              { img: "📊", t: "Toeslagen Guide", d: "Check your 2026 eligibility easily." },
+              { img: "👛", t: "Personal Finance", d: "Track budgets and transactions." },
+              { img: "📄", t: "Smart OCR", d: "Scan and extract document info automatically." },
+              { img: "🤖", t: "Finny AI", d: "Your intelligent finance assistant (Coming soon)." },
+              { img: "🌍", t: "Multi-Language", d: "Support for EN, ES, PL, RO." },
+              { img: "🔒", t: "Secure & Private", d: "GDPR grade privacy built-in." }
+            ].map((prop, idx) => (
+              <div key={idx} className="group rounded-2xl border border-white/10 bg-white/5 p-6 hover:bg-white/10 transition-colors">
+                <div className="mb-4 text-4xl">{prop.img}</div>
+                <h3 className="mb-2 text-lg font-semibold text-white">{prop.t}</h3>
+                <p className="text-sm text-gray-400 group-hover:text-gray-300">{prop.d}</p>
               </div>
-              <div className="text-2xl font-semibold">{t.p}</div>
+            ))}
+          </div>
+        </section>
+
+        {/* HOW IT WORKS */}
+        <section id="how-it-works" className="py-16">
+          <div className="mb-12 text-center">
+            <h2 className="text-3xl font-bold text-white">{c.how.title}</h2>
+          </div>
+          <div className="grid gap-8 md:grid-cols-4">
+            {c.how.steps.map((s, i) => (
+              <div key={i} className="relative rounded-2xl border border-gray-800 bg-white/5 p-6">
+                <div className="mb-4 text-[#4CAF50] font-mono text-xl">{s.t.split('.')[0]}</div>
+                <h3 className="mb-2 font-semibold text-white">{s.t.split('.')[1]}</h3>
+                <p className="text-sm text-gray-400">{s.d}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* SOCIAL PROOF */}
+        <section className="py-16 text-center">
+          <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-[#4CAF50]/5 p-12">
+            <h2 className="text-2xl font-bold text-white mb-4">Be the first to experience FinHub</h2>
+            <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
+              We are currently in Early Access Beta. Join hundreds of other migrants in taking control of their finances in the Netherlands.
+            </p>
+            <Link
+              href="/register"
+              className="rounded-xl bg-white px-6 py-3 text-sm font-bold text-[#0D1B2A] hover:bg-gray-200 transition-all"
+            >
+              Join Early Access
+            </Link>
+          </div>
+        </section>
+
+        {/* PRICING */}
+        <section id="pricing" className="py-16">
+          <div className="mb-12 text-center">
+            <h2 className="text-3xl font-bold text-white">{c.pricing.title}</h2>
+            <p className="mt-4 text-gray-400">{c.pricing.subtitle}</p>
+          </div>
+          <div className="mx-auto max-w-4xl grid gap-8 md:grid-cols-2">
+            {c.pricing.tiers.map((t, i) => (
+              <div key={i} className={`rounded-3xl border border-white/10 p-8 flex flex-col ${i === 1 ? 'bg-gradient-to-b from-white/10 to-transparent' : 'bg-white/5'}`}>
+                <h3 className="text-xl font-semibold text-white mb-2">{t.t}</h3>
+                <p className="text-gray-400 mb-8 flex-1">{t.d}</p>
+                <div className="text-3xl font-bold text-white mb-8">{t.p}</div>
+                <Link
+                  href="/register"
+                  className={`text-center rounded-xl px-6 py-3 font-semibold transition-all ${i === 0 ? 'bg-white/10 text-white hover:bg-white/20' : 'bg-[#4CAF50] text-[#0D1B2A] hover:bg-[#4CAF50]/90 shadow-[0_0_15px_rgba(76,175,80,0.3)]'}`}
+                >
+                  {i === 0 ? 'Get Started' : 'Join Waitlist'}
+                </Link>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* FAQ */}
+        <section id="faq" className="py-16">
+          <div className="mb-12 text-center">
+            <h2 className="text-3xl font-bold text-white">{c.faq.title}</h2>
+            <p className="mt-4 text-gray-400">{c.faq.subtitle}</p>
+          </div>
+          <div className="mx-auto max-w-3xl space-y-4">
+            {c.faq.items.map((it, i) => (
+              <details key={i} className="group rounded-2xl border border-white/10 bg-white/5 p-6 open:bg-white/10 transition-colors cursor-pointer">
+                <summary className="font-semibold text-white list-none flex justify-between items-center">
+                  {it.q}
+                  <span className="text-[#4CAF50] group-open:rotate-180 transition-transform">▼</span>
+                </summary>
+                <div className="mt-4 text-gray-400">{it.a}</div>
+              </details>
+            ))}
+          </div>
+        </section>
+
+        {/* LEAD CAPTURE */}
+        <section id="lead" className="py-16 mb-16">
+          <div className="rounded-3xl border border-white/10 bg-gradient-to-r from-white/5 via-[#4CAF50]/10 to-white/5 p-1">
+            <div className="rounded-[23px] bg-[#0D1B2A] p-8 md:p-12">
+              <LandingLeadForm />
             </div>
-          ))}
-        </div>
-      </LandingCard>
+          </div>
+        </section>
 
-      <LandingCard className="space-y-4">
-        <div className="text-xl font-semibold">{c.faq.title}</div>
-        <div className="text-sm text-white/90 opacity-75">{c.faq.subtitle}</div>
-        <div className="grid gap-3 md:grid-cols-2">
-          {c.faq.items.map((it) => (
-            <div key={it.q} className="rounded-2xl border border-white/10 bg-white/5 p-4">
-              <div className="font-semibold">{it.q}</div>
-              <div className="text-sm text-white/90 opacity-75 mt-1">{it.a}</div>
-            </div>
-          ))}
-        </div>
-      </LandingCard>
+      </main>
 
-      <div id="lead" className="scroll-mt-20">
-        <LandingLeadForm />
-      </div>
-
-      <div className="text-xs opacity-70">
-        {c.legal.byUsing}{" "}
-        <Link className="underline" href="/terms">
-          {c.legal.terms}
-        </Link>{" "}
-        {c.legal.and}{" "}
-        <Link className="underline" href="/privacy">
-          {c.legal.privacy}
-        </Link>
-        .
-      </div>
-    </Screen>
+      {/* FOOTER */}
+      <footer className="border-t border-white/10 px-4 py-8 text-center text-sm text-gray-500">
+        <p className="mb-4">{c.legal.byUsing} <Link href="/terms" className="underline hover:text-white">{c.legal.terms}</Link> and <Link href="/privacy" className="underline hover:text-white">{c.legal.privacy}</Link>.</p>
+        <p>© 2026 FinHub. All rights reserved.</p>
+      </footer>
+    </div>
   );
 }
