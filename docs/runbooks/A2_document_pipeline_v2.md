@@ -165,6 +165,14 @@ commit;
 
 If anything fails, do NOT re-run the full block blindly. Inspect the error, create a small incremental fix (A2.1), and apply only the needed statements.
 
+## A2.1 Fix: stack depth limit exceeded (RLS recursion)
+
+If you hit `stack depth limit exceeded` on case_documents RLS checks, apply migration
+`20260208123000_a2_1_fix_case_documents_rls_stack_depth.sql`. It introduces a
+`SECURITY DEFINER` helper `public.case_owner_id()` and rewrites the case_documents
+policies to use that helper instead of subqueries to `public.cases`, avoiding
+recursive policy evaluation.
+
 ## A2 DB applied proof
 
 Validation queries:
